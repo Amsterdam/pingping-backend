@@ -7,27 +7,59 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class AchivementAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        'user_user_key',
+        'name',
+        'city_points_value',
+        'unlock_date',
+    ]
 
 
 class TransactionAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        'user_user_key',
+        'city_pings',
+        'earnings',
+        'losts',
+    ]
 
 
 class RewardAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        'user_user_key',
+        'name',
+        'cost',
+        'descritption',
+        'vendor',
+        'status',
+    ]
 
 
 class RouteAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        'user_user_key',
+        'tasks',
+        'city_points_value',
+    ]
 
 
 class TaskAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        'user_user_key',
+        'name',
+        'descritption',
+        'status',
+    ]
 
 
 class GoalAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        'user_user_key',
+        'desired_amount',
+        'title',
+        'descritption',
+        'category',
+    ]
 
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Achivement, AchivementAdmin)

@@ -54,7 +54,7 @@ class Task(models.Model):
     name = models.CharField(max_length=255)
     descritption = models.TextField(max_length=500)
     status = models.CharField(max_length=100)
-    tasks = models.ManyToManyField('Task')
+    tasks = models.ManyToManyField('Task', blank=True)
 
     def __str__(self):
         return self.name
