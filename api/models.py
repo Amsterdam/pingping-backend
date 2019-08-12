@@ -4,6 +4,9 @@ from django.db import models
 class User(models.Model):
     user_key = models.IntegerField()
 
+    def __str__(self):
+        return "%d" % self.user_key
+
 
 class Achivement(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -11,12 +14,18 @@ class Achivement(models.Model):
     city_points_value = models.IntegerField()
     unlock_date = models.DateField()
 
+    def __str__(self):
+        return self.name
+
 
 class Transaction(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
     city_pings = models.IntegerField()
     earnings = models.IntegerField()
     losts = models.IntegerField()
+
+    def __str__(self):
+        return "Transaction #%d" % self.id
 
 
 class Reward(models.Model):
@@ -27,11 +36,17 @@ class Reward(models.Model):
     vendor = models.CharField(max_length=255)
     status = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 
 class Route(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
     tasks = models.TextField(max_length=255)
     city_points_value = models.IntegerField()
+
+    def __str__(self):
+        return "Route #%d" % self.id
 
 
 class Task(models.Model):
@@ -41,6 +56,9 @@ class Task(models.Model):
     status = models.CharField(max_length=100)
     tasks = models.ManyToManyField('Task')
 
+    def __str__(self):
+        return self.name
+
 
 class Goal(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -48,3 +66,6 @@ class Goal(models.Model):
     title = models.CharField(max_length=255)
     descritption = models.TextField(max_length=500)
     category = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "Goal #%d" % self.id
