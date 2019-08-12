@@ -3,7 +3,9 @@ from . import models
 
 
 class UserAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        'user_key',
+    ]
 
 
 class AchivementAdmin(admin.ModelAdmin):
