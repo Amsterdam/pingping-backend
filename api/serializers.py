@@ -63,6 +63,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'name',
             'descritption',
             'status',
+            'tasks'
         ]
 
 
