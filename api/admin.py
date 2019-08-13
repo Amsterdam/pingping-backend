@@ -1,5 +1,7 @@
 from django.contrib import admin
+from django_json_widget.widgets import JSONEditorWidget
 from . import models
+import jsonfield
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -46,11 +48,15 @@ class RouteAdmin(admin.ModelAdmin):
 
 
 class TaskAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        jsonfield.JSONField: {'widget': JSONEditorWidget},
+    }
     list_display = [
         'user_user_key',
         'name',
         'descritption',
         'status',
+        'order'
     ]
 
 

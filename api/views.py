@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from . import models, serializers
 
 
@@ -50,6 +52,14 @@ class RouteViewSet(viewsets.ModelViewSet):
         'tasks',
         'city_points_value',
     ]
+
+    @action(detail=False, methods=['POST'], name='Calculate')
+    def calculate(self, request, *args, **kwargs):
+        return Response(
+            serializers.TaskSerializer(
+                models.Route.calculate(request.data), many=True
+            ).data
+        )
 
 
 class TaskViewSet(viewsets.ModelViewSet):

@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Sum
+import jsonfield
 
 
 class User(models.Model):
@@ -45,6 +47,11 @@ class Route(models.Model):
     tasks = models.TextField(max_length=255)
     city_points_value = models.IntegerField()
 
+    @staticmethod
+    def calculate(conds):
+        tasks = Task.objects.order_by('order')
+        return [x for x in tasks if not x.match(conds)]
+
     def __str__(self):
         return "Route #%d" % self.id
 
@@ -55,6 +62,21 @@ class Task(models.Model):
     descritption = models.TextField(max_length=500)
     status = models.CharField(max_length=100)
     tasks = models.ManyToManyField('Task', blank=True)
+    conditions = jsonfield.JSONField()
+    order = models.IntegerField(default=1)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        order = self.tasks.all().aggregate(order=Sum('order'))['order']
+        if order:
+            self.order = order + 1
+            super().save(*args, **kwargs)
+
+    def match(self, conds):
+        for key in self.conditions.keys():
+            if not (key in conds) or (self.conditions[key] != conds[key]):
+                return False
+        return True
 
     def __str__(self):
         return self.name
