@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'django_json_widget',
+    'import_export',
 ]
 
 MIDDLEWARE = [

@@ -45,7 +45,6 @@ class Reward(models.Model):
 class Route(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
     tasks = models.TextField(max_length=255)
-    city_points_value = models.IntegerField()
 
     @staticmethod
     def calculate(conds):
@@ -57,11 +56,12 @@ class Route(models.Model):
 
 
 class Task(models.Model):
-    user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
     name = models.CharField(max_length=255)
     descritption = models.TextField(max_length=500)
     status = models.CharField(max_length=100)
+    city_points_value = models.IntegerField()
     tasks = models.ManyToManyField('Task', blank=True)
+    steps = jsonfield.JSONField()
     conditions = jsonfield.JSONField()
     order = models.IntegerField(default=1)
 

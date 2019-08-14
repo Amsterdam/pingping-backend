@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from . import models, serializers
+import json
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -53,13 +54,30 @@ class RouteViewSet(viewsets.ModelViewSet):
         'city_points_value',
     ]
 
-    @action(detail=False, methods=['POST'], name='Calculate')
-    def calculate(self, request, *args, **kwargs):
+    @action(detail=False, methods=['POST'], name='Calculate preview')
+    def calculate_preview(self, request, *args, **kwargs):
         return Response(
             serializers.TaskSerializer(
                 models.Route.calculate(request.data), many=True
             ).data
         )
+
+    @action(detail=False, methods=['POST'], name='Calculate')
+    def calculate(self, request, *args, **kwargs):
+        task_list = models.Route.calculate(request.data)
+        tasks = [x.id for x in task_list]
+        seria = serializers.RouteSerializer(
+            data=dict(
+                user_user_key=request.data['user_user_key'],
+                tasks=json.dumps(tasks)
+            )
+        )
+        if not seria.is_valid():
+            return Response(seria.errors, status=400)
+        seria.save()
+        return Response(seria.data)
+
+        
 
 
 class TaskViewSet(viewsets.ModelViewSet):
