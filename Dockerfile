@@ -21,7 +21,7 @@ RUN apt-get update -y \
 
 COPY . /app/
 
-ENV DEBUG=False
+ENV DEBUG=True
 
 EXPOSE 8000
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.1/wait /app/wait
