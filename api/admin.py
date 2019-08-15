@@ -29,11 +29,17 @@ class TransactionAdmin(admin.ModelAdmin):
 
 class RewardAdmin(admin.ModelAdmin):
     list_display = [
-        'user_user_key',
         'name',
         'cost',
         'description',
         'vendor',
+    ]
+
+
+class RewardUserAdmin(admin.ModelAdmin):
+    list_display = [
+        'user_user_key',
+        'reward',
         'status',
     ]
 
@@ -75,6 +81,7 @@ admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Achivement, AchivementAdmin)
 admin.site.register(models.Transaction, TransactionAdmin)
 admin.site.register(models.Reward, RewardAdmin)
+admin.site.register(models.RewardUser, RewardUserAdmin)
 admin.site.register(models.Route, RouteAdmin)
 admin.site.register(models.Task, TaskAdmin)
 admin.site.register(models.TaskUser, TaskUserAdmin)

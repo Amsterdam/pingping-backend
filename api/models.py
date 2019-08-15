@@ -3,6 +3,7 @@ from django.db.models import Sum
 from django.core.exceptions import ValidationError
 import jsonfield
 import re
+from datetime import date
 
 
 class User(models.Model):
@@ -24,15 +25,33 @@ class Transaction(models.Model):
 
 
 class Reward(models.Model):
-    user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
     name = models.CharField(max_length=255)
     cost = models.IntegerField()
     description = models.TextField(max_length=500)
     vendor = models.CharField(max_length=255)
-    status = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+
+
+class RewardUser(models.Model):
+    user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
+    reward = models.ForeignKey(Reward, on_delete=models.PROTECT)
+    status = models.CharField(max_length=100)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        last_trans = Transaction.objects.filter(
+            user_user_key=self.user_user_key
+        ).last()
+        last_citi_pings = last_trans.city_pings if last_trans else 0
+        Transaction.objects.create(
+            user_user_key=self.user_user_key,
+            description="Get reword %s" % self.reward.name,
+            earnings=0,
+            city_pings=last_citi_pings - self.reward.cost,
+            losts=self.reward.cost
+        )
 
 
 def validate_tasks(value):
@@ -88,17 +107,11 @@ class TaskUser(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         achiv = Achivement.objects.filter(task=self.task).first()
-        last_trans = Transaction.objects.filter(
-            user_user_key=self.user_user_key
-        ).last()
-        last_citi_pings = last_trans.city_pings if last_trans else 0
         if achiv:
-            Transaction.objects.create(
+            AchivementUser.objects.create(
+                achivement=achiv,
                 user_user_key=self.user_user_key,
-                description="Complete task %s" % self.task.name,
-                earnings=achiv.city_points_value,
-                city_pings=last_citi_pings + achiv.city_points_value,
-                losts=0
+                unlock_date=date.today()
             )
 
 
@@ -117,9 +130,23 @@ class Achivement(models.Model):
 
 
 class AchivementUser(models.Model):
-    achivement = models.ForeignKey(Achivement, on_delete=models.PROTECT)
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
+    achivement = models.ForeignKey(Achivement, on_delete=models.PROTECT)
     unlock_date = models.DateField()
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        last_trans = Transaction.objects.filter(
+            user_user_key=self.user_user_key
+        ).last()
+        last_citi_pings = last_trans.city_pings if last_trans else 0
+        Transaction.objects.create(
+            user_user_key=self.user_user_key,
+            description="Get achivement %s" % self.achivement.name,
+            earnings=self.achivement.city_points_value,
+            city_pings=last_citi_pings + self.achivement.city_points_value,
+            losts=0
+        )
 
 
 class Goal(models.Model):

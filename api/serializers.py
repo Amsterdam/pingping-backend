@@ -40,6 +40,16 @@ class TransactionSerializer(serializers.ModelSerializer):
         ]
 
 
+class RewardUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.RewardUser
+        fields = [
+            'user_user_key',
+            'reward',
+            'status',
+        ]
+
+
 class RewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Reward

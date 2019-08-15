@@ -46,10 +46,20 @@ class RewardViewSet(viewsets.ModelViewSet):
     queryset = models.Reward.objects.all()
     serializer_class = serializers.RewardSerializer
     filterset_fields = [
-        'user_user_key',
         'name',
         'cost',
         'descritption',
+        'vendor',
+    ]
+
+
+class RewardUserViewSet(viewsets.ModelViewSet):
+    queryset = models.RewardUser.objects.all()
+    serializer_class = serializers.RewardUserSerializer
+    filterset_fields = [
+        'user_user_key',
+        'reward',
+        'status',
     ]
 
 
