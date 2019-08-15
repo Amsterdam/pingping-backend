@@ -51,7 +51,6 @@ class RouteViewSet(viewsets.ModelViewSet):
     filterset_fields = [
         'user_user_key',
         'tasks',
-        'city_points_value',
     ]
 
     @action(detail=False, methods=['POST'], name='Calculate preview')
@@ -77,14 +76,11 @@ class RouteViewSet(viewsets.ModelViewSet):
         seria.save()
         return Response(seria.data)
 
-        
-
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = models.Task.objects.all()
     serializer_class = serializers.TaskSerializer
     filterset_fields = [
-        'user_user_key',
         'name',
         'descritption',
         'status',

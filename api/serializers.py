@@ -51,7 +51,6 @@ class RouteSerializer(serializers.ModelSerializer):
         fields = [
             'user_user_key',
             'tasks',
-            'city_points_value',
         ]
 
 
@@ -59,7 +58,6 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Task
         fields = [
-            'user_user_key',
             'name',
             'descritption',
             'status',
