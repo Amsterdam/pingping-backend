@@ -35,7 +35,7 @@ SECRET_KEY = 'n23n1ykn3a*%s$=k83%f@r&g8xxkbufduz%5ek6&p3*#rqlciq'
 # False if not in os.environ
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -51,9 +51,11 @@ INSTALLED_APPS = [
     'django_filters',
     'django_json_widget',
     'import_export',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -134,3 +136,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# CORS
+# By default, CORS_ORIGIN_ALLOW_ALL is set to False, this tells Django to
+# use the CORS_ORIGIN_WHITELIST. If set to True, the CORS_ORIGIN_WHITELIST is ignored.
+# More at https://pypi.org/project/django-cors-headers/
+CORS_ORIGIN_ALLOW_ALL = True

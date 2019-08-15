@@ -1,0 +1,74 @@
+# ToDo: Improve using Git tag system https://blog.callr.tech/building-docker-images-with-gitlab-ci-best-practices/
+stages:
+  - status
+  - tests
+  - docker-image
+  - deploy
+
+# Development
+dev-server-status:
+  stage: status
+  script:
+    - pwd
+    - ls -alh
+    - id
+    - sudo systemctl status --type=service
+    - free -h
+    - df -h
+    - docker ps -a
+  only:
+    - master
+  tags:
+    - aws-staging
+dev-build-push:
+  stage: docker-image
+  before_script:
+    - pwd
+    - ls -alh
+    # Login to GitLab registry
+    - sudo apt-get remove golang-docker-credential-helpers -y -q
+    - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    - sudo apt-get install docker-compose -y -q
+    # Get latest version to improve build process
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+  script:
+    # Build image with git sha
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    # Push image
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    # Replace latest image
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
+  after_script:
+    - git status --ignored
+    # Clean images containing the word gitlab
+    - docker rmi --force $(docker images --format "{{.Repository}} {{.ID}}" | grep gitlab | awk {'print $2'}) || true
+    - docker image prune --force
+  only:
+    - master
+  tags:
+    - aws-staging
+dev-deploy:
+  stage: deploy
+  environment:
+    name: staging
+    url: http://api.staging.pingping.refleks.tech
+  before_script:
+    - pwd
+    - ls -alh
+    # Login to GitLab registry
+    - sudo apt-get remove golang-docker-credential-helpers -y -qq
+    - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    - sudo apt-get install docker-compose -y -qq
+  script:
+    - docker-compose pull
+    - docker-compose down
+    - docker-compose down
+    - docker-compose up -d
+  after_script:
+    - git status --ignored
+    - docker ps -a
+  only:
+    - master
+  tags:
+    - aws-staging
