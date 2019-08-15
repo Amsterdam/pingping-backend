@@ -49,8 +49,7 @@ class RouteViewSet(viewsets.ModelViewSet):
     queryset = models.Route.objects.all()
     serializer_class = serializers.RouteSerializer
     filterset_fields = [
-        'user_user_key',
-        'tasks',
+        'user_user_key__user_key',
     ]
 
     @action(detail=False, methods=['POST'], name='Calculate preview')
