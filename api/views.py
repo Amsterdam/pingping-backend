@@ -77,8 +77,6 @@ class RouteViewSet(viewsets.ModelViewSet):
         seria.save()
         return Response(seria.data)
 
-        
-
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = models.Task.objects.all()
