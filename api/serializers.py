@@ -14,9 +14,17 @@ class AchivementSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Achivement
         fields = [
-            'user_user_key',
             'name',
             'city_points_value',
+        ]
+
+
+class AchivementUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.AchivementUser
+        fields = [
+            'achivement',
+            'user_user_key',
             'unlock_date',
         ]
 
@@ -60,8 +68,19 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = [
             'name',
             'descritption',
+            'city_points_value',
+            'steps',
+            'conditions',
+        ]
+
+
+class TaskUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.TaskUser
+        fields = [
+            'user_user_key',
+            'task',
             'status',
-            'tasks'
         ]
 
 

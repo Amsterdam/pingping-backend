@@ -12,18 +12,9 @@ class User(models.Model):
         return "%d" % self.user_key
 
 
-class Achivement(models.Model):
-    user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
-    name = models.CharField(max_length=255)
-    city_points_value = models.IntegerField()
-    unlock_date = models.DateField()
-
-    def __str__(self):
-        return self.name
-
-
 class Transaction(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
+    description = models.TextField()
     city_pings = models.IntegerField()
     earnings = models.IntegerField()
     losts = models.IntegerField()
@@ -36,7 +27,7 @@ class Reward(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
     name = models.CharField(max_length=255)
     cost = models.IntegerField()
-    descritption = models.TextField(max_length=500)
+    description = models.TextField(max_length=500)
     vendor = models.CharField(max_length=255)
     status = models.CharField(max_length=100)
 
@@ -65,8 +56,7 @@ class Route(models.Model):
 
 class Task(models.Model):
     name = models.CharField(max_length=255)
-    descritption = models.TextField(max_length=500)
-    status = models.CharField(max_length=100)
+    description = models.TextField(max_length=500)
     city_points_value = models.IntegerField()
     tasks = models.ManyToManyField('Task', blank=True)
     steps = jsonfield.JSONField()
@@ -90,11 +80,53 @@ class Task(models.Model):
         return self.name
 
 
+class TaskUser(models.Model):
+    user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
+    task = models.ForeignKey(Task, on_delete=models.PROTECT)
+    status = models.CharField(max_length=100)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        achiv = Achivement.objects.filter(task=self.task).first()
+        last_trans = Transaction.objects.filter(
+            user_user_key=self.user_user_key
+        ).last()
+        last_citi_pings = last_trans.city_pings if last_trans else 0
+        if achiv:
+            Transaction.objects.create(
+                user_user_key=self.user_user_key,
+                description="Complete task %s" % self.task.name,
+                earnings=achiv.city_points_value,
+                city_pings=last_citi_pings + achiv.city_points_value,
+                losts=0
+            )
+
+
+class Achivement(models.Model):
+    name = models.CharField(max_length=255)
+    city_points_value = models.IntegerField()
+    task = models.ForeignKey(
+        Task,
+        blank=True,
+        null=True,
+        on_delete=models.PROTECT
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class AchivementUser(models.Model):
+    achivement = models.ForeignKey(Achivement, on_delete=models.PROTECT)
+    user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
+    unlock_date = models.DateField()
+
+
 class Goal(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
     desired_amount = models.FloatField(max_length=10)
     title = models.CharField(max_length=255)
-    descritption = models.TextField(max_length=500)
+    description = models.TextField(max_length=500)
     category = models.CharField(max_length=255)
 
     def __str__(self):

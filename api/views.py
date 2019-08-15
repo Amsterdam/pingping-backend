@@ -16,9 +16,17 @@ class AchivementViewSet(viewsets.ModelViewSet):
     queryset = models.Achivement.objects.all()
     serializer_class = serializers.AchivementSerializer
     filterset_fields = [
-        'user_user_key',
         'name',
         'city_points_value',
+    ]
+
+
+class AchivementUserViewSet(viewsets.ModelViewSet):
+    queryset = models.AchivementUser.objects.all()
+    serializer_class = serializers.AchivementUserSerializer
+    filterset_fields = [
+        'achivement',
+        'user_user_key',
         'unlock_date',
     ]
 
@@ -82,6 +90,18 @@ class TaskViewSet(viewsets.ModelViewSet):
     filterset_fields = [
         'name',
         'descritption',
+        'city_points_value',
+        'steps',
+        'conditions',
+    ]
+
+
+class TaskUserViewSet(viewsets.ModelViewSet):
+    queryset = models.TaskUser.objects.all()
+    serializer_class = serializers.TaskUserSerializer
+    filterset_fields = [
+        'user_user_key',
+        'task',
         'status',
     ]
 

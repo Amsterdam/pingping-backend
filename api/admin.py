@@ -13,10 +13,8 @@ class UserAdmin(admin.ModelAdmin):
 
 class AchivementAdmin(admin.ModelAdmin):
     list_display = [
-        'user_user_key',
         'name',
         'city_points_value',
-        'unlock_date',
     ]
 
 
@@ -34,7 +32,7 @@ class RewardAdmin(admin.ModelAdmin):
         'user_user_key',
         'name',
         'cost',
-        'descritption',
+        'description',
         'vendor',
         'status',
     ]
@@ -50,10 +48,17 @@ class RouteAdmin(admin.ModelAdmin):
 class TaskAdmin(ImportExportModelAdmin):
     list_display = [
         'name',
-        'descritption',
-        'status',
+        'description',
         'city_points_value',
         'order'
+    ]
+
+
+class TaskUserAdmin(admin.ModelAdmin):
+    list_display = [
+        'user_user_key',
+        'task',
+        'status',
     ]
 
 
@@ -62,7 +67,7 @@ class GoalAdmin(admin.ModelAdmin):
         'user_user_key',
         'desired_amount',
         'title',
-        'descritption',
+        'description',
         'category',
     ]
 
@@ -72,4 +77,5 @@ admin.site.register(models.Transaction, TransactionAdmin)
 admin.site.register(models.Reward, RewardAdmin)
 admin.site.register(models.Route, RouteAdmin)
 admin.site.register(models.Task, TaskAdmin)
+admin.site.register(models.TaskUser, TaskUserAdmin)
 admin.site.register(models.Goal, GoalAdmin)
