@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import Sum
+from django.core.exceptions import ValidationError
 import jsonfield
+import re
 
 
 class User(models.Model):
@@ -42,9 +44,15 @@ class Reward(models.Model):
         return self.name
 
 
+def validate_tasks(value):
+    if not re.match(r'^\[\]|\[(\s*\d+\s*\,)*\s*\d+\s*\]$', value):
+        raise ValidationError('The text must begin with " [ " , end with " ] " and each Task_ID must be separated by a hyphen " , ".')
+    return value
+
+
 class Route(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
-    tasks = models.TextField(max_length=255)
+    tasks = models.TextField(max_length=255, validators=[validate_tasks])
 
     @staticmethod
     def calculate(conds):
