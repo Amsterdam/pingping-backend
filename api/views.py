@@ -96,7 +96,14 @@ class RouteViewSet(viewsets.ModelViewSet):
         if not seria.is_valid():
             return Response(seria.errors, status=400)
         seria.save()
-        return Response(seria.data)
+        return Response(
+            serializers.RouteShowSerializer(
+                dict(
+                    user_user_key=user_user_key,
+                    tasks=json.dumps(tasks)
+                )
+            ).data
+        )
 
 
 class TaskViewSet(viewsets.ModelViewSet):
