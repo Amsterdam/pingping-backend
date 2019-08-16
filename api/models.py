@@ -7,7 +7,7 @@ from datetime import date
 
 
 class User(models.Model):
-    user_key = models.IntegerField()
+    user_key = models.BigIntegerField()
 
     def __str__(self):
         return "%d" % self.user_key
