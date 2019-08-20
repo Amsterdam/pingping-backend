@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django_json_widget.widgets import JSONEditorWidget
 from import_export.admin import ImportExportModelAdmin
+from admin_ordering.admin import OrderableAdmin
 from . import models
 import jsonfield
 
@@ -51,13 +52,17 @@ class RouteAdmin(admin.ModelAdmin):
     ]
 
 
-class TaskAdmin(ImportExportModelAdmin):
+class TaskAdmin(OrderableAdmin, ImportExportModelAdmin):
+    ordering_field = 'order'
+    ordering = ['order']
+    ordering_field_hide_input = True
     list_display = [
         'name',
         'description',
         'city_points_value',
         'order'
     ]
+    list_editable = ('order', )
 
 
 class TaskUserAdmin(admin.ModelAdmin):

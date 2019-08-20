@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django_json_widget',
     'import_export',
     'corsheaders',
+    'admin_ordering'
 ]
 
 MIDDLEWARE = [
