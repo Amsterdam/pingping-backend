@@ -72,6 +72,17 @@ class RouteSerializer(serializers.ModelSerializer):
         ]
 
 
+class RouteShowSerializer(serializers.ModelSerializer):
+    user_user_key = UserSerializer()
+
+    class Meta:
+        model = models.Route
+        fields = [
+            'user_user_key',
+            'tasks',
+        ]
+
+
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Task

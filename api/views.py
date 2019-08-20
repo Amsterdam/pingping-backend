@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from . import models, serializers
 import json
+import time
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -82,16 +83,27 @@ class RouteViewSet(viewsets.ModelViewSet):
     def calculate(self, request, *args, **kwargs):
         task_list = models.Route.calculate(request.data)
         tasks = [x.id for x in task_list]
+        user_user_key = models.User.objects.create(
+            user_key=int(round(time.time() * 1000))
+        )
+
         seria = serializers.RouteSerializer(
             data=dict(
-                user_user_key=request.data['user_user_key'],
+                user_user_key=user_user_key.id,
                 tasks=json.dumps(tasks)
             )
         )
         if not seria.is_valid():
             return Response(seria.errors, status=400)
         seria.save()
-        return Response(seria.data)
+        return Response(
+            serializers.RouteShowSerializer(
+                dict(
+                    user_user_key=user_user_key,
+                    tasks=json.dumps(tasks)
+                )
+            ).data
+        )
 
 
 class TaskViewSet(viewsets.ModelViewSet):

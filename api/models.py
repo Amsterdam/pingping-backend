@@ -7,7 +7,7 @@ from datetime import date
 
 
 class User(models.Model):
-    user_key = models.IntegerField()
+    user_key = models.BigIntegerField()
 
     def __str__(self):
         return "%d" % self.user_key
@@ -56,7 +56,8 @@ class RewardUser(models.Model):
 
 def validate_tasks(value):
     if not re.match(r'^\[\]|\[(\s*\d+\s*\,)*\s*\d+\s*\]$', value):
-        raise ValidationError('The text must begin with " [ " , end with " ] " and each Task_ID must be separated by a hyphen " , ".')
+        error_message = 'The text must begin with " [ " , end with " ] " and each Task_ID must be separated by a hyphen " , ".'
+        raise ValidationError(erros_message)
     return value
 
 
@@ -80,19 +81,26 @@ class Task(models.Model):
     tasks = models.ManyToManyField('Task', blank=True)
     steps = jsonfield.JSONField()
     conditions = jsonfield.JSONField()
-    order = models.IntegerField(default=1)
+    order = models.IntegerField(blank=True)
 
     def save(self, *args, **kwargs):
+        if not self.pk:
+            last = Task.objects.order_by('order').last()
+            if last:
+                self.order = last.order + 10
         super().save(*args, **kwargs)
-        order = self.tasks.all().aggregate(order=Sum('order'))['order']
-        if order:
-            self.order = order + 1
-            super().save(*args, **kwargs)
+
+    @staticmethod
+    def match_all(tasks, conds):
+        for task in tasks:
+            if not task.match(conds):
+                return False
+        return True
 
     def match(self, conds):
         for key in self.conditions.keys():
             if not (key in conds) or (self.conditions[key] != conds[key]):
-                return False
+                return Task.match_all(self.tasks.all(), conds)
         return True
 
     def __str__(self):
