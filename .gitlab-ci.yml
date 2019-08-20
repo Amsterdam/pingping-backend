@@ -17,7 +17,7 @@ dev-server-status:
     - df -h
     - docker ps -a
   only:
-    - master
+    - develop
   tags:
     - aws-staging
 dev-build-push:
@@ -45,7 +45,7 @@ dev-build-push:
     - docker rmi --force $(docker images --format "{{.Repository}} {{.ID}}" | grep gitlab | awk {'print $2'}) || true
     - docker image prune --force
   only:
-    - master
+    - develop
   tags:
     - aws-staging
 dev-deploy:
@@ -69,6 +69,6 @@ dev-deploy:
     - git status --ignored
     - docker ps -a
   only:
-    - master
+    - develop
   tags:
     - aws-staging
