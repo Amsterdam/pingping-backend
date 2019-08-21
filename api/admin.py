@@ -82,6 +82,25 @@ class GoalAdmin(admin.ModelAdmin):
         'category',
     ]
 
+
+class QuestionAdmin(OrderableAdmin, ImportExportModelAdmin):
+    ordering_field = 'order'
+    ordering = ['order']
+    ordering_field_hide_input = True
+    list_display = [
+        'question',
+        'image_tag',
+        'type',
+        'yes_text',
+        'yes_id',
+        'not_text',
+        'not_id',
+        'order',
+    ]
+    list_editable = ('order', )
+    readonly_fields = ('image_tag',)
+
+
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Achivement, AchivementAdmin)
 admin.site.register(models.Transaction, TransactionAdmin)
@@ -91,3 +110,4 @@ admin.site.register(models.Route, RouteAdmin)
 admin.site.register(models.Task, TaskAdmin)
 admin.site.register(models.TaskUser, TaskUserAdmin)
 admin.site.register(models.Goal, GoalAdmin)
+admin.site.register(models.Question, QuestionAdmin)

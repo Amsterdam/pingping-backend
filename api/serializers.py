@@ -88,7 +88,7 @@ class TaskSerializer(serializers.ModelSerializer):
         model = models.Task
         fields = [
             'name',
-            'descritption',
+            'description',
             'city_points_value',
             'steps',
             'conditions',
@@ -114,4 +114,20 @@ class GoalSerializer(serializers.ModelSerializer):
             'title',
             'descritption',
             'category',
+        ]
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Question
+        fields = [
+            'id',
+            'question',
+            'question_icon',
+            'type',
+            'yes_text',
+            'yes_id',
+            'not_text',
+            'not_id',
+            'order',
         ]

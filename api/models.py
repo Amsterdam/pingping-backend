@@ -2,8 +2,10 @@ from django.db import models
 from django.db.models import Sum
 from django.core.exceptions import ValidationError
 import jsonfield
-import re
 from datetime import date
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
+import re
 
 
 class User(models.Model):
@@ -57,7 +59,7 @@ class RewardUser(models.Model):
 def validate_tasks(value):
     if not re.match(r'^\[\]|\[(\s*\d+\s*\,)*\s*\d+\s*\]$', value):
         error_message = 'The text must begin with " [ " , end with " ] " and each Task_ID must be separated by a hyphen " , ".'
-        raise ValidationError(erros_message)
+        raise ValidationError(error_message)
     return value
 
 
@@ -88,20 +90,21 @@ class Task(models.Model):
             last = Task.objects.order_by('order').last()
             if last:
                 self.order = last.order + 10
+            else:
+                self.order = 0
         super().save(*args, **kwargs)
 
     @staticmethod
     def match_all(tasks, conds):
         for task in tasks:
-            if not task.match(conds):
-                return False
-        return True
+            if task.match(conds):
+                return True
+        return False
 
     def match(self, conds):
-        for key in self.conditions.keys():
-            if not (key in conds) or (self.conditions[key] != conds[key]):
-                return Task.match_all(self.tasks.all(), conds)
-        return True
+        if Task.match_all(self.tasks.all(), conds) or self.conditions.items() <= conds.items():
+            return True
+        return False
 
     def __str__(self):
         return self.name
@@ -166,3 +169,75 @@ class Goal(models.Model):
 
     def __str__(self):
         return "Goal #%d" % self.id
+
+
+class Question(models.Model):
+    STEP = 10
+    YESNO = 'yesNo'
+    DATE = 'date'
+    YES = 'yes'
+    NOT = 'not'
+
+    question = models.CharField(max_length=255)
+    question_icon = models.TextField(null=True, blank=True)
+    type = models.CharField(
+        max_length=5,
+        choices=(
+            (YESNO, 'Yes or No'),
+            (DATE, 'Date')
+        )
+    )
+    yes_text = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True
+    )
+    yes_id = models.ForeignKey(
+        'Question',
+        related_name='q_yes_id',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
+    not_text = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True
+    )
+    not_id = models.ForeignKey(
+        'Question',
+        related_name='q_not_id',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
+    order = models.IntegerField(blank=True)
+
+    def image_tag(self):
+        return mark_safe('<img height="24px" src="%s" />' % self.question_icon)
+
+    image_tag.short_description = 'Question icon'
+    image_tag.allow_tags = True
+
+    def __str__(self):
+        return self.question
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            last = Question.objects.order_by('order').last()
+            if last:
+                self.order = last.order + self.STEP
+            else:
+                self.order = 0
+        super().save(*args, **kwargs)
+
+    def next(self, response):
+        if self.type == self.DATE:
+            return Question.objects.filter(
+                order=self.order + self.STEP
+            ).first()
+        elif self.type == self.YESNO:
+            if response == self.YES:
+                return self.yes_id
+            elif response == self.NOT:
+                return self.not_id

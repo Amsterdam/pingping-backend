@@ -75,7 +75,9 @@ class RouteViewSet(viewsets.ModelViewSet):
     def calculate_preview(self, request, *args, **kwargs):
         return Response(
             serializers.TaskSerializer(
-                models.Route.calculate(request.data), many=True
+                models.Route.calculate(json.loads(
+                    request.data['tasks']
+                )), many=True
             ).data
         )
 
@@ -137,3 +139,35 @@ class GoalViewSet(viewsets.ModelViewSet):
         'title',
         'descritption',
     ]
+
+
+class QuestionViewSet(viewsets.ModelViewSet):
+    queryset = models.Question.objects.all()
+    serializer_class = serializers.QuestionSerializer
+    filterset_fields = [
+        'id',
+        'question',
+        'type',
+        'yes_text',
+        'not_text',
+        'order',
+    ]
+
+    @action(detail=True, methods=['POST'], name='Next')
+    def next(self, request, pk, *args, **kwargs):
+        question = models.Question.objects.get(pk=pk)
+        next_question = question.next(request.data['response'])
+        if not next_question:
+            return Response({"error": "Response not configured"})
+        return Response({
+            "question": next_question.question,
+            "questionIcon": next_question.question_icon,
+            "questionType": next_question.type,
+            "answers": {
+                "yesText": next_question.yes_text,
+                "noText": next_question.not_text
+            },
+            "previousQuestion": pk,
+            "currentQuestion": question.pk,
+            "numberOfQuestions": models.Question.objects.count()
+        })
