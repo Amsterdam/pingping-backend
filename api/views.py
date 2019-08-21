@@ -153,12 +153,32 @@ class QuestionViewSet(viewsets.ModelViewSet):
         'order',
     ]
 
-    @action(detail=True, methods=['POST'], name='Next')
+    @action(detail=False, methods=['GET'], name='First')
+    def first(self, request, *args, **kwargs):
+        if request.method == 'GET':
+            next_question = models.Question.objects.order_by('order').first()
+        return Response({
+            "question": next_question.question,
+            "questionIcon": next_question.question_icon,
+            "questionType": next_question.type,
+            "answers": {
+                "yesText": next_question.yes_text,
+                "noText": next_question.not_text
+            },
+            "previousQuestion": None,
+            "currentQuestion": next_question.pk,
+            "numberOfQuestions": models.Question.objects.count()
+        })
+
+    @action(detail=True, methods=['POST', 'GET'], name='Next')
     def next(self, request, pk, *args, **kwargs):
-        question = models.Question.objects.get(pk=pk)
-        next_question = question.next(request.data['response'])
-        if not next_question:
-            return Response({"error": "Response not configured"})
+        if request.method == 'GET':
+            next_question = models.Question.objects.order_by('order').first()
+        else:
+            question = models.Question.objects.get(pk=pk)
+            next_question = question.next(request.data['response'])
+            if not next_question:
+                return Response({"error": "Response not configured"})
         return Response({
             "question": next_question.question,
             "questionIcon": next_question.question_icon,
@@ -168,6 +188,6 @@ class QuestionViewSet(viewsets.ModelViewSet):
                 "noText": next_question.not_text
             },
             "previousQuestion": pk,
-            "currentQuestion": question.pk,
+            "currentQuestion": next_question.pk,
             "numberOfQuestions": models.Question.objects.count()
         })
