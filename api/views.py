@@ -187,6 +187,6 @@ class QuestionViewSet(viewsets.ModelViewSet):
                 "noText": next_question.not_text
             },
             "previousQuestion": pk,
-            "currentQuestion": next_question.pk,
+            "currentQuestion": next_question.pk if next_question else None,
             "numberOfQuestions": models.Question.objects.count()
         })
