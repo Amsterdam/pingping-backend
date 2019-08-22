@@ -124,6 +124,7 @@ class QuestionSerializer(serializers.ModelSerializer):
     previousQuestion = serializers.SerializerMethodField()
     currentQuestion = serializers.ReadOnlyField(source='id')
     numberOfQuestions = serializers.SerializerMethodField()
+    order = serializers.ReadOnlyField(source='get_order')
 
     def get_answer(self, obj):
         return {
@@ -149,5 +150,6 @@ class QuestionSerializer(serializers.ModelSerializer):
             'answer',
             'previousQuestion',
             'currentQuestion',
-            'numberOfQuestions'
+            'numberOfQuestions',
+            'order'
         ]

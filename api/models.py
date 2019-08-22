@@ -250,3 +250,6 @@ class Question(models.Model):
         if not prev:
             prev = Question.objects.filter(order=self.order - self.STEP).last()
         return prev
+
+    def get_order(self):
+        return int(self.order/self.STEP)
