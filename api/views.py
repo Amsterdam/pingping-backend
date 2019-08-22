@@ -155,8 +155,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'], name='First')
     def first(self, request, *args, **kwargs):
-        if request.method == 'GET':
-            next_question = models.Question.objects.order_by('order').first()
+        next_question = models.Question.objects.order_by('order').first()
+        if not next_question:
+            return Response({
+                "message": "There are not questions"
+            }, status=300)
         return Response({
             "question": next_question.question,
             "questionIcon": next_question.question_icon,
@@ -174,10 +177,14 @@ class QuestionViewSet(viewsets.ModelViewSet):
     def next(self, request, pk, *args, **kwargs):
         question = models.Question.objects.get(pk=pk)
         if not ('answer' in request.data):
-            return Response({"error": "The key 'answer' is required"})
+            return Response({
+                "error": "The key 'answer' is required"
+            }, status=400)
         next_question = question.next(request.data['answer'])
         if not next_question:
-            return Response({"error": "Response not configured"})
+            return Response({
+                "message": "There are not more questions"
+            }, status=300)
         return Response({
             "question": next_question.question,
             "questionIcon": next_question.question_icon,
