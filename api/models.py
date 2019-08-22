@@ -30,6 +30,9 @@ class Transaction(models.Model):
 class Vendor(models.Model):
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class Reward(models.Model):
     title = models.CharField(max_length=255)
@@ -44,12 +47,23 @@ class Reward(models.Model):
     left = models.IntegerField()
 
     def __str__(self):
-        return self.name
+        return self.title
+
+
+def validate_reward(value):
+    if isinstance(value, int):
+        value = Reward.objects.get(id=value)
+    if value.left <= 0:
+        raise ValidationError("The resources are depleted")
 
 
 class RewardUser(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
-    reward = models.ForeignKey(Reward, on_delete=models.PROTECT)
+    reward = models.ForeignKey(
+        Reward,
+        on_delete=models.PROTECT,
+        validators=[validate_reward]
+    )
     status = models.CharField(max_length=100)
 
     def save(self, *args, **kwargs):
@@ -60,11 +74,13 @@ class RewardUser(models.Model):
         last_citi_pings = last_trans.city_pings if last_trans else 0
         Transaction.objects.create(
             user_user_key=self.user_user_key,
-            description="Get reword %s" % self.reward.name,
+            description="Get reword %s" % self.reward.title,
             earnings=0,
             city_pings=last_citi_pings - self.reward.cost,
             losts=self.reward.cost
         )
+        self.reward.left -= 1
+        self.reward.save()
 
 
 def validate_tasks(value):
