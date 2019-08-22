@@ -250,3 +250,7 @@ class Question(models.Model):
         if not prev:
             prev = Question.objects.filter(order=self.order - self.STEP).last()
         return prev
+
+
+class Vendor(models.Model):
+    name = models.CharField(max_length=255)

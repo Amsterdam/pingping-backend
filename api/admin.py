@@ -101,6 +101,12 @@ class QuestionAdmin(OrderableAdmin, ImportExportModelAdmin):
     readonly_fields = ('image_tag',)
 
 
+class VendorAdmin(admin.ModelAdmin):
+    list_display = [
+        'name',
+    ]
+
+
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Achivement, AchivementAdmin)
 admin.site.register(models.Transaction, TransactionAdmin)
@@ -111,3 +117,4 @@ admin.site.register(models.Task, TaskAdmin)
 admin.site.register(models.TaskUser, TaskUserAdmin)
 admin.site.register(models.Goal, GoalAdmin)
 admin.site.register(models.Question, QuestionAdmin)
+admin.site.register(models.Vendor, VendorAdmin)
