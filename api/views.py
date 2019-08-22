@@ -159,7 +159,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
         if not next_question:
             return Response({
-                "message": "There are not questions"
+                "message": "There are no questions"
             }, status=300)
 
         return Response(
@@ -178,7 +178,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
         if not next_question:
             return Response({
-                "message": "There are not more questions"
+                "message": "There are no more questions"
             }, status=300)
 
         return Response(
