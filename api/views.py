@@ -170,15 +170,12 @@ class QuestionViewSet(viewsets.ModelViewSet):
             "numberOfQuestions": models.Question.objects.count()
         })
 
-    @action(detail=True, methods=['POST', 'GET'], name='Next')
+    @action(detail=True, methods=['POST'], name='Next')
     def next(self, request, pk, *args, **kwargs):
-        if request.method == 'GET':
-            next_question = models.Question.objects.order_by('order').first()
-        else:
-            question = models.Question.objects.get(pk=pk)
-            next_question = question.next(request.data['response'])
-            if not next_question:
-                return Response({"error": "Response not configured"})
+        question = models.Question.objects.get(pk=pk)
+        next_question = question.next(request.data['answer'])
+        if not next_question:
+            return Response({"error": "Response not configured"})
         return Response({
             "question": next_question.question,
             "questionIcon": next_question.question_icon,
