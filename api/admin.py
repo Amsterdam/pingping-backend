@@ -30,7 +30,7 @@ class TransactionAdmin(admin.ModelAdmin):
 
 class RewardAdmin(admin.ModelAdmin):
     list_display = [
-        'name',
+        'title',
         'cost',
         'description',
         'vendor',

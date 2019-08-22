@@ -27,11 +27,21 @@ class Transaction(models.Model):
         return "Transaction #%d" % self.id
 
 
-class Reward(models.Model):
+class Vendor(models.Model):
     name = models.CharField(max_length=255)
+
+
+class Reward(models.Model):
+    title = models.CharField(max_length=255)
     cost = models.IntegerField()
     description = models.TextField(max_length=500)
-    vendor = models.CharField(max_length=255)
+    vendor = models.ForeignKey(Vendor, on_delete=models.PROTECT)
+    picture = models.ImageField(
+        upload_to="upload/rewards/",
+        null=True, blank=True
+    )
+    initial = models.IntegerField()
+    left = models.IntegerField()
 
     def __str__(self):
         return self.name
@@ -253,7 +263,3 @@ class Question(models.Model):
 
     def get_order(self):
         return int(self.order/self.STEP)
-
-
-class Vendor(models.Model):
-    name = models.CharField(max_length=255)
