@@ -173,6 +173,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'], name='Next')
     def next(self, request, pk, *args, **kwargs):
         question = models.Question.objects.get(pk=pk)
+        if not ('answer' in request.data):
+            return Response({"error": "The key 'answer' is required"})
         next_question = question.next(request.data['answer'])
         if not next_question:
             return Response({"error": "Response not configured"})
