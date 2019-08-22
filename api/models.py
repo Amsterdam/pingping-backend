@@ -251,6 +251,9 @@ class Question(models.Model):
             prev = Question.objects.filter(order=self.order - self.STEP).last()
         return prev
 
+    def get_order(self):
+        return int(self.order/self.STEP)
+
 
 class Vendor(models.Model):
     name = models.CharField(max_length=255)
