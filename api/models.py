@@ -177,7 +177,7 @@ class Question(models.Model):
     YESNO = 'yesNo'
     DATE = 'date'
     YES = 'yes'
-    NOT = 'no'
+    NO = 'no'
 
     question = models.CharField(max_length=255)
     question_icon = models.TextField(null=True, blank=True)
@@ -240,7 +240,7 @@ class Question(models.Model):
         elif self.type == self.YESNO:
             if response == self.YES:
                 return self.yes_id
-            elif response == self.NOT:
+            elif response == self.NO:
                 return self.not_id
 
     def prev(self):
