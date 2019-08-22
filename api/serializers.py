@@ -118,16 +118,36 @@ class GoalSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    questionIcon = serializers.ReadOnlyField(source='question_icon')
+    questionType = serializers.ReadOnlyField(source='question_type')
+    answer = serializers.SerializerMethodField()
+    previousQuestion = serializers.SerializerMethodField()
+    currentQuestion = serializers.ReadOnlyField(source='id')
+    numberOfQuestions = serializers.SerializerMethodField()
+
+    def get_answer(self, obj):
+        return {
+            "yesText": obj.yes_text,
+            "noText": obj.not_text
+        }
+
+    def get_previousQuestion(self, obj):
+        prev = obj.prev()
+        if prev:
+            return prev.id
+
+    def get_numberOfQuestions(self, obj):
+        return models.Question.objects.count()
+
     class Meta:
         model = models.Question
         fields = [
             'id',
             'question',
-            'question_icon',
-            'type',
-            'yes_text',
-            'yes_id',
-            'not_text',
-            'not_id',
-            'order',
+            'questionIcon',
+            'questionType',
+            'answer',
+            'previousQuestion',
+            'currentQuestion',
+            'numberOfQuestions'
         ]

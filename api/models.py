@@ -5,6 +5,7 @@ import jsonfield
 from datetime import date
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
+from django.db.models import Q
 import re
 
 
@@ -241,3 +242,11 @@ class Question(models.Model):
                 return self.yes_id
             elif response == self.NOT:
                 return self.not_id
+
+    def prev(self):
+        prev = Question.objects.filter(
+            Q(yes_id=self.id) | Q(not_id=self.id)
+        ).filter(order__lt=self.order).last()
+        if not prev:
+            prev = Question.objects.filter(order=self.order - self.STEP).last()
+        return prev
