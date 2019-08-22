@@ -156,44 +156,31 @@ class QuestionViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'], name='First')
     def first(self, request, *args, **kwargs):
         next_question = models.Question.objects.order_by('order').first()
+
         if not next_question:
             return Response({
                 "message": "There are not questions"
             }, status=300)
-        return Response({
-            "question": next_question.question,
-            "questionIcon": next_question.question_icon,
-            "questionType": next_question.type,
-            "answers": {
-                "yesText": next_question.yes_text,
-                "noText": next_question.not_text
-            },
-            "previousQuestion": None,
-            "currentQuestion": next_question.pk,
-            "numberOfQuestions": models.Question.objects.count()
-        })
+
+        return Response(
+            serializers.QuestionSerializer(next_question).data
+        )
 
     @action(detail=True, methods=['POST'], name='Next')
     def next(self, request, pk, *args, **kwargs):
         question = models.Question.objects.get(pk=pk)
+
         if not ('answer' in request.data):
             return Response({
                 "error": "The key 'answer' is required"
             }, status=400)
         next_question = question.next(request.data['answer'])
+
         if not next_question:
             return Response({
                 "message": "There are not more questions"
             }, status=300)
-        return Response({
-            "question": next_question.question,
-            "questionIcon": next_question.question_icon,
-            "questionType": next_question.type,
-            "answers": {
-                "yesText": next_question.yes_text,
-                "noText": next_question.not_text
-            },
-            "previousQuestion": pk,
-            "currentQuestion": next_question.pk if next_question else None,
-            "numberOfQuestions": models.Question.objects.count()
-        })
+
+        return Response(
+            serializers.QuestionSerializer(next_question).data
+        )
