@@ -177,7 +177,7 @@ class Question(models.Model):
     YESNO = 'yesNo'
     DATE = 'date'
     YES = 'yes'
-    NOT = 'not'
+    NOT = 'no'
 
     question = models.CharField(max_length=255)
     question_icon = models.TextField(null=True, blank=True)
