@@ -1,11 +1,14 @@
 from django.db import models
 from django.db.models import Sum
 from django.core.exceptions import ValidationError
-import jsonfield
 from datetime import date
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.db.models import Q
+from django.conf import settings
+from . import services
+import jsonfield
+import uuid
 import re
 
 
@@ -65,13 +68,33 @@ class RewardUser(models.Model):
         validators=[validate_reward]
     )
     status = models.CharField(max_length=100)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    qr = models.TextField(blank=True)
+    pdf = models.TextField(blank=True)
+
+    def image_qr(self):
+        return mark_safe('<img height="100px" src="data:image/png;base64, %s" />' % self.qr)
+
+    image_qr.short_description = 'QR Code'
+    image_qr.allow_tags = True
+
+    def download_pdf(self):
+        return mark_safe('<a href="data:application/pdf;base64, %s" download>Download</a>' % self.pdf)
+
+    download_pdf.short_description = 'Download PDF'
+    download_pdf.allow_tags = True
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+
+        # Get last transaction
+
         last_trans = Transaction.objects.filter(
             user_user_key=self.user_user_key
         ).last()
         last_citi_pings = last_trans.city_pings if last_trans else 0
+
+        # Save transaction
+
         Transaction.objects.create(
             user_user_key=self.user_user_key,
             description="Get reword %s" % self.reward.title,
@@ -79,6 +102,20 @@ class RewardUser(models.Model):
             city_pings=last_citi_pings - self.reward.cost,
             losts=self.reward.cost
         )
+
+        # Create QR
+        self.qr = services.QrService().create("%s/%s" % (settings.CLAIM_URI, self.uuid))
+
+        # Create PDF
+        pdfs = services.PDFService('qr_template.html')
+        self.pdf = pdfs.create({
+            "title": self.reward.title,
+            "qr": self.qr,
+            "uuid": "%s/%s" % (settings.CLAIM_URI, self.uuid)
+        })
+
+        super().save(*args, **kwargs)
+
         self.reward.left -= 1
         self.reward.save()
 
@@ -92,7 +129,10 @@ def validate_tasks(value):
 
 class Route(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
-    tasks = models.TextField(max_length=255, validators=[validate_tasks])
+    tasks = models.TextField(
+        max_length=255,
+        validators=[validate_tasks]
+    )
 
     @staticmethod
     def calculate(conds):
@@ -240,11 +280,11 @@ class Question(models.Model):
     )
     order = models.IntegerField(blank=True)
 
-    def image_tag(self):
+    def image_icon(self):
         return mark_safe('<img height="24px" src="%s" />' % self.question_icon)
 
-    image_tag.short_description = 'Question icon'
-    image_tag.allow_tags = True
+    image_icon.short_description = 'Question icon'
+    image_icon.allow_tags = True
 
     def __str__(self):
         return self.question

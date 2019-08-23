@@ -61,6 +61,8 @@ class RewardUserViewSet(viewsets.ModelViewSet):
         'user_user_key',
         'reward',
         'status',
+        'qr',
+        'pdf'
     ]
 
 

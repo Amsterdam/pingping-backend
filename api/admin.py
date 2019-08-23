@@ -39,10 +39,15 @@ class RewardAdmin(admin.ModelAdmin):
 
 class RewardUserAdmin(admin.ModelAdmin):
     list_display = [
+        'image_qr',
         'user_user_key',
         'reward',
         'status',
+        'download_pdf'
     ]
+
+    readonly_fields = ('image_qr',)
+    readonly_fields = ('download_pdf',)
 
 
 class RouteAdmin(admin.ModelAdmin):
@@ -89,7 +94,7 @@ class QuestionAdmin(OrderableAdmin, ImportExportModelAdmin):
     ordering_field_hide_input = True
     list_display = [
         'question',
-        'image_tag',
+        'image_icon',
         'type',
         'yes_text',
         'yes_id',
@@ -98,7 +103,7 @@ class QuestionAdmin(OrderableAdmin, ImportExportModelAdmin):
         'order',
     ]
     list_editable = ('order', )
-    readonly_fields = ('image_tag',)
+    readonly_fields = ('image_icon',)
 
 
 class VendorAdmin(admin.ModelAdmin):
