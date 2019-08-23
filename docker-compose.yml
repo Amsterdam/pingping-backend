@@ -6,6 +6,7 @@ services:
     environment:
       DATABASE_URL: mysql://root:dbpassword@db/pingping
       WAIT_HOSTS: db:3306
+      CLAIM_URI: https://staging.pingping.refleks.tech.com/claim
     ports:
       - "8000:8000"
     depends_on:
