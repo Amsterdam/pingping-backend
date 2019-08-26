@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from . import models, serializers
 import json
 import time
@@ -73,42 +74,6 @@ class RouteViewSet(viewsets.ModelViewSet):
         'user_user_key__user_key',
     ]
 
-    @action(detail=False, methods=['POST'], name='Calculate preview')
-    def calculate_preview(self, request, *args, **kwargs):
-        return Response(
-            serializers.TaskSerializer(
-                models.Route.calculate(json.loads(
-                    request.data['tasks']
-                )), many=True
-            ).data
-        )
-
-    @action(detail=False, methods=['POST'], name='Calculate')
-    def calculate(self, request, *args, **kwargs):
-        task_list = models.Route.calculate(request.data)
-        tasks = [x.id for x in task_list]
-        user_user_key = models.User.objects.create(
-            user_key=int(round(time.time() * 1000))
-        )
-
-        seria = serializers.RouteSerializer(
-            data=dict(
-                user_user_key=user_user_key.id,
-                tasks=json.dumps(tasks)
-            )
-        )
-        if not seria.is_valid():
-            return Response(seria.errors, status=400)
-        seria.save()
-        return Response(
-            serializers.RouteShowSerializer(
-                dict(
-                    user_user_key=user_user_key,
-                    tasks=json.dumps(tasks)
-                )
-            ).data
-        )
-
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = models.Task.objects.all()
@@ -155,6 +120,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
         'order',
     ]
 
+    temp_reponses = {}
+
     @action(detail=False, methods=['GET'], name='First')
     def first(self, request, *args, **kwargs):
         next_question = models.Question.objects.order_by('order').first()
@@ -170,18 +137,53 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['POST'], name='Next')
     def next(self, request, pk, *args, **kwargs):
-        question = models.Question.objects.get(pk=pk)
+        if not ('HTTP_TEMP_ID' in request.META):
+            return Response({
+                "error": "The header 'temp_id' is required"
+            }, status=400)
 
         if not ('answer' in request.data):
             return Response({
                 "error": "The key 'answer' is required"
             }, status=400)
-        next_question = question.next(request.data['answer'])
+
+        temp_id = request.META.get('HTTP_TEMP_ID')
+        question = get_object_or_404(models.Question, pk=pk)
+        answer = request.data['answer']
+
+        stored_data = request.session.get(temp_id)
+        stored_dict = json.load(stored_data) if stored_data else {}
+        stored_dict[question.question] = answer
+        request.session[temp_id] = json.dumps(stored_dict)
+
+        next_question = question.next(answer)
 
         if not next_question:
-            return Response({
-                "message": "There are no more questions"
-            }, status=300)
+            task_list = models.Route.calculate(stored_dict)
+            tasks = [x.id for x in task_list]
+            user_user_key = models.User.objects.create(
+                user_key=int(round(time.time() * 1000))
+            )
+
+            seria = serializers.RouteSerializer(
+                data=dict(
+                    user_user_key=user_user_key.id,
+                    tasks=json.dumps(tasks)
+                )
+            )
+
+            if not seria.is_valid():
+                return Response(seria.errors, status=400)
+            seria.save()
+
+            return Response(
+                serializers.RouteShowSerializer(
+                    dict(
+                        user_user_key=user_user_key,
+                        tasks=json.dumps(tasks)
+                    )
+                ).data
+            )
 
         return Response(
             serializers.QuestionSerializer(next_question).data
