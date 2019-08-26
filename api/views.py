@@ -74,6 +74,20 @@ class RouteViewSet(viewsets.ModelViewSet):
         'user_user_key__user_key',
     ]
 
+    @action(detail=True, methods=['GET'], name='Preview')
+    def preview(self, request, pk, *args, **kwargs):
+        route = get_object_or_404(models.Route, pk=pk)
+        task_list = json.load(route.tasks)
+        route_tasks = models.RouteTask.objects.filter(
+            task__id__in=task_list
+        ).order_by('order') 
+        return Response(
+                serializers.RouteTaskSerializer(
+                    route_tasks,
+                    many=True
+                ).data
+            )
+
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = models.Task.objects.all()
@@ -85,6 +99,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         'steps',
         'conditions',
     ]
+
 
 
 class TaskUserViewSet(viewsets.ModelViewSet):
@@ -121,6 +136,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
     ]
 
     temp_reponses = {}
+
+    def dispatch(self, *args, **kwargs):
+        response = super().dispatch(*args, **kwargs)
+        response['Access-Control-Allow-Headers'] = 'HTTP_TEMP_ID'
+        return response
 
     @action(detail=False, methods=['GET'], name='First')
     def first(self, request, *args, **kwargs):
