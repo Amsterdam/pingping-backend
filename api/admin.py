@@ -57,7 +57,12 @@ class RouteAdmin(admin.ModelAdmin):
     ]
 
 
+class RouteTaskInlined(admin.StackedInline):
+    model = models.RouteTask
+
+
 class TaskAdmin(OrderableAdmin, ImportExportModelAdmin):
+    inlines = [RouteTaskInlined]
     ordering_field = 'order'
     ordering = ['order']
     ordering_field_hide_input = True

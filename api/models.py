@@ -177,6 +177,15 @@ class Task(models.Model):
         return self.name
 
 
+class RouteTask(models.Model):
+    task = models.OneToOneField(Task, on_delete=models.PROTECT)
+    brief_description = models.TextField()
+    card_description = models.TextField()
+    card_icon = models.TextField()
+    card_color = models.CharField(max_length=8)
+    info_b = models.CharField(max_length=45)
+
+
 class TaskUser(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
     task = models.ForeignKey(Task, on_delete=models.PROTECT)
