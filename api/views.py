@@ -139,7 +139,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     def next(self, request, pk, *args, **kwargs):
         if not ('HTTP_TEMP_ID' in request.META):
             return Response({
-                "error": "The header 'temp_id' is required"
+                "error": "The header 'temp-id' is required"
             }, status=400)
 
         if not ('answer' in request.data):
