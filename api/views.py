@@ -135,13 +135,6 @@ class QuestionViewSet(viewsets.ModelViewSet):
         'order',
     ]
 
-    temp_reponses = {}
-
-    def dispatch(self, *args, **kwargs):
-        response = super().dispatch(*args, **kwargs)
-        response['Access-Control-Allow-Headers'] = 'HTTP_TEMP_ID'
-        return response
-
     @action(detail=False, methods=['GET'], name='First')
     def first(self, request, *args, **kwargs):
         next_question = models.Question.objects.order_by('order').first()
@@ -155,7 +148,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
             serializers.QuestionSerializer(next_question).data
         )
 
-    @action(detail=True, methods=['POST'], name='Next')
+    @action(detail=True, methods=['OPTIONS', 'POST'], name='Next')
     def next(self, request, pk, *args, **kwargs):
         if not ('HTTP_TEMP_ID' in request.META):
             return Response({
