@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+from corsheaders.defaults import default_headers
 import os
 import environ
 
@@ -147,4 +147,7 @@ STATIC_URL = '/static/'
 # use the CORS_ORIGIN_WHITELIST. If set to True, the CORS_ORIGIN_WHITELIST is ignored.
 # More at https://pypi.org/project/django-cors-headers/
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_HEADERS = ['temp-id']
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'temp-id',
+]
