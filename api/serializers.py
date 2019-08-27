@@ -141,6 +141,25 @@ class RouteTaskSerializer(serializers.ModelSerializer):
         ]
 
 
+class RouteTaskPreviewSerializer(serializers.ModelSerializer):
+    complete = serializers.ReadOnlyField()
+    city_points_value = serializers.ReadOnlyField(
+        source='task.city_points_value'
+    )
+
+    class Meta:
+        model = models.RouteTask
+        fields = [
+            'task',
+            'brief_description',
+            'card_description',
+            'card_icon',
+            'info_b',
+            'complete',
+            'city_points_value'
+        ]
+
+
 class TaskUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.TaskUser

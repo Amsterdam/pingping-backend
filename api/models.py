@@ -186,7 +186,6 @@ class RouteTask(models.Model):
     brief_description = models.TextField()
     card_description = models.TextField()
     card_icon = models.TextField()
-    card_color = models.CharField(max_length=8)
     info_b = models.CharField(max_length=45)
 
 
@@ -217,6 +216,12 @@ class Achivement(models.Model):
         null=True,
         on_delete=models.PROTECT
     )
+
+    def image_icon(self):
+        return mark_safe('<img height="24px" src="%s" />' % self.icon)
+
+    image_icon.short_description = 'Icon'
+    image_icon.allow_tags = True
 
     def __str__(self):
         return self.name

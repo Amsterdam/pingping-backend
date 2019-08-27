@@ -16,7 +16,7 @@ class AchivementAdmin(admin.ModelAdmin):
     list_display = [
         'name',
         'city_points_value',
-        'icon',
+        'image_icon',
         'description'
     ]
 
