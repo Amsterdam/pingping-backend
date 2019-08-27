@@ -20,6 +20,8 @@ class AchivementViewSet(viewsets.ModelViewSet):
     filterset_fields = [
         'name',
         'city_points_value',
+        'icon',
+        'description'
     ]
 
 

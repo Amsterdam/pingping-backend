@@ -209,6 +209,8 @@ class TaskUser(models.Model):
 class Achivement(models.Model):
     name = models.CharField(max_length=255)
     city_points_value = models.IntegerField()
+    icon = models.TextField(null=True, blank=True)
+    description = models.TextField()
     task = models.ForeignKey(
         Task,
         blank=True,
