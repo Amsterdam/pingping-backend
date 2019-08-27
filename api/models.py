@@ -182,6 +182,7 @@ class Task(models.Model):
 
 
 class RouteTask(models.Model):
+    title = models.CharField(max_length=255)
     task = models.OneToOneField(Task, on_delete=models.PROTECT)
     brief_description = models.TextField()
     card_description = models.TextField()

@@ -132,6 +132,7 @@ class RouteTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.RouteTask
         fields = [
+            'title',
             'task',
             'brief_description',
             'card_description',
