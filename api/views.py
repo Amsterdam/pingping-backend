@@ -54,6 +54,16 @@ class RewardViewSet(viewsets.ModelViewSet):
         'vendor',
     ]
 
+    @decorators.action_auth_required
+    def retrieve(self, request, pk, user, *args, **kwargs):
+        reward = get_object_or_404(models.Reward, pk=pk)
+        reward.user = user
+        return Response(
+            serializers.RewardRetriveSerializer(
+                reward,
+            ).data
+        )
+
 
 class RewardUserViewSet(viewsets.ModelViewSet):
     queryset = models.RewardUser.objects.all()
@@ -73,9 +83,6 @@ class RouteViewSet(viewsets.ModelViewSet):
     filterset_fields = [
         'user_user_key__user_key',
     ]
-
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
 
     @action(detail=False, methods=['GET'], name='Preview')
     @decorators.action_auth_required

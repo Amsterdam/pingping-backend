@@ -61,6 +61,36 @@ class RewardSerializer(serializers.ModelSerializer):
         ]
 
 
+class RewardRetriveSerializer(serializers.ModelSerializer):
+    citypings = serializers.SerializerMethodField()
+    claimed = serializers.SerializerMethodField()
+
+    def get_citypings(self, obj):
+        last_transaction = models.Transaction.objects.filter(
+            user_user_key=obj.user
+        ).last()
+        if last_transaction:
+            return last_transaction.city_pings
+
+    def get_claimed(self, obj):
+        return models.RewardUser.objects.filter(
+            reward=obj,
+            user_user_key=obj.user
+        ).exists()
+
+    class Meta:
+        model = models.Reward
+        fields = [
+            'title',
+            'cost',
+            'description',
+            'vendor',
+            'citypings',
+            'claimed',
+            'left'
+        ]
+
+
 class RouteSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Route
