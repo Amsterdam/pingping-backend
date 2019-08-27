@@ -93,6 +93,19 @@ class TaskSerializer(serializers.ModelSerializer):
         ]
 
 
+class RouteTaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.RouteTask
+        fields = [
+            'task',
+            'brief_description',
+            'card_description',
+            'card_icon',
+            'card_color',
+            'info_b',
+        ]
+
+
 class TaskUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.TaskUser

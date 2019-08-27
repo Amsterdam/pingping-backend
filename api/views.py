@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from . import models, serializers
+from . import models, serializers, decorators
 import json
 import time
 
@@ -74,19 +74,23 @@ class RouteViewSet(viewsets.ModelViewSet):
         'user_user_key__user_key',
     ]
 
-    @action(detail=True, methods=['GET'], name='Preview')
-    def preview(self, request, pk, *args, **kwargs):
-        route = get_object_or_404(models.Route, pk=pk)
-        task_list = json.load(route.tasks)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    @action(detail=False, methods=['GET'], name='Preview')
+    @decorators.action_auth_required
+    def preview(self, request, user, *args, **kwargs):
+        route = get_object_or_404(models.Route, user_user_key=user)
+        task_list = json.loads(route.tasks)
         route_tasks = models.RouteTask.objects.filter(
             task__id__in=task_list
-        ).order_by('order') 
+        ).order_by('task__order')
         return Response(
-                serializers.RouteTaskSerializer(
-                    route_tasks,
-                    many=True
-                ).data
-            )
+            serializers.RouteTaskSerializer(
+                route_tasks,
+                many=True
+            ).data
+        )
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -99,7 +103,6 @@ class TaskViewSet(viewsets.ModelViewSet):
         'steps',
         'conditions',
     ]
-
 
 
 class TaskUserViewSet(viewsets.ModelViewSet):
