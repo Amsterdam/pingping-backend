@@ -124,12 +124,8 @@ class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.TaskSerializer
     filterset_fields = [
         'name',
-        'descritption',
+        'description',
         'city_points_value',
-        'steps',
-        'conditions',
-        'media',
-        'check_task'
     ]
 
 
@@ -196,7 +192,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
         answer = request.data['answer']
 
         stored_data = request.session.get(temp_id)
-        stored_dict = json.load(stored_data) if stored_data else {}
+        stored_dict = json.loads(stored_data) if stored_data else {}
         stored_dict[question.question] = answer
         request.session[temp_id] = json.dumps(stored_dict)
 
@@ -219,6 +215,15 @@ class QuestionViewSet(viewsets.ModelViewSet):
             if not seria.is_valid():
                 return Response(seria.errors, status=400)
             seria.save()
+
+            register_achivments = models.Achivement.objects.filter(
+                task__isnull=True
+            )
+            for achivement in register_achivments:
+                models.AchivementUser.objects.create(
+                    achivement=achivement,
+                    user_user_key=user_user_key
+                )
 
             return Response(
                 serializers.RouteShowSerializer(

@@ -225,7 +225,7 @@ class Achivement(models.Model):
 class AchivementUser(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
     achivement = models.ForeignKey(Achivement, on_delete=models.PROTECT)
-    unlock_date = models.DateField()
+    unlock_date = models.DateField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

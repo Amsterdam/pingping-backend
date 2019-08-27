@@ -21,6 +21,14 @@ class AchivementAdmin(admin.ModelAdmin):
     ]
 
 
+class AchivementUserAdmin(admin.ModelAdmin):
+    list_display = [
+        'user_user_key',
+        'achivement',
+        'unlock_date',
+    ]
+
+
 class TransactionAdmin(admin.ModelAdmin):
     list_display = [
         'user_user_key',
@@ -123,6 +131,7 @@ class VendorAdmin(admin.ModelAdmin):
 
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Achivement, AchivementAdmin)
+admin.site.register(models.AchivementUser, AchivementUserAdmin)
 admin.site.register(models.Transaction, TransactionAdmin)
 admin.site.register(models.Reward, RewardAdmin)
 admin.site.register(models.RewardUser, RewardUserAdmin)
