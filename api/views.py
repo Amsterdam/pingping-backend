@@ -52,6 +52,8 @@ class RewardViewSet(viewsets.ModelViewSet):
         'cost',
         'description',
         'vendor',
+        'info',
+        'success_m'
     ]
 
     @decorators.action_auth_required

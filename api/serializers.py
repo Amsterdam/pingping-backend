@@ -58,6 +58,8 @@ class RewardSerializer(serializers.ModelSerializer):
             'cost',
             'description',
             'vendor',
+            'info',
+            'success_m'
         ]
 
 
@@ -87,7 +89,9 @@ class RewardRetriveSerializer(serializers.ModelSerializer):
             'vendor',
             'citypings',
             'claimed',
-            'left'
+            'left',
+            'info',
+            'success_m'
         ]
 
 

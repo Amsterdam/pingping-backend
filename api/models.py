@@ -48,6 +48,8 @@ class Reward(models.Model):
     )
     initial = models.IntegerField()
     left = models.IntegerField()
+    info = models.CharField(max_length=255)
+    success_m = models.CharField(max_length=255)
 
     def __str__(self):
         return self.title
