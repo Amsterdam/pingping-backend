@@ -151,6 +151,8 @@ class Task(models.Model):
     steps = jsonfield.JSONField()
     conditions = jsonfield.JSONField()
     order = models.IntegerField(blank=True)
+    media = models.ImageField(upload_to="upload/media/", blank=True, null=True)
+    check_task = models.CharField(max_length=255)
 
     def save(self, *args, **kwargs):
         if not self.pk:
