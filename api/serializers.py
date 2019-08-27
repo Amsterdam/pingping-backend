@@ -47,6 +47,7 @@ class RewardUserSerializer(serializers.ModelSerializer):
             'user_user_key',
             'reward',
             'status',
+            'qr'
         ]
 
 

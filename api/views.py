@@ -68,6 +68,21 @@ class RewardViewSet(viewsets.ModelViewSet):
             ).data
         )
 
+    @action(detail=True, methods=['POST'], name='Claim')
+    @decorators.action_auth_required
+    def claim(self, request, pk, user, *args, **kwargs):
+        reward = get_object_or_404(models.Reward, pk=pk)
+        rewarduser = models.RewardUser.objects.create(
+            reward=reward,
+            user_user_key=user,
+            status='Complete'
+        )
+        return Response(
+            serializers.RewardUserSerializer(
+                rewarduser,
+            ).data
+        )
+
 
 class RewardUserViewSet(viewsets.ModelViewSet):
     queryset = models.RewardUser.objects.all()
