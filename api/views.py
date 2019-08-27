@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from . import models, serializers, decorators
+from django.db.models import OuterRef, Subquery
 import json
 import time
 
@@ -110,9 +111,16 @@ class RouteViewSet(viewsets.ModelViewSet):
         task_list = json.loads(route.tasks)
         route_tasks = models.RouteTask.objects.filter(
             task__id__in=task_list
+        ).annotate(
+            complete=Subquery(
+                models.TaskUser.objects.filter(
+                    task=OuterRef('task'),
+                    user_user_key=user
+                ).values('id')[:1]
+            )
         ).order_by('task__order')
         return Response(
-            serializers.RouteTaskSerializer(
+            serializers.RouteTaskPreviewSerializer(
                 route_tasks,
                 many=True
             ).data
