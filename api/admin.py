@@ -70,7 +70,9 @@ class TaskAdmin(OrderableAdmin, ImportExportModelAdmin):
         'name',
         'description',
         'city_points_value',
-        'order'
+        'order',
+        'media',
+        'check_task'
     ]
     list_editable = ('order', )
 

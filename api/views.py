@@ -102,6 +102,8 @@ class TaskViewSet(viewsets.ModelViewSet):
         'city_points_value',
         'steps',
         'conditions',
+        'media',
+        'check_task'
     ]
 
 
