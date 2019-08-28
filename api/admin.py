@@ -121,7 +121,17 @@ class GoalAdmin(admin.ModelAdmin):
     ]
 
 
+class QuestionResource(resources.ModelResource):
+
+    class Meta:
+        model = models.Question
+
+    def get_queryset(self):
+        return self._meta.model.objects.order_by('-order')
+
+
 class QuestionAdmin(OrderableAdmin, ImportExportModelAdmin):
+    resource_class = QuestionResource
     ordering_field = 'order'
     ordering = ['order']
     ordering_field_hide_input = True
