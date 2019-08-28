@@ -103,6 +103,17 @@ class TaskAdmin(OrderableAdmin, ImportExportModelAdmin):
     list_editable = ('order', )
 
 
+class RouteTaskAdmin(ImportExportModelAdmin):
+    list_display = [
+        'title',
+        'task',
+        'brief_description',
+        'card_description',
+        'card_icon',
+        'info_b',
+    ]
+
+
 class TaskUserAdmin(admin.ModelAdmin):
     list_display = [
         'user_user_key',
@@ -164,6 +175,7 @@ admin.site.register(models.Reward, RewardAdmin)
 admin.site.register(models.RewardUser, RewardUserAdmin)
 admin.site.register(models.Route, RouteAdmin)
 admin.site.register(models.Task, TaskAdmin)
+admin.site.register(models.RouteTask, RouteTaskAdmin)
 admin.site.register(models.TaskUser, TaskUserAdmin)
 admin.site.register(models.Goal, GoalAdmin)
 admin.site.register(models.Question, QuestionAdmin)

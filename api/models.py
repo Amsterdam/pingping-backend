@@ -215,7 +215,10 @@ class RouteTask(models.Model):
     task = models.OneToOneField(Task, on_delete=models.CASCADE)
     brief_description = models.TextField()
     card_description = models.TextField()
-    card_icon = models.TextField()
+    card_icon = models.ForeignKey(
+        Icon,
+        on_delete=models.PROTECT
+    )
     info_b = models.CharField(max_length=45)
 
 

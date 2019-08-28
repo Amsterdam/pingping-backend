@@ -147,6 +147,9 @@ class RouteTaskPreviewSerializer(serializers.ModelSerializer):
     city_points_value = serializers.ReadOnlyField(
         source='task.city_points_value'
     )
+    card_icon = serializers.ReadOnlyField(
+        source='card_icon.image_data'
+    )
 
     class Meta:
         model = models.RouteTask
