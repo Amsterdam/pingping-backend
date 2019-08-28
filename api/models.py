@@ -30,11 +30,12 @@ class Icon(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        with open(self.image.path, "rb") as image_file:
-            self.encoded = base64.b64encode(image_file.read()).decode('utf-8')
-        os.remove(self.image.path)
-        self.image = None
-        super().save(*args, **kwargs)
+        if self.image:
+            with open(self.image.path, "rb") as image_file:
+                self.encoded = base64.b64encode(image_file.read()).decode('utf-8')
+            os.remove(self.image.path)
+            self.image = None
+            super().save(*args, **kwargs)
 
 
 class User(models.Model):
