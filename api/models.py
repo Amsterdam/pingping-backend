@@ -182,11 +182,11 @@ class Task(models.Model):
     steps = jsonfield.JSONField()
     conditions = jsonfield.JSONField()
     order = models.IntegerField(blank=True)
-    media = models.ImageField(upload_to="upload/media/", blank=True, null=True)
+    media = models.CharField(max_length=255, blank=True, null=True)
     check_task = models.CharField(max_length=255)
 
     def save(self, *args, **kwargs):
-        if not self.pk:
+        if self.order is None:
             last = Task.objects.order_by('order').last()
             if last:
                 self.order = last.order + 10
@@ -212,7 +212,7 @@ class Task(models.Model):
 
 class RouteTask(models.Model):
     title = models.CharField(max_length=255)
-    task = models.OneToOneField(Task, on_delete=models.PROTECT)
+    task = models.OneToOneField(Task, on_delete=models.CASCADE)
     brief_description = models.TextField()
     card_description = models.TextField()
     card_icon = models.TextField()
