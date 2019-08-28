@@ -4,6 +4,7 @@ stages:
   - tests
   - docker-image
   - deploy
+  - logs
 
 # Development
 dev-server-status:
@@ -72,3 +73,8 @@ dev-deploy:
     - develop
   tags:
     - aws-staging
+dev-logs:
+  stage: logs
+  script:
+    - sleep 5
+    - docker logs --tail all backendpp_app_1
