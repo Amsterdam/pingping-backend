@@ -20,7 +20,7 @@ class Icon(models.Model):
     encoded = models.TextField(blank=True)
 
     def image_data(self):
-        return "data:image/png;base64, %s" % self.encoded
+        return "data:image/png;base64,%s" % self.encoded
 
     def image_icon(self):
         return mark_safe('<img height="24px" src="%s" />' % self.image_data())
