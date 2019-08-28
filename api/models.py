@@ -11,11 +11,12 @@ import base64
 import jsonfield
 import uuid
 import re
+import os
 
 
 class Icon(models.Model):
     name = models.CharField(max_length=45)
-    image = models.ImageField(upload_to="upload/icons/")
+    image = models.ImageField(upload_to="upload/icons/", null=True)
     encoded = models.TextField(blank=True)
 
     def image_icon(self):
@@ -31,6 +32,8 @@ class Icon(models.Model):
         super().save(*args, **kwargs)
         with open(self.image.path, "rb") as image_file:
             self.encoded = base64.b64encode(image_file.read()).decode('utf-8')
+        os.remove(self.image.path)
+        self.image = None
         super().save(*args, **kwargs)
 
 
