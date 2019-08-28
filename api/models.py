@@ -16,7 +16,7 @@ import os
 
 class Icon(models.Model):
     name = models.CharField(max_length=45)
-    image = models.ImageField(upload_to="upload/icons/", null=True)
+    image = models.ImageField(upload_to="upload/icons/", null=True, blank=True)
     encoded = models.TextField(blank=True)
 
     def image_icon(self):
