@@ -7,9 +7,31 @@ from django.utils.safestring import mark_safe
 from django.db.models import Q
 from django.conf import settings
 from . import services
+import base64
 import jsonfield
 import uuid
 import re
+
+
+class Icon(models.Model):
+    name = models.CharField(max_length=45)
+    image = models.ImageField(upload_to="upload/icons/")
+    encoded = models.TextField(blank=True)
+
+    def image_icon(self):
+        return mark_safe('<img height="24px" src="data:image/png;base64, %s" />' % self.encoded)
+
+    image_icon.short_description = 'Image'
+    image_icon.allow_tags = True
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        with open(self.image.path, "rb") as image_file:
+            self.encoded = base64.b64encode(image_file.read()).decode('utf-8')
+        super().save(*args, **kwargs)
 
 
 class User(models.Model):
@@ -267,7 +289,11 @@ class Question(models.Model):
     NO = 'no'
 
     question = models.CharField(max_length=255)
-    question_icon = models.TextField(null=True, blank=True)
+    question_icon = models.ForeignKey(
+        Icon,
+        null=True,
+        on_delete=models.PROTECT
+    )
     type = models.CharField(
         max_length=5,
         choices=(
@@ -302,7 +328,7 @@ class Question(models.Model):
     order = models.IntegerField(blank=True)
 
     def image_icon(self):
-        return mark_safe('<img height="24px" src="%s" />' % self.question_icon)
+        return self.question_icon.image_icon()
 
     image_icon.short_description = 'Question icon'
     image_icon.allow_tags = True

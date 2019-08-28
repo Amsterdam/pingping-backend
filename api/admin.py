@@ -6,6 +6,13 @@ from . import models
 import jsonfield
 
 
+class IconAdmin(ImportExportModelAdmin):
+    list_display = [
+        'image_icon',
+        'name',
+    ]
+
+
 class UserAdmin(admin.ModelAdmin):
     list_display = [
         'user_key',
@@ -129,6 +136,7 @@ class VendorAdmin(admin.ModelAdmin):
     ]
 
 
+admin.site.register(models.Icon, IconAdmin)
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Achivement, AchivementAdmin)
 admin.site.register(models.AchivementUser, AchivementUserAdmin)
