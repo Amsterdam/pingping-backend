@@ -1,12 +1,21 @@
 from django.contrib import admin
 from django_json_widget.widgets import JSONEditorWidget
 from import_export.admin import ImportExportModelAdmin
+from import_export import resources
 from admin_ordering.admin import OrderableAdmin
 from . import models
 import jsonfield
 
 
+class IconResource(resources.ModelResource):
+
+    class Meta:
+        model = models.Icon
+        fields = ('id', 'name', 'encoded',)
+
+
 class IconAdmin(ImportExportModelAdmin):
+    resource_class = IconResource
     list_display = [
         'image_icon',
         'name',
