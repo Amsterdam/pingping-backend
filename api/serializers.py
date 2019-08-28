@@ -184,7 +184,7 @@ class GoalSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    questionIcon = serializers.ReadOnlyField(source='question_icon.encoded')
+    questionIcon = serializers.ReadOnlyField(source='question_icon.image_data')
     questionType = serializers.ReadOnlyField(source='type')
     answer = serializers.SerializerMethodField()
     previousQuestion = serializers.SerializerMethodField()

@@ -19,8 +19,11 @@ class Icon(models.Model):
     image = models.ImageField(upload_to="upload/icons/", null=True, blank=True)
     encoded = models.TextField(blank=True)
 
+    def image_data(self):
+        return "data:image/png;base64, %s" % self.encoded
+
     def image_icon(self):
-        return mark_safe('<img height="24px" src="data:image/png;base64, %s" />' % self.encoded)
+        return mark_safe('<img height="24px" src="%s" />' % self.image_data())
 
     image_icon.short_description = 'Image'
     image_icon.allow_tags = True
