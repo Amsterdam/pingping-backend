@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from . import models
+import json
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -117,6 +118,11 @@ class RouteShowSerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    steps = serializers.SerializerMethodField()
+
+    def get_steps(self, obj):
+        return obj.steps
+
     class Meta:
         model = models.Task
         fields = [
