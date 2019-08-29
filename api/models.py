@@ -187,7 +187,7 @@ class Task(models.Model):
     description = models.TextField(max_length=500)
     city_points_value = models.IntegerField()
     tasks = models.ManyToManyField('Task', blank=True)
-    steps = jsonfield.JSONField()
+    steps = jsonfield.JSONField(blank=True, null=True)
     conditions = jsonfield.JSONField()
     order = models.IntegerField(blank=True)
     media = models.CharField(max_length=255, blank=True, null=True)
