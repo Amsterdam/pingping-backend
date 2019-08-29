@@ -41,6 +41,14 @@ class Icon(models.Model):
             super().save(*args, **kwargs)
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    icon = models.ForeignKey(Icon, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.name
+
+
 class User(models.Model):
     user_key = models.BigIntegerField()
 
@@ -285,7 +293,7 @@ class Goal(models.Model):
     desired_amount = models.FloatField(max_length=10)
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=500)
-    category = models.CharField(max_length=255)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
 
     def __str__(self):
         return "Goal #%d" % self.id
