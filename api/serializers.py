@@ -53,6 +53,17 @@ class RewardUserSerializer(serializers.ModelSerializer):
 
 
 class RewardSerializer(serializers.ModelSerializer):
+    claimed = serializers.SerializerMethodField()
+
+    def get_claimed(self, obj):
+        if hasattr(obj, 'user'):
+            rewarduser = models.RewardUser.objects.filter(
+                reward=obj,
+                user_user_key=obj.user
+            ).first()
+            if rewarduser:
+                return RewardUserSerializer(rewarduser).data
+
     class Meta:
         model = models.Reward
         fields = [
@@ -61,7 +72,8 @@ class RewardSerializer(serializers.ModelSerializer):
             'description',
             'vendor',
             'info',
-            'success_m'
+            'success_m',
+            'claimed'
         ]
 
 

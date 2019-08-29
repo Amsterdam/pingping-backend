@@ -4,7 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from . import models, serializers, decorators
-from django.db.models import OuterRef, Subquery
+from django.db.models import OuterRef, Subquery, Value
+from django.db.models import IntegerField
 import json
 import time
 
@@ -81,6 +82,19 @@ class RewardViewSet(viewsets.ModelViewSet):
         return Response(
             serializers.RewardUserSerializer(
                 rewarduser,
+            ).data
+        )
+
+    @decorators.action_auth_required
+    def list(self, request, user, *args, **kwargs):
+
+        rewards = self.queryset.annotate(
+            user=Value(user.id, IntegerField())
+        )
+        return Response(
+            serializers.RewardSerializer(
+                rewards,
+                many=True
             ).data
         )
 
