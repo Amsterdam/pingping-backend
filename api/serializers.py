@@ -131,7 +131,8 @@ class TaskSerializer(serializers.ModelSerializer):
             'description',
             'city_points_value',
             'steps',
-            'media'
+            'media',
+            'check_task'
         ]
 
 
