@@ -197,6 +197,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
             serializers.QuestionSerializer(next_question).data
         )
 
+    @action(detail=False, methods=['POST'], name='Default')
+    def default(self, request, *args, **kwargs):
+        task_list = models.Route.calculate({})
+        return self.complete(task_list)
+
     @action(detail=True, methods=['OPTIONS', 'POST'], name='Next')
     def next(self, request, pk, *args, **kwargs):
         if not ('HTTP_TEMP_ID' in request.META):
@@ -222,40 +227,43 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
         if not next_question:
             task_list = models.Route.calculate(stored_dict)
-            tasks = [x.id for x in task_list]
-            user_user_key = models.User.objects.create(
-                user_key=int(round(time.time() * 1000))
-            )
-
-            seria = serializers.RouteSerializer(
-                data=dict(
-                    user_user_key=user_user_key.id,
-                    tasks=json.dumps(tasks)
-                )
-            )
-
-            if not seria.is_valid():
-                return Response(seria.errors, status=400)
-            seria.save()
-
-            register_achivments = models.Achivement.objects.filter(
-                task__isnull=True
-            )
-            for achivement in register_achivments:
-                models.AchivementUser.objects.create(
-                    achivement=achivement,
-                    user_user_key=user_user_key
-                )
-
-            return Response(
-                serializers.RouteShowSerializer(
-                    dict(
-                        user_user_key=user_user_key,
-                        tasks=json.dumps(tasks)
-                    )
-                ).data
-            )
+            self.complete(task_list)
 
         return Response(
             serializers.QuestionSerializer(next_question).data
+        )
+
+    def complete(self, task_list):
+        tasks = [x.id for x in task_list]
+        user_user_key = models.User.objects.create(
+            user_key=int(round(time.time() * 1000))
+        )
+
+        seria = serializers.RouteSerializer(
+            data=dict(
+                user_user_key=user_user_key.id,
+                tasks=json.dumps(tasks)
+            )
+        )
+
+        if not seria.is_valid():
+            return Response(seria.errors, status=400)
+        seria.save()
+
+        register_achivments = models.Achivement.objects.filter(
+            task__isnull=True
+        )
+        for achivement in register_achivments:
+            models.AchivementUser.objects.create(
+                achivement=achivement,
+                user_user_key=user_user_key
+            )
+
+        return Response(
+            serializers.RouteShowSerializer(
+                dict(
+                    user_user_key=user_user_key,
+                    tasks=json.dumps(tasks)
+                )
+            ).data
         )
