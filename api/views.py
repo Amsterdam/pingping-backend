@@ -16,6 +16,17 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserSerializer
     filterset_fields = ['user_key']
 
+    @action(detail=False, methods=['GET'], name='Me')
+    @decorators.action_auth_required
+    def me(self, request, user, *args, **kwargs):
+        trans = models.Transaction.objects.filter(
+            user_user_key=user,
+        ).last()
+        return Response({
+            **(self.serializer_class(user).data),
+            'city_pings': trans.city_pings if trans else 0
+        })
+
 
 class AchivementViewSet(viewsets.ModelViewSet):
     queryset = models.Achivement.objects.all()
