@@ -227,7 +227,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
         if not next_question:
             task_list = models.Route.calculate(stored_dict)
-            self.complete(task_list)
+            return self.complete(task_list)
 
         return Response(
             serializers.QuestionSerializer(next_question).data
