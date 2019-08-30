@@ -161,6 +161,19 @@ class TaskUserViewSet(viewsets.ModelViewSet):
         'status',
     ]
 
+    @decorators.action_auth_required
+    def create(self, request, user, *args, **kwargs):
+        serial = self.serializer_class(data={
+            **request.data,
+            'user_user_key': user.pk
+        })
+        if not serial.is_valid():
+            return Response(serial.errors, status=400)
+
+        return Response(
+            self.serializer_class(serial.save()).data
+        )
+
 
 class GoalViewSet(viewsets.ModelViewSet):
     queryset = models.Goal.objects.all()
