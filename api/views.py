@@ -8,6 +8,7 @@ from django.db.models import OuterRef, Subquery, Value
 from django.db.models import IntegerField
 import json
 import time
+import base64
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -192,10 +193,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
             return Response({
                 "message": "There are no questions"
             }, status=300)
-
-        return Response(
-            serializers.QuestionSerializer(next_question).data
-        )
+        cookie = base64.b64encode(json.dumps({}).encode("utf-8"))
+        return Response({
+            'cookie': cookie,
+            **(serializers.QuestionSerializer(next_question).data)
+        })
 
     @action(detail=False, methods=['POST'], name='Default')
     def default(self, request, *args, **kwargs):
@@ -218,10 +220,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
         question = get_object_or_404(models.Question, pk=pk)
         answer = request.data['answer']
 
-        stored_data = request.session.get(temp_id)
+        stored_data = base64.b64decode(request.data['cookie']).decode('utf-8')
         stored_dict = json.loads(stored_data) if stored_data else {}
         stored_dict[question.question] = answer
-        request.session[temp_id] = json.dumps(stored_dict)
+        coockie = base64.b64encode(json.dumps(stored_dict).encode("utf-8"))
 
         next_question = question.next(answer)
 
@@ -229,9 +231,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
             task_list = models.Route.calculate(stored_dict)
             return self.complete(task_list)
 
-        return Response(
-            serializers.QuestionSerializer(next_question).data
-        )
+        return Response({
+            'cookie': coockie,
+            **(serializers.QuestionSerializer(next_question).data)
+        })
 
     def complete(self, task_list):
         tasks = [x.id for x in task_list]
