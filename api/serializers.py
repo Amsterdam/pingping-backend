@@ -67,6 +67,7 @@ class RewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Reward
         fields = [
+            'id',
             'title',
             'cost',
             'description',
