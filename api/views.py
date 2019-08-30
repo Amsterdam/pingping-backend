@@ -151,6 +151,22 @@ class TaskViewSet(viewsets.ModelViewSet):
         'city_points_value',
     ]
 
+    @action(detail=True, methods=['Post'], name='Complete')
+    @decorators.action_auth_required
+    def complete(self, request, pk, user, *args, **kwargs):
+        serial = serializers.TaskUserSerializer(data={
+            **request.data,
+            'status': 'Complete',
+            'task': pk,
+            'user_user_key': user.pk
+        })
+        if not serial.is_valid():
+            return Response(serial.errors, status=400)
+
+        return Response(
+            serializers.TaskUserSerializer(serial.save()).data
+        )
+
 
 class TaskUserViewSet(viewsets.ModelViewSet):
     queryset = models.TaskUser.objects.all()
@@ -160,19 +176,6 @@ class TaskUserViewSet(viewsets.ModelViewSet):
         'task',
         'status',
     ]
-
-    @decorators.action_auth_required
-    def create(self, request, user, *args, **kwargs):
-        serial = self.serializer_class(data={
-            **request.data,
-            'user_user_key': user.pk
-        })
-        if not serial.is_valid():
-            return Response(serial.errors, status=400)
-
-        return Response(
-            self.serializer_class(serial.save()).data
-        )
 
 
 class GoalViewSet(viewsets.ModelViewSet):
