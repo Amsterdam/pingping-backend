@@ -216,6 +216,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
                 "error": "The key 'answer' is required"
             }, status=400)
 
+        if not ('cookie' in request.data):
+            return Response({
+                "error": "The key 'cookie' is required"
+            }, status=400)
+
         temp_id = request.META.get('HTTP_TEMP_ID')
         question = get_object_or_404(models.Question, pk=pk)
         answer = request.data['answer']
