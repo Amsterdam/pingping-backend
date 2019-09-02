@@ -99,6 +99,7 @@ class RewardViewSet(viewsets.ModelViewSet):
         )
 
     @action(detail=False, methods=['POST'], name='Validate')
+    @decorators.action_auth_required
     def validate(self, request, user, *args, **kwargs):
         uuid = request.GET.get('uuid', False)
 
