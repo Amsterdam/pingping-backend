@@ -112,8 +112,11 @@ class RewardUser(models.Model):
     pdf = models.TextField(blank=True)
     validated = models.BooleanField(default=False)
 
+    def qr_data(self):
+        return 'data:image/png;base64,%s' % self.qr
+
     def image_qr(self):
-        return mark_safe('<img height="100px" src="data:image/png;base64, %s" />' % self.qr)
+        return mark_safe('<img height="100px" src="%s" />' % self.qr_data())
 
     image_qr.short_description = 'QR Code'
     image_qr.allow_tags = True
