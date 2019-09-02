@@ -76,6 +76,7 @@ class RewardSerializer(serializers.ModelSerializer):
             'info',
             'left',
             'success_m',
+            'picture',
             'claimed'
         ]
 
