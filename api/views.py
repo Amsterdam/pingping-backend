@@ -112,8 +112,7 @@ class RewardViewSet(viewsets.ModelViewSet):
         )
 
     @action(detail=False, methods=['GET'], name='Validate')
-    @decorators.action_auth_required
-    def validate(self, request, user, *args, **kwargs):
+    def validate(self, request, *args, **kwargs):
         uuid = request.GET.get('uuid', False)
 
         if not uuid:
