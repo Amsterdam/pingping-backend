@@ -43,6 +43,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
 class RewardUserSerializer(serializers.ModelSerializer):
     qr = serializers.ReadOnlyField(source='qr_data')
+
     class Meta:
         model = models.RewardUser
         fields = [
