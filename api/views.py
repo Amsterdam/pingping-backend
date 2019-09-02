@@ -102,7 +102,7 @@ class RewardViewSet(viewsets.ModelViewSet):
 
         rewards = self.queryset.annotate(
             user=Value(user.id, IntegerField()),
-            base_url=Value(request.build_absolute_uri(), TextField())
+            base_url=Value(request.build_absolute_uri('/')[:-1], TextField())
         )
 
         return Response(
