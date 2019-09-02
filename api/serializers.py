@@ -72,6 +72,7 @@ class RewardSerializer(serializers.ModelSerializer):
             'description',
             'vendor',
             'info',
+            'left',
             'success_m',
             'claimed'
         ]
