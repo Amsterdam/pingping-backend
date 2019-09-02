@@ -103,6 +103,7 @@ class RewardViewSet(viewsets.ModelViewSet):
         rewards = self.queryset.annotate(
             user=Value(user.id, IntegerField())
         )
+
         return Response(
             serializers.RewardSerializer(
                 rewards,
