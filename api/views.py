@@ -110,7 +110,7 @@ class RewardViewSet(viewsets.ModelViewSet):
             ).data
         )
 
-    @action(detail=False, methods=['POST'], name='Validate')
+    @action(detail=False, methods=['GET'], name='Validate')
     @decorators.action_auth_required
     def validate(self, request, user, *args, **kwargs):
         uuid = request.GET.get('uuid', False)
