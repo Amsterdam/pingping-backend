@@ -57,6 +57,14 @@ class RewardUserSerializer(serializers.ModelSerializer):
 
 class RewardSerializer(serializers.ModelSerializer):
     claimed = serializers.SerializerMethodField()
+    picture = serializers.SerializerMethodField()
+
+    def get_picture(self, obj):
+        if obj.picture:
+            return '{base_url}{url}'.format(
+                base_url=obj.base_url,
+                url=obj.picture.url
+            )
 
     def get_claimed(self, obj):
         if hasattr(obj, 'user'):

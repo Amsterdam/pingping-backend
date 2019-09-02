@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from . import models, serializers, decorators
 from django.db.models import OuterRef, Subquery, Value
-from django.db.models import IntegerField
+from django.db.models import IntegerField, TextField
 import json
 import time
 import base64
@@ -101,7 +101,8 @@ class RewardViewSet(viewsets.ModelViewSet):
     def list(self, request, user, *args, **kwargs):
 
         rewards = self.queryset.annotate(
-            user=Value(user.id, IntegerField())
+            user=Value(user.id, IntegerField()),
+            base_url=Value(request.build_absolute_uri(), TextField())
         )
 
         return Response(
