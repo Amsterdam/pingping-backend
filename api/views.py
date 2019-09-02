@@ -110,6 +110,35 @@ class RewardViewSet(viewsets.ModelViewSet):
             ).data
         )
 
+    @action(detail=False, methods=['POST'], name='Validate')
+    @decorators.action_auth_required
+    def validate(self, request, user, *args, **kwargs):
+        uuid = request.GET.get('uuid', False)
+
+        if not uuid:
+            return Response({
+                "error": "The parameter 'uuid' is required"
+            }, status=400)
+
+        rewarduser = models.RewardUser.objects.filter(uuid=uuid).first()
+
+        if not rewarduser:
+            return Response({
+                "error": "The parameter 'uuid' is invalid"
+            }, status=404)
+
+        if rewarduser.validated:
+            return Response({
+                "error": "Reward already claimed"
+            }, status=208)
+
+        rewarduser.validated = True
+        rewarduser.save()
+
+        return Response({
+            "message": "Valid Reward"
+        }, status=200)
+
 
 class RewardUserViewSet(viewsets.ModelViewSet):
     queryset = models.RewardUser.objects.all()

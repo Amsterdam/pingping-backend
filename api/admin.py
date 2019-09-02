@@ -69,7 +69,8 @@ class RewardUserAdmin(admin.ModelAdmin):
         'user_user_key',
         'reward',
         'status',
-        'download_pdf'
+        'download_pdf',
+        'uuid'
     ]
 
     readonly_fields = ('image_qr',)

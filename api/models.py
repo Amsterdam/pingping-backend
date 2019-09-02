@@ -110,6 +110,7 @@ class RewardUser(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     qr = models.TextField(blank=True)
     pdf = models.TextField(blank=True)
+    validated = models.BooleanField(default=False)
 
     def image_qr(self):
         return mark_safe('<img height="100px" src="data:image/png;base64, %s" />' % self.qr)
