@@ -140,6 +140,8 @@ SESSION_SAVE_EVERY_REQUEST = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = 'media/'
+MEDIA_URL = '/media/'
 
 # CORS
 # By default, CORS_ORIGIN_ALLOW_ALL is set to False, this tells Django to
