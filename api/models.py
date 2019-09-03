@@ -156,7 +156,10 @@ class RewardUser(models.Model):
         )
 
         # Create QR
-        self.qr = services.QrService().create("%s/%s" % (settings.CLAIM_URI, self.uuid))
+        self.qr = services.QrService().create("%s%s" % (
+            settings.CLAIM_URI,
+            self.uuid
+        ))
 
         # Create PDF
         pdfs = services.PDFService('qr_template.html')
