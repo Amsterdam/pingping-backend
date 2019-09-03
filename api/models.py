@@ -236,22 +236,24 @@ class RouteTask(models.Model):
 
 class TaskUser(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
-    task = models.ForeignKey(Task, on_delete=models.PROTECT)
+    task = models.OneToOneField(Task, on_delete=models.PROTECT)
     status = models.CharField(max_length=100)
 
     def save(self, *args, **kwargs):
+        is_update = self.id
         super().save(*args, **kwargs)
-        last_trans = Transaction.objects.filter(
-            user_user_key=self.user_user_key
-        ).last()
-        last_citi_pings = last_trans.city_pings if last_trans else 0
-        Transaction.objects.create(
-            user_user_key=self.user_user_key,
-            description="Complete task %s" % self.task.name,
-            earnings=self.task.city_points_value,
-            city_pings=last_citi_pings + self.task.city_points_value,
-            losts=0
-        )
+        if not is_update:
+            last_trans = Transaction.objects.filter(
+                user_user_key=self.user_user_key
+            ).last()
+            last_citi_pings = last_trans.city_pings if last_trans else 0
+            Transaction.objects.create(
+                user_user_key=self.user_user_key,
+                description="Complete task %s" % self.task.name,
+                earnings=self.task.city_points_value,
+                city_pings=last_citi_pings + self.task.city_points_value,
+                losts=0
+            )
         achiv = Achivement.objects.filter(task=self.task).first()
         if achiv:
             AchivementUser.objects.create(
