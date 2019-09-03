@@ -4,9 +4,10 @@ stages:
   - tests
   - docker-image
   - deploy
+  - logs
 
 # Development
-dev-server-status:
+staging-server-status:
   stage: status
   script:
     - pwd
@@ -17,10 +18,10 @@ dev-server-status:
     - df -h
     - docker ps -a
   only:
-    - master
+    - develop
   tags:
     - aws-staging
-dev-build-push:
+staging-build-push:
   stage: docker-image
   before_script:
     - pwd
@@ -45,10 +46,10 @@ dev-build-push:
     - docker rmi --force $(docker images --format "{{.Repository}} {{.ID}}" | grep gitlab | awk {'print $2'}) || true
     - docker image prune --force
   only:
-    - master
+    - develop
   tags:
     - aws-staging
-dev-deploy:
+staging-deploy:
   stage: deploy
   environment:
     name: staging
@@ -69,6 +70,15 @@ dev-deploy:
     - git status --ignored
     - docker ps -a
   only:
-    - master
+    - develop
+  tags:
+    - aws-staging
+staging-logs:
+  stage: logs
+  script:
+    - sleep 5
+    - docker logs --tail all backendpp_app_1
+  only:
+    - develop
   tags:
     - aws-staging

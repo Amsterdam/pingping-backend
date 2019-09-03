@@ -9,13 +9,14 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+from corsheaders.defaults import default_headers
 import os
 import environ
 
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    CLAIM_URI=(str, '')
 )
 
 # reading .env file
@@ -23,6 +24,9 @@ environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Uri to claim the rewards
+CLAIM_URI = env('CLAIM_URI')
 
 
 # Quick-start development settings - unsuitable for production
@@ -52,6 +56,7 @@ INSTALLED_APPS = [
     'django_json_widget',
     'import_export',
     'corsheaders',
+    'admin_ordering'
 ]
 
 MIDDLEWARE = [
@@ -117,7 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -131,14 +135,21 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+SESSION_SAVE_EVERY_REQUEST = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = 'media'
+MEDIA_URL = '/media/'
 
 # CORS
 # By default, CORS_ORIGIN_ALLOW_ALL is set to False, this tells Django to
 # use the CORS_ORIGIN_WHITELIST. If set to True, the CORS_ORIGIN_WHITELIST is ignored.
 # More at https://pypi.org/project/django-cors-headers/
 CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'temp-id',
+    'Autorization',
+]
