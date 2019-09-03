@@ -2,7 +2,13 @@ version: '3.4'
 
 services:
   app:
-    image: registry.gitlab.com/fleks-e43/municipality/backend-pp:latest
+    image: pp-fe:test
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+  api:
+    build: .
     environment:
       DATABASE_URL: mysql://root:dbpassword@db/pingping
       WAIT_HOSTS: db:3306
