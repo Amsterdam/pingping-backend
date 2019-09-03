@@ -245,8 +245,11 @@ class RouteTask(models.Model):
 
 class TaskUser(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
-    task = models.OneToOneField(Task, on_delete=models.PROTECT)
+    task = models.ForeignKey(Task, on_delete=models.PROTECT)
     status = models.CharField(max_length=100)
+
+    class Meta:
+        unique_together = ['user_user_key', 'task']
 
     def save(self, *args, **kwargs):
         is_update = self.id
