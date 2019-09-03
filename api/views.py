@@ -27,6 +27,11 @@ class UserViewSet(viewsets.ModelViewSet):
             'city_pings': trans.city_pings if trans else 0
         })
 
+    @decorators.action_auth_required
+    def delete(self, request, user, *args, **kwargs):
+        user.delete()
+        return Response({ 'detail': 'deleted' })
+
 
 class AchivementViewSet(viewsets.ModelViewSet):
     queryset = models.Achivement.objects.all()

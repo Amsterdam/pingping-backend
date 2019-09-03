@@ -55,6 +55,15 @@ class User(models.Model):
     def __str__(self):
         return "%d" % self.user_key
 
+    def delete(self):
+        RewardUser.objects.filter(user_user_key=self).delete()
+        AchivementUser.objects.filter(user_user_key=self).delete()
+        TaskUser.objects.filter(user_user_key=self).delete()
+        Goal.objects.filter(user_user_key=self).delete()
+        Transaction.objects.filter(user_user_key=self).delete()
+        Route.objects.filter(user_user_key=self).delete()
+        super().delete()
+
 
 class Transaction(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
