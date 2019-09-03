@@ -30,7 +30,7 @@ class UserViewSet(viewsets.ModelViewSet):
     @decorators.action_auth_required
     def delete(self, request, user, *args, **kwargs):
         user.delete()
-        return Response({ 'detail': 'deleted' })
+        return Response({'detail': 'deleted'})
 
 
 class AchivementViewSet(viewsets.ModelViewSet):
