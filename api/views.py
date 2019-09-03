@@ -229,6 +229,30 @@ class GoalViewSet(viewsets.ModelViewSet):
         'descritption',
     ]
 
+    @decorators.action_auth_required
+    def create(self, request, user, *args, **kwargs):
+        seria = serializers.GoalCreateSerializer(data={
+            **request.data,
+            'user_user_key': user.pk
+        })
+        if not seria.is_valid():
+            return Response(seria.errors, status=400)
+        return Response(
+            serializers.GoalSerializer(
+                seria.save(),
+            ).data
+        )
+
+    @decorators.action_auth_required
+    def list(self, request, user, *args, **kwargs):
+        goals = self.queryset.filter(user_user_key=user)
+        return Response(
+            serializers.GoalSerializer(
+                goals,
+                many=True
+            ).data
+        )
+
 
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = models.Question.objects.all()
