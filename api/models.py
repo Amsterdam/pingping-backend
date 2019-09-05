@@ -324,7 +324,7 @@ class Goal(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
     desired_amount = models.FloatField(max_length=10)
     title = models.CharField(max_length=255)
-    description = models.TextField(max_length=500)
+    description = models.TextField(max_length=500, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
 
     def __str__(self):
