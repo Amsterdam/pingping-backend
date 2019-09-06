@@ -269,13 +269,23 @@ class TaskUser(models.Model):
                 city_pings=last_citi_pings + self.task.city_points_value,
                 losts=0
             )
-        achiv = Achivement.objects.filter(task=self.task).first()
-        if achiv:
-            AchivementUser.objects.create(
-                achivement=achiv,
-                user_user_key=self.user_user_key,
-                unlock_date=date.today()
-            )
+            achiv = Achivement.objects.filter(task=self.task).first()
+            if achiv:
+                AchivementUser.objects.create(
+                    achivement=achiv,
+                    user_user_key=self.user_user_key,
+                    unlock_date=date.today()
+                )
+            tasks = Route.objects.filter(user_user_key=self.user_user_key)
+            tasks_user = TaskUser.objects.filter(
+                user_user_key=self.user_user_key
+            ).distinct('user_user_key')
+            if tasks_user >= len(json.loads(tasks)):
+                for achivement in Achivement.objects.filter(on_complete=True):
+                    AchivementUser.objects.create(
+                        user_user_key=self.user_user_key,
+                        achivement=achivement
+                    )
 
 
 class Achivement(models.Model):
@@ -289,6 +299,7 @@ class Achivement(models.Model):
         null=True,
         on_delete=models.PROTECT
     )
+    on_complete = models.BooleanField(default=True)
 
     def image_icon(self):
         return mark_safe('<img height="24px" src="%s" />' % self.icon)

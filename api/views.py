@@ -345,7 +345,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
         seria.save()
 
         register_achivments = models.Achivement.objects.filter(
-            task__isnull=True
+            task__isnull=True,
+            on_complete=False
         )
         for achivement in register_achivments:
             models.AchivementUser.objects.create(
