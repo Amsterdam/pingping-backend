@@ -12,6 +12,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AchivementSerializer(serializers.ModelSerializer):
+    icon = serializers.ReadOnlyField(source='icon.image_data')
+
     class Meta:
         model = models.Achivement
         fields = [

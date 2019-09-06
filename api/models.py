@@ -291,7 +291,7 @@ class TaskUser(models.Model):
 class Achivement(models.Model):
     name = models.CharField(max_length=255)
     city_points_value = models.IntegerField()
-    icon = models.TextField(null=True, blank=True)
+    icon = models.ForeignKey(Icon, on_delete=models.PROTECT)
     description = models.TextField()
     task = models.ForeignKey(
         Task,
@@ -302,7 +302,7 @@ class Achivement(models.Model):
     on_complete = models.BooleanField(default=True)
 
     def image_icon(self):
-        return mark_safe('<img height="24px" src="%s" />' % self.icon)
+        return self.icon.image_icon()
 
     image_icon.short_description = 'Icon'
     image_icon.allow_tags = True
