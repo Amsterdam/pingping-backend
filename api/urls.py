@@ -5,8 +5,8 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'user', views.UserViewSet)
-router.register(r'achivement', views.AchivementViewSet)
-router.register(r'achivementuser', views.AchivementUserViewSet)
+router.register(r'achievement', views.AchivementViewSet)
+router.register(r'achievementuser', views.AchivementUserViewSet)
 router.register(r'transaction', views.TransactionViewSet)
 router.register(r'reward', views.RewardViewSet)
 router.register(r'rewarduser', views.RewardUserViewSet)
