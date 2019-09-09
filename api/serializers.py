@@ -19,6 +19,7 @@ class AchivementSerializer(serializers.ModelSerializer):
         fields = [
             'name',
             'city_points_value',
+            'icon'
         ]
 
 
@@ -243,6 +244,7 @@ class GoalCreateSerializer(serializers.ModelSerializer):
             'description',
             'category',
         ]
+
 
 class QuestionSerializer(serializers.ModelSerializer):
     questionIcon = serializers.ReadOnlyField(source='question_icon.image_data')
