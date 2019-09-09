@@ -13,13 +13,24 @@ class UserSerializer(serializers.ModelSerializer):
 
 class AchivementSerializer(serializers.ModelSerializer):
     icon = serializers.ReadOnlyField(source='icon.image_data')
+    earned = serializers.SerializerMethodField()
+
+    def get_earned(self, obj):
+        if hasattr(obj, 'user'):
+            achivementuser = models.AchivementUser.objects.filter(
+                user_user_key=obj.user,
+                achivement=obj
+            ).first()
+            if achivementuser:
+                return achivementuser.pk
 
     class Meta:
         model = models.Achivement
         fields = [
             'name',
             'city_points_value',
-            'icon'
+            'icon',
+            'earned'
         ]
 
 

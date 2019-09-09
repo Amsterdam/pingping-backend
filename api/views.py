@@ -43,6 +43,20 @@ class AchivementViewSet(viewsets.ModelViewSet):
         'description'
     ]
 
+    @decorators.action_auth_required
+    def list(self, request, user, *args, **kwargs):
+
+        achievements = self.queryset.annotate(
+            user=Value(user.id, IntegerField()),
+        )
+
+        return Response(
+            serializers.AchivementSerializer(
+                achievements,
+                many=True
+            ).data
+        )
+
 
 class AchivementUserViewSet(viewsets.ModelViewSet):
     queryset = models.AchivementUser.objects.all()
