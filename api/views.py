@@ -27,6 +27,11 @@ class UserViewSet(viewsets.ModelViewSet):
             'city_pings': trans.city_pings if trans else 0
         })
 
+    @decorators.action_auth_required
+    def delete(self, request, user, *args, **kwargs):
+        user.delete()
+        return Response({'detail': 'deleted'})
+
 
 class AchivementViewSet(viewsets.ModelViewSet):
     queryset = models.Achivement.objects.all()
@@ -229,6 +234,30 @@ class GoalViewSet(viewsets.ModelViewSet):
         'descritption',
     ]
 
+    @decorators.action_auth_required
+    def create(self, request, user, *args, **kwargs):
+        seria = serializers.GoalCreateSerializer(data={
+            **request.data,
+            'user_user_key': user.pk
+        })
+        if not seria.is_valid():
+            return Response(seria.errors, status=400)
+        return Response(
+            serializers.GoalSerializer(
+                seria.save(),
+            ).data
+        )
+
+    @decorators.action_auth_required
+    def list(self, request, user, *args, **kwargs):
+        goals = self.queryset.filter(user_user_key=user)
+        return Response(
+            serializers.GoalSerializer(
+                goals,
+                many=True
+            ).data
+        )
+
 
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = models.Question.objects.all()
@@ -316,7 +345,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
         seria.save()
 
         register_achivments = models.Achivement.objects.filter(
-            task__isnull=True
+            task__isnull=True,
+            on_complete=False
         )
         for achivement in register_achivments:
             models.AchivementUser.objects.create(

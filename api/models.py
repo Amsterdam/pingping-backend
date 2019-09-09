@@ -55,6 +55,15 @@ class User(models.Model):
     def __str__(self):
         return "%d" % self.user_key
 
+    def delete(self):
+        RewardUser.objects.filter(user_user_key=self).delete()
+        AchivementUser.objects.filter(user_user_key=self).delete()
+        TaskUser.objects.filter(user_user_key=self).delete()
+        Goal.objects.filter(user_user_key=self).delete()
+        Transaction.objects.filter(user_user_key=self).delete()
+        Route.objects.filter(user_user_key=self).delete()
+        super().delete()
+
 
 class Transaction(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -147,7 +156,10 @@ class RewardUser(models.Model):
         )
 
         # Create QR
-        self.qr = services.QrService().create("%s/%s" % (settings.CLAIM_URI, self.uuid))
+        self.qr = services.QrService().create("%s%s" % (
+            settings.CLAIM_URI,
+            self.uuid
+        ))
 
         # Create PDF
         pdfs = services.PDFService('qr_template.html')
@@ -239,21 +251,47 @@ class TaskUser(models.Model):
     task = models.ForeignKey(Task, on_delete=models.PROTECT)
     status = models.CharField(max_length=100)
 
+    class Meta:
+        unique_together = ['user_user_key', 'task']
+
     def save(self, *args, **kwargs):
+        is_update = self.id
         super().save(*args, **kwargs)
-        achiv = Achivement.objects.filter(task=self.task).first()
-        if achiv:
-            AchivementUser.objects.create(
-                achivement=achiv,
+        if not is_update:
+            last_trans = Transaction.objects.filter(
+                user_user_key=self.user_user_key
+            ).last()
+            last_citi_pings = last_trans.city_pings if last_trans else 0
+            Transaction.objects.create(
                 user_user_key=self.user_user_key,
-                unlock_date=date.today()
+                description="Complete task %s" % self.task.name,
+                earnings=self.task.city_points_value,
+                city_pings=last_citi_pings + self.task.city_points_value,
+                losts=0
             )
+            achiv = Achivement.objects.filter(task=self.task).first()
+            if achiv:
+                AchivementUser.objects.create(
+                    achivement=achiv,
+                    user_user_key=self.user_user_key,
+                    unlock_date=date.today()
+                )
+            tasks = Route.objects.filter(user_user_key=self.user_user_key)
+            tasks_user = TaskUser.objects.filter(
+                user_user_key=self.user_user_key
+            ).distinct('user_user_key')
+            if tasks_user >= len(json.loads(tasks)):
+                for achivement in Achivement.objects.filter(on_complete=True):
+                    AchivementUser.objects.create(
+                        user_user_key=self.user_user_key,
+                        achivement=achivement
+                    )
 
 
 class Achivement(models.Model):
     name = models.CharField(max_length=255)
     city_points_value = models.IntegerField()
-    icon = models.TextField(null=True, blank=True)
+    icon = models.ForeignKey(Icon, on_delete=models.PROTECT)
     description = models.TextField()
     task = models.ForeignKey(
         Task,
@@ -261,9 +299,10 @@ class Achivement(models.Model):
         null=True,
         on_delete=models.PROTECT
     )
+    on_complete = models.BooleanField(default=True)
 
     def image_icon(self):
-        return mark_safe('<img height="24px" src="%s" />' % self.icon)
+        return self.icon.image_icon()
 
     image_icon.short_description = 'Icon'
     image_icon.allow_tags = True
@@ -296,7 +335,7 @@ class Goal(models.Model):
     user_user_key = models.ForeignKey(User, on_delete=models.PROTECT)
     desired_amount = models.FloatField(max_length=10)
     title = models.CharField(max_length=255)
-    description = models.TextField(max_length=500)
+    description = models.TextField(max_length=500, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
 
     def __str__(self):

@@ -12,6 +12,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AchivementSerializer(serializers.ModelSerializer):
+    icon = serializers.ReadOnlyField(source='icon.image_data')
+
     class Meta:
         model = models.Achivement
         fields = [
@@ -208,17 +210,39 @@ class TaskUserSerializer(serializers.ModelSerializer):
         ]
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    icon = serializers.ReadOnlyField(source='icon.image_data')
+
+    class Meta:
+        model = models.Category
+        fields = ['name', 'icon']
+
+
 class GoalSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+
     class Meta:
         model = models.Goal
         fields = [
             'user_user_key',
             'desired_amount',
             'title',
-            'descritption',
+            'description',
             'category',
         ]
 
+
+class GoalCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Goal
+        fields = [
+            'user_user_key',
+            'desired_amount',
+            'title',
+            'description',
+            'category',
+        ]
 
 class QuestionSerializer(serializers.ModelSerializer):
     questionIcon = serializers.ReadOnlyField(source='question_icon.image_data')
