@@ -25,7 +25,7 @@ services:
       - web-root:/var/www/html
     depends_on:
       - nginx
-    command: certonly --webroot --webroot-path=/var/www/html --email m.gudvardarson@amsterdam.nl --agree-tos --no-eff-email --staging -d app.pingping.amsterdam  -d api.pingping.amsterdam 
+    command: certonly --webroot --webroot-path=/var/www/html --email m.gudvardarson@amsterdam.nl --agree-tos --no-eff-email -d app.pingping.amsterdam  -d api.pingping.amsterdam
   app:
     image: pp-fe:latest
   api:
