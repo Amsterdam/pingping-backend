@@ -24,8 +24,8 @@ run:
 	docker-compose up
 
 shell:
-	@echo  "Attaching shell to $cid"
-	docker exec -it $cid bash
+	@echo  "Attaching shell to $(cid)"
+	docker exec -it $(cid) bash
 
 pull:
 	git pull
