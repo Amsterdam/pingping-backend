@@ -1,19 +1,31 @@
 version: '3.4'
 
 services:
-  nginx: 
+  nginx:
     image: nginx:latest
     volumes:
       - ./config/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
       - 443:443
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
     links:
       - api
       - app
     depends_on:
       - api
       - app
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - nginx
+    command: certonly --webroot --webroot-path=/var/www/html --email m.gudvardarson@amsterdam.nl --agree-tos --no-eff-email --staging -d app.pingping.amsterdam  -d api.pingping.amsterdam 
   app:
     image: pp-fe:latest
   api:
@@ -37,3 +49,6 @@ services:
 
 volumes:
   postgres_storage:
+  certbot-etc:
+  certbot-var:
+  web-root:
