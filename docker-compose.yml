@@ -32,7 +32,7 @@ services:
     build: .
     environment:
       DATABASE_URL: postgres://postgres:dbpassword@postgres/pingping
-      CLAIM_URI: https://api.staging.pingping.refleks.tech/api/reward/validate/?uuid=
+      CLAIM_URI: https://api.pingping.amsterdam/api/reward/validate/?uuid=
     ports:
       - "8000:8000"
     depends_on:
