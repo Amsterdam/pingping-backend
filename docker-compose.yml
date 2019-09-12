@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   app:
-    image: pp-fe:test
+    image: pp-fe:latest
     ports:
       - "80:80"
     depends_on:
@@ -10,22 +10,21 @@ services:
   api:
     build: .
     environment:
-      DATABASE_URL: mysql://root:dbpassword@db/pingping
-      WAIT_HOSTS: db:3306
+      DATABASE_URL: postgres://postgres:dbpassword@postgres/pingping
       CLAIM_URI: https://api.staging.pingping.refleks.tech/api/reward/validate/?uuid=
     ports:
       - "8000:8000"
     depends_on:
-      - db
-  db:
-    image: mysql:5.7.27
+      - postgres
+  postgres:
+    image: postgres:latest
     environment:
-      - MYSQL_ROOT_PASSWORD=dbpassword
-      - MYSQL_DATABASE=pingping
+      - POSTGRES_PASSWORD=dbpassword
+      - POSTGRES_DB=pingping
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db_storage:/var/lib/mysql
+      - postgres_storage:/var/lib/postgresql/data
 
 volumes:
-  db_storage:
+  postgres_storage:
