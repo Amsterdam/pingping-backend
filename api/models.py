@@ -12,6 +12,7 @@ import jsonfield
 import uuid
 import re
 import os
+import json
 
 
 class Icon(models.Model):
