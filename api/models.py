@@ -277,11 +277,13 @@ class TaskUser(models.Model):
                     user_user_key=self.user_user_key,
                     unlock_date=date.today()
                 )
-            tasks = Route.objects.filter(user_user_key=self.user_user_key)
+            route = Route.objects.filter(
+                user_user_key=self.user_user_key
+            ).first()
             tasks_user = TaskUser.objects.filter(
                 user_user_key=self.user_user_key
             ).distinct('user_user_key')
-            if tasks_user >= len(json.loads(tasks)):
+            if route and tasks_user >= len(json.loads(route.tasks)):
                 for achivement in Achivement.objects.filter(on_complete=True):
                     AchivementUser.objects.create(
                         user_user_key=self.user_user_key,
