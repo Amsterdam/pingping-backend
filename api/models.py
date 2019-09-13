@@ -282,7 +282,7 @@ class TaskUser(models.Model):
             ).first()
             tasks_user = TaskUser.objects.filter(
                 user_user_key=self.user_user_key
-            ).distinct('user_user_key').count()
+            ).count()
             if route and tasks_user >= len(json.loads(route.tasks)):
                 for achivement in Achivement.objects.filter(on_complete=True):
                     AchivementUser.objects.create(
