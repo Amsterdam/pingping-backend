@@ -51,10 +51,10 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_storage:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  postgres_storage:
+  postgres_data: {}
   certbot-etc:
   certbot-var:
   web-root:
