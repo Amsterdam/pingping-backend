@@ -292,5 +292,6 @@ class QuestionSerializer(serializers.ModelSerializer):
             'previousQuestion',
             'currentQuestion',
             'numberOfQuestions',
+            'multiple',
             'order'
         ]
