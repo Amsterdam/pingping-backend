@@ -265,7 +265,11 @@ class QuestionSerializer(serializers.ModelSerializer):
     previousQuestion = serializers.SerializerMethodField()
     currentQuestion = serializers.ReadOnlyField(source='id')
     numberOfQuestions = serializers.SerializerMethodField()
+    multiple = serializers.SerializerMethodField()
     order = serializers.ReadOnlyField(source='get_order')
+
+    def get_multiple(self, obj):
+        return obj.multiple
 
     def get_answer(self, obj):
         return {
