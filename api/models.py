@@ -349,6 +349,7 @@ class Question(models.Model):
     STEP = 10
     YESNO = 'yesNo'
     DATE = 'date'
+    MTIPIPLE_ONE = 'multipleOne'
     YES = 'yes'
     NO = 'no'
 
@@ -359,10 +360,11 @@ class Question(models.Model):
         on_delete=models.PROTECT
     )
     type = models.CharField(
-        max_length=5,
+        max_length=11,
         choices=(
             (YESNO, 'Yes or No'),
-            (DATE, 'Date')
+            (DATE, 'Date'),
+            (MTIPIPLE_ONE, 'Multiple One'),
         )
     )
     yes_text = models.CharField(
@@ -388,6 +390,10 @@ class Question(models.Model):
         on_delete=models.PROTECT,
         null=True,
         blank=True
+    )
+    multiple = jsonfield.JSONField(
+        blank=True,
+        null=True
     )
     order = models.IntegerField(blank=True)
 
