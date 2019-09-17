@@ -416,11 +416,11 @@ class Question(models.Model):
         super().save(*args, **kwargs)
 
     def next(self, response):
-        if self.type == self.DATE:
+        if self.type != self.YESNO:
             return Question.objects.filter(
                 order=self.order + self.STEP
             ).first()
-        elif self.type == self.YESNO:
+        else:
             if response == self.YES:
                 return self.yes_id
             elif response == self.NO:
