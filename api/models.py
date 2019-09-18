@@ -321,6 +321,18 @@ class AchivementUser(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        if not self.achivement.task:
+            last_trans = Transaction.objects.filter(
+                user_user_key=self.user_user_key
+            ).last()
+            last_citi_pings = last_trans.city_pings if last_trans else 0
+            Transaction.objects.create(
+                user_user_key=self.user_user_key,
+                description="Get achivement %s" % self.achivement.name,
+                earnings=self.achivement.city_points_value,
+                city_pings=last_citi_pings + self.achivement.city_points_value,
+                losts=0
+            )
 
 
 class Goal(models.Model):
