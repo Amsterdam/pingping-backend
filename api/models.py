@@ -6,6 +6,7 @@ from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.db.models import Q
 from django.conf import settings
+from ckeditor.fields import RichTextField
 from . import services
 import base64
 import jsonfield
@@ -201,10 +202,9 @@ class Route(models.Model):
 
 class Task(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField(max_length=500)
+    description = RichTextField()
     city_points_value = models.IntegerField()
     tasks = models.ManyToManyField('Task', blank=True)
-    steps = jsonfield.JSONField(blank=True, null=True)
     conditions = jsonfield.JSONField()
     order = models.IntegerField(blank=True)
     media = models.CharField(max_length=255, blank=True, null=True)

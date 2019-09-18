@@ -159,10 +159,6 @@ class RouteShowSerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    steps = serializers.SerializerMethodField()
-
-    def get_steps(self, obj):
-        return obj.steps
 
     class Meta:
         model = models.Task
@@ -171,7 +167,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'name',
             'description',
             'city_points_value',
-            'steps',
             'media',
             'check_task'
         ]
