@@ -6,6 +6,7 @@ from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.db.models import Q
 from django.conf import settings
+from ckeditor.fields import RichTextField
 from . import services
 import base64
 import jsonfield
@@ -201,10 +202,9 @@ class Route(models.Model):
 
 class Task(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField(max_length=500)
+    description = RichTextField()
     city_points_value = models.IntegerField()
     tasks = models.ManyToManyField('Task', blank=True)
-    steps = jsonfield.JSONField(blank=True, null=True)
     conditions = jsonfield.JSONField()
     order = models.IntegerField(blank=True)
     media = models.CharField(max_length=255, blank=True, null=True)
@@ -321,17 +321,18 @@ class AchivementUser(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        last_trans = Transaction.objects.filter(
-            user_user_key=self.user_user_key
-        ).last()
-        last_citi_pings = last_trans.city_pings if last_trans else 0
-        Transaction.objects.create(
-            user_user_key=self.user_user_key,
-            description="Get achivement %s" % self.achivement.name,
-            earnings=self.achivement.city_points_value,
-            city_pings=last_citi_pings + self.achivement.city_points_value,
-            losts=0
-        )
+        if not self.achivement.task:
+            last_trans = Transaction.objects.filter(
+                user_user_key=self.user_user_key
+            ).last()
+            last_citi_pings = last_trans.city_pings if last_trans else 0
+            Transaction.objects.create(
+                user_user_key=self.user_user_key,
+                description="Get achivement %s" % self.achivement.name,
+                earnings=self.achivement.city_points_value,
+                city_pings=last_citi_pings + self.achivement.city_points_value,
+                losts=0
+            )
 
 
 class Goal(models.Model):
@@ -416,11 +417,11 @@ class Question(models.Model):
         super().save(*args, **kwargs)
 
     def next(self, response):
-        if self.type == self.DATE:
+        if self.type != self.YESNO:
             return Question.objects.filter(
                 order=self.order + self.STEP
             ).first()
-        elif self.type == self.YESNO:
+        else:
             if response == self.YES:
                 return self.yes_id
             elif response == self.NO:

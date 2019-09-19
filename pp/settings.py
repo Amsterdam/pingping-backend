@@ -56,8 +56,21 @@ INSTALLED_APPS = [
     'django_json_widget',
     'import_export',
     'corsheaders',
-    'admin_ordering'
+    'admin_ordering',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
+
+CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': None,
+    },
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
