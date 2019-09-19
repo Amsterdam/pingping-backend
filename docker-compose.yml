@@ -1,7 +1,6 @@
 version: '3.4'
 
 services:
-
   nginx:
     image: nginx:latest
     restart: always
@@ -36,8 +35,6 @@ services:
   api:
     build: .
     restart: always
-  app:
-    image: registry.gitlab.com/fleks-e43/municipality/backend-pp:latest
     environment:
       DATABASE_URL: postgres://postgres:dbpassword@postgres/pingping
       CLAIM_URI: https://api.pingping.amsterdam/api/reward/validate/?uuid=
