@@ -1,4 +1,4 @@
-FROM python:3.7.4-slim-stretch
+FROM python:3
 
 
 WORKDIR /app
@@ -9,7 +9,6 @@ COPY requirements.txt /app/
 
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
-        default-libmysqlclient-dev \
         python3-dev \
         gcc \
     && pip install --no-cache-dir -r requirements.txt \
