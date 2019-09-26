@@ -1,41 +1,40 @@
 PWD ?= pwd_unknown
-
-THIS_FILE := $(lastword $(MAKEFILE_LIST))
 CMD_ARGUMENTS ?= $(cmd)
 
-target = latest
-cid = $(docker ps -aqf name=pingping-backend_api)
+container_name = 'pp-api'
 
 help:
 	@echo ''
 	@echo 'Usage: make [TARGET] [EXTRA_ARGUMENTS]'
 	@echo 'Targets:'
-	@echo '  build    	prepare for deployment'
 	@echo '  run    	run on production'
-	@echo '  run-dev	run in dev mode'
+	@echo '  dev		run in dev mode'
 	@echo '  down 		shut down docker compose'
 	@echo '  shell    	attach docker shell'
 	@echo '  pull    	pull from git'
+	@echo '  test    	run tests'
 	@echo '  help    	this message'
 
-build:
-	@echo  'Prepare for deployment, make certificate etc'
-
 run:
-	@echo  'Running pingping'
+	@echo 'Running pingping'
 	docker-compose up -d
 
-run-dev:
-	@echo  'Running pingping'
+dev:
+	@echo 'Running pingping'
+	docker-sync-stack start
 	docker-compose -f docker-compose.dev.yml up -d
 
 down:
-	@echo  'Shutdown pingping'
+	@echo 'Shutdown pingping'
 	docker-compose down
 
 shell:
-	@echo  "Attaching shell to $(cid)"
-	docker exec -it $(cid) bash
+	@echo "Attaching shell to $(container_name)"
+	docker exec -it $(container_name) bash
+
+test:
+	@echo 'Running tests'
+	docker exec -it $(container_name) python3 manage.py test --no-input api.tests
 
 pull:
 	git pull
