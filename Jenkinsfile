@@ -25,8 +25,6 @@ node {
    stage("Test") {
        tryStep "test", {
            sh "docker-compose -f docker-compose.dev.yml run api python3 manage.py test --no-input"
-//            sh "docker-compose -p pingping_backend -f docker-compose.yml build && " +
-//                    "docker-compose -p pingping_backend -f docker-compose.yml run --rm test"
       }
    }
 
