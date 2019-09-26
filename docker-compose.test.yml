@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  api:
+    container_name: pp-api
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    restart: always
+    environment:
+      DATABASE_URL: postgres://postgres:dbpassword@postgres/pingping
+      CLAIM_URI: https://api.pingping.test/api/reward/validate/?uuid=
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=dbpassword
+      - POSTGRES_DB=pingping
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data: {}
