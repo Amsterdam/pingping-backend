@@ -34,7 +34,7 @@ shell:
 
 test:
 	@echo 'Running tests'
-	docker exec -it $(container_name) python3 manage.py test --no-input api.tests
+	docker exec -it $(container_name) python3 manage.py test --no-input
 
 pull:
 	git pull
