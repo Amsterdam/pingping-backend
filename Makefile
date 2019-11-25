@@ -12,6 +12,8 @@ help:
 	@echo 'Targets:'
 	@echo '  build    	prepare for deployment'
 	@echo '  run    	run on production'
+	@echo '  run-dev	run in dev mode'
+	@echo '  down 		shut down docker compose'
 	@echo '  shell    	attach docker shell'
 	@echo '  pull    	pull from git'
 	@echo '  help    	this message'
@@ -21,7 +23,15 @@ build:
 
 run:
 	@echo  'Running pingping'
-	docker-compose up
+	docker-compose up -d
+
+run-dev:
+	@echo  'Running pingping'
+	docker-compose -f docker-compose.dev.yml up -d
+
+down:
+	@echo  'Shutdown pingping'
+	docker-compose down
 
 shell:
 	@echo  "Attaching shell to $(cid)"
