@@ -6,7 +6,7 @@ colorama==0.4.1
 cssselect2==0.2.1
 defusedxml==0.6.0
 diff-match-patch==20181111
-Django==2.2.4
+Django==2.2.8
 django-admin-ordering==0.11.0
 django-ckeditor==5.7.1
 django-cors-headers==3.1.0
