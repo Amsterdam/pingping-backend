@@ -304,6 +304,35 @@ class QuestionViewSet(viewsets.ModelViewSet):
         task_list = models.Route.calculate({})
         return self.complete(task_list)
 
+    @action(detail=True, methods=['OPTIONS', 'POST'], name='Prev')
+    def prev(self, request, pk, *args, **kwargs):
+        if not ('HTTP_TEMP_ID' in request.META):
+            return Response({
+                "error": "The header 'temp-id' is required"
+            }, status=400)
+        if not ('cookie' in request.data):
+            return Response({
+                "error": "The key 'cookie' is required"
+            }, status=400)
+
+        
+        question = get_object_or_404(models.Question, pk=pk)
+        stored_data = base64.b64decode(request.data['cookie']).decode('utf-8')
+        stored_dict = json.loads(stored_data) if stored_data else {}
+        for prev in question.prevs():
+            if prev.question in stored_dict:
+                del stored_dict[prev.question]
+                coockie = base64.b64encode(json.dumps(stored_dict).encode("utf-8"))
+                return Response({
+                    'cookie': coockie,
+                    **(serializers.QuestionSerializer(prev).data)
+                })
+
+        return Response({
+            "error": "Preview question not found"
+        }, status=400)
+
+
     @action(detail=True, methods=['OPTIONS', 'POST'], name='Next')
     def next(self, request, pk, *args, **kwargs):
         if not ('HTTP_TEMP_ID' in request.META):

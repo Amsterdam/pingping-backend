@@ -430,10 +430,15 @@ class Question(models.Model):
     def prev(self):
         prev = Question.objects.filter(
             Q(yes_id=self.id) | Q(not_id=self.id)
-        ).filter(order__lt=self.order).first()
+        ).filter(order__lt=self.order).last()
         if not prev:
             prev = Question.objects.filter(order=self.order - self.STEP).last()
         return prev
+    
+    def prevs(self):
+        return Question.objects.filter(
+            Q(yes_id=self.id) | Q(not_id=self.id)
+        ).filter(order__lt=self.order)
 
     def get_order(self):
         return int(self.order/self.STEP)
