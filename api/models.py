@@ -438,7 +438,7 @@ class Question(models.Model):
     def prevs(self):
         return Question.objects.filter(
             Q(yes_id=self.id) | Q(not_id=self.id)
-        ).filter(order__lt=self.order)
+        ).filter(order__lt=self.order).order_by('order')
 
     def get_order(self):
         return int(self.order/self.STEP)
