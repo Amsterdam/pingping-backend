@@ -430,7 +430,7 @@ class Question(models.Model):
     def prev(self):
         prev = Question.objects.filter(
             Q(yes_id=self.id) | Q(not_id=self.id)
-        ).filter(order__lt=self.order).last()
+        ).filter(order__lt=self.order).order_by('order').last()
         if not prev:
             prev = Question.objects.filter(order=self.order - self.STEP).order_by('order').last()
         return prev
