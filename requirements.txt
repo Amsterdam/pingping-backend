@@ -24,7 +24,7 @@ jsonfield==2.0.2
 odfpy==1.4.0
 openpyxl==2.6.2
 pep8==1.7.1
-Pillow==6.2.0
+Pillow==6.2.1
 pycparser==2.19
 PyPDF2==1.26.0
 Pyphen==0.9.5
