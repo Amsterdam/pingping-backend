@@ -10,15 +10,22 @@ import json
 import time
 import base64
 
-
 class UserViewSet(viewsets.ModelViewSet):
+    """
+        This is API of  User 
+    """
+
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
     filterset_fields = ['user_key']
-
+    
     @action(detail=False, methods=['GET'], name='Me')
     @decorators.action_auth_required
     def me(self, request, user, *args, **kwargs):
+        """
+            Thsi endpoint show current user in log
+        """
+
         trans = models.Transaction.objects.filter(
             user_user_key=user,
         ).last()
@@ -29,6 +36,10 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @decorators.action_auth_required
     def delete(self, request, user, *args, **kwargs):
+        """
+            This endpoint delete current user in log
+        """
+
         user.delete()
         return Response({'detail': 'deleted'})
 
@@ -45,6 +56,9 @@ class AchivementViewSet(viewsets.ModelViewSet):
 
     @decorators.action_auth_required
     def list(self, request, user, *args, **kwargs):
+        """
+            This endpoin list all acivements plus current user in log
+        """
 
         achievements = self.queryset.annotate(
             user=Value(user.id, IntegerField()),
@@ -59,6 +73,10 @@ class AchivementViewSet(viewsets.ModelViewSet):
 
 
 class AchivementUserViewSet(viewsets.ModelViewSet):
+    """
+        This is API of  AchivementUser 
+    """
+
     queryset = models.AchivementUser.objects.all()
     serializer_class = serializers.AchivementUserSerializer
     filterset_fields = [
@@ -69,6 +87,10 @@ class AchivementUserViewSet(viewsets.ModelViewSet):
 
 
 class TransactionViewSet(viewsets.ModelViewSet):
+    """
+        This is API of  Transaction 
+    """
+
     queryset = models.Transaction.objects.all()
     serializer_class = serializers.TransactionSerializer
     filterset_fields = [
@@ -80,6 +102,10 @@ class TransactionViewSet(viewsets.ModelViewSet):
 
 
 class RewardViewSet(viewsets.ModelViewSet):
+    """
+        This is API of  Reward 
+    """
+
     queryset = models.Reward.objects.all()
     serializer_class = serializers.RewardSerializer
     filterset_fields = [
@@ -93,6 +119,10 @@ class RewardViewSet(viewsets.ModelViewSet):
 
     @decorators.action_auth_required
     def retrieve(self, request, pk, user, *args, **kwargs):
+        """
+            This endpoint is to show details of Reward plus current user in log
+        """
+
         reward = get_object_or_404(models.Reward, pk=pk)
         reward.user = user
         return Response(
@@ -104,6 +134,10 @@ class RewardViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'], name='Claim')
     @decorators.action_auth_required
     def claim(self, request, pk, user, *args, **kwargs):
+        """
+            This endpoint is to claim a reward by current user in log
+        """
+
         reward = get_object_or_404(models.Reward, pk=pk)
         rewarduser = models.RewardUser.objects.create(
             reward=reward,
@@ -118,6 +152,9 @@ class RewardViewSet(viewsets.ModelViewSet):
 
     @decorators.action_auth_required
     def list(self, request, user, *args, **kwargs):
+        """
+            This endpoint is to claim a reward by current user in log
+        """
 
         rewards = self.queryset.annotate(
             user=Value(user.id, IntegerField()),
@@ -133,6 +170,10 @@ class RewardViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'], name='Validate')
     def validate(self, request, *args, **kwargs):
+        """
+            This endpoint is to validate a rewarduser
+        """
+
         uuid = request.GET.get('uuid', False)
 
         if not uuid:
@@ -161,6 +202,10 @@ class RewardViewSet(viewsets.ModelViewSet):
 
 
 class RewardUserViewSet(viewsets.ModelViewSet):
+    """
+        This is API of RewardUser
+    """
+
     queryset = models.RewardUser.objects.all()
     serializer_class = serializers.RewardUserSerializer
     filterset_fields = [
@@ -173,6 +218,10 @@ class RewardUserViewSet(viewsets.ModelViewSet):
 
 
 class RouteViewSet(viewsets.ModelViewSet):
+    """
+        This is API of Route
+    """
+
     queryset = models.Route.objects.all()
     serializer_class = serializers.RouteSerializer
     filterset_fields = [
@@ -182,6 +231,10 @@ class RouteViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'], name='Preview')
     @decorators.action_auth_required
     def preview(self, request, user, *args, **kwargs):
+        """
+            This endpoint is for show a preview of the current user in log route 
+        """
+
         route = get_object_or_404(models.Route, user_user_key=user)
         task_list = json.loads(route.tasks)
         route_tasks = models.RouteTask.objects.filter(
@@ -203,6 +256,10 @@ class RouteViewSet(viewsets.ModelViewSet):
 
 
 class TaskViewSet(viewsets.ModelViewSet):
+    """
+        This is API of Task
+    """
+
     queryset = models.Task.objects.all()
     serializer_class = serializers.TaskSerializer
     filterset_fields = [
@@ -214,6 +271,10 @@ class TaskViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['Post'], name='Complete')
     @decorators.action_auth_required
     def complete(self, request, pk, user, *args, **kwargs):
+        """
+            This endpoint is for complete a task
+        """
+
         serial = serializers.TaskUserSerializer(data={
             **request.data,
             'status': 'Complete',
@@ -229,6 +290,10 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 
 class TaskUserViewSet(viewsets.ModelViewSet):
+    """
+        This is API of TaskUser
+    """
+
     queryset = models.TaskUser.objects.all()
     serializer_class = serializers.TaskUserSerializer
     filterset_fields = [
@@ -239,6 +304,10 @@ class TaskUserViewSet(viewsets.ModelViewSet):
 
 
 class GoalViewSet(viewsets.ModelViewSet):
+    """
+        This is API of Goal
+    """
+
     queryset = models.Goal.objects.all()
     serializer_class = serializers.GoalSerializer
     filterset_fields = [
@@ -250,12 +319,18 @@ class GoalViewSet(viewsets.ModelViewSet):
 
     @decorators.action_auth_required
     def create(self, request, user, *args, **kwargs):
+        """
+            This endpoint is for create a goal for current user in log
+        """
+
         seria = serializers.GoalCreateSerializer(data={
             **request.data,
             'user_user_key': user.pk
         })
+
         if not seria.is_valid():
             return Response(seria.errors, status=400)
+
         return Response(
             serializers.GoalSerializer(
                 seria.save(),
@@ -264,6 +339,9 @@ class GoalViewSet(viewsets.ModelViewSet):
 
     @decorators.action_auth_required
     def list(self, request, user, *args, **kwargs):
+        """
+            This endpoint is for list all goals for current user in log
+        """
         goals = self.queryset.filter(user_user_key=user)
         return Response(
             serializers.GoalSerializer(
@@ -274,6 +352,10 @@ class GoalViewSet(viewsets.ModelViewSet):
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
+    """
+        This is API for Question
+    """
+
     queryset = models.Question.objects.all()
     serializer_class = serializers.QuestionSerializer
     filterset_fields = [
@@ -287,6 +369,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'], name='First')
     def first(self, request, *args, **kwargs):
+        """
+            This endpoint if for retrive first question by order
+        """
+
         next_question = models.Question.objects.order_by('order').first()
 
         if not next_question:
@@ -301,15 +387,25 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'], name='Default')
     def default(self, request, *args, **kwargs):
+        """
+            This endpoint is for calculate default questions
+        """
+        
         task_list = models.Route.calculate({})
         return self.complete(task_list)
 
     @action(detail=True, methods=['OPTIONS', 'POST'], name='Prev')
     def prev(self, request, pk, *args, **kwargs):
+        """
+            This endpoint is for retrive previous question
+        """
+
         if not ('HTTP_TEMP_ID' in request.META):
             return Response({
-                "error": "The header 'temp-id' is required"
+                "error": "The header 'temp-id' is required",
+                "meta": request.META.keys()
             }, status=400)
+
         if not ('cookie' in request.data):
             return Response({
                 "error": "The key 'cookie' is required"
@@ -319,22 +415,33 @@ class QuestionViewSet(viewsets.ModelViewSet):
         question = get_object_or_404(models.Question, pk=pk)
         stored_data = base64.b64decode(request.data['cookie']).decode('utf-8')
         stored_dict = json.loads(stored_data) if stored_data else {}
+        
+        return Response({
+            "error": serializers.QuestionSerializer(question.prevs(), many=True).data
+        }, status=400)
+
         for prev in question.prevs():
             if prev.question in stored_dict:
                 del stored_dict[prev.question]
+
                 coockie = base64.b64encode(json.dumps(stored_dict).encode("utf-8"))
+
                 return Response({
                     'cookie': coockie,
                     **(serializers.QuestionSerializer(prev).data)
                 })
 
         return Response({
-            "error": "Preview question not found"
+            "error": "Previous question not found"
         }, status=400)
 
 
     @action(detail=True, methods=['OPTIONS', 'POST'], name='Next')
     def next(self, request, pk, *args, **kwargs):
+        """
+            This endpoint is for retrive next question
+        """
+
         if not ('HTTP_TEMP_ID' in request.META):
             return Response({
                 "error": "The header 'temp-id' is required"
@@ -371,6 +478,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
         })
 
     def complete(self, task_list):
+        """
+            This method is for calculate route based on task_list
+        """
+
         tasks = [x.id for x in task_list]
         user_user_key = models.User.objects.create(
             user_key=int(round(time.time() * 1000))
@@ -385,12 +496,14 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
         if not seria.is_valid():
             return Response(seria.errors, status=400)
+
         seria.save()
 
         register_achivments = models.Achivement.objects.filter(
             task__isnull=True,
             on_complete=False
         )
+
         for achivement in register_achivments:
             models.AchivementUser.objects.create(
                 achivement=achivement,
