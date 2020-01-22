@@ -194,7 +194,7 @@ class Route(models.Model):
     @staticmethod
     def calculate(conds):
         tasks = Task.objects.order_by('order')
-        return [x for x in tasks if not x.match(conds)]
+        return [task for task in tasks if not task.match(conds)]
 
     def __str__(self):
         return "Route #%d" % self.id
@@ -226,8 +226,32 @@ class Task(models.Model):
                 return True
         return False
 
+    @staticmethod
+    def compare_dict(dict1, dict2):
+        for key in dict1:
+            if not (key in dict2):
+                return False
+            
+            if type(dict1[key]) != list and type(dict2[key]) != list:
+                if dict1[key] != dict2[key]:
+                    return False
+            
+            if type(dict1[key]) == list and type(dict2[key]) != list:
+                if not (dict2[key] in dict1[key]):
+                    return False
+            
+            if type(dict2[key]) == list and type(dict1[key]) != list:
+                if not (dict2[key] in dict1[key]):
+                    return False
+
+            if type(dict2[key]) == list and type(dict1[key]) == list:
+                if not (set(dict1[key]).intersection(dict2[key])):
+                    return False
+        return True
+
+
     def match(self, conds):
-        if Task.match_all(self.tasks.all(), conds) or self.conditions.items() <= conds.items():
+        if Task.match_all(self.tasks.all(), conds) or Task.compare_dict(self.conditions, conds):
             return True
         return False
 
