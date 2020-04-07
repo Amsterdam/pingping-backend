@@ -1,13 +1,7 @@
-import Context from './Context';
 import ResolverMap from './ResolverMap';
+import PingPingQueries from './PingPingQueries';
 
 const Query: ResolverMap = {
-  currentUser (root: any, args: any, context: Context) {
-    if (!context.user) {
-      throw new Error("Unauthorized");
-    }
-
-    return context.user
-  }
+  ...PingPingQueries,
 }
 export default Query

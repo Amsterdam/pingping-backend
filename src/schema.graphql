@@ -1,32 +1,44 @@
 type Mutation {
-  # Authentication
-  login (username: String!, password: String!): LoginMessage!
-  logout: ResponseMessage!
-  logoutAll: ResponseMessage!
-  setPassword(oldPassword:String!, newPassword:String!): ResponseMessage!
-  setPasswordFromToken(token:String!, newPassword:String!): ResponseMessage!
-  forgotPassword(username:String!): ResponseMessage
+  registerDevice (deviceId: String!): StatusResponse
 }
 
 type Query {
-  currentUser: User
+  getCurrentRoutes: [Route]!
+  getAvailableRoutes: [Route]!
 }
 
-type LoginMessage {
-  accessToken: String!
-  user: User!
+type Task {
+  name: String!
+  icon: String
+  type: TaskType
+}
+
+enum TaskType {
+  Date,
+  YesNoQuestion
+}
+
+type Route {
+  name: String!
 }
 
 type User {
   id: String!
-  email: String!
   profile: UserProfile!
 }
 
 type UserProfile {
-  fullName: String!
+  dateOfBirth: Date
+}
+
+type StatusResponse {
+  accessToken: String!
+  user: User!
+  currentTask: Task
 }
 
 type ResponseMessage {
   message: String!
 }
+
+scalar Date

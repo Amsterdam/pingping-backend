@@ -10,9 +10,11 @@ export type UserDocument = Document & {
 
   facebook: string;
   tokens: AuthToken[];
+  devices: Device[];
 
   profile: {
     fullName: string;
+    dateOfBirth: Date
   };
 
   comparePassword: comparePasswordFunction;
@@ -25,7 +27,6 @@ export enum AuthTokenKind {
   auth = 'auth'
 }
 
-
 export interface AuthToken {
   accessToken: string;
   deviceId: string;
@@ -33,20 +34,27 @@ export interface AuthToken {
   validUntil: Date;
 }
 
+export interface Device {
+  id: string,
+  os?: string
+}
+
 const userSchema = new Schema(
   {
-    email: { type: String, unique: true },
+    // email: { type: String, unique: true },
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
 
-    facebook: String,
-    twitter: String,
-    google: String,
+    // facebook: String,
+    // twitter: String,
+    // google: String,
     tokens: Array,
+    devices: Array,
 
     profile: {
       fullName: String,
+      dateOfBirth: Date
     },
   },
   { timestamps: true }

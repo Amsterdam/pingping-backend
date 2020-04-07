@@ -1,5 +1,4 @@
 import db from './lib/db'
-import './lib/mail'
 import dotenv from "dotenv";
 
 class boot {

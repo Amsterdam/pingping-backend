@@ -1,8 +1,6 @@
 import createServer from './server'
 import boot from './boot'
 
-require("dotenv").config({ path: __dirname + '/../.env' });
-
 boot.start()
 const server = createServer()
 

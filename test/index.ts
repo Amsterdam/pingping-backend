@@ -10,7 +10,6 @@ before(async () => {
   await boot.start()
 
   try {
-    await auth.createUser('Test', 'test@test.com', await 'test')
   } catch {
   }
 })
@@ -18,6 +17,3 @@ before(async () => {
 after(async () => {
   User.deleteMany({}, (err) => console.log(err));
 })
-
-require('./auth_test')
-require('./mail_test')

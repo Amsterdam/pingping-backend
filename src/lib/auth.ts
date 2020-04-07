@@ -1,17 +1,11 @@
 import _ from "lodash";
 import jwt from "jsonwebtoken";
 import moment from "moment";
-import { randomBytes } from "crypto";
-import { promisify } from "util";
 
 import AuthenticationError from "../errors/AuthenticationError";
-import mail from "./mail";
 import { UserDocument, User, AuthToken, AuthTokenKind } from '../models/User';
 
-const SECRET = process.env.SECRET
 const TOKEN_VALIDITY_MINUTES = process.env.TOKEN_VALIDITY_MINUTES || 180;
-const PASSWORD_RESET_VALIDITY_MINUTES =
-  parseInt(process.env.PASSWORD_RESET_VALIDITY_MINUTES) || 30;
 
 class auth {
   static async login(username:string, password:string) {
@@ -32,7 +26,7 @@ class auth {
   }
 
   static signToken(user:UserDocument):string {
-    const token = jwt.sign({ userId: user._id }, SECRET);
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET);
 
     return token;
   }
@@ -75,7 +69,7 @@ class auth {
   static async getUser(headerToken:string) {
     let token:any;
     try {
-      token = jwt.verify(headerToken, SECRET);
+      token = jwt.verify(headerToken, process.env.SECRET);
       const user = await this.userQuery(token.userId);
 
       return _.pick(user, ["id", "profile", "email"]);
@@ -87,57 +81,6 @@ class auth {
 
   static async userQuery(userId:string) {
     return await User.findOne({ _id: userId });
-  }
-
-  static async requestReset(email:string) {
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      // We don't tell the user that the email wasn't found. This could be logged. @todo Log
-      return true;
-    }
-
-    const randomBytesPromisified = promisify(randomBytes);
-    const resetToken = (await randomBytesPromisified(20)).toString("hex");
-    const resetTokenExpiry = moment().add(
-      PASSWORD_RESET_VALIDITY_MINUTES,
-      "minutes"
-    );
-
-    user.passwordResetToken = resetToken;
-    user.passwordResetExpires = resetTokenExpiry.toDate();
-    user.save();
-
-    // Send email
-    mail.send(
-      email,
-      "Reset your password",
-      mail.getSimpleEmail(`
-        Your password reset token is here \n\n <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}" >Click here to reset </a>
-      `)
-    );
-
-    return true;
-  }
-
-  // @todo Log This?
-  static async setPasswordFromToken(passwordResetToken: string, newPassword: string) {
-    const user = await User.findOne({
-      passwordResetToken,
-      passwordResetExpires: { $gte: moment().subtract(PASSWORD_RESET_VALIDITY_MINUTES, 'minutes').toDate() }
-    });
-
-    if (!user) {
-      throw new Error('invalid_token');
-    }
-
-    user.password = newPassword
-    user.passwordResetToken = undefined
-    user.passwordResetExpires = undefined
-    user.save()
-
-
-    return this.signToken(user)
   }
 }
 

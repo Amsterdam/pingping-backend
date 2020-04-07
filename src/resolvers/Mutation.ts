@@ -1,10 +1,7 @@
-import _ from "lodash";
-
-import Context from "./Context";
 import ResolverMap from "./ResolverMap";
-import AuthMutations from './AuthMutations';
+import PingPingMutations from './PingPingMutations'
 
 const Mutation: ResolverMap = {
-  ...AuthMutations
+  ...PingPingMutations
 };
 export default Mutation;

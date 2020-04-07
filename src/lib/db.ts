@@ -2,15 +2,12 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 dotenv.config()
 
-const hostname = process.env.MONGO_HOSTNAME ? process.env.MONGO_HOSTNAME : 'localhost';
-const dbname = process.env.MONGO_DBNAME ? process.env.MONGO_DBNAME : 'nobli';
-
 mongoose.set('useFindAndModify', true);
 
 class db {
   static async connect () {
     console.log('Setting up mongodb connection...')
-    return await mongoose.connect(`mongodb://${hostname}:27017/${dbname}`, {
+    return await mongoose.connect(process.env.MONGO_STRING, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true
