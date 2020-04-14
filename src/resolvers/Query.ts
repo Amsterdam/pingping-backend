@@ -1,7 +1,7 @@
-import ResolverMap from './ResolverMap';
 import PingPingQueries from './PingPingQueries';
+import { QueryResolvers } from '../generated/graphql';
 
-const Query: ResolverMap = {
+const Query:QueryResolvers = {
   ...PingPingQueries,
 }
 export default Query

@@ -1,6 +1,6 @@
-import { Document, Schema, Model, model, Types } from "mongoose";
-import bcrypt from "bcrypt-nodejs";
-import crypto from "crypto";
+import { Document, Schema, model } from "mongoose";
+import { UserResponse, UserTaskResponse, UserRouteResponse, TaskStatus } from '../generated/graphql';
+import TaskUtil from "../utils/TaskUtil";
 
 export type UserDocument = Document & {
   email: string;
@@ -17,11 +17,59 @@ export type UserDocument = Document & {
     dateOfBirth: Date
   };
 
-  comparePassword: comparePasswordFunction;
-  gravatar: (size: number) => string;
+  routes: UserRoute[];
+  tasks: UserTask[];
+
+  toResponse: toResponse
 };
 
-type comparePasswordFunction = (candidatePassword: string) => Promise<boolean | Error>;
+export class UserTask {
+  taskId: string
+  answer: string
+  status: TaskStatus
+  toResponse ():UserTaskResponse {
+    console.log(this)
+    return {
+      ...TaskUtil.getDefinition(this.taskId),
+      taskId: this.taskId,
+      status: this.status,
+      answer: this.answer
+    }
+  }
+}
+
+export type UserRoute = {
+  id: string
+  title: string
+  progress: number
+  toResponse: toUserRouteResponse
+}
+
+type toResponse = () => UserResponse;
+// type toUserTaskResponse = () => UserTaskResponse;
+type toUserRouteResponse = () => UserRouteResponse;
+
+const toResponse:toResponse = function ():UserResponse {
+  return {
+    id: this._id,
+    profile: this.profile
+  }
+};
+
+// const toUserTaskResponse:toUserTaskResponse = function ():UserTaskResponse {
+//   return {
+//     ...TaskUtil.getDefinition(this._id),
+//     id: this.id,
+//     status: this.status,
+//     answer: this.answer
+//   }
+// };
+
+const toUserRouteResponse:toUserRouteResponse = function ():UserRouteResponse {
+  return {
+    title: 'Howdy'
+  }
+};
 
 export enum AuthTokenKind {
   auth = 'auth'
@@ -36,21 +84,20 @@ export interface AuthToken {
 
 export interface Device {
   id: string,
-  os?: string
+  os?: string,
+  type?: string
 }
 
 const userSchema = new Schema(
   {
-    // email: { type: String, unique: true },
-    password: String,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
-
-    // facebook: String,
-    // twitter: String,
-    // google: String,
     tokens: Array,
     devices: Array,
+    routes: Array,
+    tasks: [{
+      taskId: String,
+      answer: String,
+      status: String
+    }],
 
     profile: {
       fullName: String,
@@ -60,46 +107,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-/**
- * Password hash middleware.
- */
-userSchema.pre("save", function save(next) {
-  const user = this as UserDocument;
-  if (!user.isModified("password")) {
-    return next();
-  }
-  bcrypt.genSalt(10, (err: any, salt: any) => {
-    if (err) {
-      return next(err);
-    }
-    bcrypt.hash(user.password, salt, undefined, (err: Error, hash: string) => {
-      if (err) {
-        return next(err);
-      }
-      user.password = hash;
-      next();
-    });
-  });
-});
+userSchema.methods.toResponse = toResponse;
 
-const comparePassword: comparePasswordFunction = async function (candidatePassword) {
-  return bcrypt.compareSync(
-    candidatePassword,
-    this.password,
-  );
-};
-
-userSchema.methods.comparePassword = comparePassword;
-
-/**
- * Helper method for getting user's gravatar.
- */
-userSchema.methods.gravatar = function (size: number = 200) {
-  if (!this.email) {
-    return `https://gravatar.com/avatar/?s=${size}&d=retro`;
-  }
-  const md5 = crypto.createHash("md5").update(this.email).digest("hex");
-  return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
-};
-
+// const UserTask = model<UserTaskDocument>("UserTask", userSchema);
 export const User = model<UserDocument>("User", userSchema);

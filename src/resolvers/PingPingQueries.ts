@@ -1,18 +1,24 @@
-import ResolverMap from './ResolverMap';
-import { Route, OnBoardingStep } from '../types/global';
+import { QueryResolvers, UserRouteResponse, RouteResponse } from '../generated/graphql';
+import Context from './Context';
 
-const PingPingQueries: ResolverMap = {
-  getCurrentRoutes ():Route[] {
+const PingPingQueries:QueryResolvers = {
+  getCurrentRoutes ():Array<UserRouteResponse> {
     return []
   },
 
-  getAvailableRoutes ():Route[] {
+  getAvailableRoutes ():Array<RouteResponse> {
     return []
   },
 
-  getOnboardingSteps():OnBoardingStep[] {
-    return []
-  }
+  // getStatus (root:any, args:any, context:Context):StatusResponse {
+  //   return {
+  //     user: context.user.toResponse(),
+  //   }
+  // }
+
+// getOnboardingSteps():OnBoarding Step[] {
+  //   return []
+  // }
 }
 
 export default PingPingQueries

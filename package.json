@@ -7,8 +7,8 @@
     "dev": "nodemon",
     "prod": "NODE_ENV=production PORT=5000 node dist/index.js",
     "build": "tsc",
-    "test": "MONGO_DBNAME=pingping_test mocha -r ts-node/register test/index.ts",
-    "user:create": "node -r ts-node/register ./src/scripts/userCreate.ts"
+    "gen": "graphql-codegen --config codegen.yml",
+    "test": "MONGO_DBNAME=pingping_test mocha -r ts-node/register test/index.ts"
   },
   "dependencies": {
     "@types/bcrypt-nodejs": "^0.0.31",
@@ -31,6 +31,11 @@
     "mongoose": "^5.8.7"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.13.2",
+    "@graphql-codegen/introspection": "1.13.2",
+    "@graphql-codegen/typescript": "1.13.2",
+    "@graphql-codegen/typescript-mongodb": "1.13.2",
+    "@graphql-codegen/typescript-resolvers": "1.13.2",
     "@types/chai": "^4.2.11",
     "@types/chai-as-promised": "^7.1.2",
     "@types/mocha": "^5.2.7",
