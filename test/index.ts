@@ -16,3 +16,6 @@ before(async () => {
 after(async () => {
   User.deleteMany({}, (err) => console.log(err));
 })
+
+require('./mutations.test')
+// require('./onboarding.test')

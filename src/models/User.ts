@@ -111,6 +111,7 @@ const userSchema = new Schema(
     tokens: Array,
     devices: Array,
     routes: Array,
+    // tasks: SchemaTypes.Array<>,
     tasks: [{
       taskId: String,
       answer: String,
