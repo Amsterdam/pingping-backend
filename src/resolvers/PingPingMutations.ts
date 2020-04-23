@@ -3,7 +3,7 @@ import Context from "./Context";
 import ValidationError from "../errors/ValidationError";
 import { UserTask } from '../models/User';
 import TaskUtil from "../utils/TaskUtil";
-import { RegisterDeviceResponse, UpdateTaskResponse } from '../generated/graphql';
+import { RegisterDeviceResponse, UpdateTaskResponse, TaskStatus } from '../generated/graphql';
 import UnauthorizedError from '../errors/UnauthorizedError';
 import UserUtil from '../utils/UserUtil';
 import {
@@ -45,11 +45,17 @@ const PingPingMutations: MutationResolvers = {
       throw new Error('task_not_found')
     }
 
-    console.log(task)
+    if (task.status !== TaskStatus.PendingUser) {
+      throw new Error(`invalid task status: ${task.status}`)
+    }
+
+    await TaskUtil.handleTask(context.user, args.input.taskId, args.input.answer)
+
+    const nextTask = TaskUtil.getNextTask(context.user)
 
     return {
       previousTask: task.toResponse(),
-      nextTask: null,
+      nextTask: nextTask && nextTask.toResponse()
     };
   },
 };

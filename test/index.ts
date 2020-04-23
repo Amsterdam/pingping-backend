@@ -18,4 +18,4 @@ after(async () => {
 })
 
 require('./mutations.test')
-// require('./onboarding.test')
+require('./onboarding.test')

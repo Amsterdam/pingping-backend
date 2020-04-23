@@ -51,7 +51,7 @@ class auth {
   static async getUser(headerToken:string):Promise<UserDocument> {
     let token:any;
     try {
-      token = jwt.verify(headerToken.replace('Bearer ', ''), process.env.SECRET);
+      token = jwt.verify(headerToken.replace(/bearer/gi, '').trim(), process.env.SECRET);
       const user = await this.userQuery(token.userId);
 
       return user

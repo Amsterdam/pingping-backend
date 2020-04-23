@@ -56,6 +56,16 @@ input UpdateTaskInput {
   answer: String
 }
 
+# union AnswerInput = StringAnswerInput | BooleanAnswerInput
+
+# input StringAnswerInput {
+#   value: String
+# }
+
+# input BooleanAnswerInput {
+#   value: Boolean
+# }
+
 input RegisterDeviceInput {
   deviceId: String!
   deviceOs: String

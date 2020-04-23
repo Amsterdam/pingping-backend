@@ -1,21 +1,80 @@
 {
-  "tasks": [
+  "onboardingTasks": [
     {
-      "id": "dateOfBirth",
+      "id": "onboarding.dateOfBirth",
       "type": "DateOfBirth",
-      "title": "Wat is je geboortedatum?"
+      "title": "Wat is je geboortedatum?",
+      "initial": true,
+      "nextTaskId": "onboarding.woonAdres"
     },
     {
-      "routeTask": "FinancieleBasis:",
-      "id": "FinancieleBasis.woonAdres"
+      "routeTask": "financieleBasis.woonAdres",
+      "id": "onboarding.woonAdres",
+      "nextTaskId": "onboarding.bankRekening"
+    },
+    {
+      "routeTask": "financieleBasis.bankRekening",
+      "id": "onboarding.bankRekening",
+      "nextTaskId": "onboarding.digiD"
+    },
+    {
+      "routeTask": "financieleBasis.digiD",
+      "id": "onboarding.digiD",
+      "nextTaskId": "onboarding.zorgverzekering"
+    },
+    {
+      "routeTask": "financieleBasis.zorgverzekering",
+      "id": "onboarding.zorgverzekering",
+      "nextTaskId": "onboarding.zorgtoeslag"
+    },
+    {
+      "routeTask": "financieleBasis.zorgtoeslag",
+      "id": "onboarding.zorgtoeslag",
+      "nextTaskId": "onboarding.inkomen"
+    },
+    {
+      "routeTask": "financieleBasis.inkomen",
+      "id": "onboarding.inkomen",
+      "nextTaskId": "onboarding.waarKomtJeInkomenVandaan"
+    },
+    {
+      "routeTask": "financieleBasis.waarKomtJeInkomenVandaan",
+      "id": "onboarding.waarKomtJeInkomenVandaan",
+      "nextTaskId": "onboarding.ingeschrevenVoorWoning"
+    },
+    {
+      "routeTask": "financieleBasis.ingeschrevenVoorWoning",
+      "id": "onboarding.ingeschrevenVoorWoning",
+      "nextRoute": "FinancieleBasis"
     }
   ],
   "routes": {
-    "FinancieleBasis": {
+    "financieleBasis": {
       "title": "Test Route",
       "tasks": [
         {
           "id": "woonAdres",
+          "title": "Regel je woonadres",
+          "points": 20,
+          "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",
+          "icon": ""
+        },
+        {
+          "id": "bankRekening",
+          "title": "Regel je woonadres",
+          "points": 20,
+          "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",
+          "icon": ""
+        },
+        {
+          "id": "digiD",
+          "title": "Regel je woonadres",
+          "points": 20,
+          "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",
+          "icon": ""
+        },
+        {
+          "id": "zorgverzekering",
           "title": "Regel je woonadres",
           "points": 20,
           "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",

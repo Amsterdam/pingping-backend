@@ -19,6 +19,9 @@ export type TaskDefinition = {
   title: string
   description: string
   icon: string
+  initial?: boolean
+  nextTaskId?: string
+  nextRouteId?: string
 }
 
 export type RouteDefinition = {

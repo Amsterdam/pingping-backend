@@ -1,17 +1,22 @@
 import _ from 'lodash'
 import { TaskStatus } from '../generated/graphql';
 import { TaskDefinition, RouteDefinition } from '../types/global';
-const initialData = require('../../initialData.json')
+import { UserTask } from '../models/User';
+const initialData:InitialData = require('../../initialData.json')
+
+type InitialData = {
+  onboardingTasks: [TaskDefinition]
+}
+
+type OnboardingTaskDefinition = TaskDefinition & {
+  nextTaskId?: string
+  nextRotueId?: string
+}
 
 type TaskIdObject = {
   routeId:string
   taskId:string
 }
-
-// type InitialData = {
-//   tasks: Array<TaskDefinition>,
-//   routes: Array<RouteDefinition>
-// }
 
 class InitialDataUtil {
   // Task id can conlude a refereice to a route like this Route.taskId. Here we deconstruct it.
@@ -35,7 +40,7 @@ class InitialDataUtil {
   }
 
   static getTaskById (id:string):TaskDefinition {
-    const tasks = initialData.tasks.filter((i:TaskDefinition) => i.id === id)
+    const tasks = initialData.onboardingTasks.filter((i:TaskDefinition) => i.id === id)
     const task:TaskDefinition = _.first(tasks)
 
     if (tasks.length && !task.title) {
@@ -47,15 +52,17 @@ class InitialDataUtil {
       }
     }
 
+    if (!tasks.length) {
+      throw new Error(`task with id: ${id} not found!`)
+    }
+
     return _.first(tasks)
   }
 
-  static getInitialUserTasks ():Array<TaskDefinition> {
-    const tasks = initialData.tasks
+  static getInitialUserOnboardingTasks ():Array<any> {
+    const tasks = initialData.onboardingTasks.filter((i:any) => i.initial && i.initial === true)
 
-    console.log('init', initialData)
-
-    return tasks.map((i:TaskDefinition) => {
+    return tasks.map((i:OnboardingTaskDefinition) => {
       return {
         taskId: i.id,
         status: TaskStatus.PendingUser,

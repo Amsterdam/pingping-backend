@@ -1,8 +1,10 @@
 import _ from 'lodash'
 import { UserDocument, UserTask } from '../models/User';
-import { TaskStatus } from '../generated/graphql';
+import { TaskStatus, TaskType } from '../generated/graphql';
 import { TaskDefinition } from '../types/global';
 import InitialDataUtil from './InitialDataUtil';
+import moment from 'moment';
+import BadRequestError from '../errors/BadRequestError';
 
 class TaskUtil {
   static getDefinition (taskId:string):TaskDefinition {
@@ -39,11 +41,67 @@ class TaskUtil {
     return new UserTask(task.taskId, task.status, task.answer)
   }
 
-  static async handleTask(userTask:UserTask) {
-    switch (userTask.taskId) {
-      default:
-        // todo
+  static async updateUserTask(user:UserDocument, userTask:UserTask) {
+    let index = user.tasks.map((i:UserTask) => i.taskId).indexOf(userTask.taskId)
+
+    if (index !== -1) {
+      user.tasks.set(index, userTask)
     }
+
+    await user.save()
+  }
+
+  static getNextTask(user:UserDocument):UserTask {
+    const tasks = user.tasks.filter((t:UserTask) =>  t.status === TaskStatus.PendingUser)
+
+    if (tasks.length) {
+      const firstTask = _.first(tasks);
+      return new UserTask(firstTask.taskId, firstTask.status, firstTask.answer)
+    }
+  }
+
+  static async addNextTaskToUseer(user:UserDocument, taskId:string):Promise<UserTask> {
+    const taskDef:TaskDefinition = InitialDataUtil.getTaskById(taskId)
+
+    const userTask:UserTask = new UserTask(taskDef.id, TaskStatus.PendingUser, taskDef.type)
+    user.tasks.push(userTask)
+
+    // user.tasks.push({
+    //   taskId: taskDef.id,
+    //   status: TaskStatus.PendingUser,
+    //   type: taskDef.type
+    // })
+    await user.save()
+
+    return userTask
+  }
+
+  static async handleTask(user:UserDocument, taskId:string, answer:string):Promise<UserTask> {
+    const userTask = this.getUserTask(user, taskId)
+    const taskDef:TaskDefinition = InitialDataUtil.getTaskById(taskId)
+
+    userTask.status = TaskStatus.Completed
+    userTask.answer = answer
+
+    switch (taskDef.type) {
+      case TaskType.DateOfBirth:
+        // Check date
+        const date = moment(answer, 'YYYY-MM-DD')
+
+        if (!date.isValid()) {
+          throw new BadRequestError('invalid date input, expecting YYYY-MM-DD')
+        }
+      default:
+        // no validation
+    }
+
+    if (taskDef.nextTaskId) {
+      await this.addNextTaskToUseer(user, taskDef.nextTaskId)
+    }
+
+    await this.updateUserTask(user, userTask)
+
+    return userTask
   }
 }
 

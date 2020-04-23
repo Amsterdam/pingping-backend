@@ -1,12 +1,12 @@
 import _ from 'lodash'
 
-import { User, Device, AuthToken, AuthTokenKind } from '../models/User';
+import { User, Device, AuthToken, AuthTokenKind, UserDocument } from '../models/User';
 import InitialDataUtil from './InitialDataUtil';
 import { RegisterDeviceInput } from '../generated/graphql';
 import auth from '../lib/auth';
 
 class UserUtil {
-  static async createOrFindUser(deviceInput:RegisterDeviceInput) {
+  static async createOrFindUser(deviceInput:RegisterDeviceInput):Promise<UserDocument> {
     const userFound = await User.findOne({
       devices: { $elemMatch: { id: deviceInput.deviceId } },
     });
@@ -15,7 +15,7 @@ class UserUtil {
       return userFound
     }
 
-    const initialTasks = InitialDataUtil.getInitialUserTasks();
+    const initialTasks = InitialDataUtil.getInitialUserOnboardingTasks();
 
     const user = await User.create({
       tasks: initialTasks,

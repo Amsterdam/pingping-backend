@@ -1,7 +1,7 @@
 import { Document, Schema, model, Types, SchemaTypes } from "mongoose";
 import { UserResponse, UserTaskResponse, UserRouteResponse, TaskStatus } from '../generated/graphql';
 import TaskUtil from "../utils/TaskUtil";
-import { TaskDefinition } from 'global';
+import { TaskDefinition } from '../types/global';
 
 export type UserDocument = Document & {
   email: string;
@@ -23,7 +23,7 @@ export type UserDocument = Document & {
   goals: [],
   transactions: [],
   rewards: [],
-  tasks: UserTask[];
+  tasks: Types.Array<UserTask>;
 
   toResponse: toResponse
 };
@@ -112,6 +112,7 @@ const userSchema = new Schema(
     devices: Array,
     routes: Array,
     // tasks: SchemaTypes.Array<>,
+    // tasks: Types.Array<UserTask>
     tasks: [{
       taskId: String,
       answer: String,
@@ -128,5 +129,4 @@ const userSchema = new Schema(
 
 userSchema.methods.toResponse = toResponse;
 
-// const UserTask = model<UserTaskDocument>("UserTask", userSchema);
 export const User = model<UserDocument>("User", userSchema);
