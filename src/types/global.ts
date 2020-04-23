@@ -17,6 +17,8 @@ export type TaskDefinition = {
   routeTask?: string
   type: TaskType
   title: string
+  description: string
+  icon: string
 }
 
 export type RouteDefinition = {

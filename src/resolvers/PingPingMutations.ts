@@ -1,12 +1,11 @@
 import _ from "lodash";
 import Context from "./Context";
 import ValidationError from "../errors/ValidationError";
-import { User, Device, AuthToken, AuthTokenKind, UserTask } from "../models/User";
-import auth from "../lib/auth";
-import InitialDataUtil from "../utils/InitialDataUtil";
+import { UserTask } from '../models/User';
 import TaskUtil from "../utils/TaskUtil";
 import { RegisterDeviceResponse, UpdateTaskResponse } from '../generated/graphql';
 import UnauthorizedError from '../errors/UnauthorizedError';
+import UserUtil from '../utils/UserUtil';
 import {
   MutationResolvers,
   MutationRegisterDeviceArgs,
@@ -22,52 +21,16 @@ const PingPingMutations: MutationResolvers = {
       throw new ValidationError("deviceId is should be at least 12 characters");
     }
 
-    const userFound = await User.findOne({
-      devices: { $elemMatch: { id: args.input.deviceId } },
-    });
-
-    if (userFound) {
-      return {
-        user: {
-          id: userFound._id,
-          profile: userFound.profile
-        },
-        ..._.last(userFound.tokens),
-        currentTask: TaskUtil.getCurrentUserTask(userFound).toResponse(),
-      };
-    }
-
-    const initialTasks = InitialDataUtil.getInitialUserTasks();
-    console.log(initialTasks);
-
-    const user = await User.create({
-      tasks: initialTasks,
-    });
-    const device: Device = {
-      id: args.input.deviceId,
-      os: args.input.deviceOs,
-      type: args.input.deviceType,
-    };
-    const token: AuthToken = {
-      deviceId: args.input.deviceId,
-      kind: AuthTokenKind.auth,
-      validUntil: null,
-      accessToken: await auth.signToken(user),
-    };
-
-    user.tokens.push(token);
-    user.devices.push(device);
-    user.save();
-
-    const currentTask = <UserTask> TaskUtil.getCurrentUserTask(user)
+    const user = await UserUtil.createOrFindUser(args.input)
+    const currentTask:UserTask = TaskUtil.getCurrentUserTask(user)
 
     return {
-      accessToken: token.accessToken,
       user: {
         id: user._id,
         profile: user.profile
       },
-      currentTask: currentTask.toResponse(),
+      ..._.last(user.tokens),
+      currentTask: currentTask.toResponse()
     };
   },
 

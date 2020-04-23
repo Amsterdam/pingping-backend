@@ -1,6 +1,7 @@
-import { Document, Schema, model } from "mongoose";
+import { Document, Schema, model, Types, SchemaTypes } from "mongoose";
 import { UserResponse, UserTaskResponse, UserRouteResponse, TaskStatus } from '../generated/graphql';
 import TaskUtil from "../utils/TaskUtil";
+import { TaskDefinition } from 'global';
 
 export type UserDocument = Document & {
   email: string;
@@ -18,17 +19,34 @@ export type UserDocument = Document & {
   };
 
   routes: UserRoute[];
+  achivements: [],
+  goals: [],
+  transactions: [],
+  rewards: [],
   tasks: UserTask[];
 
   toResponse: toResponse
 };
 
+//  interface UserTaskDocument {
+//   taskId: string
+//   answer: string
+//   status: TaskStatus
+// }
+
 export class UserTask {
   taskId: string
   answer: string
   status: TaskStatus
+  task: TaskDefinition
+
+  constructor(taskId:string, status:TaskStatus, answer:string = null) {
+    this.taskId = taskId;
+    this.status = status;
+    this.answer = answer
+  }
+
   toResponse ():UserTaskResponse {
-    console.log(this)
     return {
       ...TaskUtil.getDefinition(this.taskId),
       taskId: this.taskId,
