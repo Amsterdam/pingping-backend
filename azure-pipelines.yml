@@ -1,14 +1,40 @@
+resources:
+  containers:
+    - container: node
+      image: circleci/node:12.14.1-browsers
+      options: --user 0:0
+    - container: mongo
+      image: mongo:3.6.11
+      options: --user 0:0
+
+variables:
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+container: node
 
-- script: |
-    npm install
-    npm run build
-    npm run test
-  displayName: 'npm install build and test'
+services:
+  mongo: mongo
+
+steps:
+  - task: Cache@2
+    inputs:
+      key: 'yarn | "$(Agent.OS)" | yarn.lock'
+      restoreKeys: |
+        yarn | "$(Agent.OS)"
+        yarn
+      path: $(YARN_CACHE_FOLDER)
+    displayName: Cache Yarn packages
+
+  - script: yarn install
+    displayName: Yarn install
+
+  - script: yarn build
+    displayName: Build
+
+  - script: yarn test
+    env:
+      MONGO_STRING: mongodb://localhost:27017/pingping
+    displayName: Test
