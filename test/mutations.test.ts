@@ -99,6 +99,11 @@ describe("mutations", () => {
           updateTask(input:$input) {
             nextTask {
               taskId
+              title
+            },
+            previousTask {
+              taskId
+              title
             }
           }
         }`,
@@ -110,6 +115,8 @@ describe("mutations", () => {
         .end((err: any, res: any) => {
           const errors = (res.body.errors || []).map((i: any) => i.message);
           expect(errors).to.be.an("array").that.is.empty;
+
+          console.log(res.body)
           done();
         });
     });

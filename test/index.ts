@@ -17,5 +17,7 @@ after(async () => {
   User.deleteMany({}, (err) => console.log(err));
 })
 
+require('./taskUtil.test')
+require('./initialDataUtil.test')
 require('./mutations.test')
 require('./onboarding.test')

@@ -1,20 +1,8 @@
 import { TaskType } from "../generated/graphql"
 
-// export type UserTask = {
-//   id: string
-//   type: TaskType
-//   status: TaskStatus
-//   title: string
-//   description: string
-//   icon: string
-//   answer: any
-// }
-
-// export type NullableUserTask = UserTask | null
-
 export type TaskDefinition = {
   id: string
-  routeTask?: string
+  routeTaskId?: string
   type: TaskType
   title: string
   description: string

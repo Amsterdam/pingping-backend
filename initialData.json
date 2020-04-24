@@ -8,42 +8,42 @@
       "nextTaskId": "onboarding.woonAdres"
     },
     {
-      "routeTask": "financieleBasis.woonAdres",
+      "routeTaskId": "financieleBasis.woonAdres",
       "id": "onboarding.woonAdres",
       "nextTaskId": "onboarding.bankRekening"
     },
     {
-      "routeTask": "financieleBasis.bankRekening",
+      "routeTaskId": "financieleBasis.bankRekening",
       "id": "onboarding.bankRekening",
       "nextTaskId": "onboarding.digiD"
     },
     {
-      "routeTask": "financieleBasis.digiD",
+      "routeTaskId": "financieleBasis.digiD",
       "id": "onboarding.digiD",
       "nextTaskId": "onboarding.zorgverzekering"
     },
     {
-      "routeTask": "financieleBasis.zorgverzekering",
+      "routeTaskId": "financieleBasis.zorgverzekering",
       "id": "onboarding.zorgverzekering",
       "nextTaskId": "onboarding.zorgtoeslag"
     },
     {
-      "routeTask": "financieleBasis.zorgtoeslag",
+      "routeTaskId": "financieleBasis.zorgtoeslag",
       "id": "onboarding.zorgtoeslag",
       "nextTaskId": "onboarding.inkomen"
     },
     {
-      "routeTask": "financieleBasis.inkomen",
+      "routeTaskId": "financieleBasis.inkomen",
       "id": "onboarding.inkomen",
       "nextTaskId": "onboarding.waarKomtJeInkomenVandaan"
     },
     {
-      "routeTask": "financieleBasis.waarKomtJeInkomenVandaan",
+      "routeTaskId": "financieleBasis.waarKomtJeInkomenVandaan",
       "id": "onboarding.waarKomtJeInkomenVandaan",
       "nextTaskId": "onboarding.ingeschrevenVoorWoning"
     },
     {
-      "routeTask": "financieleBasis.ingeschrevenVoorWoning",
+      "routeTaskId": "financieleBasis.ingeschrevenVoorWoning",
       "id": "onboarding.ingeschrevenVoorWoning",
       "nextRoute": "FinancieleBasis"
     }

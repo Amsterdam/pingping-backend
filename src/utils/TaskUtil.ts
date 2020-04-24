@@ -14,13 +14,25 @@ class TaskUtil {
       throw new Error(`taks definition not found for: ${taskId}`)
     }
 
-    return {
+    const def = {
       id: taskId,
       title: taskFound.title,
       description: taskFound.description,
+      routeTaskId: taskFound.routeTaskId,
+      nextTaskId: taskFound.nextTaskId,
+      nextRouteId: taskFound.nextRouteId,
       icon: taskFound.icon,
       type: taskFound.type
     }
+
+    if (taskFound.routeTaskId) {
+      return {
+        ...def,
+        ...InitialDataUtil.getTaskById(taskFound.routeTaskId),
+      }
+    }
+
+    return def
   }
 
   static getUserTask(user:UserDocument, taskId:string):UserTask {

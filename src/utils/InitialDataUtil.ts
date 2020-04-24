@@ -1,11 +1,13 @@
 import _ from 'lodash'
 import { TaskStatus } from '../generated/graphql';
 import { TaskDefinition, RouteDefinition } from '../types/global';
-import { UserTask } from '../models/User';
 const initialData:InitialData = require('../../initialData.json')
 
 type InitialData = {
-  onboardingTasks: [TaskDefinition]
+  onboardingTasks: [TaskDefinition],
+  routes: {
+    [key:string]: RouteDefinition
+  }
 }
 
 type OnboardingTaskDefinition = TaskDefinition & {
@@ -41,22 +43,23 @@ class InitialDataUtil {
 
   static getTaskById (id:string):TaskDefinition {
     const tasks = initialData.onboardingTasks.filter((i:TaskDefinition) => i.id === id)
-    const task:TaskDefinition = _.first(tasks)
+    let task:TaskDefinition = _.first(tasks)
 
-    if (tasks.length && !task.title) {
+    // If onboarding task is not found, look for a rotue task
+    if (!task) {
       const taskObj = this.deconstructTaskId(id)
       const route = this.getRouteById(taskObj.routeId)
 
       if (route) {
-        return this.getTaskFromArray(taskObj.taskId, route.tasks)
+        task = this.getTaskFromArray(taskObj.taskId, route.tasks)
       }
     }
 
-    if (!tasks.length) {
+    if (!task) {
       throw new Error(`task with id: ${id} not found!`)
     }
 
-    return _.first(tasks)
+    return task
   }
 
   static getInitialUserOnboardingTasks ():Array<any> {

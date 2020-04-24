@@ -39,7 +39,7 @@ const PingPingMutations: MutationResolvers = {
       throw new UnauthorizedError()
     }
 
-    const task = TaskUtil.getUserTask(context.user, args.input.taskId);
+    let task = TaskUtil.getUserTask(context.user, args.input.taskId);
 
     if (!task) {
       throw new Error('task_not_found')
@@ -49,13 +49,13 @@ const PingPingMutations: MutationResolvers = {
       throw new Error(`invalid task status: ${task.status}`)
     }
 
-    await TaskUtil.handleTask(context.user, args.input.taskId, args.input.answer)
+    task = await TaskUtil.handleTask(context.user, args.input.taskId, args.input.answer)
 
     const nextTask = TaskUtil.getNextTask(context.user)
 
     return {
       previousTask: task.toResponse(),
-      nextTask: nextTask && nextTask.toResponse()
+      nextTask: nextTask ? nextTask.toResponse() : undefined
     };
   },
 };
