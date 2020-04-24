@@ -37,4 +37,5 @@ steps:
   - script: yarn test
     env:
       MONGO_STRING: mongodb://mongo:27017/pingping
+      SECRET: somesillyfakesecret
     displayName: Test
