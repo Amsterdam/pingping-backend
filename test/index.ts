@@ -15,6 +15,7 @@ before(async () => {
 
 after(async () => {
   User.deleteMany({}, (err) => console.log(err));
+  process.exit()
 })
 
 require('./taskUtil.test')
