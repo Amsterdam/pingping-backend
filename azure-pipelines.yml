@@ -36,5 +36,5 @@ steps:
 
   - script: yarn test
     env:
-      MONGO_STRING: mongodb://localhost:27017/pingping
+      MONGO_STRING: mongodb://mongo:27017/pingping
     displayName: Test

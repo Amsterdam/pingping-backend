@@ -8,7 +8,7 @@
     "prod": "NODE_ENV=production PORT=5000 node dist/index.js",
     "build": "tsc",
     "gen": "graphql-codegen --config codegen.yml",
-    "test": "MONGO_DBNAME=pingping_test mocha -r ts-node/register test/index.ts"
+    "test": "mocha -r ts-node/register test/index.ts"
   },
   "dependencies": {
     "@types/bcrypt-nodejs": "^0.0.31",
