@@ -1,7 +1,7 @@
-import { Document, Schema, model, Types, SchemaTypes } from "mongoose";
-import { UserResponse, UserTaskResponse, UserRouteResponse, TaskStatus } from '../generated/graphql';
-import TaskUtil from "../utils/TaskUtil";
-import { TaskDefinition } from '../types/global';
+import { Document, Schema, model, Types } from "mongoose";
+import { UserResponse, UserRouteResponse } from '../generated/graphql';
+import { UserTask } from "./UserTask";
+import { UserAchivement } from './UserAchivement';
 
 export type UserDocument = Document & {
   email: string;
@@ -19,7 +19,7 @@ export type UserDocument = Document & {
   };
 
   routes: UserRoute[];
-  achivements: [],
+  achivements: UserAchivement[],
   goals: [],
   transactions: [],
   rewards: [],
@@ -27,34 +27,6 @@ export type UserDocument = Document & {
 
   toResponse: toResponse
 };
-
-//  interface UserTaskDocument {
-//   taskId: string
-//   answer: string
-//   status: TaskStatus
-// }
-
-export class UserTask {
-  taskId: string
-  answer: string
-  status: TaskStatus
-  task: TaskDefinition
-
-  constructor(taskId:string, status:TaskStatus, answer:string = null) {
-    this.taskId = taskId;
-    this.status = status;
-    this.answer = answer
-  }
-
-  toResponse ():UserTaskResponse {
-    return {
-      ...TaskUtil.getDefinition(this.taskId),
-      taskId: this.taskId,
-      status: this.status,
-      answer: this.answer
-    }
-  }
-}
 
 export type UserRoute = {
   id: string
@@ -64,7 +36,6 @@ export type UserRoute = {
 }
 
 type toResponse = () => UserResponse;
-// type toUserTaskResponse = () => UserTaskResponse;
 type toUserRouteResponse = () => UserRouteResponse;
 
 const toResponse:toResponse = function ():UserResponse {
@@ -74,17 +45,9 @@ const toResponse:toResponse = function ():UserResponse {
   }
 };
 
-// const toUserTaskResponse:toUserTaskResponse = function ():UserTaskResponse {
-//   return {
-//     ...TaskUtil.getDefinition(this._id),
-//     id: this.id,
-//     status: this.status,
-//     answer: this.answer
-//   }
-// };
-
 const toUserRouteResponse:toUserRouteResponse = function ():UserRouteResponse {
   return {
+    routeId: 'tempTest',
     title: 'Howdy'
   }
 };
@@ -111,11 +74,18 @@ const userSchema = new Schema(
     tokens: Array,
     devices: Array,
     routes: Array,
-    // tasks: SchemaTypes.Array<>,
-    // tasks: Types.Array<UserTask>
     tasks: [{
       taskId: String,
       answer: String,
+      status: String
+    }],
+
+    achivements: [{
+      achivementId: String
+    }],
+
+    rewards: [{
+      rewardId: String,
       status: String
     }],
 

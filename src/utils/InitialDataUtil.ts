@@ -53,6 +53,10 @@ class InitialDataUtil {
     return achivement
   }
 
+  static getAchivements ():Array<AchivementDefinition> {
+    return initialData.achivements
+  }
+
   static getTaskById (id:string):TaskDefinition {
     const tasks = initialData.onboardingTasks.filter((i:TaskDefinition) => i.id === id)
     let task:TaskDefinition = _.first(tasks)

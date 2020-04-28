@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import { UserDocument, UserTask } from '../models/User';
+import { UserDocument } from '../models/User';
+import { UserTask } from '../models/UserTask';
 import { TaskStatus, TaskType } from '../generated/graphql';
 import { TaskDefinition } from '../types/global';
 import InitialDataUtil from './InitialDataUtil';
@@ -77,12 +78,6 @@ class TaskUtil {
 
     const userTask:UserTask = new UserTask(taskDef.id, TaskStatus.PendingUser, taskDef.type)
     user.tasks.push(userTask)
-
-    // user.tasks.push({
-    //   taskId: taskDef.id,
-    //   status: TaskStatus.PendingUser,
-    //   type: taskDef.type
-    // })
     await user.save()
 
     return userTask

@@ -1,7 +1,7 @@
 import _ from "lodash";
 import Context from "./Context";
 import ValidationError from "../errors/ValidationError";
-import { UserTask } from '../models/User';
+import { UserTask } from '../models/UserTask';
 import TaskUtil from "../utils/TaskUtil";
 import { RegisterDeviceResponse, UpdateTaskResponse, TaskStatus } from '../generated/graphql';
 import UnauthorizedError from '../errors/UnauthorizedError';
