@@ -1,5 +1,13 @@
 import { TaskType } from "../generated/graphql"
 
+export type AchivementDefinition = {
+  id: string,
+  title: string,
+  description: string,
+  points: number,
+  icon: string
+}
+
 export type TaskDefinition = {
   id: string
   routeTaskId?: string

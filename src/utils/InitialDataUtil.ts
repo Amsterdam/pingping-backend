@@ -1,13 +1,14 @@
 import _ from 'lodash'
 import { TaskStatus } from '../generated/graphql';
-import { TaskDefinition, RouteDefinition } from '../types/global';
+import { TaskDefinition, RouteDefinition, AchivementDefinition } from '../types/global';
 const initialData:InitialData = require('../../initialData.json')
 
 type InitialData = {
   onboardingTasks: [TaskDefinition],
   routes: {
     [key:string]: RouteDefinition
-  }
+  },
+  achivements: [AchivementDefinition]
 }
 
 type OnboardingTaskDefinition = TaskDefinition & {
@@ -39,6 +40,17 @@ class InitialDataUtil {
 
   static getRouteById (id:string):RouteDefinition {
     return _.get(initialData, `routes.${id}`)
+  }
+
+  static getAchivementById (id:string):AchivementDefinition {
+    const achivements = initialData.achivements.filter((i:AchivementDefinition) => i.id === id)
+    let achivement:AchivementDefinition = _.first(achivements)
+
+    if (!achivement) {
+      throw new Error(`Achivement with id: ${id} not found!`)
+    }
+
+    return achivement
   }
 
   static getTaskById (id:string):TaskDefinition {
