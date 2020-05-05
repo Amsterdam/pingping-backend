@@ -20,29 +20,17 @@ export type TaskDefinition = {
   nextRouteId?: string
 }
 
+export type RewardDefinition = {
+  id: string
+  title: string
+  description: string
+  imageUrl: string
+  price: number
+  availablePerUser: number
+  available: number
+}
+
 export type RouteDefinition = {
   title: string
   tasks: Array<TaskDefinition>
 }
-
-// export type RouteStep = {
-//   name: string
-// }
-
-// export type OnBoardingStep = {
-//   name: string
-// }
-
-// export enum Locale {
-//   nl_NL = 'nl_NL'
-// }
-
-// export enum TaskType {
-//   DateOfBirth,
-//   YesNoQuestion
-// }
-
-// export enum TaskStatus {
-//   PendingUser = 'PendingUser',
-//   Completed = 'Completed'
-// }

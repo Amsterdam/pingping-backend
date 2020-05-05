@@ -1,7 +1,9 @@
 import { Document, Schema, model, Types } from "mongoose";
-import { UserResponse, UserRouteResponse } from '../generated/graphql';
+import { UserResponse } from '../generated/graphql';
 import { UserTask } from "./UserTask";
 import { UserAchivement } from './UserAchivement';
+import { UserReward } from "./UserReward";
+import { UserRoute } from "./UserRoute";
 
 export type UserDocument = Document & {
   email: string;
@@ -18,37 +20,24 @@ export type UserDocument = Document & {
     dateOfBirth: Date
   };
 
+  balance: number;
+
   routes: UserRoute[];
   achivements: UserAchivement[],
   goals: [],
   transactions: [],
-  rewards: [],
+  rewards: Types.Array<UserReward>,
   tasks: Types.Array<UserTask>;
 
   toResponse: toResponse
 };
 
-export type UserRoute = {
-  id: string
-  title: string
-  progress: number
-  toResponse: toUserRouteResponse
-}
-
 type toResponse = () => UserResponse;
-type toUserRouteResponse = () => UserRouteResponse;
 
 const toResponse:toResponse = function ():UserResponse {
   return {
     id: this._id,
     profile: this.profile
-  }
-};
-
-const toUserRouteResponse:toUserRouteResponse = function ():UserRouteResponse {
-  return {
-    routeId: 'tempTest',
-    title: 'Howdy'
   }
 };
 
@@ -86,8 +75,14 @@ const userSchema = new Schema(
 
     rewards: [{
       rewardId: String,
+      price: Number,
       status: String
     }],
+
+    balance: {
+      type: Number,
+      default: 0
+    },
 
     profile: {
       fullName: String,

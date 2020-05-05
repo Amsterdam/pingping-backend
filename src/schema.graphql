@@ -1,6 +1,7 @@
 type Mutation {
   registerDevice (input:RegisterDeviceInput!):RegisterDeviceResponse!
   updateTask (input:UpdateTaskInput!):UpdateTaskResponse!
+  claimReward (rewardId:String!):ClaimRewardResponse!
 }
 
 type Query {
@@ -9,6 +10,7 @@ type Query {
   getStatus: StatusResponse!
   getAchivements: [UserAchivementResponse]
   getAvailableRewards: [RewardResponse]
+  getCurrentRewards: [UserRewardResponse]
 }
 
 # Response
@@ -26,16 +28,38 @@ type UserTaskResponse {
 type StatusResponse {
   user: UserResponse!
   currentTask: UserTaskResponse
+  currentRoute: UserRouteResponse
+  balance: Int!
 }
 
 type RouteResponse {
   routeId: String!
   title: String!
+  description: String
+  imageUrl: String
 }
 
 type RewardResponse {
   rewardId: String!
   title: String!
+  description: String
+  imageUrl: String
+  price: Int!
+  status: RewardStatus!
+}
+
+type UserRewardResponse {
+  rewardId: String!
+  title: String!
+  description: String
+  imageUrl: String
+  status: RewardStatus!
+  barcodeImageUrl: String!
+}
+
+type ClaimRewardResponse {
+  rewardId: String!
+  status: RewardStatus!
 }
 
 type UserAchivementResponse {
@@ -52,6 +76,7 @@ type UserRouteResponse {
   routeId: String!
   title: String!
   progress: Int
+  status: UserRouteStatus!
   tasks: [UserTaskResponse]
 }
 
@@ -78,18 +103,11 @@ type UpdateTaskResponse {
 # Input
 input UpdateTaskInput {
   taskId: String!
-  answer: String
+  answer: RouteAnswer
 }
 
-# union AnswerInput = StringAnswerInput | BooleanAnswerInput
-
-# input StringAnswerInput {
-#   value: String
-# }
-
-# input BooleanAnswerInput {
-#   value: Boolean
-# }
+# Dynamic type for an task answer
+scalar RouteAnswer
 
 input RegisterDeviceInput {
   deviceId: String!
@@ -110,6 +128,16 @@ scalar Date
 # enums
 enum Locale {
   nl_NL
+}
+
+enum RouteStatus {
+  Available
+  Unavailable
+}
+
+enum UserRouteStatus {
+  Active
+  Completed
 }
 
 enum TaskStatus {
