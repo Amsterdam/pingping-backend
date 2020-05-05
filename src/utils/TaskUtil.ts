@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { UserDocument } from '../models/User';
+import { UserDocument, User } from '../models/User';
 import { UserTask } from '../models/UserTask';
 import { TaskStatus, TaskType } from '../generated/graphql';
 import { TaskDefinition } from '../types/global';
@@ -54,14 +54,14 @@ class TaskUtil {
     return new UserTask(task.taskId, task.status, task.answer)
   }
 
-  static async updateUserTask(user:UserDocument, userTask:UserTask) {
+  static updateUserTask(user:UserDocument, userTask:UserTask):UserDocument {
     let index = user.tasks.map((i:UserTask) => i.taskId).indexOf(userTask.taskId)
 
     if (index !== -1) {
       user.tasks.set(index, userTask)
     }
 
-    await user.save()
+    return user
   }
 
   static getNextTask(user:UserDocument):UserTask {
@@ -73,14 +73,13 @@ class TaskUtil {
     }
   }
 
-  static async addNextTaskToUseer(user:UserDocument, taskId:string):Promise<UserTask> {
+  static addNextTaskToUser(user:UserDocument, taskId:string):UserDocument {
     const taskDef:TaskDefinition = InitialDataUtil.getTaskById(taskId)
 
     const userTask:UserTask = new UserTask(taskDef.id, TaskStatus.PendingUser, taskDef.type)
     user.tasks.push(userTask)
-    await user.save()
 
-    return userTask
+    return user
   }
 
   static async handleTask(user:UserDocument, taskId:string, answer:string):Promise<UserTask> {
@@ -103,10 +102,11 @@ class TaskUtil {
     }
 
     if (taskDef.nextTaskId) {
-      await this.addNextTaskToUseer(user, taskDef.nextTaskId)
+      user = this.addNextTaskToUser(user, taskDef.nextTaskId)
     }
 
-    await this.updateUserTask(user, userTask)
+    user = this.updateUserTask(user, userTask)
+    await User.findOneAndUpdate({ _id: user._id }, user)
 
     return userTask
   }

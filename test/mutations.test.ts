@@ -52,13 +52,13 @@ describe("mutations", () => {
             }
           }`,
         operationName: "registerDevice",
-        variables: { input: { deviceId: "test1234test" } },
+        variables: { input: { deviceId: `test1234test:${_.random(true)}` } },
       })
       .expect("Content-Type", /json/)
       .expect(200)
       .end((err: any, res: any) => {
         const data = _.get(res, "body.data.registerDevice", {});
-        expect(_.get(data, "currentTask.taskId")).to.eq("onboarding.dateOfBirth");
+        expect(_.get(data, "currentTask.taskId")).to.eq("onboarding.dateOfBirth", 'arg');
         expect(_.get(data, "accessToken").length).to.eq(153);
         done();
       });
@@ -89,7 +89,7 @@ describe("mutations", () => {
       });
   });
   it("make secure request with token and pass", (done) => {
-    UserUtil.createOrFindUser({ deviceId: "test1234test" }).then((res) => {
+    UserUtil.createOrFindUser({ deviceId: `dfg${_.random(true)}`}).then((res) => {
       let accessToken = _.get(res, "tokens.0.accessToken");
 
       request(server)
@@ -115,8 +115,6 @@ describe("mutations", () => {
         .end((err: any, res: any) => {
           const errors = (res.body.errors || []).map((i: any) => i.message);
           expect(errors).to.be.an("array").that.is.empty;
-
-          console.log(res.body)
           done();
         });
     });
