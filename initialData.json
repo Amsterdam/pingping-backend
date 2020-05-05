@@ -73,6 +73,7 @@
           "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",
           "icon": ""
         },
+
         {
           "id": "zorgverzekering",
           "title": "Regel je woonadres",
@@ -94,6 +95,7 @@
       "description": "Deze reward kun je inwisselen bij een jongerenpunt bij jou in de buurt! Je maakt samen met een jongerenadviseur een afspraak om een dagje mee te lopen.",
       "imageUrl": null,
       "price": 20,
+      "vendor": "unknown",
       "available": 10,
       "availablePerUser": 1
     }

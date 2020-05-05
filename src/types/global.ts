@@ -25,6 +25,7 @@ export type RewardDefinition = {
   title: string
   description: string
   imageUrl: string
+  vendor: string
   price: number
   availablePerUser: number
   available: number

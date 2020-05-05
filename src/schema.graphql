@@ -1,16 +1,16 @@
 type Mutation {
   registerDevice (input:RegisterDeviceInput!):RegisterDeviceResponse!
   updateTask (input:UpdateTaskInput!):UpdateTaskResponse!
-  claimReward (rewardId:String!):ClaimRewardResponse!
+  claimReward (rewardId:String!):UserRewardResponse!
+  createGoal (input:CreateGoalInput!):UserGoalResponse!
 }
 
 type Query {
   getCurrentRoutes: [UserRouteResponse]!
   getAvailableRoutes: [RouteResponse]!
   getStatus: StatusResponse!
-  getAchivements: [UserAchivementResponse]
-  getAvailableRewards: [RewardResponse]
-  getCurrentRewards: [UserRewardResponse]
+  getAchivements: [AchivementResponse!]!
+  getAvailableRewards: [RewardResponse!]!
 }
 
 # Response
@@ -29,7 +29,6 @@ type StatusResponse {
   user: UserResponse!
   currentTask: UserTaskResponse
   currentRoute: UserRouteResponse
-  balance: Int!
 }
 
 type RouteResponse {
@@ -49,6 +48,7 @@ type RewardResponse {
 }
 
 type UserRewardResponse {
+  _id: String!
   rewardId: String!
   title: String!
   description: String
@@ -57,12 +57,14 @@ type UserRewardResponse {
   barcodeImageUrl: String!
 }
 
-type ClaimRewardResponse {
-  rewardId: String!
-  status: RewardStatus!
+type UserGoalResponse {
+  _id: String!
+  title: String!
+  description: String
+  amount: Int!
 }
 
-type UserAchivementResponse {
+type AchivementResponse {
   achivementId: String!
   title: String!
   description: String
@@ -83,6 +85,9 @@ type UserRouteResponse {
 type UserResponse {
   id: String!
   profile: UserProfileResponse!
+  balance: Int!
+  goals: [UserGoalResponse!]
+  rewards: [UserRewardResponse!]
 }
 
 type UserProfileResponse {
@@ -104,6 +109,12 @@ type UpdateTaskResponse {
 input UpdateTaskInput {
   taskId: String!
   answer: RouteAnswer
+}
+
+input CreateGoalInput {
+  title: String!
+  description: String
+  amount: Int!
 }
 
 # Dynamic type for an task answer

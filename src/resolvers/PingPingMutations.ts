@@ -3,25 +3,24 @@ import Context from "./Context";
 import ValidationError from "../errors/ValidationError";
 import { UserTask } from "../models/UserTask";
 import TaskUtil from "../utils/TaskUtil";
-import {
-  RegisterDeviceResponse,
-  UpdateTaskResponse,
-  TaskStatus,
-  ClaimRewardResponse,
-  MutationClaimRewardArgs,
-  RewardStatus,
-} from "../generated/graphql";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import UserUtil from "../utils/UserUtil";
 import {
+  RegisterDeviceResponse,
+  UpdateTaskResponse,
+  UserRewardResponse,
+  UserGoalResponse,
+  TaskStatus,
+  MutationCreateGoalArgs,
+  MutationClaimRewardArgs,
   MutationResolvers,
   MutationRegisterDeviceArgs,
   MutationUpdateTaskArgs,
 } from "../generated/graphql";
-import InitialDataUtil from "../utils/InitialDataUtil";
-import { RewardDefinition } from "global";
-import RewardUtil from '../utils/RewardUtil';
-import { UserReward } from '../models/UserReward';
+import RewardUtil from "../utils/RewardUtil";
+import { UserReward, toResponse as getUserRewardResponse } from "../models/UserReward";
+import { UserGoal } from "../models/UserGoal";
+import GoalUtil from "../utils/GoalUtil";
 
 const PingPingMutations: MutationResolvers = {
   async registerDevice(
@@ -36,10 +35,7 @@ const PingPingMutations: MutationResolvers = {
     const currentTask: UserTask = TaskUtil.getCurrentUserTask(user);
 
     return {
-      user: {
-        id: user._id,
-        profile: user.profile,
-      },
+      user: user.toResponse(),
       ..._.last(user.tokens),
       currentTask: currentTask.toResponse(),
     };
@@ -82,16 +78,40 @@ const PingPingMutations: MutationResolvers = {
     root: any,
     args: MutationClaimRewardArgs,
     context: Context
-  ): Promise<ClaimRewardResponse> {
+  ): Promise<UserRewardResponse> {
     if (!context.user) {
       throw new UnauthorizedError();
     }
 
-    const userReward:UserReward = await RewardUtil.claim(context.user, args.rewardId)
+    const userReward: UserReward = await RewardUtil.claim(
+      context.user,
+      args.rewardId
+    );
+
+    return getUserRewardResponse(userReward)
+  },
+
+  async createGoal(
+    root: any,
+    args: MutationCreateGoalArgs,
+    context: Context
+  ): Promise<UserGoalResponse> {
+    if (!context.user) {
+      throw new UnauthorizedError();
+    }
+
+    const userGoal:UserGoal = await GoalUtil.create(
+      context.user,
+      args.input.title,
+      args.input.description,
+      args.input.amount
+    );
 
     return {
-      rewardId: userReward.rewardId,
-      status: userReward.status,
+      _id: userGoal._id,
+      title: userGoal.title,
+      description: userGoal.description,
+      amount: userGoal.amount,
     };
   },
 };

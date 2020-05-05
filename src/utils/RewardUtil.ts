@@ -26,10 +26,10 @@ class RewardUtil {
     } as UserReward
 
     user.balance = user.balance - reward.price
-    user.rewards.push(userReward)
+    const res = user.rewards.push(userReward)
     user.save()
 
-    return userReward
+    return user.rewards[res - 1]
   }
 }
 

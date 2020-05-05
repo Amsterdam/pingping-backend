@@ -20,6 +20,17 @@ export type Scalars = {
 
 
 
+export type AchivementResponse = {
+   __typename?: 'AchivementResponse';
+  achivementId: Scalars['String'];
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  points: Scalars['Int'];
+  status: AchivementStatus;
+  icon?: Maybe<Scalars['String']>;
+  earnedDate?: Maybe<Scalars['Date']>;
+};
+
 export enum AchivementStatus {
   AvailableToEarn = 'AvailableToEarn',
   Earned = 'Earned'
@@ -30,10 +41,10 @@ export type AdditionalEntityFields = {
   type?: Maybe<Scalars['String']>;
 };
 
-export type ClaimRewardResponse = {
-   __typename?: 'ClaimRewardResponse';
-  rewardId: Scalars['String'];
-  status: RewardStatus;
+export type CreateGoalInput = {
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  amount: Scalars['Int'];
 };
 
 
@@ -50,7 +61,8 @@ export type Mutation = {
    __typename?: 'Mutation';
   registerDevice: RegisterDeviceResponse;
   updateTask: UpdateTaskResponse;
-  claimReward: ClaimRewardResponse;
+  claimReward: UserRewardResponse;
+  createGoal: UserGoalResponse;
 };
 
 
@@ -68,14 +80,18 @@ export type MutationClaimRewardArgs = {
   rewardId: Scalars['String'];
 };
 
+
+export type MutationCreateGoalArgs = {
+  input: CreateGoalInput;
+};
+
 export type Query = {
    __typename?: 'Query';
   getCurrentRoutes: Array<Maybe<UserRouteResponse>>;
   getAvailableRoutes: Array<Maybe<RouteResponse>>;
   getStatus: StatusResponse;
-  getAchivements?: Maybe<Array<Maybe<UserAchivementResponse>>>;
-  getAvailableRewards?: Maybe<Array<Maybe<RewardResponse>>>;
-  getCurrentRewards?: Maybe<Array<Maybe<UserRewardResponse>>>;
+  getAchivements: Array<AchivementResponse>;
+  getAvailableRewards: Array<RewardResponse>;
 };
 
 export type RegisterDeviceInput = {
@@ -129,7 +145,6 @@ export type StatusResponse = {
   user: UserResponse;
   currentTask?: Maybe<UserTaskResponse>;
   currentRoute?: Maybe<UserRouteResponse>;
-  balance: Scalars['Int'];
 };
 
 export enum TaskStatus {
@@ -153,15 +168,12 @@ export type UpdateTaskResponse = {
   nextTask?: Maybe<UserTaskResponse>;
 };
 
-export type UserAchivementResponse = {
-   __typename?: 'UserAchivementResponse';
-  achivementId: Scalars['String'];
+export type UserGoalResponse = {
+   __typename?: 'UserGoalResponse';
+  _id: Scalars['String'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  points: Scalars['Int'];
-  status: AchivementStatus;
-  icon?: Maybe<Scalars['String']>;
-  earnedDate?: Maybe<Scalars['Date']>;
+  amount: Scalars['Int'];
 };
 
 export type UserProfileResponse = {
@@ -173,10 +185,14 @@ export type UserResponse = {
    __typename?: 'UserResponse';
   id: Scalars['String'];
   profile: UserProfileResponse;
+  balance: Scalars['Int'];
+  goals?: Maybe<Array<UserGoalResponse>>;
+  rewards?: Maybe<Array<UserRewardResponse>>;
 };
 
 export type UserRewardResponse = {
    __typename?: 'UserRewardResponse';
+  _id: Scalars['String'];
   rewardId: Scalars['String'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -297,11 +313,12 @@ export type ResolversTypes = {
   UserResponse: ResolverTypeWrapper<UserResponse>,
   UserProfileResponse: ResolverTypeWrapper<UserProfileResponse>,
   Date: ResolverTypeWrapper<Scalars['Date']>,
-  UserAchivementResponse: ResolverTypeWrapper<UserAchivementResponse>,
+  UserGoalResponse: ResolverTypeWrapper<UserGoalResponse>,
+  UserRewardResponse: ResolverTypeWrapper<UserRewardResponse>,
+  RewardStatus: RewardStatus,
+  AchivementResponse: ResolverTypeWrapper<AchivementResponse>,
   AchivementStatus: AchivementStatus,
   RewardResponse: ResolverTypeWrapper<RewardResponse>,
-  RewardStatus: RewardStatus,
-  UserRewardResponse: ResolverTypeWrapper<UserRewardResponse>,
   Mutation: ResolverTypeWrapper<{}>,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
@@ -311,7 +328,7 @@ export type ResolversTypes = {
   UpdateTaskInput: UpdateTaskInput,
   RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
-  ClaimRewardResponse: ResolverTypeWrapper<ClaimRewardResponse>,
+  CreateGoalInput: CreateGoalInput,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   RouteStatus: RouteStatus,
   AdditionalEntityFields: AdditionalEntityFields,
@@ -332,11 +349,12 @@ export type ResolversParentTypes = {
   UserResponse: UserResponse,
   UserProfileResponse: UserProfileResponse,
   Date: Scalars['Date'],
-  UserAchivementResponse: UserAchivementResponse,
+  UserGoalResponse: UserGoalResponse,
+  UserRewardResponse: UserRewardResponse,
+  RewardStatus: RewardStatus,
+  AchivementResponse: AchivementResponse,
   AchivementStatus: AchivementStatus,
   RewardResponse: RewardResponse,
-  RewardStatus: RewardStatus,
-  UserRewardResponse: UserRewardResponse,
   Mutation: {},
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
@@ -346,7 +364,7 @@ export type ResolversParentTypes = {
   UpdateTaskInput: UpdateTaskInput,
   RouteAnswer: Scalars['RouteAnswer'],
   UpdateTaskResponse: UpdateTaskResponse,
-  ClaimRewardResponse: ClaimRewardResponse,
+  CreateGoalInput: CreateGoalInput,
   Boolean: Scalars['Boolean'],
   RouteStatus: RouteStatus,
   AdditionalEntityFields: AdditionalEntityFields,
@@ -387,9 +405,14 @@ export type MapDirectiveArgs = {   path: Scalars['String']; };
 
 export type MapDirectiveResolver<Result, Parent, ContextType = any, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type ClaimRewardResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['ClaimRewardResponse'] = ResolversParentTypes['ClaimRewardResponse']> = {
-  rewardId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  status?: Resolver<ResolversTypes['RewardStatus'], ParentType, ContextType>,
+export type AchivementResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['AchivementResponse'] = ResolversParentTypes['AchivementResponse']> = {
+  achivementId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  points?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  status?: Resolver<ResolversTypes['AchivementStatus'], ParentType, ContextType>,
+  icon?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  earnedDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -400,16 +423,16 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
   updateTask?: Resolver<ResolversTypes['UpdateTaskResponse'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input'>>,
-  claimReward?: Resolver<ResolversTypes['ClaimRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
+  claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
+  createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getCurrentRoutes?: Resolver<Array<Maybe<ResolversTypes['UserRouteResponse']>>, ParentType, ContextType>,
   getAvailableRoutes?: Resolver<Array<Maybe<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
-  getAchivements?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserAchivementResponse']>>>, ParentType, ContextType>,
-  getAvailableRewards?: Resolver<Maybe<Array<Maybe<ResolversTypes['RewardResponse']>>>, ParentType, ContextType>,
-  getCurrentRewards?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserRewardResponse']>>>, ParentType, ContextType>,
+  getAchivements?: Resolver<Array<ResolversTypes['AchivementResponse']>, ParentType, ContextType>,
+  getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
 };
 
 export type RegisterDeviceResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['RegisterDeviceResponse'] = ResolversParentTypes['RegisterDeviceResponse']> = {
@@ -445,7 +468,6 @@ export type StatusResponseResolvers<ContextType = any, ParentType extends Resolv
   user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
   currentTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   currentRoute?: Resolver<Maybe<ResolversTypes['UserRouteResponse']>, ParentType, ContextType>,
-  balance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -455,14 +477,11 @@ export type UpdateTaskResponseResolvers<ContextType = any, ParentType extends Re
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type UserAchivementResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserAchivementResponse'] = ResolversParentTypes['UserAchivementResponse']> = {
-  achivementId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+export type UserGoalResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserGoalResponse'] = ResolversParentTypes['UserGoalResponse']> = {
+  _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  points?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
-  status?: Resolver<ResolversTypes['AchivementStatus'], ParentType, ContextType>,
-  icon?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  earnedDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
+  amount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -474,10 +493,14 @@ export type UserProfileResponseResolvers<ContextType = any, ParentType extends R
 export type UserResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserResponse'] = ResolversParentTypes['UserResponse']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   profile?: Resolver<ResolversTypes['UserProfileResponse'], ParentType, ContextType>,
+  balance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  goals?: Resolver<Maybe<Array<ResolversTypes['UserGoalResponse']>>, ParentType, ContextType>,
+  rewards?: Resolver<Maybe<Array<ResolversTypes['UserRewardResponse']>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type UserRewardResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserRewardResponse'] = ResolversParentTypes['UserRewardResponse']> = {
+  _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   rewardId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -509,7 +532,7 @@ export type UserTaskResponseResolvers<ContextType = any, ParentType extends Reso
 };
 
 export type Resolvers<ContextType = any> = {
-  ClaimRewardResponse?: ClaimRewardResponseResolvers<ContextType>,
+  AchivementResponse?: AchivementResponseResolvers<ContextType>,
   Date?: GraphQLScalarType,
   Mutation?: MutationResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
@@ -519,7 +542,7 @@ export type Resolvers<ContextType = any> = {
   RouteResponse?: RouteResponseResolvers<ContextType>,
   StatusResponse?: StatusResponseResolvers<ContextType>,
   UpdateTaskResponse?: UpdateTaskResponseResolvers<ContextType>,
-  UserAchivementResponse?: UserAchivementResponseResolvers<ContextType>,
+  UserGoalResponse?: UserGoalResponseResolvers<ContextType>,
   UserProfileResponse?: UserProfileResponseResolvers<ContextType>,
   UserResponse?: UserResponseResolvers<ContextType>,
   UserRewardResponse?: UserRewardResponseResolvers<ContextType>,

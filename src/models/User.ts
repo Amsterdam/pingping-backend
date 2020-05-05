@@ -1,9 +1,10 @@
 import { Document, Schema, model, Types } from "mongoose";
-import { UserResponse } from '../generated/graphql';
+import { UserResponse, UserRewardResponse } from '../generated/graphql';
 import { UserTask } from "./UserTask";
 import { UserAchivement } from './UserAchivement';
-import { UserReward } from "./UserReward";
+import { UserReward, toResponse as getUserRewardResponse } from "./UserReward";
 import { UserRoute } from "./UserRoute";
+import { UserGoal } from "./UserGoal";
 
 export type UserDocument = Document & {
   email: string;
@@ -22,10 +23,10 @@ export type UserDocument = Document & {
 
   balance: number;
 
-  routes: UserRoute[];
-  achivements: UserAchivement[],
-  goals: [],
   transactions: [],
+  routes: UserRoute[];
+  achivements: Types.Array<UserAchivement>,
+  goals: Types.Array<UserGoal>,
   rewards: Types.Array<UserReward>,
   tasks: Types.Array<UserTask>;
 
@@ -37,7 +38,10 @@ type toResponse = () => UserResponse;
 const toResponse:toResponse = function ():UserResponse {
   return {
     id: this._id,
-    profile: this.profile
+    profile: this.profile,
+    balance: this.balance,
+    goals: this.goals,
+    rewards: this.rewards.map((r:UserReward) => getUserRewardResponse(r)).filter((r:UserRewardResponse) => r)
   }
 };
 
@@ -77,6 +81,12 @@ const userSchema = new Schema(
       rewardId: String,
       price: Number,
       status: String
+    }],
+
+    goals: [{
+      amount: Number,
+      title: String,
+      description: String
     }],
 
     balance: {

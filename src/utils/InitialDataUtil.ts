@@ -1,6 +1,5 @@
 import _ from "lodash";
-import { TaskStatus, RewardResponse } from "../generated/graphql";
-import { Reward } from '../models/Reward';
+import { TaskStatus } from "../generated/graphql";
 import {
   TaskDefinition,
   RouteDefinition,
