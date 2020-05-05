@@ -9,6 +9,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   Date: any;
+  RouteAnswer: any;
 };
 
 
@@ -29,6 +30,12 @@ export type AdditionalEntityFields = {
   type?: Maybe<Scalars['String']>;
 };
 
+export type ClaimRewardResponse = {
+   __typename?: 'ClaimRewardResponse';
+  rewardId: Scalars['String'];
+  status: RewardStatus;
+};
+
 
 export type LocactionInput = {
   lat?: Maybe<Scalars['Float']>;
@@ -43,6 +50,7 @@ export type Mutation = {
    __typename?: 'Mutation';
   registerDevice: RegisterDeviceResponse;
   updateTask: UpdateTaskResponse;
+  claimReward: ClaimRewardResponse;
 };
 
 
@@ -55,6 +63,11 @@ export type MutationUpdateTaskArgs = {
   input: UpdateTaskInput;
 };
 
+
+export type MutationClaimRewardArgs = {
+  rewardId: Scalars['String'];
+};
+
 export type Query = {
    __typename?: 'Query';
   getCurrentRoutes: Array<Maybe<UserRouteResponse>>;
@@ -62,6 +75,7 @@ export type Query = {
   getStatus: StatusResponse;
   getAchivements?: Maybe<Array<Maybe<UserAchivementResponse>>>;
   getAvailableRewards?: Maybe<Array<Maybe<RewardResponse>>>;
+  getCurrentRewards?: Maybe<Array<Maybe<UserRewardResponse>>>;
 };
 
 export type RegisterDeviceInput = {
@@ -83,6 +97,10 @@ export type RewardResponse = {
    __typename?: 'RewardResponse';
   rewardId: Scalars['String'];
   title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  price: Scalars['Int'];
+  status: RewardStatus;
 };
 
 export enum RewardStatus {
@@ -92,16 +110,26 @@ export enum RewardStatus {
   Expired = 'Expired'
 }
 
+
 export type RouteResponse = {
    __typename?: 'RouteResponse';
   routeId: Scalars['String'];
   title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
 };
+
+export enum RouteStatus {
+  Available = 'Available',
+  Unavailable = 'Unavailable'
+}
 
 export type StatusResponse = {
    __typename?: 'StatusResponse';
   user: UserResponse;
   currentTask?: Maybe<UserTaskResponse>;
+  currentRoute?: Maybe<UserRouteResponse>;
+  balance: Scalars['Int'];
 };
 
 export enum TaskStatus {
@@ -116,7 +144,7 @@ export enum TaskType {
 
 export type UpdateTaskInput = {
   taskId: Scalars['String'];
-  answer?: Maybe<Scalars['String']>;
+  answer?: Maybe<Scalars['RouteAnswer']>;
 };
 
 export type UpdateTaskResponse = {
@@ -147,13 +175,29 @@ export type UserResponse = {
   profile: UserProfileResponse;
 };
 
+export type UserRewardResponse = {
+   __typename?: 'UserRewardResponse';
+  rewardId: Scalars['String'];
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  status: RewardStatus;
+  barcodeImageUrl: Scalars['String'];
+};
+
 export type UserRouteResponse = {
    __typename?: 'UserRouteResponse';
   routeId: Scalars['String'];
   title: Scalars['String'];
   progress?: Maybe<Scalars['Int']>;
+  status: UserRouteStatus;
   tasks?: Maybe<Array<Maybe<UserTaskResponse>>>;
 };
+
+export enum UserRouteStatus {
+  Active = 'Active',
+  Completed = 'Completed'
+}
 
 export type UserTaskResponse = {
    __typename?: 'UserTaskResponse';
@@ -244,6 +288,7 @@ export type ResolversTypes = {
   UserRouteResponse: ResolverTypeWrapper<UserRouteResponse>,
   String: ResolverTypeWrapper<Scalars['String']>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
+  UserRouteStatus: UserRouteStatus,
   UserTaskResponse: ResolverTypeWrapper<UserTaskResponse>,
   TaskStatus: TaskStatus,
   TaskType: TaskType,
@@ -255,6 +300,8 @@ export type ResolversTypes = {
   UserAchivementResponse: ResolverTypeWrapper<UserAchivementResponse>,
   AchivementStatus: AchivementStatus,
   RewardResponse: ResolverTypeWrapper<RewardResponse>,
+  RewardStatus: RewardStatus,
+  UserRewardResponse: ResolverTypeWrapper<UserRewardResponse>,
   Mutation: ResolverTypeWrapper<{}>,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
@@ -262,9 +309,11 @@ export type ResolversTypes = {
   Float: ResolverTypeWrapper<Scalars['Float']>,
   RegisterDeviceResponse: ResolverTypeWrapper<RegisterDeviceResponse>,
   UpdateTaskInput: UpdateTaskInput,
+  RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
+  ClaimRewardResponse: ResolverTypeWrapper<ClaimRewardResponse>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
-  RewardStatus: RewardStatus,
+  RouteStatus: RouteStatus,
   AdditionalEntityFields: AdditionalEntityFields,
 };
 
@@ -274,6 +323,7 @@ export type ResolversParentTypes = {
   UserRouteResponse: UserRouteResponse,
   String: Scalars['String'],
   Int: Scalars['Int'],
+  UserRouteStatus: UserRouteStatus,
   UserTaskResponse: UserTaskResponse,
   TaskStatus: TaskStatus,
   TaskType: TaskType,
@@ -285,6 +335,8 @@ export type ResolversParentTypes = {
   UserAchivementResponse: UserAchivementResponse,
   AchivementStatus: AchivementStatus,
   RewardResponse: RewardResponse,
+  RewardStatus: RewardStatus,
+  UserRewardResponse: UserRewardResponse,
   Mutation: {},
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
@@ -292,9 +344,11 @@ export type ResolversParentTypes = {
   Float: Scalars['Float'],
   RegisterDeviceResponse: RegisterDeviceResponse,
   UpdateTaskInput: UpdateTaskInput,
+  RouteAnswer: Scalars['RouteAnswer'],
   UpdateTaskResponse: UpdateTaskResponse,
+  ClaimRewardResponse: ClaimRewardResponse,
   Boolean: Scalars['Boolean'],
-  RewardStatus: RewardStatus,
+  RouteStatus: RouteStatus,
   AdditionalEntityFields: AdditionalEntityFields,
 };
 
@@ -333,6 +387,12 @@ export type MapDirectiveArgs = {   path: Scalars['String']; };
 
 export type MapDirectiveResolver<Result, Parent, ContextType = any, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
+export type ClaimRewardResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['ClaimRewardResponse'] = ResolversParentTypes['ClaimRewardResponse']> = {
+  rewardId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  status?: Resolver<ResolversTypes['RewardStatus'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date'
 }
@@ -340,6 +400,7 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
   updateTask?: Resolver<ResolversTypes['UpdateTaskResponse'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input'>>,
+  claimReward?: Resolver<ResolversTypes['ClaimRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -348,6 +409,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
   getAchivements?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserAchivementResponse']>>>, ParentType, ContextType>,
   getAvailableRewards?: Resolver<Maybe<Array<Maybe<ResolversTypes['RewardResponse']>>>, ParentType, ContextType>,
+  getCurrentRewards?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserRewardResponse']>>>, ParentType, ContextType>,
 };
 
 export type RegisterDeviceResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['RegisterDeviceResponse'] = ResolversParentTypes['RegisterDeviceResponse']> = {
@@ -360,18 +422,30 @@ export type RegisterDeviceResponseResolvers<ContextType = any, ParentType extend
 export type RewardResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['RewardResponse'] = ResolversParentTypes['RewardResponse']> = {
   rewardId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  status?: Resolver<ResolversTypes['RewardStatus'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
+
+export interface RouteAnswerScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RouteAnswer'], any> {
+  name: 'RouteAnswer'
+}
 
 export type RouteResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['RouteResponse'] = ResolversParentTypes['RouteResponse']> = {
   routeId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type StatusResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['StatusResponse'] = ResolversParentTypes['StatusResponse']> = {
   user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
   currentTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
+  currentRoute?: Resolver<Maybe<ResolversTypes['UserRouteResponse']>, ParentType, ContextType>,
+  balance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -403,10 +477,21 @@ export type UserResponseResolvers<ContextType = any, ParentType extends Resolver
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
+export type UserRewardResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserRewardResponse'] = ResolversParentTypes['UserRewardResponse']> = {
+  rewardId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  status?: Resolver<ResolversTypes['RewardStatus'], ParentType, ContextType>,
+  barcodeImageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export type UserRouteResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserRouteResponse'] = ResolversParentTypes['UserRouteResponse']> = {
   routeId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   progress?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  status?: Resolver<ResolversTypes['UserRouteStatus'], ParentType, ContextType>,
   tasks?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserTaskResponse']>>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
@@ -424,17 +509,20 @@ export type UserTaskResponseResolvers<ContextType = any, ParentType extends Reso
 };
 
 export type Resolvers<ContextType = any> = {
+  ClaimRewardResponse?: ClaimRewardResponseResolvers<ContextType>,
   Date?: GraphQLScalarType,
   Mutation?: MutationResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   RegisterDeviceResponse?: RegisterDeviceResponseResolvers<ContextType>,
   RewardResponse?: RewardResponseResolvers<ContextType>,
+  RouteAnswer?: GraphQLScalarType,
   RouteResponse?: RouteResponseResolvers<ContextType>,
   StatusResponse?: StatusResponseResolvers<ContextType>,
   UpdateTaskResponse?: UpdateTaskResponseResolvers<ContextType>,
   UserAchivementResponse?: UserAchivementResponseResolvers<ContextType>,
   UserProfileResponse?: UserProfileResponseResolvers<ContextType>,
   UserResponse?: UserResponseResolvers<ContextType>,
+  UserRewardResponse?: UserRewardResponseResolvers<ContextType>,
   UserRouteResponse?: UserRouteResponseResolvers<ContextType>,
   UserTaskResponse?: UserTaskResponseResolvers<ContextType>,
 };

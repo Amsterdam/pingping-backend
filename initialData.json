@@ -87,6 +87,17 @@
       "tasks": []
     }
   },
+  "rewards": [
+    {
+      "id": "meelopen-met-jongeren",
+      "title": "Meelopen met jongeren- adviseur t.w.v. €50",
+      "description": "Deze reward kun je inwisselen bij een jongerenpunt bij jou in de buurt! Je maakt samen met een jongerenadviseur een afspraak om een dagje mee te lopen.",
+      "imageUrl": null,
+      "price": 20,
+      "available": 10,
+      "availablePerUser": 1
+    }
+  ],
   "achivements": [
     {
       "id": "zorgtoestlag",
