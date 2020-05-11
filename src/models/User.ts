@@ -5,6 +5,7 @@ import { UserAchivement } from './UserAchivement';
 import { UserReward, toResponse as getUserRewardResponse } from "./UserReward";
 import { UserRoute } from "./UserRoute";
 import { UserGoal } from "./UserGoal";
+import { UserTransaction } from "./UserTransaction";
 
 export type UserDocument = Document & {
   email: string;
@@ -23,7 +24,7 @@ export type UserDocument = Document & {
 
   balance: number;
 
-  transactions: [],
+  transactions: Types.Array<UserTransaction>,
   routes: UserRoute[];
   achivements: Types.Array<UserAchivement>,
   goals: Types.Array<UserGoal>,
@@ -74,7 +75,8 @@ const userSchema = new Schema(
     }],
 
     achivements: [{
-      achivementId: String
+      achivementId: String,
+      createdAt: Date
     }],
 
     rewards: [{
@@ -87,6 +89,12 @@ const userSchema = new Schema(
       amount: Number,
       title: String,
       description: String
+    }],
+
+    transactions: [{
+      title: String,
+      amount: Number,
+      balance: Number
     }],
 
     balance: {
