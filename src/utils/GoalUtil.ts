@@ -10,7 +10,7 @@ class GoalUtil {
     } as UserGoal
 
     const res = user.goals.push(goal)
-    user.save()
+    await user.save()
 
     return user.goals[res - 1]
   }

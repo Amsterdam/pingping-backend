@@ -34,7 +34,7 @@ class UserUtil {
 
     user.tokens.push(token);
     user.devices.push(device);
-    user.save();
+    await user.save();
 
     return user
   }

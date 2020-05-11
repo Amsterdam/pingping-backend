@@ -32,7 +32,7 @@ class AchivementUtil {
     } as UserAchivement
 
     const res = user.achivements.push(userAchivement)
-    user.save()
+    await user.save()
 
     return user.achivements[res - 1]
   }

@@ -27,7 +27,7 @@ class RewardUtil {
 
     user.balance = user.balance - reward.price
     const res = user.rewards.push(userReward)
-    user.save()
+    await user.save()
 
     return user.rewards[res - 1]
   }

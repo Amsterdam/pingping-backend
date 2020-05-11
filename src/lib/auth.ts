@@ -29,7 +29,7 @@ class auth {
     }
 
     user.tokens.push(tokenObj)
-    user.save()
+    await user.save()
 
     return tokenObj
   }
