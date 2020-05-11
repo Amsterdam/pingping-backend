@@ -53,11 +53,7 @@ const PingPingMutations: MutationResolvers = {
     let task = TaskUtil.getUserTask(context.user, args.input.taskId);
 
     if (!task) {
-      throw new Error("task_not_found");
-    }
-
-    if (task.status !== TaskStatus.PendingUser) {
-      throw new Error(`invalid task status: ${task.status}`);
+      throw new Error("task_not_found_on_user");
     }
 
     task = await TaskUtil.handleTask(

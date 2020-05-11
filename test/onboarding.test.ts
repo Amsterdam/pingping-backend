@@ -23,7 +23,7 @@ describe("onboarding", () => {
     done();
   });
 
-  it("handle invalid input error", async () => {
+  it("error, handle invalid input", async () => {
     const call = async () => {
       return await TaskUtil.handleTask(
         user,
@@ -33,6 +33,38 @@ describe("onboarding", () => {
     };
     await expect(call()).to.be.rejectedWith(BadRequestError);
   });
+
+  it("error, non existing", async () => {
+      const res = TaskUtil.handleTask(
+      user,
+      "jibberish",
+      "2012-24-01"
+    );
+    await expect(res).to.be.rejectedWith(/task_not_found_on_user/);
+  });
+
+  it("error, invalid status", async () => {
+    await TaskUtil.handleTask(
+      user,
+      "onboarding.dateOfBirth",
+      "2012-01-01"
+    );
+    const res = TaskUtil.handleTask(
+      user,
+      "onboarding.dateOfBirth",
+      "2012-01-01"
+    );
+    await expect(res).to.be.rejectedWith(/task_invalid_status/);
+  });
+
+  // it("non existing on user error", async () => {
+  //   const res = TaskUtil.handleTask(
+  //     user,
+  //     "onboarding.bankRekening",
+  //     "2012-24-01"
+  //   );
+  //   await expect(res).to.be.rejectedWith(/task_not_found_on_user/);
+  // });
 
   it("handle task", async () => {
     const taskOneRes = await TaskUtil.handleTask(
@@ -80,6 +112,55 @@ describe("onboarding", () => {
       );
       expect(taskOneRes.status).to.eq(TaskStatus.Completed);
       expect(taskOneRes.answer).to.eq('true');
+      const taskTwoRes = await TaskUtil.handleTask(
+        user,
+        "onboarding.digiD",
+        "true"
+      );
+      expect(taskTwoRes.status).to.eq(TaskStatus.Completed);
+      expect(taskTwoRes.answer).to.eq('true');
+
+      const taskThreeRes = await TaskUtil.handleTask(
+        user,
+        "onboarding.zorgverzekering",
+        "true"
+      );
+      expect(taskThreeRes.status).to.eq(TaskStatus.Completed);
+      expect(taskThreeRes.answer).to.eq('true');
+
+      const taskFourRes = await TaskUtil.handleTask(
+        user,
+        "onboarding.zorgtoeslag",
+        "true"
+      );
+      expect(taskFourRes.status).to.eq(TaskStatus.Completed);
+      expect(taskFourRes.answer).to.eq('true');
+
+      const taskFiveRes = await TaskUtil.handleTask(
+        user,
+        "onboarding.inkomen",
+        "true"
+      );
+      expect(taskFiveRes.status).to.eq(TaskStatus.Completed);
+      expect(taskFiveRes.answer).to.eq('true');
+
+      const taskSixRes = await TaskUtil.handleTask(
+        user,
+        "onboarding.waarKomtJeInkomenVandaan",
+        "true"
+      );
+      expect(taskSixRes.status).to.eq(TaskStatus.Completed);
+      expect(taskSixRes.answer).to.eq('true');
+
+      const taskSevenRes = await TaskUtil.handleTask(
+        user,
+        "onboarding.ingeschrevenVoorWoning",
+        "true"
+      );
+      expect(taskSevenRes.status).to.eq(TaskStatus.Completed);
+      expect(taskSevenRes.answer).to.eq('true');
+
+      expect(user.routes.length).to.eq(1)
     } catch (e) {
       console.error(e)
 

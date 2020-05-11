@@ -16,6 +16,7 @@ import { UserAchivement } from "../models/UserAchivement";
 import TaskUtil from "../utils/TaskUtil";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import RouteUtil from "../utils/RouteUtil";
+import { UserRoute } from '../models/UserRoute';
 
 const PingPingQueries: QueryResolvers = {
   getCurrentRoutes(): Array<UserRouteResponse> {
@@ -49,35 +50,35 @@ const PingPingQueries: QueryResolvers = {
     });
   },
 
-  async getAchivements(
-    root: any,
-    args: any,
-    context: Context
-  ): Promise<Array<AchivementResponse>> {
-    if (!context.user) {
-      throw new UnauthorizedError();
-    }
+  // async getAchivements(
+  //   root: any,
+  //   args: any,
+  //   context: Context
+  // ): Promise<Array<AchivementResponse>> {
+  //   if (!context.user) {
+  //     throw new UnauthorizedError();
+  //   }
 
-    const achivements = InitialDataUtil.getAchivements();
-    const userAchivements: Array<UserAchivement> =
-      context.user.achivements || [];
+  //   const achivements = InitialDataUtil.getAchivements();
+  //   const userAchivements: Array<UserAchivement> =
+  //     context.user.achivements || [];
 
-    return achivements.map((achivement: AchivementDefinition) => {
-      const userAchivementIndex = userAchivements
-        .map((i) => i.achivementId)
-        .indexOf(achivement.id);
+  //   return achivements.map((achivement: AchivementDefinition) => {
+  //     const userAchivementIndex = userAchivements
+  //       .map((i) => i.achivementId)
+  //       .indexOf(achivement.id);
 
-      return {
-        achivementId: achivement.id,
-        ...achivement,
-        status:
-          userAchivementIndex !== -1
-            ? AchivementStatus.Earned
-            : AchivementStatus.AvailableToEarn,
-        earnedDate: _.get(userAchivements, `${userAchivementIndex}.earnedDate`),
-      };
-    });
-  },
+  //     return {
+  //       achivementId: achivement.id,
+  //       ...achivement,
+  //       status:
+  //         userAchivementIndex !== -1
+  //           ? AchivementStatus.Earned
+  //           : AchivementStatus.AvailableToEarn,
+  //       earnedDate: _.get(userAchivements, `${userAchivementIndex}.earnedDate`),
+  //     };
+  //   });
+  // },
 
   getStatus(root: any, args: any, context: Context): StatusResponse {
     if (!context.user) {
@@ -85,12 +86,12 @@ const PingPingQueries: QueryResolvers = {
     }
 
     const currentTask = TaskUtil.getCurrentUserTask(context.user);
-    const currentRoute = RouteUtil.getCurrentUserRoute(context.user);
+    const routes:Array<UserRoute> = RouteUtil.getCurrentUserRoutes(context.user);
 
     return {
       user: context.user.toResponse(),
       currentTask: currentTask ? currentTask.toResponse() : null,
-      currentRoute: currentRoute ? currentRoute.toResponse() : null,
+      routes: routes.map((r:UserRoute) => r.toResponse())
     };
   },
 };

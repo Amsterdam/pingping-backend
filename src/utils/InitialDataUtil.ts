@@ -48,7 +48,13 @@ class InitialDataUtil {
   }
 
   static getRouteById(id: string): RouteDefinition {
-    return _.get(initialData, `routes.${id}`);
+    const route = _.get(initialData, `routes.${id}`);
+
+    if (!route) {
+      throw new Error(`route_not_defined`);
+    }
+
+    return route
   }
 
   static getAchivementById(id: string): AchivementDefinition {
@@ -58,7 +64,7 @@ class InitialDataUtil {
     let achivement: AchivementDefinition = _.first(achivements);
 
     if (!achivement) {
-      throw new Error(`Achivement with id: ${id} not found!`);
+      throw new Error(`achivement_not_defined`);
     }
 
     return achivement;
@@ -85,7 +91,7 @@ class InitialDataUtil {
     }
 
     if (!task) {
-      throw new Error(`task with id: ${id} not found!`);
+      throw new Error(`task_not_defined`);
     }
 
     return task;
@@ -119,7 +125,7 @@ class InitialDataUtil {
     let reward:RewardDefinition = _.first(rewards);
 
     if (!reward) {
-      throw new Error(`reward with id: ${id} not found!`);
+      throw new Error(`reward_not_defined`);
     }
 
     return reward

@@ -1,13 +1,9 @@
 import _ from 'lodash'
 import { UserDocument, User } from "../src/models/User";
 import UserUtil from "../src/utils/UserUtil";
-import { expect, assert } from 'chai';
-import AchivementUtil from '../src/utils/AchivementUtil';
-import GoalUtil from '../src/utils/GoalUtil';
+import { expect } from 'chai';
 import { describe } from 'mocha';
-import { UserGoal } from '../src/models/UserGoal';
 import RewardUtil from '../src/utils/RewardUtil';
-import BadRequestError from '../src/errors/BadRequestError';
 import TransactionUtil from '../src/utils/TransactionUtil';
 
 describe("goal", () => {
@@ -27,6 +23,11 @@ describe("goal", () => {
     User.remove(user._id)
     done();
   });
+
+  it("non existing error", async () => {
+    const res = RewardUtil.claim(user, 'mambo-jambo')
+    await expect(res).to.be.rejectedWith(/reward_not_defined/);
+  })
 
   it("claim reward", async () => {
     await TransactionUtil.addTransaction(user, 'Test', 20)

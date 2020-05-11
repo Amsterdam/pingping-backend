@@ -9,7 +9,7 @@ type Query {
   getCurrentRoutes: [UserRouteResponse]!
   getAvailableRoutes: [RouteResponse]!
   getStatus: StatusResponse!
-  getAchivements: [AchivementResponse!]!
+  # getAchivements: [AchivementResponse!]!
   getAvailableRewards: [RewardResponse!]!
 }
 
@@ -28,7 +28,7 @@ type UserTaskResponse {
 type StatusResponse {
   user: UserResponse!
   currentTask: UserTaskResponse
-  currentRoute: UserRouteResponse
+  routes: [UserRouteResponse]
 }
 
 type RouteResponse {
@@ -159,6 +159,7 @@ enum TaskStatus {
 enum TaskType {
   DateOfBirth
   YesOrNo
+  MultipleChoices
 }
 
 enum AchivementStatus {

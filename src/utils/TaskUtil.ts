@@ -6,6 +6,7 @@ import { TaskDefinition } from '../types/global';
 import InitialDataUtil from './InitialDataUtil';
 import moment from 'moment';
 import BadRequestError from '../errors/BadRequestError';
+import RouteUtil from './RouteUtil';
 
 class TaskUtil {
   static getDefinition (taskId:string):TaskDefinition {
@@ -44,7 +45,7 @@ class TaskUtil {
       return new UserTask(firstTask.taskId, firstTask.status, firstTask.answer)
     }
 
-    return null
+    throw new Error('task_not_found_on_user')
   }
 
   static getCurrentUserTask(user:UserDocument):UserTask {
@@ -86,6 +87,10 @@ class TaskUtil {
     const userTask = this.getUserTask(user, taskId)
     const taskDef:TaskDefinition = InitialDataUtil.getTaskById(taskId)
 
+    if (userTask.status !== TaskStatus.PendingUser) {
+      throw new Error(`task_invalid_status`);
+    }
+
     userTask.status = TaskStatus.Completed
     userTask.answer = answer
 
@@ -103,6 +108,11 @@ class TaskUtil {
 
     if (taskDef.nextTaskId) {
       user = this.addNextTaskToUser(user, taskDef.nextTaskId)
+    }
+
+    if (taskDef.nextRouteId) {
+      console.log('Assign route')
+      await RouteUtil.assignToUser(user, taskDef.nextRouteId)
     }
 
     user = this.updateUserTask(user, userTask)

@@ -77,32 +77,32 @@ describe("queries", () => {
       });
   });
 
-  it("get achivements", (done) => {
-    request(server)
-      .post("/")
-      .send({
-        query: `query getAchivements {
-          getAchivements {
-            title
-            description
-            icon
-            achivementId
-            status
-            points
-          }
-        }`,
-        operationName: "getAchivements"
-      })
-      .set({ 'Authorization': `Bearer ${accessToken}`, Accept: 'application/json' })
-      .expect("Content-Type", /json/)
-      .expect(200)
-      .end((err: any, res: any) => {
-        const body = res.body.data.getAchivements
-        const first:AchivementResponse = _.first(body)
-        expect(first.title).to.equal('Zorgtoeslag');
-        expect(first.description).to.equal('Zorgtoeslag');
-        expect(first.points).to.equal(20);
-        done();
-      });
-  });
+  // it("get achivements", (done) => {
+  //   request(server)
+  //     .post("/")
+  //     .send({
+  //       query: `query getAchivements {
+  //         getAchivements {
+  //           title
+  //           description
+  //           icon
+  //           achivementId
+  //           status
+  //           points
+  //         }
+  //       }`,
+  //       operationName: "getAchivements"
+  //     })
+  //     .set({ 'Authorization': `Bearer ${accessToken}`, Accept: 'application/json' })
+  //     .expect("Content-Type", /json/)
+  //     .expect(200)
+  //     .end((err: any, res: any) => {
+  //       const body = res.body.data.getAchivements
+  //       const first:AchivementResponse = _.first(body)
+  //       expect(first.title).to.equal('Zorgtoeslag');
+  //       expect(first.description).to.equal('Zorgtoeslag');
+  //       expect(first.points).to.equal(20);
+  //       done();
+  //     });
+  // });
 })

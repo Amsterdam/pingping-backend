@@ -22,6 +22,11 @@ describe("achivement", () => {
     done();
   });
 
+  it("non existing error", async () => {
+    const res = AchivementUtil.create(user, 'jibberish')
+    await expect(res).to.be.rejectedWith(/achivement_not_defined/);
+  })
+
   it("unlock achivement & check balance", async () => {
     expect(user.balance).to.eq(0, 'Initial Balance is zero')
     await AchivementUtil.create(user, 'zorgtoestlag')

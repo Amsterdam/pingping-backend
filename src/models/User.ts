@@ -25,7 +25,7 @@ export type UserDocument = Document & {
   balance: number;
 
   transactions: Types.Array<UserTransaction>,
-  routes: UserRoute[];
+  routes: Types.Array<UserRoute>;
   achivements: Types.Array<UserAchivement>,
   goals: Types.Array<UserGoal>,
   rewards: Types.Array<UserReward>,
@@ -67,7 +67,15 @@ const userSchema = new Schema(
   {
     tokens: Array,
     devices: Array,
-    routes: Array,
+    routes: [{
+      routeId: String,
+      tasks: [{
+        taskId: String,
+        answer: String,
+        status: String
+      }]
+    }],
+
     tasks: [{
       taskId: String,
       answer: String,

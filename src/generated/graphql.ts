@@ -90,7 +90,6 @@ export type Query = {
   getCurrentRoutes: Array<Maybe<UserRouteResponse>>;
   getAvailableRoutes: Array<Maybe<RouteResponse>>;
   getStatus: StatusResponse;
-  getAchivements: Array<AchivementResponse>;
   getAvailableRewards: Array<RewardResponse>;
 };
 
@@ -144,7 +143,7 @@ export type StatusResponse = {
    __typename?: 'StatusResponse';
   user: UserResponse;
   currentTask?: Maybe<UserTaskResponse>;
-  currentRoute?: Maybe<UserRouteResponse>;
+  routes?: Maybe<Array<Maybe<UserRouteResponse>>>;
 };
 
 export enum TaskStatus {
@@ -154,7 +153,8 @@ export enum TaskStatus {
 
 export enum TaskType {
   DateOfBirth = 'DateOfBirth',
-  YesOrNo = 'YesOrNo'
+  YesOrNo = 'YesOrNo',
+  MultipleChoices = 'MultipleChoices'
 }
 
 export type UpdateTaskInput = {
@@ -316,8 +316,6 @@ export type ResolversTypes = {
   UserGoalResponse: ResolverTypeWrapper<UserGoalResponse>,
   UserRewardResponse: ResolverTypeWrapper<UserRewardResponse>,
   RewardStatus: RewardStatus,
-  AchivementResponse: ResolverTypeWrapper<AchivementResponse>,
-  AchivementStatus: AchivementStatus,
   RewardResponse: ResolverTypeWrapper<RewardResponse>,
   Mutation: ResolverTypeWrapper<{}>,
   RegisterDeviceInput: RegisterDeviceInput,
@@ -330,6 +328,8 @@ export type ResolversTypes = {
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
   CreateGoalInput: CreateGoalInput,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
+  AchivementResponse: ResolverTypeWrapper<AchivementResponse>,
+  AchivementStatus: AchivementStatus,
   RouteStatus: RouteStatus,
   AdditionalEntityFields: AdditionalEntityFields,
 };
@@ -352,8 +352,6 @@ export type ResolversParentTypes = {
   UserGoalResponse: UserGoalResponse,
   UserRewardResponse: UserRewardResponse,
   RewardStatus: RewardStatus,
-  AchivementResponse: AchivementResponse,
-  AchivementStatus: AchivementStatus,
   RewardResponse: RewardResponse,
   Mutation: {},
   RegisterDeviceInput: RegisterDeviceInput,
@@ -366,6 +364,8 @@ export type ResolversParentTypes = {
   UpdateTaskResponse: UpdateTaskResponse,
   CreateGoalInput: CreateGoalInput,
   Boolean: Scalars['Boolean'],
+  AchivementResponse: AchivementResponse,
+  AchivementStatus: AchivementStatus,
   RouteStatus: RouteStatus,
   AdditionalEntityFields: AdditionalEntityFields,
 };
@@ -431,7 +431,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getCurrentRoutes?: Resolver<Array<Maybe<ResolversTypes['UserRouteResponse']>>, ParentType, ContextType>,
   getAvailableRoutes?: Resolver<Array<Maybe<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
-  getAchivements?: Resolver<Array<ResolversTypes['AchivementResponse']>, ParentType, ContextType>,
   getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
 };
 
@@ -467,7 +466,7 @@ export type RouteResponseResolvers<ContextType = any, ParentType extends Resolve
 export type StatusResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['StatusResponse'] = ResolversParentTypes['StatusResponse']> = {
   user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
   currentTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
-  currentRoute?: Resolver<Maybe<ResolversTypes['UserRouteResponse']>, ParentType, ContextType>,
+  routes?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserRouteResponse']>>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 

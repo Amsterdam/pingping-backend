@@ -1,19 +1,28 @@
 import { UserRouteResponse, UserRouteStatus } from '../generated/graphql';
+import { UserTask } from './UserTask';
+import { Types, Document } from 'mongoose';
+import RouteUtil from '../utils/RouteUtil';
 
-export type UserRoute = {
-  id: string
-  title: string
-  progress: number
+export class UserRoute {
+  routeId: string
   status: UserRouteStatus
-  toResponse: toUserRouteResponse
-}
+  progress: number
+  tasks: Types.Array<UserTask>
 
-type toUserRouteResponse = () => UserRouteResponse;
-
-const toUserRouteResponse:toUserRouteResponse = function ():UserRouteResponse {
-  return {
-    routeId: 'tempTest',
-    title: 'Howdy',
-    status: UserRouteStatus.Active
+  constructor(routeId:string, status:UserRouteStatus, tasks:Types.Array<UserTask>) {
+    this.routeId = routeId;
+    this.status = status;
+    this.tasks = tasks
+    this.progress = 0
   }
-};
+
+  toResponse ():UserRouteResponse {
+    return {
+      ...RouteUtil.getDefinition(this.routeId),
+      routeId: this.routeId,
+      status: this.status,
+      progress: this.progress,
+      tasks: []
+    }
+  }
+}

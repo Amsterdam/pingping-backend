@@ -1,11 +1,21 @@
 # PingPing Backend
 
 ## Development
-`PORT=4010 yarn dev`
+```
+yarn install
+PORT=4010 yarn dev
+```
 
 ## Deployment
-`yarn build`
-`yarn prod`
+```
+yarn build
+yarn prod
+```
+
+## Tests
+```
+yarn test
+```
 
 ## Configuration
 
@@ -24,5 +34,26 @@ Available rewards for purchase
 #### achivements
 Unlockable achivements
 
-## Tests
-`yarn test`
+## Error handling
+Errors can be return on a specific occasion, the error message will be descriptive enough to clarify the meaning of the error. Here are some of these error listed
+
+### task_not_defined
+The task requested doesn't exists in the initialData definition file
+
+### task_not_found_on_user
+The task requested doesn't  exist on the user. This means it hassn't been assigned to the user or does not exist on a route the user has assigned to him.
+
+### task_invalid_status
+The task has an invalid status on the user. This could mean the task is already completed.
+
+### achivement_not_defined
+The achivement doesn't exist in the initialData definition file
+
+### reward_not_defined
+The reward doesn't exist in the initialData definition file
+
+### route_not_defined
+The route doesn't exist in the initialData definition file
+
+## route_not_found_on_user
+The route is not found on the user

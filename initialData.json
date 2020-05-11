@@ -45,7 +45,7 @@
     {
       "routeTaskId": "financieleBasis.ingeschrevenVoorWoning",
       "id": "onboarding.ingeschrevenVoorWoning",
-      "nextRoute": "FinancieleBasis"
+      "nextRouteId": "financieleBasis"
     }
   ],
   "routes": {
