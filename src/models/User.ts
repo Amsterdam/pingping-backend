@@ -69,6 +69,7 @@ const userSchema = new Schema(
     devices: Array,
     routes: [{
       routeId: String,
+      status: String,
       tasks: [{
         taskId: String,
         answer: String,

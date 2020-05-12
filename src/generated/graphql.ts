@@ -63,6 +63,7 @@ export type Mutation = {
   updateTask: UpdateTaskResponse;
   claimReward: UserRewardResponse;
   createGoal: UserGoalResponse;
+  startRoute: UserRouteResponse;
 };
 
 
@@ -83,6 +84,11 @@ export type MutationClaimRewardArgs = {
 
 export type MutationCreateGoalArgs = {
   input: CreateGoalInput;
+};
+
+
+export type MutationStartRouteArgs = {
+  routeId: Scalars['String'];
 };
 
 export type Query = {
@@ -425,6 +431,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateTask?: Resolver<ResolversTypes['UpdateTaskResponse'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input'>>,
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
+  startRoute?: Resolver<ResolversTypes['UserRouteResponse'], ParentType, ContextType, RequireFields<MutationStartRouteArgs, 'routeId'>>,
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

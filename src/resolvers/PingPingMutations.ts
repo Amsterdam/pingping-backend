@@ -11,6 +11,7 @@ import {
   UserRewardResponse,
   UserGoalResponse,
   TaskStatus,
+  MutationStartRouteArgs,
   MutationCreateGoalArgs,
   MutationClaimRewardArgs,
   MutationResolvers,
@@ -18,9 +19,14 @@ import {
   MutationUpdateTaskArgs,
 } from "../generated/graphql";
 import RewardUtil from "../utils/RewardUtil";
-import { UserReward, toResponse as getUserRewardResponse } from "../models/UserReward";
+import {
+  UserReward,
+  toResponse as getUserRewardResponse,
+} from "../models/UserReward";
 import { UserGoal } from "../models/UserGoal";
 import GoalUtil from "../utils/GoalUtil";
+import InitialDataUtil from "../utils/InitialDataUtil";
+import RouteUtil from '../utils/RouteUtil';
 
 const PingPingMutations: MutationResolvers = {
   async registerDevice(
@@ -39,6 +45,19 @@ const PingPingMutations: MutationResolvers = {
       ..._.last(user.tokens),
       currentTask: currentTask.toResponse(),
     };
+  },
+
+  async startRoute(root: any, args: MutationStartRouteArgs, context: Context) {
+    if (!context.user) {
+      throw new UnauthorizedError();
+    }
+
+    // Check if exists
+    let routeDef = InitialDataUtil.getRouteById(args.routeId);
+
+    const userRoute = await RouteUtil.assignToUser(context.user, args.routeId)
+
+    return userRoute.toResponse()
   },
 
   async updateTask(
@@ -84,7 +103,7 @@ const PingPingMutations: MutationResolvers = {
       args.rewardId
     );
 
-    return getUserRewardResponse(userReward)
+    return getUserRewardResponse(userReward);
   },
 
   async createGoal(

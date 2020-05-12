@@ -57,3 +57,6 @@ The route doesn't exist in the initialData definition file
 
 ## route_not_found_on_user
 The route is not found on the user
+
+## route_already_assigned
+The route is already active or completed on the user

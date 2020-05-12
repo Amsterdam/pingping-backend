@@ -47,6 +47,17 @@ class InitialDataUtil {
     return _.first(tasks);
   }
 
+  static getRoutes():Array<RouteDefinition> {
+    const keys = Object.keys(initialData.routes)
+
+    return Object.values(initialData.routes).map((r:RouteDefinition, index:number) => {
+      return {
+        id: keys[index],
+        ...r
+      }
+    })
+  }
+
   static getRouteById(id: string): RouteDefinition {
     const route = _.get(initialData, `routes.${id}`);
 

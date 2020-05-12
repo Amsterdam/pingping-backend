@@ -4,6 +4,7 @@ import UserUtil from "../src/utils/UserUtil";
 import { expect } from 'chai';
 import RouteUtil from '../src/utils/RouteUtil';
 import { UserRoute } from '../src/models/UserRoute';
+import { RouteStatus, UserRouteStatus } from '../src/generated/graphql';
 
 describe("route", () => {
   let accessToken: any;
@@ -35,5 +36,7 @@ describe("route", () => {
 
     const route:UserRoute = _.first(user.routes)
     expect(route.routeId).to.eq('financieleBasis')
+    expect(route.status).to.eq(UserRouteStatus.Active)
+    expect(route.tasks.length).to.eq(0)
   });
 });

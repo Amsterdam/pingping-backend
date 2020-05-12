@@ -11,7 +11,7 @@ import {
 } from "../generated/graphql";
 import Context from "./Context";
 import InitialDataUtil from "../utils/InitialDataUtil";
-import { AchivementDefinition, RewardDefinition } from "global";
+import { AchivementDefinition, RewardDefinition, RouteDefinition } from 'global';
 import { UserAchivement } from "../models/UserAchivement";
 import TaskUtil from "../utils/TaskUtil";
 import UnauthorizedError from "../errors/UnauthorizedError";
@@ -24,7 +24,14 @@ const PingPingQueries: QueryResolvers = {
   },
 
   getAvailableRoutes(): Array<RouteResponse> {
-    return [];
+    const routeDefs = InitialDataUtil.getRoutes()
+
+    return routeDefs.map((def:RouteDefinition) => {
+      return {
+        routeId: def.id,
+        title: def.title
+      }
+    });
   },
 
   getAvailableRewards(
@@ -91,7 +98,7 @@ const PingPingQueries: QueryResolvers = {
     return {
       user: context.user.toResponse(),
       currentTask: currentTask ? currentTask.toResponse() : null,
-      routes: routes.map((r:UserRoute) => r.toResponse())
+      routes: routes.map((route:UserRoute) => route.toResponse())
     };
   },
 };

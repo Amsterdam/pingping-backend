@@ -50,9 +50,15 @@ class RouteUtil {
   static getCurrentUserRoutes(user: UserDocument):Array<UserRoute> {
     const routes = user.routes.filter(
       (r: UserRoute) => r.status === UserRouteStatus.Active
-    );
+    ).map((r:UserRoute) => {
+      return r as UserRoute
+    });
 
     return routes;
+  }
+
+  static routeExistsOnUser (user:UserDocument, routeId:string):boolean {
+    return user.routes.map(r => r.routeId).indexOf(routeId) !== -1
   }
 
   static async assignToUser(
@@ -61,11 +67,17 @@ class RouteUtil {
   ): Promise<UserRoute> {
     InitialDataUtil.getRouteById(routeId);
 
-    const userRoute: UserRoute = {
-      routeId,
-      tasks: new Types.Array(),
-      status: UserRouteStatus.Active,
-    } as UserRoute;
+    if (this.routeExistsOnUser(user, routeId) === true) {
+      throw new Error('route_already_assigned')
+    }
+
+    // const userRoudte: UserRoute = {
+    //   routeId,
+    //   tasks: new Types.Array(),
+    //   status: UserRouteStatus.Active,
+    // } as UserRoute;
+
+    const userRoute = new UserRoute(routeId, UserRouteStatus.Active, new Types.Array())
 
     user.routes.push(userRoute);
     await user.save();

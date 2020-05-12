@@ -32,6 +32,7 @@ export type RewardDefinition = {
 }
 
 export type RouteDefinition = {
+  id?: string,
   title: string
   tasks: Array<TaskDefinition>
 }

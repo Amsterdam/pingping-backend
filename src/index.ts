@@ -15,7 +15,7 @@ server.start(
     playground: process.env.NODE_ENV === "production" ? false : "/",
   },
   (server: any) => {
-    console.log(`Server started: ${server.port} ${server.address}`);
+    console.log(`Server started: ${server.port}`);
     return server
   }
 );
