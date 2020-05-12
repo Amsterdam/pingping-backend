@@ -295,6 +295,18 @@
             "deprecationReason": null
           },
           {
+            "name": "media",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "answer",
             "description": null,
             "args": [],
@@ -2384,29 +2396,6 @@
           },
           {
             "name": "Earned",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "RouteStatus",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "Available",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "Unavailable",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

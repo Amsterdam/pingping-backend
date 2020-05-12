@@ -83,6 +83,14 @@ class TaskUtil {
     return user
   }
 
+  static getNextTaskId (answer:string, nextTask:string|object):string {
+    if (typeof nextTask === 'string') {
+      return nextTask
+    }
+
+    return _.get(nextTask, answer.toLowerCase(), _.first(Object.values(nextTask)))
+  }
+
   static async handleTask(user:UserDocument, taskId:string, answer:string):Promise<UserTask> {
     const userTask = this.getUserTask(user, taskId)
     const taskDef:TaskDefinition = InitialDataUtil.getTaskById(taskId)
@@ -107,11 +115,10 @@ class TaskUtil {
     }
 
     if (taskDef.nextTaskId) {
-      user = this.addNextTaskToUser(user, taskDef.nextTaskId)
+      user = this.addNextTaskToUser(user, this.getNextTaskId(answer, taskDef.nextTaskId))
     }
 
     if (taskDef.nextRouteId) {
-      console.log('Assign route')
       await RouteUtil.assignToUser(user, taskDef.nextRouteId)
     }
 

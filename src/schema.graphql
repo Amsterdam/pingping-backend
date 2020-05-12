@@ -21,6 +21,7 @@ type UserTaskResponse {
   title: String!
   status: TaskStatus!
   description: String
+  media: String
   answer: String
   icon: String
   type: TaskType!

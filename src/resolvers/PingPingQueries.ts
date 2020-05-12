@@ -98,7 +98,11 @@ const PingPingQueries: QueryResolvers = {
     return {
       user: context.user.toResponse(),
       currentTask: currentTask ? currentTask.toResponse() : null,
-      routes: routes.map((route:UserRoute) => route.toResponse())
+      routes: routes.map((route:UserRoute) => {
+        const routeObj = new UserRoute(route.routeId, route.status, route.tasks)
+        // console.log(route)
+        return (routeObj as UserRoute).toResponse()
+      })
     };
   },
 };

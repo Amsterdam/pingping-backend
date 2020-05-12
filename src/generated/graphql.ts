@@ -140,11 +140,6 @@ export type RouteResponse = {
   imageUrl?: Maybe<Scalars['String']>;
 };
 
-export enum RouteStatus {
-  Available = 'Available',
-  Unavailable = 'Unavailable'
-}
-
 export type StatusResponse = {
    __typename?: 'StatusResponse';
   user: UserResponse;
@@ -227,6 +222,7 @@ export type UserTaskResponse = {
   title: Scalars['String'];
   status: TaskStatus;
   description?: Maybe<Scalars['String']>;
+  media?: Maybe<Scalars['String']>;
   answer?: Maybe<Scalars['String']>;
   icon?: Maybe<Scalars['String']>;
   type: TaskType;
@@ -336,7 +332,6 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   AchivementResponse: ResolverTypeWrapper<AchivementResponse>,
   AchivementStatus: AchivementStatus,
-  RouteStatus: RouteStatus,
   AdditionalEntityFields: AdditionalEntityFields,
 };
 
@@ -372,7 +367,6 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'],
   AchivementResponse: AchivementResponse,
   AchivementStatus: AchivementStatus,
-  RouteStatus: RouteStatus,
   AdditionalEntityFields: AdditionalEntityFields,
 };
 
@@ -530,6 +524,7 @@ export type UserTaskResponseResolvers<ContextType = any, ParentType extends Reso
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  media?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   answer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   icon?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   type?: Resolver<ResolversTypes['TaskType'], ParentType, ContextType>,

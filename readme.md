@@ -17,6 +17,38 @@ yarn prod
 yarn test
 ```
 
+## Enums
+### TaskType
+Tasks have 3 different types:
+#### DateOfBirth
+expected value of answer when updating task is `1996-12-31`
+
+#### YesOrNo
+expected value of answer when updating task is `yes` or `no`
+
+#### MultipleChoices
+expected value of answer comma separated values `choiceOne,choiseTwo`
+
+### TaskStatus
+#### Completed
+Completed by the user
+
+#### PendingUser
+Waiting for action by the user
+
+### RewardStatus
+#### AvailableToClaim
+The reward can be claimed by the user and he has sufficient balance
+
+#### Claimed
+The reward is claimed by the user but not used
+
+#### ClaimedAndUsed
+The reward is claimed and used by the user
+
+#### Expired
+The reward is expired, cannot be claimed or used
+
 ## Configuration
 
 ### Initial Data

@@ -115,7 +115,7 @@ const PingPingMutations: MutationResolvers = {
       throw new UnauthorizedError();
     }
 
-    const userGoal:UserGoal = await GoalUtil.create(
+    const userGoal: UserGoal = await GoalUtil.create(
       context.user,
       args.input.title,
       args.input.description,
