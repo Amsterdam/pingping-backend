@@ -7,7 +7,6 @@ import InitialDataUtil from "./InitialDataUtil";
 import moment from "moment";
 import BadRequestError from "../errors/BadRequestError";
 import RouteUtil from "./RouteUtil";
-import { type } from "os";
 
 class TaskUtil {
   static getDefinition(taskId: string): TaskDefinition {
@@ -20,6 +19,7 @@ class TaskUtil {
     const def = {
       id: taskId,
       title: taskFound.title,
+      choices: taskFound.choices,
       description: taskFound.description,
       routeTaskId: taskFound.routeTaskId,
       nextTaskId: taskFound.nextTaskId,
