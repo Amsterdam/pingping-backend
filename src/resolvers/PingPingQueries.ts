@@ -87,7 +87,7 @@ const PingPingQueries: QueryResolvers = {
   //   });
   // },
 
-  getStatus(root: any, args: any, context: Context): StatusResponse {
+  getStatus(root: any, args: any, context:Context): StatusResponse {
     if (!context.user) {
       throw new UnauthorizedError();
     }
@@ -101,7 +101,7 @@ const PingPingQueries: QueryResolvers = {
       routes: routes.map((route:UserRoute) => {
         const routeObj = new UserRoute(route.routeId, route.status, route.tasks)
         // console.log(route)
-        return (routeObj as UserRoute).toResponse()
+        return (routeObj as UserRoute).toResponse(context.user)
       })
     };
   },

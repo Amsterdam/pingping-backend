@@ -71,12 +71,6 @@ class RouteUtil {
       throw new Error('route_already_assigned')
     }
 
-    // const userRoudte: UserRoute = {
-    //   routeId,
-    //   tasks: new Types.Array(),
-    //   status: UserRouteStatus.Active,
-    // } as UserRoute;
-
     const userRoute = new UserRoute(routeId, UserRouteStatus.Active, new Types.Array())
 
     user.routes.push(userRoute);

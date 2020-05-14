@@ -11,6 +11,10 @@
       "routeTaskId": "financieleBasis.woonAdres",
       "id": "onboarding.woonAdres",
       "type": "YesOrNo",
+      "choices": {
+        "yes": "Ja ik heb een vast adres",
+        "no": "Nee nog niet"
+      },
       "nextTaskId": {
         "yes": "onboarding.bankRekening",
         "no": "onboarding.zorgverzekering"
@@ -20,6 +24,10 @@
       "routeTaskId": "financieleBasis.bankRekening",
       "id": "onboarding.bankRekening",
       "type": "YesOrNo",
+      "choices": {
+        "yes": "Ja ik heb een bankrekening",
+        "no": "Nee nog niet"
+      },
       "nextTaskId": "onboarding.digiD"
     },
     {
@@ -32,18 +40,30 @@
       "routeTaskId": "financieleBasis.zorgverzekering",
       "id": "onboarding.zorgverzekering",
       "type": "YesOrNo",
+      "choices": {
+        "yes": "Ja ik ben verzekerd",
+        "no": "Nee nog niet"
+      },
       "nextTaskId": "onboarding.zorgtoeslag"
     },
     {
       "routeTaskId": "financieleBasis.zorgtoeslag",
       "id": "onboarding.zorgtoeslag",
       "type": "YesOrNo",
+      "choices": {
+        "yes": "Ja ik heb",
+        "no": "Nee nog niet"
+      },
       "nextTaskId": "onboarding.inkomen"
     },
     {
       "routeTaskId": "financieleBasis.inkomen",
       "id": "onboarding.inkomen",
       "type": "YesOrNo",
+      "choices": {
+        "yes": "Ja ik heb een inkomen",
+        "no": "Nee nog niet"
+      },
       "nextTaskId": {
         "yes": "onboarding.waarKomtJeInkomenVandaan",
         "no": "onboarding.ingeschrevenVoorWoning"
@@ -59,12 +79,16 @@
       "routeTaskId": "financieleBasis.ingeschrevenVoorWoning",
       "id": "onboarding.ingeschrevenVoorWoning",
       "type": "YesOrNo",
+      "choices": {
+        "yes": "Ja ik heb me ingeschreven",
+        "no": "Nee nog niet"
+      },
       "nextRouteId": "financieleBasis"
     }
   ],
   "routes": {
     "financieleBasis": {
-      "title": "Test Route",
+      "title": "Financiële Basis",
       "tasks": [
         {
           "id": "woonAdres",
@@ -109,7 +133,7 @@
         {
           "id": "inkomen",
           "title": "Heb je al een inkomen?",
-          "choices": [],
+          "choices": {},
           "media": "https://www.youtube.com/embed/JBumC4H-NBw",
           "points": 20,
           "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",
@@ -119,11 +143,11 @@
           "id": "ingeschrevenVoorWoning",
           "title": "Schrijf je in voor een woning",
           "media": "https://www.youtube.com/embed/NvqfRJFJlpQ",
-          "choices": [
-            "Een bijbaan",
-            "Studiefinanciering",
-            "Ouders / Familie"
-          ],
+          "choices": {
+            "baan": "Een bijbaan",
+            "studiefinanciering": "Studiefinanciering",
+            "ouders_familie": "Ouders / Familie"
+          },
           "points": 20,
           "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",
           "icon": ""

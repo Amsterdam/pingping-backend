@@ -6,6 +6,7 @@ import { UserDocument, User } from '../src/models/User';
 import TaskUtil from "../src/utils/TaskUtil";
 import { TaskStatus } from "../src/generated/graphql";
 import BadRequestError from "../src/errors/BadRequestError";
+import { UserRoute } from '../src/models/UserRoute';
 
 describe("onboarding", () => {
   let accessToken: any;
@@ -161,6 +162,9 @@ describe("onboarding", () => {
       expect(taskSevenRes.answer).to.eq('yes');
 
       expect(user.routes.length).to.eq(1)
+
+      const route = new UserRoute(user.routes[0].routeId, user.routes[0].status, user.routes[0].tasks)
+      expect(route.toResponse(user).tasks.filter(i => i.status === TaskStatus.PendingUser).length).to.eq(0)
     } catch (e) {
       console.error(e)
 
@@ -180,28 +184,15 @@ describe("onboarding", () => {
         "onboarding.woonAdres",
         'no'
       );
-      expect(taskZeroRes.status).to.eq(TaskStatus.Completed);
+      expect(taskZeroRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskZeroRes.answer).to.eq('no');
-      // const taskOneRes = await TaskUtil.handleTask(
-      //   user,
-      //   "onboarding.bankRekening",
-      //   "yes"
-      // );
-      // expect(taskOneRes.status).to.eq(TaskStatus.Completed);
-      // expect(taskOneRes.answer).to.eq('true');
-      // const taskTwoRes = await TaskUtil.handleTask(
-      //   user,
-      //   "onboarding.digiD",
-      //   "true"
-      // );
-      // expect(taskTwoRes.status).to.eq(TaskStatus.Completed);
-      // expect(taskTwoRes.answer).to.eq('true');
+
       const taskThreeRes = await TaskUtil.handleTask(
         user,
         "onboarding.zorgverzekering",
         "no"
       );
-      expect(taskThreeRes.status).to.eq(TaskStatus.Completed);
+      expect(taskThreeRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskThreeRes.answer).to.eq('no');
 
       const taskFourRes = await TaskUtil.handleTask(
@@ -209,7 +200,7 @@ describe("onboarding", () => {
         "onboarding.zorgtoeslag",
         "no"
       );
-      expect(taskFourRes.status).to.eq(TaskStatus.Completed);
+      expect(taskFourRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskFourRes.answer).to.eq('no');
 
       const taskFiveRes = await TaskUtil.handleTask(
@@ -217,7 +208,7 @@ describe("onboarding", () => {
         "onboarding.inkomen",
         "no"
       );
-      expect(taskFiveRes.status).to.eq(TaskStatus.Completed);
+      expect(taskFiveRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskFiveRes.answer).to.eq('no');
 
       const taskSevenRes = await TaskUtil.handleTask(
@@ -225,10 +216,13 @@ describe("onboarding", () => {
         "onboarding.ingeschrevenVoorWoning",
         "no"
       );
-      expect(taskSevenRes.status).to.eq(TaskStatus.Completed);
+      expect(taskSevenRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskSevenRes.answer).to.eq('no');
 
       expect(user.routes.length).to.eq(1)
+
+      const route = new UserRoute(user.routes[0].routeId, user.routes[0].status, user.routes[0].tasks)
+      expect(route.toResponse(user).tasks.filter(i => i.status === TaskStatus.PendingUser).length).to.eq(7)
     } catch (e) {
       console.error(e)
 

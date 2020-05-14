@@ -24,6 +24,7 @@ type UserTaskResponse {
   media: String
   answer: String
   icon: String
+  choices : Choices
   type: TaskType!
   progressPercentile: Int
 }
@@ -111,7 +112,7 @@ type UpdateTaskResponse {
 # Input
 input UpdateTaskInput {
   taskId: String!
-  answer: RouteAnswer
+  answer: String
 }
 
 input CreateGoalInput {
@@ -122,6 +123,7 @@ input CreateGoalInput {
 
 # Dynamic type for an task answer
 scalar RouteAnswer
+scalar Choices
 
 input RegisterDeviceInput {
   deviceId: String!
@@ -151,6 +153,7 @@ enum UserRouteStatus {
 
 enum TaskStatus {
   Completed
+  Dismissed
   PendingUser
 }
 

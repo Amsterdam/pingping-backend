@@ -57,7 +57,7 @@ const PingPingMutations: MutationResolvers = {
 
     const userRoute = await RouteUtil.assignToUser(context.user, args.routeId)
 
-    return userRoute.toResponse()
+    return userRoute.toResponse(context.user)
   },
 
   async updateTask(

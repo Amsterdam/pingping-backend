@@ -149,6 +149,7 @@ export type StatusResponse = {
 
 export enum TaskStatus {
   Completed = 'Completed',
+  Dismissed = 'Dismissed',
   PendingUser = 'PendingUser'
 }
 
