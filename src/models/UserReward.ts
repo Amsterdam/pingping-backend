@@ -1,4 +1,4 @@
-import { RewardStatus, UserRewardResponse } from "../generated/graphql";
+import { RewardStatus, UserRewardResponse } from "@models";
 import { Document } from "mongoose";
 import InitialDataUtil from "../utils/InitialDataUtil";
 

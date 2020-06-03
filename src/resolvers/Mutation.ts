@@ -1,5 +1,5 @@
 import PingPingMutations from './PingPingMutations'
-import { MutationResolvers } from '../generated/graphql';
+import { MutationResolvers } from '@models';
 
 const Mutation:MutationResolvers = {
   ...PingPingMutations

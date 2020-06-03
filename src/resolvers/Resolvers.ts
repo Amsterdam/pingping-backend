@@ -1,6 +1,6 @@
 import Query from './Query';
 import Mutation from './Mutation';
-import { IResolvers } from '../generated/graphql';
+import { IResolvers } from '@models';
 
 const resolvers:IResolvers  = {
   Query,

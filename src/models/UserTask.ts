@@ -1,6 +1,6 @@
-import { TaskStatus, UserTaskResponse } from '../generated/graphql';
-import { TaskDefinition } from 'global';
 import TaskUtil from '../utils/TaskUtil';
+import { TaskStatus, UserTaskResponse } from '@models';
+import { TaskDefinition } from '../types/global';
 
 export class UserTask {
   taskId: string

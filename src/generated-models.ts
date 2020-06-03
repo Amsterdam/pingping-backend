@@ -1,6 +1,9 @@
+/* tslint:ignore */
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import { ModuleContext } from '@graphql-modules/core';
 export type Maybe<T> = T | null;
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
+
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -8,6 +11,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Choices: any;
   Date: any;
   RouteAnswer: any;
 };
@@ -41,6 +45,7 @@ export type AdditionalEntityFields = {
   type?: Maybe<Scalars['String']>;
 };
 
+
 export type CreateGoalInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -59,16 +64,10 @@ export enum Locale {
 
 export type Mutation = {
    __typename?: 'Mutation';
-  registerDevice: RegisterDeviceResponse;
   updateTask: UpdateTaskResponse;
-  claimReward: UserRewardResponse;
-  createGoal: UserGoalResponse;
   startRoute: UserRouteResponse;
-};
-
-
-export type MutationRegisterDeviceArgs = {
-  input: RegisterDeviceInput;
+  claimReward: UserRewardResponse;
+  registerDevice: RegisterDeviceResponse;
 };
 
 
@@ -77,26 +76,26 @@ export type MutationUpdateTaskArgs = {
 };
 
 
+export type MutationStartRouteArgs = {
+  routeId: Scalars['String'];
+};
+
+
 export type MutationClaimRewardArgs = {
   rewardId: Scalars['String'];
 };
 
 
-export type MutationCreateGoalArgs = {
-  input: CreateGoalInput;
-};
-
-
-export type MutationStartRouteArgs = {
-  routeId: Scalars['String'];
+export type MutationRegisterDeviceArgs = {
+  input: RegisterDeviceInput;
 };
 
 export type Query = {
    __typename?: 'Query';
   getCurrentRoutes: Array<Maybe<UserRouteResponse>>;
   getAvailableRoutes: Array<Maybe<RouteResponse>>;
-  getStatus: StatusResponse;
   getAvailableRewards: Array<RewardResponse>;
+  getStatus: StatusResponse;
 };
 
 export type RegisterDeviceInput = {
@@ -161,7 +160,7 @@ export enum TaskType {
 
 export type UpdateTaskInput = {
   taskId: Scalars['String'];
-  answer?: Maybe<Scalars['RouteAnswer']>;
+  answer?: Maybe<Scalars['String']>;
 };
 
 export type UpdateTaskResponse = {
@@ -226,9 +225,11 @@ export type UserTaskResponse = {
   media?: Maybe<Scalars['String']>;
   answer?: Maybe<Scalars['String']>;
   icon?: Maybe<Scalars['String']>;
+  choices?: Maybe<Scalars['Choices']>;
   type: TaskType;
   progressPercentile?: Maybe<Scalars['Int']>;
 };
+
 
 
 
@@ -310,30 +311,31 @@ export type ResolversTypes = {
   UserRouteStatus: UserRouteStatus,
   UserTaskResponse: ResolverTypeWrapper<UserTaskResponse>,
   TaskStatus: TaskStatus,
+  Choices: ResolverTypeWrapper<Scalars['Choices']>,
   TaskType: TaskType,
   RouteResponse: ResolverTypeWrapper<RouteResponse>,
+  RewardResponse: ResolverTypeWrapper<RewardResponse>,
+  RewardStatus: RewardStatus,
   StatusResponse: ResolverTypeWrapper<StatusResponse>,
   UserResponse: ResolverTypeWrapper<UserResponse>,
   UserProfileResponse: ResolverTypeWrapper<UserProfileResponse>,
   Date: ResolverTypeWrapper<Scalars['Date']>,
   UserGoalResponse: ResolverTypeWrapper<UserGoalResponse>,
   UserRewardResponse: ResolverTypeWrapper<UserRewardResponse>,
-  RewardStatus: RewardStatus,
-  RewardResponse: ResolverTypeWrapper<RewardResponse>,
   Mutation: ResolverTypeWrapper<{}>,
+  UpdateTaskInput: UpdateTaskInput,
+  UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
   Float: ResolverTypeWrapper<Scalars['Float']>,
   RegisterDeviceResponse: ResolverTypeWrapper<RegisterDeviceResponse>,
-  UpdateTaskInput: UpdateTaskInput,
-  RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
-  UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
-  CreateGoalInput: CreateGoalInput,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   AchivementResponse: ResolverTypeWrapper<AchivementResponse>,
   AchivementStatus: AchivementStatus,
+  RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
   AdditionalEntityFields: AdditionalEntityFields,
+  CreateGoalInput: CreateGoalInput,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -345,68 +347,69 @@ export type ResolversParentTypes = {
   UserRouteStatus: UserRouteStatus,
   UserTaskResponse: UserTaskResponse,
   TaskStatus: TaskStatus,
+  Choices: Scalars['Choices'],
   TaskType: TaskType,
   RouteResponse: RouteResponse,
+  RewardResponse: RewardResponse,
+  RewardStatus: RewardStatus,
   StatusResponse: StatusResponse,
   UserResponse: UserResponse,
   UserProfileResponse: UserProfileResponse,
   Date: Scalars['Date'],
   UserGoalResponse: UserGoalResponse,
   UserRewardResponse: UserRewardResponse,
-  RewardStatus: RewardStatus,
-  RewardResponse: RewardResponse,
   Mutation: {},
+  UpdateTaskInput: UpdateTaskInput,
+  UpdateTaskResponse: UpdateTaskResponse,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
   Float: Scalars['Float'],
   RegisterDeviceResponse: RegisterDeviceResponse,
-  UpdateTaskInput: UpdateTaskInput,
-  RouteAnswer: Scalars['RouteAnswer'],
-  UpdateTaskResponse: UpdateTaskResponse,
-  CreateGoalInput: CreateGoalInput,
   Boolean: Scalars['Boolean'],
   AchivementResponse: AchivementResponse,
   AchivementStatus: AchivementStatus,
+  RouteAnswer: Scalars['RouteAnswer'],
   AdditionalEntityFields: AdditionalEntityFields,
+  CreateGoalInput: CreateGoalInput,
 };
 
 export type UnionDirectiveArgs = {   discriminatorField?: Maybe<Scalars['String']>;
   additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>; };
 
-export type UnionDirectiveResolver<Result, Parent, ContextType = any, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type UnionDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type AbstractEntityDirectiveArgs = {   discriminatorField: Scalars['String'];
   additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>; };
 
-export type AbstractEntityDirectiveResolver<Result, Parent, ContextType = any, Args = AbstractEntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type AbstractEntityDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = AbstractEntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type EntityDirectiveArgs = {   embedded?: Maybe<Scalars['Boolean']>;
   additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>; };
 
-export type EntityDirectiveResolver<Result, Parent, ContextType = any, Args = EntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type EntityDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = EntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type ColumnDirectiveArgs = {   overrideType?: Maybe<Scalars['String']>; };
 
-export type ColumnDirectiveResolver<Result, Parent, ContextType = any, Args = ColumnDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type ColumnDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = ColumnDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type IdDirectiveArgs = {  };
 
-export type IdDirectiveResolver<Result, Parent, ContextType = any, Args = IdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type IdDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = IdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type LinkDirectiveArgs = {   overrideType?: Maybe<Scalars['String']>; };
 
-export type LinkDirectiveResolver<Result, Parent, ContextType = any, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type LinkDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type EmbeddedDirectiveArgs = {  };
 
-export type EmbeddedDirectiveResolver<Result, Parent, ContextType = any, Args = EmbeddedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type EmbeddedDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = EmbeddedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type MapDirectiveArgs = {   path: Scalars['String']; };
 
-export type MapDirectiveResolver<Result, Parent, ContextType = any, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type MapDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type AchivementResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['AchivementResponse'] = ResolversParentTypes['AchivementResponse']> = {
+export type AchivementResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AchivementResponse'] = ResolversParentTypes['AchivementResponse']> = {
   achivementId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -417,33 +420,36 @@ export type AchivementResponseResolvers<ContextType = any, ParentType extends Re
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
+export interface ChoicesScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Choices'], any> {
+  name: 'Choices'
+}
+
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date'
 }
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
+export type MutationResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   updateTask?: Resolver<ResolversTypes['UpdateTaskResponse'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input'>>,
-  claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
-  createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
   startRoute?: Resolver<ResolversTypes['UserRouteResponse'], ParentType, ContextType, RequireFields<MutationStartRouteArgs, 'routeId'>>,
+  claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
+  registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type QueryResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getCurrentRoutes?: Resolver<Array<Maybe<ResolversTypes['UserRouteResponse']>>, ParentType, ContextType>,
   getAvailableRoutes?: Resolver<Array<Maybe<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
-  getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
   getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
+  getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
 };
 
-export type RegisterDeviceResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['RegisterDeviceResponse'] = ResolversParentTypes['RegisterDeviceResponse']> = {
+export type RegisterDeviceResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RegisterDeviceResponse'] = ResolversParentTypes['RegisterDeviceResponse']> = {
   accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
   currentTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type RewardResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['RewardResponse'] = ResolversParentTypes['RewardResponse']> = {
+export type RewardResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RewardResponse'] = ResolversParentTypes['RewardResponse']> = {
   rewardId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -457,7 +463,7 @@ export interface RouteAnswerScalarConfig extends GraphQLScalarTypeConfig<Resolve
   name: 'RouteAnswer'
 }
 
-export type RouteResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['RouteResponse'] = ResolversParentTypes['RouteResponse']> = {
+export type RouteResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RouteResponse'] = ResolversParentTypes['RouteResponse']> = {
   routeId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -465,20 +471,20 @@ export type RouteResponseResolvers<ContextType = any, ParentType extends Resolve
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type StatusResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['StatusResponse'] = ResolversParentTypes['StatusResponse']> = {
+export type StatusResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['StatusResponse'] = ResolversParentTypes['StatusResponse']> = {
   user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
   currentTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   routes?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserRouteResponse']>>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type UpdateTaskResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateTaskResponse'] = ResolversParentTypes['UpdateTaskResponse']> = {
+export type UpdateTaskResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UpdateTaskResponse'] = ResolversParentTypes['UpdateTaskResponse']> = {
   previousTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   nextTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type UserGoalResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserGoalResponse'] = ResolversParentTypes['UserGoalResponse']> = {
+export type UserGoalResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserGoalResponse'] = ResolversParentTypes['UserGoalResponse']> = {
   _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -486,12 +492,12 @@ export type UserGoalResponseResolvers<ContextType = any, ParentType extends Reso
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type UserProfileResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserProfileResponse'] = ResolversParentTypes['UserProfileResponse']> = {
+export type UserProfileResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserProfileResponse'] = ResolversParentTypes['UserProfileResponse']> = {
   dateOfBirth?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type UserResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserResponse'] = ResolversParentTypes['UserResponse']> = {
+export type UserResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserResponse'] = ResolversParentTypes['UserResponse']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   profile?: Resolver<ResolversTypes['UserProfileResponse'], ParentType, ContextType>,
   balance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
@@ -500,7 +506,7 @@ export type UserResponseResolvers<ContextType = any, ParentType extends Resolver
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type UserRewardResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserRewardResponse'] = ResolversParentTypes['UserRewardResponse']> = {
+export type UserRewardResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserRewardResponse'] = ResolversParentTypes['UserRewardResponse']> = {
   _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   rewardId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
@@ -511,7 +517,7 @@ export type UserRewardResponseResolvers<ContextType = any, ParentType extends Re
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type UserRouteResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserRouteResponse'] = ResolversParentTypes['UserRouteResponse']> = {
+export type UserRouteResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserRouteResponse'] = ResolversParentTypes['UserRouteResponse']> = {
   routeId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   progress?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
@@ -520,7 +526,7 @@ export type UserRouteResponseResolvers<ContextType = any, ParentType extends Res
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type UserTaskResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserTaskResponse'] = ResolversParentTypes['UserTaskResponse']> = {
+export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserTaskResponse'] = ResolversParentTypes['UserTaskResponse']> = {
   taskId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>,
@@ -528,13 +534,15 @@ export type UserTaskResponseResolvers<ContextType = any, ParentType extends Reso
   media?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   answer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   icon?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  choices?: Resolver<Maybe<ResolversTypes['Choices']>, ParentType, ContextType>,
   type?: Resolver<ResolversTypes['TaskType'], ParentType, ContextType>,
   progressPercentile?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = ModuleContext> = {
   AchivementResponse?: AchivementResponseResolvers<ContextType>,
+  Choices?: GraphQLScalarType,
   Date?: GraphQLScalarType,
   Mutation?: MutationResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
@@ -557,8 +565,8 @@ export type Resolvers<ContextType = any> = {
  * @deprecated
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
 */
-export type IResolvers<ContextType = any> = Resolvers<ContextType>;
-export type DirectiveResolvers<ContextType = any> = {
+export type IResolvers<ContextType = ModuleContext> = Resolvers<ContextType>;
+export type DirectiveResolvers<ContextType = ModuleContext> = {
   union?: UnionDirectiveResolver<any, any, ContextType>,
   abstractEntity?: AbstractEntityDirectiveResolver<any, any, ContextType>,
   entity?: EntityDirectiveResolver<any, any, ContextType>,
@@ -574,5 +582,4 @@ export type DirectiveResolvers<ContextType = any> = {
 * @deprecated
 * Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
 */
-export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<ContextType>;
-import { ObjectID } from 'mongodb';
+export type IDirectiveResolvers<ContextType = ModuleContext> = DirectiveResolvers<ContextType>;

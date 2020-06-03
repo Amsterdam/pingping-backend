@@ -5,19 +5,6 @@ import { UserTask } from "../models/UserTask";
 import TaskUtil from "../utils/TaskUtil";
 import UnauthorizedError from "../errors/UnauthorizedError";
 import UserUtil from "../utils/UserUtil";
-import {
-  RegisterDeviceResponse,
-  UpdateTaskResponse,
-  UserRewardResponse,
-  UserGoalResponse,
-  TaskStatus,
-  MutationStartRouteArgs,
-  MutationCreateGoalArgs,
-  MutationClaimRewardArgs,
-  MutationResolvers,
-  MutationRegisterDeviceArgs,
-  MutationUpdateTaskArgs,
-} from "../generated/graphql";
 import RewardUtil from "../utils/RewardUtil";
 import {
   UserReward,
@@ -27,27 +14,10 @@ import { UserGoal } from "../models/UserGoal";
 import GoalUtil from "../utils/GoalUtil";
 import InitialDataUtil from "../utils/InitialDataUtil";
 import RouteUtil from '../utils/RouteUtil';
+import { ModuleContext } from '@graphql-modules/core';
 
 const PingPingMutations: MutationResolvers = {
-  async registerDevice(
-    root: any,
-    args: MutationRegisterDeviceArgs
-  ): Promise<RegisterDeviceResponse> {
-    if (args.input.deviceId.length < 12) {
-      throw new ValidationError("deviceId is should be at least 12 characters");
-    }
-
-    const user = await UserUtil.createOrFindUser(args.input);
-    const currentTask: UserTask = TaskUtil.getCurrentUserTask(user);
-
-    return {
-      user: user.toResponse(),
-      ..._.last(user.tokens),
-      currentTask: currentTask.toResponse(),
-    };
-  },
-
-  async startRoute(root: any, args: MutationStartRouteArgs, context: Context) {
+  async startRoute(root: any, args: MutationStartRouteArgs, context:ModuleContext) {
     if (!context.user) {
       throw new UnauthorizedError();
     }
@@ -63,7 +33,7 @@ const PingPingMutations: MutationResolvers = {
   async updateTask(
     root: any,
     args: MutationUpdateTaskArgs,
-    context: Context
+    context: ModuleContext
   ): Promise<UpdateTaskResponse> {
     if (!context.user) {
       throw new UnauthorizedError();
@@ -92,7 +62,7 @@ const PingPingMutations: MutationResolvers = {
   async claimReward(
     root: any,
     args: MutationClaimRewardArgs,
-    context: Context
+    context: ModuleContext
   ): Promise<UserRewardResponse> {
     if (!context.user) {
       throw new UnauthorizedError();
@@ -109,7 +79,7 @@ const PingPingMutations: MutationResolvers = {
   async createGoal(
     root: any,
     args: MutationCreateGoalArgs,
-    context: Context
+    context: ModuleContext
   ): Promise<UserGoalResponse> {
     if (!context.user) {
       throw new UnauthorizedError();

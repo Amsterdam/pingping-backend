@@ -1,11 +1,11 @@
 import { Document, Schema, model, Types } from "mongoose";
-import { UserResponse, UserRewardResponse } from '../generated/graphql';
 import { UserTask } from "./UserTask";
 import { UserAchivement } from './UserAchivement';
 import { UserReward, toResponse as getUserRewardResponse } from "./UserReward";
 import { UserRoute } from "./UserRoute";
 import { UserGoal } from "./UserGoal";
 import { UserTransaction } from "./UserTransaction";
+import { UserRewardResponse, UserResponse } from "@models";
 
 export type UserDocument = Document & {
   email: string;

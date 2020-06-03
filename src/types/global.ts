@@ -1,4 +1,4 @@
-import { TaskType } from "../generated/graphql"
+import { TaskType } from "@models"
 
 export type AchivementDefinition = {
   id: string,

@@ -1,12 +1,12 @@
 import _ from "lodash";
 import { UserDocument, User } from "../models/User";
 import { UserTask } from "../models/UserTask";
-import { TaskStatus, TaskType } from "../generated/graphql";
 import { TaskDefinition } from "../types/global";
 import InitialDataUtil from "./InitialDataUtil";
 import moment from "moment";
 import BadRequestError from "../errors/BadRequestError";
 import RouteUtil from "./RouteUtil";
+import { TaskStatus, TaskType } from "../generated-models";
 
 class TaskUtil {
   static getDefinition(taskId: string): TaskDefinition {

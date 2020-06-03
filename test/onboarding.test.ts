@@ -4,9 +4,9 @@ import _ from "lodash";
 import UserUtil from "../src/utils/UserUtil";
 import { UserDocument, User } from '../src/models/User';
 import TaskUtil from "../src/utils/TaskUtil";
-import { TaskStatus } from "../src/generated/graphql";
 import BadRequestError from "../src/errors/BadRequestError";
 import { UserRoute } from '../src/models/UserRoute';
+import { TaskStatus } from '../src/generated-models';
 
 describe("onboarding", () => {
   let accessToken: any;

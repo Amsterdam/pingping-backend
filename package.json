@@ -7,10 +7,11 @@
     "dev": "nodemon",
     "prod": "NODE_ENV=production PORT=5000 node dist/index.js",
     "build": "tsc",
-    "gen": "graphql-codegen --config codegen.yml",
+    "gen": "graphql-codegen",
     "test": "mocha -r ts-node/register test/index.ts"
   },
   "dependencies": {
+    "@graphql-modules/core": "^0.7.17",
     "@types/bcrypt-nodejs": "^0.0.31",
     "@types/dotenv": "^8.2.0",
     "@types/jsonwebtoken": "^8.3.9",
@@ -24,17 +25,23 @@
     "console-stamp": "^0.2.9",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
+    "graphql-import-node": "^0.0.4",
+    "graphql-toolkit": "^0.7.5",
     "graphql-tools": "^4.0.6",
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
-    "mongoose": "^5.8.7"
+    "mongoose": "^5.8.7",
+    "reflect-metadata": "^0.1.13",
+    "tsconfig-paths": "^3.9.0"
   },
   "devDependencies": {
+    "@graphql-codegen/add": "^1.15.0",
     "@graphql-codegen/cli": "^1.13.2",
     "@graphql-codegen/introspection": "1.13.2",
     "@graphql-codegen/typescript": "1.13.2",
     "@graphql-codegen/typescript-mongodb": "1.13.2",
+    "@graphql-codegen/typescript-operations": "^1.15.0",
     "@graphql-codegen/typescript-resolvers": "1.13.2",
     "@types/chai": "^4.2.11",
     "@types/chai-as-promised": "^7.1.2",

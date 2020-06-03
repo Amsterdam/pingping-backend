@@ -1,5 +1,4 @@
 import { Document } from 'mongoose';
-import { UserGoalResponse } from '../generated/graphql';
 
 export type UserGoal = Document & {
   title: string

@@ -1,0 +1,67 @@
+type Mutation {
+  updateTask (input:UpdateTaskInput!):UpdateTaskResponse!
+  startRoute (routeId:String!):UserRouteResponse!
+}
+
+type Query {
+  getCurrentRoutes: [UserRouteResponse]!
+  getAvailableRoutes: [RouteResponse]!
+}
+
+# Response
+type UserTaskResponse {
+  taskId: String!
+  title: String!
+  status: TaskStatus!
+  description: String
+  media: String
+  answer: String
+  icon: String
+  choices : Choices
+  type: TaskType!
+  progressPercentile: Int
+}
+
+type RouteResponse {
+  routeId: String!
+  title: String!
+  description: String
+  imageUrl: String
+}
+
+type UserRouteResponse {
+  routeId: String!
+  title: String!
+  progress: Int
+  status: UserRouteStatus!
+  tasks: [UserTaskResponse]
+}
+
+type UpdateTaskResponse {
+  previousTask: UserTaskResponse
+  nextTask: UserTaskResponse
+}
+
+# Input
+input UpdateTaskInput {
+  taskId: String!
+  answer: String
+}
+
+# Enums
+enum UserRouteStatus {
+  Active
+  Completed
+}
+
+enum TaskStatus {
+  Completed
+  Dismissed
+  PendingUser
+}
+
+enum TaskType {
+  DateOfBirth
+  YesOrNo
+  MultipleChoices
+}

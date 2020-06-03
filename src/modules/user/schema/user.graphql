@@ -1,0 +1,46 @@
+type Query {
+  getStatus: StatusResponse!
+}
+
+# Response
+type StatusResponse {
+  user: UserResponse!
+  currentTask: UserTaskResponse
+  routes: [UserRouteResponse]
+}
+
+type UserGoalResponse {
+  _id: String!
+  title: String!
+  description: String
+  amount: Int!
+}
+
+type AchivementResponse {
+  achivementId: String!
+  title: String!
+  description: String
+  points: Int!
+  status: AchivementStatus!
+  icon: String
+  earnedDate: Date
+}
+
+type UserResponse {
+  id: String!
+  profile: UserProfileResponse!
+  balance: Int!
+  goals: [UserGoalResponse!]
+  rewards: [UserRewardResponse!]
+}
+
+type UserProfileResponse {
+  dateOfBirth: Date
+}
+
+# Input
+input CreateGoalInput {
+  title: String!
+  description: String
+  amount: Int!
+}

@@ -5,7 +5,7 @@ import index from "../src/index";
 import request from "supertest";
 import { UserDocument } from '../src/models/User';
 import UserUtil from "../src/utils/UserUtil";
-import { RewardResponse, AchivementResponse } from '../src/generated/graphql';
+import { RewardResponse } from "../src/generated-models";
 
 describe("queries", () => {
   let server:any;

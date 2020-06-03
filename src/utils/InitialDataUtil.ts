@@ -1,11 +1,13 @@
 import _ from "lodash";
-import { TaskStatus } from "../generated/graphql";
+// import { TaskStatus } from "@models";
 import {
   TaskDefinition,
   RouteDefinition,
   AchivementDefinition,
   RewardDefinition,
 } from "../types/global";
+import { TaskStatus } from "../generated-models";
+// import { TaskStatus } from "@models";
 const initialData: InitialData = require("../../initialData.json");
 
 type InitialData = {

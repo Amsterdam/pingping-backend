@@ -1,22 +1,20 @@
+import 'graphql-import-node';
 import { GraphQLServer } from "graphql-yoga";
-import resolvers from "./resolvers/Resolvers";
-import _ from 'lodash'
-import auth from './lib/auth';
-import Context from "./resolvers/Context";
+import { AppModule } from './modules/app'
+import { ModuleContext } from "@graphql-modules/core";
+import InitialDataUtil from './utils/InitialDataUtil';
 
-const typeDefs = "./src/schema.graphql";
-
-const context = async ({ request }: any):Promise<Context> => {
-  const accessToken = _.get(request, "headers.authorization", null);
-  const user = accessToken ? await auth.getUser(accessToken) : null;
-
-  return { req: request, user, accessToken } as Context;
+const context = async ({ request }: any):Promise<ModuleContext> => {
+  return { req: request, user: null, injector: null } as ModuleContext;
 };
+
+const { schema } = AppModule.forRoot({
+  rewards: InitialDataUtil.getRewards()
+});
 
 function createServer() {
   return new GraphQLServer({
-    typeDefs,
-    resolvers,
+    schema,
     resolverValidationOptions: {
       requireResolversForResolveType: false
     },

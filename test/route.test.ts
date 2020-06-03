@@ -4,7 +4,7 @@ import UserUtil from "../src/utils/UserUtil";
 import { expect } from 'chai';
 import RouteUtil from '../src/utils/RouteUtil';
 import { UserRoute } from '../src/models/UserRoute';
-import { UserRouteStatus } from '../src/generated/graphql';
+import { UserRouteStatus } from '../src/generated-models';
 
 describe("route", () => {
   let accessToken: any;

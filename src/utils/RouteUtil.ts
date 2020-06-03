@@ -2,11 +2,11 @@ import _ from "lodash";
 
 import { UserDocument, User } from "../models/User";
 import { UserRoute } from "../models/UserRoute";
-import { UserRouteStatus, TaskStatus } from "../generated/graphql";
 import { Types } from "mongoose";
 import InitialDataUtil from "./InitialDataUtil";
-import { RouteDefinition } from "global";
+import { RouteDefinition } from "../types/global";
 import { UserTask } from '../models/UserTask';
+import { TaskStatus, UserRouteStatus } from "../generated-models";
 
 class RouteUtil {
   static getDefinition(routeId: string): RouteDefinition {

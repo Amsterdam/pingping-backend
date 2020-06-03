@@ -2,8 +2,8 @@ import _ from 'lodash'
 
 import { User, Device, AuthToken, AuthTokenKind, UserDocument } from '../models/User';
 import InitialDataUtil from './InitialDataUtil';
-import { RegisterDeviceInput } from '../generated/graphql';
 import auth from '../lib/auth';
+import { RegisterDeviceInput } from '@models';
 
 class UserUtil {
   static async createOrFindUser(deviceInput:RegisterDeviceInput):Promise<UserDocument> {

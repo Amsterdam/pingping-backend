@@ -1,5 +1,5 @@
 import PingPingQueries from './PingPingQueries';
-import { QueryResolvers } from '../generated/graphql';
+import { QueryResolvers } from '@models';
 
 const Query:QueryResolvers = {
   ...PingPingQueries,
