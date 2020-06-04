@@ -3,5 +3,6 @@
     "titleBar.activeBackground": "#2dbcca",
     "titleBar.inactiveBackground": "#fb9f4b",
     "editor.formatOnSave": true
-  }
+  },
+  "editor.formatOnSave": true,
 }

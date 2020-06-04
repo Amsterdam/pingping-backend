@@ -2,8 +2,7 @@ import { UserDocument } from '../models/User';
 import InitialDataUtil from './InitialDataUtil';
 import { RewardDefinition } from '../types/global';
 import { UserReward } from '../models/UserReward';
-// import { RewardStatus } from '../generated-models';
-// import { RewardStatus } from '@models';
+import { RewardStatus } from '../generated-models';
 
 class RewardUtil {
   static async claim(user:UserDocument, id:string):Promise<UserReward> {

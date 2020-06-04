@@ -16,14 +16,6 @@ export type Scalars = {
   RouteAnswer: any;
 };
 
-
-
-
-
-
-
-
-
 export type AchivementResponse = {
    __typename?: 'AchivementResponse';
   achivementId: Scalars['String'];
@@ -39,11 +31,6 @@ export enum AchivementStatus {
   AvailableToEarn = 'AvailableToEarn',
   Earned = 'Earned'
 }
-
-export type AdditionalEntityFields = {
-  path?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-};
 
 
 export type CreateGoalInput = {
@@ -67,6 +54,7 @@ export type Mutation = {
   updateTask: UpdateTaskResponse;
   startRoute: UserRouteResponse;
   claimReward: UserRewardResponse;
+  createGoal: UserGoalResponse;
   registerDevice: RegisterDeviceResponse;
 };
 
@@ -83,6 +71,11 @@ export type MutationStartRouteArgs = {
 
 export type MutationClaimRewardArgs = {
   rewardId: Scalars['String'];
+};
+
+
+export type MutationCreateGoalArgs = {
+  input: CreateGoalInput;
 };
 
 
@@ -171,7 +164,7 @@ export type UpdateTaskResponse = {
 
 export type UserGoalResponse = {
    __typename?: 'UserGoalResponse';
-  _id: Scalars['String'];
+  id: Scalars['String'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   amount: Scalars['Int'];
@@ -224,7 +217,6 @@ export type UserTaskResponse = {
   description?: Maybe<Scalars['String']>;
   media?: Maybe<Scalars['String']>;
   answer?: Maybe<Scalars['String']>;
-  icon?: Maybe<Scalars['String']>;
   choices?: Maybe<Scalars['Choices']>;
   type: TaskType;
   progressPercentile?: Maybe<Scalars['Int']>;
@@ -325,6 +317,7 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>,
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
+  CreateGoalInput: CreateGoalInput,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
@@ -334,8 +327,6 @@ export type ResolversTypes = {
   AchivementResponse: ResolverTypeWrapper<AchivementResponse>,
   AchivementStatus: AchivementStatus,
   RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
-  AdditionalEntityFields: AdditionalEntityFields,
-  CreateGoalInput: CreateGoalInput,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -361,6 +352,7 @@ export type ResolversParentTypes = {
   Mutation: {},
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: UpdateTaskResponse,
+  CreateGoalInput: CreateGoalInput,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
@@ -370,44 +362,7 @@ export type ResolversParentTypes = {
   AchivementResponse: AchivementResponse,
   AchivementStatus: AchivementStatus,
   RouteAnswer: Scalars['RouteAnswer'],
-  AdditionalEntityFields: AdditionalEntityFields,
-  CreateGoalInput: CreateGoalInput,
 };
-
-export type UnionDirectiveArgs = {   discriminatorField?: Maybe<Scalars['String']>;
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>; };
-
-export type UnionDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type AbstractEntityDirectiveArgs = {   discriminatorField: Scalars['String'];
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>; };
-
-export type AbstractEntityDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = AbstractEntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type EntityDirectiveArgs = {   embedded?: Maybe<Scalars['Boolean']>;
-  additionalFields?: Maybe<Array<Maybe<AdditionalEntityFields>>>; };
-
-export type EntityDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = EntityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type ColumnDirectiveArgs = {   overrideType?: Maybe<Scalars['String']>; };
-
-export type ColumnDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = ColumnDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type IdDirectiveArgs = {  };
-
-export type IdDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = IdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type LinkDirectiveArgs = {   overrideType?: Maybe<Scalars['String']>; };
-
-export type LinkDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type EmbeddedDirectiveArgs = {  };
-
-export type EmbeddedDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = EmbeddedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type MapDirectiveArgs = {   path: Scalars['String']; };
-
-export type MapDirectiveResolver<Result, Parent, ContextType = ModuleContext, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type AchivementResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AchivementResponse'] = ResolversParentTypes['AchivementResponse']> = {
   achivementId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
@@ -432,6 +387,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   updateTask?: Resolver<ResolversTypes['UpdateTaskResponse'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input'>>,
   startRoute?: Resolver<ResolversTypes['UserRouteResponse'], ParentType, ContextType, RequireFields<MutationStartRouteArgs, 'routeId'>>,
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
+  createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };
 
@@ -485,7 +441,7 @@ export type UpdateTaskResponseResolvers<ContextType = ModuleContext, ParentType 
 };
 
 export type UserGoalResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserGoalResponse'] = ResolversParentTypes['UserGoalResponse']> = {
-  _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   amount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
@@ -533,7 +489,6 @@ export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType ex
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   media?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   answer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  icon?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   choices?: Resolver<Maybe<ResolversTypes['Choices']>, ParentType, ContextType>,
   type?: Resolver<ResolversTypes['TaskType'], ParentType, ContextType>,
   progressPercentile?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
@@ -566,20 +521,3 @@ export type Resolvers<ContextType = ModuleContext> = {
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
 */
 export type IResolvers<ContextType = ModuleContext> = Resolvers<ContextType>;
-export type DirectiveResolvers<ContextType = ModuleContext> = {
-  union?: UnionDirectiveResolver<any, any, ContextType>,
-  abstractEntity?: AbstractEntityDirectiveResolver<any, any, ContextType>,
-  entity?: EntityDirectiveResolver<any, any, ContextType>,
-  column?: ColumnDirectiveResolver<any, any, ContextType>,
-  id?: IdDirectiveResolver<any, any, ContextType>,
-  link?: LinkDirectiveResolver<any, any, ContextType>,
-  embedded?: EmbeddedDirectiveResolver<any, any, ContextType>,
-  map?: MapDirectiveResolver<any, any, ContextType>,
-};
-
-
-/**
-* @deprecated
-* Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
-*/
-export type IDirectiveResolvers<ContextType = ModuleContext> = DirectiveResolvers<ContextType>;

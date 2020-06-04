@@ -1,14 +1,12 @@
 import { GraphQLModule } from '@graphql-modules/core';
 import { loadSchemaFiles, loadResolversFiles } from 'graphql-toolkit';
-import { CommonModule } from '../common'
-import AuthMiddleware from '../../middleware/AuthMiddleware';
-import _ from 'lodash'
-import { context } from '../../lib/Context'
+import AuthMiddleware from 'middleware/AuthMiddleware';
+import _ from 'lodash';
+import { context } from '../../lib/Context';
+import { CommonModule } from 'modules/common';
 
 export const RewardsModule = new GraphQLModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   providers: [
     // RewardsProvider
   ],
@@ -16,7 +14,7 @@ export const RewardsModule = new GraphQLModule({
   resolvers: loadResolversFiles(__dirname + '/resolvers/'),
   resolversComposition: {
     'Query.getAvailableRewards': [AuthMiddleware.isAuthenticated()],
-    'Mutation.claimReward': [AuthMiddleware.isAuthenticated()]
+    'Mutation.claimReward': [AuthMiddleware.isAuthenticated()],
   },
-  context
+  context,
 });

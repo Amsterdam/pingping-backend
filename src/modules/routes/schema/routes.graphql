@@ -16,7 +16,7 @@ type UserTaskResponse {
   description: String
   media: String
   answer: String
-  icon: String
+  # icon: String
   choices : Choices
   type: TaskType!
   progressPercentile: Int
@@ -46,22 +46,4 @@ type UpdateTaskResponse {
 input UpdateTaskInput {
   taskId: String!
   answer: String
-}
-
-# Enums
-enum UserRouteStatus {
-  Active
-  Completed
-}
-
-enum TaskStatus {
-  Completed
-  Dismissed
-  PendingUser
-}
-
-enum TaskType {
-  DateOfBirth
-  YesOrNo
-  MultipleChoices
 }

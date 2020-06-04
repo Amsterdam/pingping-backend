@@ -1,26 +1,11 @@
-
-import { QueryResolvers, RewardResponse, RewardStatus } from "../../../generated-models";
-import { ModuleContext } from "@graphql-modules/core";
-import InitialDataUtil from '../../../utils/InitialDataUtil';
-import { RewardDefinition } from "../../../types/global";
-import UnauthorizedError from "../../../errors/UnauthorizedError";
-import { RewardsProvider } from '../RewardsProvider';
+import { QueryResolvers, RewardResponse, RewardStatus } from '@models';
+import { ModuleContext } from '@graphql-modules/core';
+import InitialDataUtil from 'utils/InitialDataUtil';
+import { RewardDefinition } from 'types/global';
 
 export const Query: QueryResolvers = {
-  getAvailableRewards(
-    root: any,
-    args: any,
-    context: ModuleContext
-  ): Array<RewardResponse> {
-    // if (!context.user) {
-    //   throw new UnauthorizedError();
-    // }
-
-    console.log('hi')
-
+  getAvailableRewards(root: any, args: any, context: ModuleContext): Array<RewardResponse> {
     const rewards: Array<RewardDefinition> = InitialDataUtil.getRewards();
-
-    console.log('rew', rewards)
 
     return rewards.map((reward: RewardDefinition) => {
       return {
@@ -33,5 +18,4 @@ export const Query: QueryResolvers = {
       };
     });
   },
-
 };
