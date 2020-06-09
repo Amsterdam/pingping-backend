@@ -1,6 +1,6 @@
 type Mutation {
-  updateTask (input:UpdateTaskInput!):UpdateTaskResponse!
-  startRoute (routeId:String!):UserRouteResponse!
+  updateTask(input: UpdateTaskInput!): UpdateTaskResponse!
+  startRoute(routeId: String!): UserRouteResponse!
 }
 
 type Query {
@@ -10,14 +10,17 @@ type Query {
 
 # Response
 type UserTaskResponse {
+  status: TaskStatus!
+  task: TaskResponse!
+  answer: String
+}
+
+type TaskResponse {
   taskId: String!
   title: String!
-  status: TaskStatus!
   description: String
   media: String
-  answer: String
-  # icon: String
-  choices : Choices
+  choices: Choices
   type: TaskType!
   progressPercentile: Int
 }
@@ -30,8 +33,7 @@ type RouteResponse {
 }
 
 type UserRouteResponse {
-  routeId: String!
-  title: String!
+  route: RouteResponse!
   progress: Int
   status: UserRouteStatus!
   tasks: [UserTaskResponse]

@@ -139,6 +139,17 @@ export type StatusResponse = {
   routes?: Maybe<Array<Maybe<UserRouteResponse>>>;
 };
 
+export type TaskResponse = {
+   __typename?: 'TaskResponse';
+  taskId: Scalars['String'];
+  title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  media?: Maybe<Scalars['String']>;
+  choices?: Maybe<Scalars['Choices']>;
+  type: TaskType;
+  progressPercentile?: Maybe<Scalars['Int']>;
+};
+
 export enum TaskStatus {
   Completed = 'Completed',
   Dismissed = 'Dismissed',
@@ -186,19 +197,15 @@ export type UserResponse = {
 
 export type UserRewardResponse = {
    __typename?: 'UserRewardResponse';
-  _id: Scalars['String'];
-  rewardId: Scalars['String'];
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  imageUrl?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  reward: RewardResponse;
   status: RewardStatus;
   barcodeImageUrl: Scalars['String'];
 };
 
 export type UserRouteResponse = {
    __typename?: 'UserRouteResponse';
-  routeId: Scalars['String'];
-  title: Scalars['String'];
+  route: RouteResponse;
   progress?: Maybe<Scalars['Int']>;
   status: UserRouteStatus;
   tasks?: Maybe<Array<Maybe<UserTaskResponse>>>;
@@ -211,15 +218,9 @@ export enum UserRouteStatus {
 
 export type UserTaskResponse = {
    __typename?: 'UserTaskResponse';
-  taskId: Scalars['String'];
-  title: Scalars['String'];
   status: TaskStatus;
-  description?: Maybe<Scalars['String']>;
-  media?: Maybe<Scalars['String']>;
+  task: TaskResponse;
   answer?: Maybe<Scalars['String']>;
-  choices?: Maybe<Scalars['Choices']>;
-  type: TaskType;
-  progressPercentile?: Maybe<Scalars['Int']>;
 };
 
 
@@ -298,14 +299,15 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>,
   UserRouteResponse: ResolverTypeWrapper<UserRouteResponse>,
+  RouteResponse: ResolverTypeWrapper<RouteResponse>,
   String: ResolverTypeWrapper<Scalars['String']>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   UserRouteStatus: UserRouteStatus,
   UserTaskResponse: ResolverTypeWrapper<UserTaskResponse>,
   TaskStatus: TaskStatus,
+  TaskResponse: ResolverTypeWrapper<TaskResponse>,
   Choices: ResolverTypeWrapper<Scalars['Choices']>,
   TaskType: TaskType,
-  RouteResponse: ResolverTypeWrapper<RouteResponse>,
   RewardResponse: ResolverTypeWrapper<RewardResponse>,
   RewardStatus: RewardStatus,
   StatusResponse: ResolverTypeWrapper<StatusResponse>,
@@ -333,14 +335,15 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Query: {},
   UserRouteResponse: UserRouteResponse,
+  RouteResponse: RouteResponse,
   String: Scalars['String'],
   Int: Scalars['Int'],
   UserRouteStatus: UserRouteStatus,
   UserTaskResponse: UserTaskResponse,
   TaskStatus: TaskStatus,
+  TaskResponse: TaskResponse,
   Choices: Scalars['Choices'],
   TaskType: TaskType,
-  RouteResponse: RouteResponse,
   RewardResponse: RewardResponse,
   RewardStatus: RewardStatus,
   StatusResponse: StatusResponse,
@@ -434,6 +437,17 @@ export type StatusResponseResolvers<ContextType = ModuleContext, ParentType exte
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
+export type TaskResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['TaskResponse'] = ResolversParentTypes['TaskResponse']> = {
+  taskId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  media?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  choices?: Resolver<Maybe<ResolversTypes['Choices']>, ParentType, ContextType>,
+  type?: Resolver<ResolversTypes['TaskType'], ParentType, ContextType>,
+  progressPercentile?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export type UpdateTaskResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UpdateTaskResponse'] = ResolversParentTypes['UpdateTaskResponse']> = {
   previousTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   nextTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
@@ -463,19 +477,15 @@ export type UserResponseResolvers<ContextType = ModuleContext, ParentType extend
 };
 
 export type UserRewardResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserRewardResponse'] = ResolversParentTypes['UserRewardResponse']> = {
-  _id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  rewardId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  reward?: Resolver<ResolversTypes['RewardResponse'], ParentType, ContextType>,
   status?: Resolver<ResolversTypes['RewardStatus'], ParentType, ContextType>,
   barcodeImageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type UserRouteResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserRouteResponse'] = ResolversParentTypes['UserRouteResponse']> = {
-  routeId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  route?: Resolver<ResolversTypes['RouteResponse'], ParentType, ContextType>,
   progress?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   status?: Resolver<ResolversTypes['UserRouteStatus'], ParentType, ContextType>,
   tasks?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserTaskResponse']>>>, ParentType, ContextType>,
@@ -483,15 +493,9 @@ export type UserRouteResponseResolvers<ContextType = ModuleContext, ParentType e
 };
 
 export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserTaskResponse'] = ResolversParentTypes['UserTaskResponse']> = {
-  taskId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>,
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  media?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  task?: Resolver<ResolversTypes['TaskResponse'], ParentType, ContextType>,
   answer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  choices?: Resolver<Maybe<ResolversTypes['Choices']>, ParentType, ContextType>,
-  type?: Resolver<ResolversTypes['TaskType'], ParentType, ContextType>,
-  progressPercentile?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -506,6 +510,7 @@ export type Resolvers<ContextType = ModuleContext> = {
   RouteAnswer?: GraphQLScalarType,
   RouteResponse?: RouteResponseResolvers<ContextType>,
   StatusResponse?: StatusResponseResolvers<ContextType>,
+  TaskResponse?: TaskResponseResolvers<ContextType>,
   UpdateTaskResponse?: UpdateTaskResponseResolvers<ContextType>,
   UserGoalResponse?: UserGoalResponseResolvers<ContextType>,
   UserProfileResponse?: UserProfileResponseResolvers<ContextType>,

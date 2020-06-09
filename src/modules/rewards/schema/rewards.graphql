@@ -1,5 +1,5 @@
 type Mutation {
-  claimReward (rewardId:String!):UserRewardResponse!
+  claimReward(rewardId: String!): UserRewardResponse!
 }
 
 type Query {
@@ -24,11 +24,8 @@ type RewardResponse {
 }
 
 type UserRewardResponse {
-  _id: String!
-  rewardId: String!
-  title: String!
-  description: String
-  imageUrl: String
+  id: String!
+  reward: RewardResponse!
   status: RewardStatus!
   barcodeImageUrl: String!
 }

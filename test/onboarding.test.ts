@@ -1,14 +1,14 @@
-import { expect } from "chai";
-import _ from "lodash";
+import { expect } from 'chai';
+import _ from 'lodash';
 
-import UserUtil from "../src/utils/UserUtil";
+import UserUtil from '../src/utils/UserUtil';
 import { UserDocument, User } from '../src/models/User';
-import TaskUtil from "../src/utils/TaskUtil";
-import BadRequestError from "../src/errors/BadRequestError";
+import TaskUtil from '../src/utils/TaskUtil';
+import BadRequestError from '../src/errors/BadRequestError';
 import { UserRoute } from '../src/models/UserRoute';
 import { TaskStatus } from '../src/generated-models';
 
-describe("onboarding", () => {
+describe('onboarding', () => {
   let accessToken: any;
   let user: UserDocument;
 
@@ -16,45 +16,29 @@ describe("onboarding", () => {
     user = await UserUtil.createOrFindUser({
       deviceId: `randomdeviceid${_.random(true)}`,
     });
-    accessToken = _.get(user, "tokens.0.accessToken");
+    accessToken = _.get(user, 'tokens.0.accessToken');
   });
 
   afterEach((done) => {
-    User.remove(user._id)
+    User.remove(user._id);
     done();
   });
 
-  it("error, handle invalid input", async () => {
+  it('error, handle invalid input', async () => {
     const call = async () => {
-      return await TaskUtil.handleTask(
-        user,
-        "onboarding.dateOfBirth",
-        "2012-24-01"
-      );
+      return await TaskUtil.handleTask(user, 'onboarding.dateOfBirth', '2012-24-01');
     };
     await expect(call()).to.be.rejectedWith(BadRequestError);
   });
 
-  it("error, non existing", async () => {
-      const res = TaskUtil.handleTask(
-      user,
-      "jibberish",
-      "2012-24-01"
-    );
+  it('error, non existing', async () => {
+    const res = TaskUtil.handleTask(user, 'jibberish', '2012-24-01');
     await expect(res).to.be.rejectedWith(/task_not_found_on_user/);
   });
 
-  it("error, invalid status", async () => {
-    await TaskUtil.handleTask(
-      user,
-      "onboarding.dateOfBirth",
-      "2012-01-01"
-    );
-    const res = TaskUtil.handleTask(
-      user,
-      "onboarding.dateOfBirth",
-      "2012-01-01"
-    );
+  it('error, invalid status', async () => {
+    await TaskUtil.handleTask(user, 'onboarding.dateOfBirth', '2012-01-01');
+    const res = TaskUtil.handleTask(user, 'onboarding.dateOfBirth', '2012-01-01');
     await expect(res).to.be.rejectedWith(/task_invalid_status/);
   });
 
@@ -67,166 +51,97 @@ describe("onboarding", () => {
   //   await expect(res).to.be.rejectedWith(/task_not_found_on_user/);
   // });
 
-  it("handle task", async () => {
-    const taskOneRes = await TaskUtil.handleTask(
-      user,
-      "onboarding.dateOfBirth",
-      "2012-01-01"
-    );
+  it('handle task', async () => {
+    const taskOneRes = await TaskUtil.handleTask(user, 'onboarding.dateOfBirth', '2012-01-01');
     expect(taskOneRes.status).to.eq(TaskStatus.Completed);
-    expect(taskOneRes.answer).to.eq("2012-01-01");
+    expect(taskOneRes.answer).to.eq('2012-01-01');
   });
 
-  it("get next task in line", async () => {
+  it('get next task in line', async () => {
     try {
-      await TaskUtil.handleTask(
-        user,
-        "onboarding.dateOfBirth",
-        "2012-01-01"
-      );
+      await TaskUtil.handleTask(user, 'onboarding.dateOfBirth', '2012-01-01');
       const nextTask = await TaskUtil.getNextTask(user);
       expect(nextTask.status).to.eq(TaskStatus.PendingUser);
-      expect(nextTask.taskId).to.eq("onboarding.woonAdres");
+      expect(nextTask.taskId).to.eq('onboarding.woonAdres');
     } catch (e) {
       console.error(e);
 
-      throw e
+      throw e;
     }
   });
 
-  it("handle next task", async () => {
+  it('handle next task', async () => {
     try {
-      await TaskUtil.handleTask(
-        user,
-        "onboarding.dateOfBirth",
-        "2012-01-01"
-      );
-      await TaskUtil.handleTask(
-        user,
-        "onboarding.woonAdres",
-        'yes'
-      );
-      const taskOneRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.bankRekening",
-        "yes"
-      );
+      await TaskUtil.handleTask(user, 'onboarding.dateOfBirth', '2012-01-01');
+      await TaskUtil.handleTask(user, 'onboarding.woonAdres', 'yes');
+      const taskOneRes = await TaskUtil.handleTask(user, 'onboarding.bankRekening', 'yes');
       expect(taskOneRes.status).to.eq(TaskStatus.Completed);
       expect(taskOneRes.answer).to.eq('yes');
-      const taskTwoRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.digiD",
-        "yes"
-      );
+      const taskTwoRes = await TaskUtil.handleTask(user, 'onboarding.digiD', 'yes');
       expect(taskTwoRes.status).to.eq(TaskStatus.Completed);
       expect(taskTwoRes.answer).to.eq('yes');
 
-      const taskThreeRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.zorgverzekering",
-        "yes"
-      );
+      const taskThreeRes = await TaskUtil.handleTask(user, 'onboarding.zorgverzekering', 'yes');
       expect(taskThreeRes.status).to.eq(TaskStatus.Completed);
       expect(taskThreeRes.answer).to.eq('yes');
 
-      const taskFourRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.zorgtoeslag",
-        "yes"
-      );
+      const taskFourRes = await TaskUtil.handleTask(user, 'onboarding.zorgtoeslag', 'yes');
       expect(taskFourRes.status).to.eq(TaskStatus.Completed);
       expect(taskFourRes.answer).to.eq('yes');
 
-      const taskFiveRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.inkomen",
-        "yes"
-      );
+      const taskFiveRes = await TaskUtil.handleTask(user, 'onboarding.inkomen', 'yes');
       expect(taskFiveRes.status).to.eq(TaskStatus.Completed);
       expect(taskFiveRes.answer).to.eq('yes');
 
-      const taskSixRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.waarKomtJeInkomenVandaan",
-        "yes"
-      );
+      const taskSixRes = await TaskUtil.handleTask(user, 'onboarding.waarKomtJeInkomenVandaan', 'yes');
       expect(taskSixRes.status).to.eq(TaskStatus.Completed);
       expect(taskSixRes.answer).to.eq('yes');
 
-      const taskSevenRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.ingeschrevenVoorWoning",
-        "yes"
-      );
+      const taskSevenRes = await TaskUtil.handleTask(user, 'onboarding.ingeschrevenVoorWoning', 'yes');
       expect(taskSevenRes.status).to.eq(TaskStatus.Completed);
       expect(taskSevenRes.answer).to.eq('yes');
 
-      expect(user.routes.length).to.eq(1)
+      expect(user.routes.length).to.eq(1);
 
-      const route = new UserRoute(user.routes[0].routeId, user.routes[0].status, user.routes[0].tasks)
-      expect(route.toResponse(user).tasks.filter(i => i.status === TaskStatus.PendingUser).length).to.eq(0)
+      // const route = new UserRoute(user.routes[0].routeId, user.routes[0].status, user.routes[0].tasks);
+      expect(user.tasks.filter((i) => i.status === TaskStatus.PendingUser).length).to.eq(0);
     } catch (e) {
-      console.error(e)
+      console.error(e);
 
-      throw e
+      throw e;
     }
   });
 
-  it("handle next task different path", async () => {
+  it('handle next task different path', async () => {
     try {
-      await TaskUtil.handleTask(
-        user,
-        "onboarding.dateOfBirth",
-        "2012-01-01"
-      );
-      const taskZeroRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.woonAdres",
-        'no'
-      );
+      await TaskUtil.handleTask(user, 'onboarding.dateOfBirth', '2012-01-01');
+      const taskZeroRes = await TaskUtil.handleTask(user, 'onboarding.woonAdres', 'no');
       expect(taskZeroRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskZeroRes.answer).to.eq('no');
 
-      const taskThreeRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.zorgverzekering",
-        "no"
-      );
+      const taskThreeRes = await TaskUtil.handleTask(user, 'onboarding.zorgverzekering', 'no');
       expect(taskThreeRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskThreeRes.answer).to.eq('no');
 
-      const taskFourRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.zorgtoeslag",
-        "no"
-      );
+      const taskFourRes = await TaskUtil.handleTask(user, 'onboarding.zorgtoeslag', 'no');
       expect(taskFourRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskFourRes.answer).to.eq('no');
 
-      const taskFiveRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.inkomen",
-        "no"
-      );
+      const taskFiveRes = await TaskUtil.handleTask(user, 'onboarding.inkomen', 'no');
       expect(taskFiveRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskFiveRes.answer).to.eq('no');
 
-      const taskSevenRes = await TaskUtil.handleTask(
-        user,
-        "onboarding.ingeschrevenVoorWoning",
-        "no"
-      );
+      const taskSevenRes = await TaskUtil.handleTask(user, 'onboarding.ingeschrevenVoorWoning', 'no');
       expect(taskSevenRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskSevenRes.answer).to.eq('no');
 
-      expect(user.routes.length).to.eq(1)
+      expect(user.routes.length).to.eq(1);
 
-      const route = new UserRoute(user.routes[0].routeId, user.routes[0].status, user.routes[0].tasks)
-      expect(route.toResponse(user).tasks.filter(i => i.status === TaskStatus.PendingUser).length).to.eq(7)
+      expect(user.tasks.filter((i) => i.status === TaskStatus.PendingUser).length).to.eq(0);
     } catch (e) {
-      console.error(e)
+      console.error(e);
 
-      throw e
+      throw e;
     }
   });
 });

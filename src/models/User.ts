@@ -1,11 +1,10 @@
-import { Document, Schema, model, Types } from "mongoose";
-import { UserTask } from "./UserTask";
+import { Document, Schema, model, Types } from 'mongoose';
+import { UserTask } from './UserTask';
 import { UserAchivement } from './UserAchivement';
-import { UserReward, toResponse as getUserRewardResponse } from "./UserReward";
-import { UserRoute } from "./UserRoute";
-import { UserGoal } from "./UserGoal";
-import { UserTransaction } from "./UserTransaction";
-import { UserRewardResponse, UserResponse } from "@models";
+import { UserReward } from './UserReward';
+import { UserRoute } from './UserRoute';
+import { UserGoal } from './UserGoal';
+import { UserTransaction } from './UserTransaction';
 
 export type UserDocument = Document & {
   email: string;
@@ -19,35 +18,21 @@ export type UserDocument = Document & {
 
   profile: {
     fullName: string;
-    dateOfBirth: Date
+    dateOfBirth: Date;
   };
 
   balance: number;
 
-  transactions: Types.Array<UserTransaction>,
+  transactions: Types.Array<UserTransaction>;
   routes: Types.Array<UserRoute>;
-  achivements: Types.Array<UserAchivement>,
-  goals: Types.Array<UserGoal>,
-  rewards: Types.Array<UserReward>,
+  achivements: Types.Array<UserAchivement>;
+  goals: Types.Array<UserGoal>;
+  rewards: Types.Array<UserReward>;
   tasks: Types.Array<UserTask>;
-
-  toResponse: toResponse
-};
-
-type toResponse = () => UserResponse;
-
-const toResponse:toResponse = function ():UserResponse {
-  return {
-    id: this._id,
-    profile: this.profile,
-    balance: this.balance,
-    goals: this.goals,
-    rewards: this.rewards.map((r:UserReward) => getUserRewardResponse(r)).filter((r:UserRewardResponse) => r)
-  }
 };
 
 export enum AuthTokenKind {
-  auth = 'auth'
+  auth = 'auth',
 }
 
 export interface AuthToken {
@@ -58,67 +43,79 @@ export interface AuthToken {
 }
 
 export interface Device {
-  id: string,
-  os?: string,
-  type?: string
+  id: string;
+  os?: string;
+  type?: string;
 }
 
 const userSchema = new Schema(
   {
     tokens: Array,
     devices: Array,
-    routes: [{
-      routeId: String,
-      status: String,
-      tasks: [{
+    routes: [
+      {
+        routeId: String,
+        status: String,
+        tasks: [
+          {
+            taskId: String,
+            answer: String,
+            status: String,
+          },
+        ],
+      },
+    ],
+
+    tasks: [
+      {
         taskId: String,
         answer: String,
-        status: String
-      }]
-    }],
+        status: String,
+      },
+    ],
 
-    tasks: [{
-      taskId: String,
-      answer: String,
-      status: String
-    }],
+    achivements: [
+      {
+        achivementId: String,
+        createdAt: Date,
+      },
+    ],
 
-    achivements: [{
-      achivementId: String,
-      createdAt: Date
-    }],
+    rewards: [
+      {
+        rewardId: String,
+        price: Number,
+        status: String,
+      },
+    ],
 
-    rewards: [{
-      rewardId: String,
-      price: Number,
-      status: String
-    }],
+    goals: [
+      {
+        amount: Number,
+        title: String,
+        description: String,
+      },
+    ],
 
-    goals: [{
-      amount: Number,
-      title: String,
-      description: String
-    }],
-
-    transactions: [{
-      title: String,
-      amount: Number,
-      balance: Number
-    }],
+    transactions: [
+      {
+        title: String,
+        amount: Number,
+        balance: Number,
+      },
+    ],
 
     balance: {
       type: Number,
-      default: 0
+      default: 0,
     },
 
     profile: {
       fullName: String,
-      dateOfBirth: Date
+      dateOfBirth: Date,
     },
   },
   { timestamps: true }
 );
 
-userSchema.methods.toResponse = toResponse;
-
-export const User = model<UserDocument>("User", userSchema);
+export const User = model<UserDocument>('User', userSchema);

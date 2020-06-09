@@ -6,7 +6,7 @@ import TaskUtil from 'utils/TaskUtil';
 import { UserTask } from 'models/UserTask';
 
 export const Mutation: MutationResolvers = {
-  async registerDevice(root: any, args: MutationRegisterDeviceArgs): Promise<RegisterDeviceResponse> {
+  async registerDevice(root: any, args: MutationRegisterDeviceArgs): Promise<any> {
     if (args.input.deviceId.length < 12) {
       throw new ValidationError('deviceId is should be at least 12 characters');
     }
@@ -15,9 +15,9 @@ export const Mutation: MutationResolvers = {
     const currentTask: UserTask = TaskUtil.getCurrentUserTask(user);
 
     return {
-      user: user.toResponse(),
+      user,
       ..._.last(user.tokens),
-      currentTask: currentTask.toResponse(),
+      currentTask,
     };
   },
 };

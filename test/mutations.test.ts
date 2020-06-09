@@ -1,11 +1,11 @@
-import _ from "lodash";
-import { describe, it } from "mocha";
-import { expect, assert } from "chai";
-import request from "supertest";
-import index from "../src/index";
-import UserUtil from "../src/utils/UserUtil";
+import _ from 'lodash';
+import { describe, it } from 'mocha';
+import { expect, assert } from 'chai';
+import request from 'supertest';
+import index from '../src/index';
+import UserUtil from '../src/utils/UserUtil';
 
-describe("mutations", () => {
+describe('mutations', () => {
   let server: any;
 
   beforeEach(() => {
@@ -16,105 +16,110 @@ describe("mutations", () => {
     done();
   });
 
-  it("regiser device, error, wrong device id", (done) => {
+  it('regiser device, error, wrong device id', (done) => {
     request(server)
-      .post("/")
+      .post('/')
       .send({
         query: `mutation registerDevice($input:RegisterDeviceInput!) {
             registerDevice(input:$input) {
               accessToken
             }
           }`,
-        operationName: "registerDevice",
-        variables: { input: { deviceId: "lkfj" } },
+        operationName: 'registerDevice',
+        variables: { input: { deviceId: 'lkfj' } },
       })
-      .expect("Content-Type", /json/)
+      .expect('Content-Type', /json/)
       .expect(200)
       .end((err: any, res: any) => {
-        const errors = (res.body.errors || [])
-          .map((i: any) => i.message)
-          .join(" ");
-        expect(errors).to.contain("deviceId");
+        const errors = (res.body.errors || []).map((i: any) => i.message).join(' ');
+        expect(errors).to.contain('deviceId');
         done();
       });
   });
 
-  it("regiser device, successful", (done) => {
+  it('regiser device, successful', (done) => {
     request(server)
-      .post("/")
+      .post('/')
       .send({
         query: `mutation registerDevice($input:RegisterDeviceInput!) {
             registerDevice(input:$input) {
               accessToken,
               currentTask {
-                taskId
+                task {
+                  taskId
+                }
               }
             }
           }`,
-        operationName: "registerDevice",
+        operationName: 'registerDevice',
         variables: { input: { deviceId: `test1234test:${_.random(true)}` } },
       })
-      .expect("Content-Type", /json/)
+      .expect('Content-Type', /json/)
       .expect(200)
       .end((err: any, res: any) => {
-        const data = _.get(res, "body.data.registerDevice", {});
-        expect(_.get(data, "currentTask.taskId")).to.eq("onboarding.dateOfBirth", 'arg');
-        expect(_.get(data, "accessToken").length).to.eq(153);
+        const data = _.get(res, 'body.data.registerDevice', {});
+        console.log('ddd', data);
+        expect(_.get(data, 'currentTask.task.taskId')).to.eq('onboarding.dateOfBirth', 'arg');
+        expect(_.get(data, 'accessToken').length).to.eq(153);
         done();
       });
   });
 
-  it("make secure request without token and fail", (done) => {
+  it('make secure request without token and fail', (done) => {
     request(server)
-      .post("/")
+      .post('/')
       .send({
         query: `mutation updateTask($input:UpdateTaskInput!) {
             updateTask(input:$input) {
               nextTask {
-                taskId
+                task {
+                  taskId
+                }
               }
             }
           }`,
-        operationName: "updateTask",
-        variables: { input: { answer: "2012-01-01", taskId: "dateOfBirth" } },
+        operationName: 'updateTask',
+        variables: { input: { answer: '2012-01-01', taskId: 'dateOfBirth' } },
       })
-      .expect("Content-Type", /json/)
+      .expect('Content-Type', /json/)
       .expect(200)
       .end((err: any, res: any) => {
-        const errors = (res.body.errors || [])
-          .map((i: any) => i.message)
-          .join(" ");
-        expect(errors).to.contain("unauthorized");
+        const errors = (res.body.errors || []).map((i: any) => i.message).join(' ');
+        expect(errors).to.contain('unauthorized');
         done();
       });
   });
-  it("make secure request with token and pass", (done) => {
-    UserUtil.createOrFindUser({ deviceId: `dfg${_.random(true)}`}).then((res) => {
-      let accessToken = _.get(res, "tokens.0.accessToken");
+  it('make secure request with token and pass', (done) => {
+    UserUtil.createOrFindUser({ deviceId: `dfg${_.random(true)}` }).then((res) => {
+      let accessToken = _.get(res, 'tokens.0.accessToken');
 
       request(server)
-        .post("/")
+        .post('/')
         .send({
           query: `mutation updateTask($input:UpdateTaskInput!) {
           updateTask(input:$input) {
             nextTask {
-              taskId
-              title
+              task {
+                taskId
+                title
+              }
             },
             previousTask {
-              taskId
-              title
+              task {
+                taskId
+                title
+              }
             }
           }
         }`,
-          operationName: "updateTask",
-          variables: { input: { answer: "2012-01-01", taskId: "onboarding.dateOfBirth" } },
+          operationName: 'updateTask',
+          variables: { input: { answer: '2012-01-01', taskId: 'onboarding.dateOfBirth' } },
         })
-        .set({ 'Authorization': `Bearer ${accessToken}`, Accept: 'application/json' })
+        .set({ Authorization: `Bearer ${accessToken}`, Accept: 'application/json' })
         .expect(200)
         .end((err: any, res: any) => {
           const errors = (res.body.errors || []).map((i: any) => i.message);
-          expect(errors).to.be.an("array").that.is.empty;
+          expect(errors).to.be.an('array').that.is.empty;
           done();
         });
     });

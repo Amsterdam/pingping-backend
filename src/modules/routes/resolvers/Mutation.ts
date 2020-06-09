@@ -5,16 +5,16 @@ import RouteUtil from 'utils/RouteUtil';
 import TaskUtil from 'utils/TaskUtil';
 
 export const Mutation: MutationResolvers = {
-  async startRoute(root: any, args: MutationStartRouteArgs, context: ModuleContext) {
+  async startRoute(root: any, args: MutationStartRouteArgs, context: ModuleContext): Promise<any> {
     // Check if exists
     let routeDef = InitialDataUtil.getRouteById(args.routeId);
 
     const userRoute = await RouteUtil.assignToUser(context.user, args.routeId);
 
-    return userRoute.toResponse(context.user);
+    return userRoute;
   },
 
-  async updateTask(root: any, args: MutationUpdateTaskArgs, context: ModuleContext): Promise<UpdateTaskResponse> {
+  async updateTask(root: any, args: MutationUpdateTaskArgs, context: ModuleContext): Promise<any> {
     let task = TaskUtil.getUserTask(context.user, args.input.taskId);
 
     if (!task) {
@@ -26,8 +26,8 @@ export const Mutation: MutationResolvers = {
     const nextTask = TaskUtil.getNextTask(context.user);
 
     return {
-      previousTask: task.toResponse(),
-      nextTask: nextTask ? nextTask.toResponse() : undefined,
+      previousTask: task,
+      nextTask: nextTask ? nextTask : undefined,
     };
   },
 };
