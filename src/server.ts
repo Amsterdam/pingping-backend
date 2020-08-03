@@ -1,4 +1,5 @@
 import 'graphql-import-node';
+import 'reflect-metadata';
 import { GraphQLServer } from 'graphql-yoga';
 import { AppModule } from './modules/app';
 import { ModuleContext } from '@graphql-modules/core';
@@ -10,6 +11,7 @@ const context = async ({ request }: any): Promise<ModuleContext> => {
 
 const { schema } = AppModule.forRoot({
   rewards: InitialDataUtil.getRewards(),
+  routes: InitialDataUtil.getRoutes(),
 });
 
 function createServer() {

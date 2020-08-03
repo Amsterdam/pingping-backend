@@ -136,6 +136,7 @@ export type StatusResponse = {
    __typename?: 'StatusResponse';
   user: UserResponse;
   currentTask?: Maybe<UserTaskResponse>;
+  previousTask?: Maybe<UserTaskResponse>;
   routes?: Maybe<Array<Maybe<UserRouteResponse>>>;
 };
 
@@ -433,6 +434,7 @@ export type RouteResponseResolvers<ContextType = ModuleContext, ParentType exten
 export type StatusResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['StatusResponse'] = ResolversParentTypes['StatusResponse']> = {
   user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
   currentTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
+  previousTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   routes?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserRouteResponse']>>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };

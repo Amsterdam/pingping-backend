@@ -3,13 +3,14 @@ type Query {
 }
 
 type Mutation {
-  createGoal(input:CreateGoalInput!):UserGoalResponse!
+  createGoal(input: CreateGoalInput!): UserGoalResponse!
 }
 
 # Response
 type StatusResponse {
   user: UserResponse!
   currentTask: UserTaskResponse
+  previousTask: UserTaskResponse
   routes: [UserRouteResponse]
 }
 

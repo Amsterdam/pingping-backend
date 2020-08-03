@@ -4,12 +4,11 @@ import AuthMiddleware from 'middleware/AuthMiddleware';
 import _ from 'lodash';
 import { context } from '../../lib/Context';
 import { CommonModule } from 'modules/common';
+import { RewardsProvider } from './RewardsProvider';
 
 export const RewardsModule = new GraphQLModule({
   imports: [CommonModule],
-  providers: [
-    // RewardsProvider
-  ],
+  providers: [RewardsProvider],
   typeDefs: loadSchemaFiles(__dirname + '/schema/'),
   resolvers: loadResolversFiles(__dirname + '/resolvers/'),
   resolversComposition: {

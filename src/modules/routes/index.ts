@@ -3,10 +3,11 @@ import { loadResolversFiles, loadSchemaFiles } from 'graphql-toolkit';
 import { CommonModule } from '../common';
 import { context } from 'lib/Context';
 import AuthMiddleware from 'middleware/AuthMiddleware';
+import { RouteProvider } from './RouteProvider';
 
 export const RoutesModule = new GraphQLModule({
   imports: [CommonModule],
-  providers: [],
+  providers: [RouteProvider],
   resolversComposition: {
     'Mutation.updateTask': [AuthMiddleware.isAuthenticated()],
   },

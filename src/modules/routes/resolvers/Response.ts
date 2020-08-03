@@ -1,9 +1,11 @@
+import _ from 'lodash';
 import { UserTask } from 'models/UserTask';
 import TaskUtil from 'utils/TaskUtil';
 import { TaskDefinition, RouteDefinition } from 'types/global';
 import { UserRoute } from 'models/UserRoute';
 import { TaskStatus } from '@models';
 import InitialDataUtil from 'utils/InitialDataUtil';
+import { ModuleContext } from '@graphql-modules/core';
 
 export const UserTaskResponse: any = {
   status: (doc: UserTask) => doc.status,
@@ -31,10 +33,29 @@ export const RouteResponse: any = {
 export const UserRouteResponse: any = {
   status: (doc: UserRoute) => doc.status,
   progress: (doc: UserRoute) => doc.progress,
-  tasks: (doc: UserRoute) => {
+  route: (doc: UserRoute) => InitialDataUtil.getRouteById(doc.routeId),
+  tasks: (doc: UserRoute, args: any, context: ModuleContext) => {
     return doc.tasks.map((task: UserTask) => {
       let status = TaskStatus.PendingUser;
       let answer = null;
+
+      // Look for completed tasks
+      const taskFoundIndex = doc.tasks.map((t: UserTask) => t.taskId).indexOf(task.taskId);
+      const onboardingTaskFoundIndex = context.user.tasks
+        .map((t: any) => InitialDataUtil.getTaskById(t.taskId))
+        .map((t: any) => t.routeTaskId)
+        .indexOf(`${doc.routeId}.${task.taskId}`);
+
+      if (taskFoundIndex !== -1) {
+        status = _.get(doc, `${taskFoundIndex}.status`, TaskStatus.PendingUser);
+        answer = _.get(doc, `${taskFoundIndex}.answer`);
+      } else if (onboardingTaskFoundIndex !== -1) {
+        status =
+          _.get(context.user.tasks, `${onboardingTaskFoundIndex}.status`) === TaskStatus.Dismissed
+            ? TaskStatus.PendingUser
+            : TaskStatus.Completed;
+        answer = _.get(context.user.tasks, `${onboardingTaskFoundIndex}.answer`);
+      }
 
       return {
         status,
@@ -43,21 +64,4 @@ export const UserRouteResponse: any = {
       };
     });
   },
-
-  //   // Look for completed tasks
-  //   const taskFoundIndex = doc.map((t:UserTask) => t.taskId).indexOf(taskDef.id)
-  //   const onboardingTaskFoundIndex = user.tasks.map(t => InitialDataUtil.getTaskById(t.taskId)).map(t => t.routeTaskId).indexOf(`${doc.routeId}.${taskDef.id}`)
-
-  //   if (taskFoundIndex !== -1) {
-  //     status = _.get(doc, `${taskFoundIndex}.status`, TaskStatus.PendingUser)
-  //     answer = _.get(doc, `${taskFoundIndex}.answer`)
-  //   } else if (onboardingTaskFoundIndex !== -1) {
-  //     status = _.get(user.tasks, `${onboardingTaskFoundIndex}.status`) === TaskStatus.Dismissed ? TaskStatus.PendingUser : TaskStatus.Completed
-  //     answer = _.get(user.tasks, `${onboardingTaskFoundIndex}.answer`)
-  //   }
-  // })
-  // }
 };
-
-route: RouteResponse!;
-tasks: [UserTaskResponse];
