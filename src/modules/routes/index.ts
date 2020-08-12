@@ -10,6 +10,7 @@ export const RoutesModule = new GraphQLModule({
   providers: [RouteProvider],
   resolversComposition: {
     'Mutation.updateTask': [AuthMiddleware.isAuthenticated()],
+    'Mutation.createRouteFeedback': [AuthMiddleware.isAuthenticated()],
   },
   typeDefs: loadSchemaFiles(__dirname + '/schema/'),
   resolvers: loadResolversFiles(__dirname + '/resolvers/'),

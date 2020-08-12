@@ -1,6 +1,7 @@
 type Mutation {
   updateTask(input: UpdateTaskInput!): UpdateTaskResponse!
   startRoute(routeId: String!): UserRouteResponse!
+  createRouteFeedback(input: RouteFeedbackInput!): RouteFeedbackResponse!
 }
 
 type Query {
@@ -44,8 +45,19 @@ type UpdateTaskResponse {
   nextTask: UserTaskResponse
 }
 
+type RouteFeedbackResponse {
+  taskName: String!
+  feedback: String!
+}
+
 # Input
 input UpdateTaskInput {
   taskId: String!
   answer: String
+}
+
+input RouteFeedbackInput {
+  routeId: String!
+  taskName: String!
+  feedback: String!
 }

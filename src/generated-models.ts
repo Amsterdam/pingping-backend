@@ -49,10 +49,16 @@ export enum Locale {
   NlNl = 'nl_NL'
 }
 
+export type MessageResponse = {
+   __typename?: 'MessageResponse';
+  message: Scalars['String'];
+};
+
 export type Mutation = {
    __typename?: 'Mutation';
   updateTask: UpdateTaskResponse;
   startRoute: UserRouteResponse;
+  createRouteFeedback: RouteFeedbackResponse;
   claimReward: UserRewardResponse;
   createGoal: UserGoalResponse;
   registerDevice: RegisterDeviceResponse;
@@ -66,6 +72,11 @@ export type MutationUpdateTaskArgs = {
 
 export type MutationStartRouteArgs = {
   routeId: Scalars['String'];
+};
+
+
+export type MutationCreateRouteFeedbackArgs = {
+  input: RouteFeedbackInput;
 };
 
 
@@ -387,9 +398,15 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'Date'
 }
 
+export type MessageResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['MessageResponse'] = ResolversParentTypes['MessageResponse']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export type MutationResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   updateTask?: Resolver<ResolversTypes['UpdateTaskResponse'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input'>>,
   startRoute?: Resolver<ResolversTypes['UserRouteResponse'], ParentType, ContextType, RequireFields<MutationStartRouteArgs, 'routeId'>>,
+  createRouteFeedback?: Resolver<ResolversTypes['RouteFeedbackResponse'], ParentType, ContextType, RequireFields<MutationCreateRouteFeedbackArgs, 'input'>>,
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
@@ -505,11 +522,13 @@ export type Resolvers<ContextType = ModuleContext> = {
   AchivementResponse?: AchivementResponseResolvers<ContextType>,
   Choices?: GraphQLScalarType,
   Date?: GraphQLScalarType,
+  MessageResponse?: MessageResponseResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   RegisterDeviceResponse?: RegisterDeviceResponseResolvers<ContextType>,
   RewardResponse?: RewardResponseResolvers<ContextType>,
   RouteAnswer?: GraphQLScalarType,
+  RouteFeedbackResponse?: RouteFeedbackResponseResolvers<ContextType>,
   RouteResponse?: RouteResponseResolvers<ContextType>,
   StatusResponse?: StatusResponseResolvers<ContextType>,
   TaskResponse?: TaskResponseResolvers<ContextType>,
