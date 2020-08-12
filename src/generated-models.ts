@@ -178,7 +178,7 @@ export type StatusResponse = {
   user: UserResponse;
   currentTask?: Maybe<UserTaskResponse>;
   previousTask?: Maybe<UserTaskResponse>;
-  routes?: Maybe<Array<Maybe<UserRouteResponse>>>;
+  routes?: Maybe<Array<UserRouteResponse>>;
   exportUrl?: Maybe<Scalars['String']>;
 };
 
@@ -510,7 +510,7 @@ export type StatusResponseResolvers<ContextType = ModuleContext, ParentType exte
   user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
   currentTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   previousTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
-  routes?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserRouteResponse']>>>, ParentType, ContextType>,
+  routes?: Resolver<Maybe<Array<ResolversTypes['UserRouteResponse']>>, ParentType, ContextType>,
   exportUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };

@@ -39,16 +39,17 @@ export const UserRouteResponse: any = {
   progress: (doc: UserRoute) => doc.progress,
   route: (doc: UserRoute) => InitialDataUtil.getRouteById(doc.routeId),
   tasks: (doc: UserRoute, args: any, context: ModuleContext) => {
-    return doc.tasks.map((task: UserTask) => {
+    const definedTasks = InitialDataUtil.getRouteById(doc.routeId).tasks;
+
+    return definedTasks.map((t: TaskDefinition) => {
       let status = TaskStatus.PendingUser;
       let answer = null;
 
-      // Look for completed tasks
-      const taskFoundIndex = doc.tasks.map((t: UserTask) => t.taskId).indexOf(task.taskId);
+      const taskFoundIndex = doc.tasks.map((ut: UserTask) => ut.taskId).indexOf(t.id);
       const onboardingTaskFoundIndex = context.user.tasks
-        .map((t: any) => InitialDataUtil.getTaskById(t.taskId))
-        .map((t: any) => t.routeTaskId)
-        .indexOf(`${doc.routeId}.${task.taskId}`);
+        .map((ut: any) => InitialDataUtil.getTaskById(ut.taskId))
+        .map((ut: any) => ut.routeTaskId)
+        .indexOf(`${t.id}`);
 
       if (taskFoundIndex !== -1) {
         status = _.get(doc, `${taskFoundIndex}.status`, TaskStatus.PendingUser);
@@ -62,9 +63,10 @@ export const UserRouteResponse: any = {
       }
 
       return {
+        taskId: t.id,
         status,
+        progress: 0.1, // @todo Mani fix
         answer,
-        taskId: task.taskId,
       };
     });
   },

@@ -16,7 +16,7 @@ type StatusResponse {
   user: UserResponse!
   currentTask: UserTaskResponse
   previousTask: UserTaskResponse
-  routes: [UserRouteResponse]
+  routes: [UserRouteResponse!]
   exportUrl: String
 }
 

@@ -56,7 +56,11 @@ class TaskUtil {
     const tasks: Array<UserTask> = user.tasks.filter((t: UserTask) => t.status === TaskStatus.PendingUser);
     const task: UserTask = <UserTask>_.first(tasks);
 
-    return new UserTask(task.taskId, task.status, task.answer);
+    if (task) {
+      return new UserTask(task.taskId, task.status, task.answer);
+    }
+
+    return null;
   }
 
   static getPreviousUserTask(user: UserDocument): UserTask {
