@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash';
 
 import { User, Device, AuthToken, AuthTokenKind, UserDocument } from '../models/User';
 import InitialDataUtil from './InitialDataUtil';
@@ -6,13 +6,13 @@ import auth from '../lib/auth';
 import { RegisterDeviceInput } from '@models';
 
 class UserUtil {
-  static async createOrFindUser(deviceInput:RegisterDeviceInput):Promise<UserDocument> {
+  static async createOrFindUser(deviceInput: RegisterDeviceInput): Promise<UserDocument> {
     const userFound = await User.findOne({
       devices: { $elemMatch: { id: deviceInput.deviceId } },
     });
 
     if (userFound) {
-      return userFound
+      return userFound;
     }
 
     const initialTasks = InitialDataUtil.getInitialUserOnboardingTasks();
@@ -20,12 +20,13 @@ class UserUtil {
     const user = await User.create({
       tasks: initialTasks,
     });
-    const device:Device = {
+    const device: Device = {
       id: deviceInput.deviceId,
       os: deviceInput.deviceOs,
       type: deviceInput.deviceType,
+      token: deviceInput.deviceToken,
     };
-    const token:AuthToken = {
+    const token: AuthToken = {
       deviceId: deviceInput.deviceId,
       kind: AuthTokenKind.auth,
       validUntil: null,
@@ -36,8 +37,8 @@ class UserUtil {
     user.devices.push(device);
     await user.save();
 
-    return user
+    return user;
   }
 }
 
-export default UserUtil
+export default UserUtil;

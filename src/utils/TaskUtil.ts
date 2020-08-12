@@ -29,10 +29,12 @@ class TaskUtil {
       type: taskFound.type,
     };
 
+    // If there is a reference to an actual routeTask we show that
     if (taskFound.routeTaskId) {
       return {
         ...def,
         ...InitialDataUtil.getTaskById(taskFound.routeTaskId),
+        id: taskId,
       };
     }
 

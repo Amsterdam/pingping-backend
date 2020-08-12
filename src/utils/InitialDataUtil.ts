@@ -1,14 +1,9 @@
-import _ from "lodash";
+import _ from 'lodash';
 // import { TaskStatus } from "@models";
-import {
-  TaskDefinition,
-  RouteDefinition,
-  AchivementDefinition,
-  RewardDefinition,
-} from "../types/global";
-import { TaskStatus } from "../generated-models";
+import { TaskDefinition, RouteDefinition, AchivementDefinition, RewardDefinition } from '../types/global';
+import { TaskStatus } from '../generated-models';
 // import { TaskStatus } from "@models";
-const initialData: InitialData = require("../../initialData.json");
+const initialData: InitialData = require('../../initialData.json');
 
 type InitialData = {
   onboardingTasks: [TaskDefinition];
@@ -32,7 +27,7 @@ type TaskIdObject = {
 class InitialDataUtil {
   // Task id can conlude a refereice to a route like this Route.taskId. Here we deconstruct it.
   static deconstructTaskId(id: string): TaskIdObject {
-    const [routeId, taskId] = id.split(".");
+    const [routeId, taskId] = id.split('.');
 
     return {
       routeId,
@@ -40,24 +35,21 @@ class InitialDataUtil {
     };
   }
 
-  static getTaskFromArray(
-    id: string,
-    items: Array<TaskDefinition>
-  ): TaskDefinition {
+  static getTaskFromArray(id: string, items: Array<TaskDefinition>): TaskDefinition {
     const tasks = items.filter((i: TaskDefinition) => i.id === id);
 
     return _.first(tasks);
   }
 
-  static getRoutes():Array<RouteDefinition> {
-    const keys = Object.keys(initialData.routes)
+  static getRoutes(): Array<RouteDefinition> {
+    const keys = Object.keys(initialData.routes);
 
-    return Object.values(initialData.routes).map((r:RouteDefinition, index:number) => {
+    return Object.values(initialData.routes).map((r: RouteDefinition, index: number) => {
       return {
         id: keys[index],
-        ...r
-      }
-    })
+        ...r,
+      };
+    });
   }
 
   static getRouteById(id: string): RouteDefinition {
@@ -67,13 +59,11 @@ class InitialDataUtil {
       throw new Error(`route_not_defined`);
     }
 
-    return route
+    return route;
   }
 
   static getAchivementById(id: string): AchivementDefinition {
-    const achivements = initialData.achivements.filter(
-      (i: AchivementDefinition) => i.id === id
-    );
+    const achivements = initialData.achivements.filter((i: AchivementDefinition) => i.id === id);
     let achivement: AchivementDefinition = _.first(achivements);
 
     if (!achivement) {
@@ -88,9 +78,7 @@ class InitialDataUtil {
   }
 
   static getTaskById(id: string): TaskDefinition {
-    const tasks = initialData.onboardingTasks.filter(
-      (i: TaskDefinition) => i.id === id
-    );
+    const tasks = initialData.onboardingTasks.filter((i: TaskDefinition) => i.id === id);
     let task: TaskDefinition = _.first(tasks);
 
     // If onboarding task is not found, look for a rotue task
@@ -99,7 +87,7 @@ class InitialDataUtil {
       const route = this.getRouteById(taskObj.routeId);
 
       if (route) {
-        task = this.getTaskFromArray(taskObj.taskId, route.tasks);
+        task = this.getTaskFromArray(id, route.tasks);
       }
     }
 
@@ -111,9 +99,7 @@ class InitialDataUtil {
   }
 
   static getInitialUserOnboardingTasks(): Array<any> {
-    const tasks = initialData.onboardingTasks.filter(
-      (i: any) => i.initial && i.initial === true
-    );
+    const tasks = initialData.onboardingTasks.filter((i: any) => i.initial && i.initial === true);
 
     return tasks.map((i: OnboardingTaskDefinition) => {
       return {
@@ -127,21 +113,19 @@ class InitialDataUtil {
   static getRewards(): Array<RewardDefinition> {
     const rewards = initialData.rewards;
 
-    return rewards
+    return rewards;
   }
 
-  static getReward(id:string):RewardDefinition {
-    const rewards = initialData.rewards.filter(
-      (r:RewardDefinition) => r.id === id
-    );
+  static getReward(id: string): RewardDefinition {
+    const rewards = initialData.rewards.filter((r: RewardDefinition) => r.id === id);
 
-    let reward:RewardDefinition = _.first(rewards);
+    let reward: RewardDefinition = _.first(rewards);
 
     if (!reward) {
       throw new Error(`reward_not_defined`);
     }
 
-    return reward
+    return reward;
   }
 }
 

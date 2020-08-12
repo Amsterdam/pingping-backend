@@ -92,7 +92,7 @@
       "title": "Financiële Basis",
       "tasks": [
         {
-          "id": "woonAdres",
+          "id": "financieleBasis.woonAdres",
           "title": "Regel je woonadres",
           "media": "https://www.youtube.com/embed/7UCAuTfZbNA",
           "points": 20,
@@ -101,7 +101,7 @@
           "icon": ""
         },
         {
-          "id": "bankRekening",
+          "id": "financieleBasis.bankRekening",
           "title": "Bankrekening Openen",
           "media": "https://www.youtube.com/embed/EiiPeWmLpWM",
           "points": 20,
@@ -110,7 +110,7 @@
           "icon": ""
         },
         {
-          "id": "digiD",
+          "id": "financieleBasis.digiD",
           "title": "Digid Aanmaken",
           "media": "https://www.youtube.com/embed/jv68lO2uPUw",
           "points": 20,
@@ -119,7 +119,7 @@
           "icon": ""
         },
         {
-          "id": "zorgverzekering",
+          "id": "financieleBasis.zorgverzekering",
           "title": "Zorgverzekering regelen",
           "media": "https://www.youtube.com/embed/mstc5u40iyM",
           "points": 20,
@@ -128,7 +128,7 @@
           "icon": ""
         },
         {
-          "id": "zorgtoeslag",
+          "id": "financieleBasis.zorgtoeslag",
           "title": "Kijk of je recht hebt op zorgtoeslag",
           "media": "https://www.youtube.com/embed/N3GzCO0CSoA",
           "points": 20,
@@ -137,7 +137,7 @@
           "icon": ""
         },
         {
-          "id": "inkomen",
+          "id": "financieleBasis.inkomen",
           "title": "Heb je al een inkomen?",
           "choices": {},
           "media": "https://www.youtube.com/embed/JBumC4H-NBw",
@@ -147,7 +147,7 @@
           "icon": ""
         },
         {
-          "id": "ingeschrevenVoorWoning",
+          "id": "financieleBasis.ingeschrevenVoorWoning",
           "title": "Schrijf je in voor een woning",
           "media": "https://www.youtube.com/embed/NvqfRJFJlpQ",
           "choices": {
@@ -156,6 +156,7 @@
             "ouders_familie": "Ouders / Familie"
           },
           "points": 20,
+          "headerTitle": "woning",
           "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",
           "icon": ""
         }
