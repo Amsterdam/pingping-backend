@@ -34,7 +34,7 @@ export const Mutation: MutationResolvers = {
     }
 
     return {
-      message: 'no_confirmed',
+      message: 'not_confirmed',
     };
   },
 };

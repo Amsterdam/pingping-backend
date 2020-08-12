@@ -1,5 +1,6 @@
 type Mutation {
-  registerDevice (input:RegisterDeviceInput!):RegisterDeviceResponse!
+  registerDevice(input: RegisterDeviceInput!): RegisterDeviceResponse!
+  # setDeviceToken(input: String!)
 }
 
 # Response
@@ -14,6 +15,7 @@ input RegisterDeviceInput {
   deviceId: String!
   deviceOs: String
   deviceType: String
+  deviceToken: String
   locale: Locale
   location: LocactionInput
 }

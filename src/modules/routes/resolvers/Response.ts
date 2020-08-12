@@ -30,6 +30,8 @@ export const RouteResponse: any = {
   title: (doc: RouteDefinition) => doc.title,
   description: (doc: RouteDefinition) => doc.description,
   imageUrl: (doc: RouteDefinition) => doc.imageUrl,
+  isSuggested: (doc: RouteDefinition) => false, // @todo Calculate
+  numberOfSteps: (doc: RouteDefinition) => doc.tasks.length,
 };
 
 export const UserRouteResponse: any = {

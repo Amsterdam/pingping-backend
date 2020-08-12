@@ -3,10 +3,12 @@ import InitialDataUtil from 'utils/InitialDataUtil';
 import { RouteDefinition } from 'types/global';
 
 export const Query: QueryResolvers = {
+  // @todo Revise
   getCurrentRoutes(): Array<UserRouteResponse> {
     return [];
   },
 
+  // @todo Revise
   getAvailableRoutes(): Array<RouteResponse> {
     const routeDefs = InitialDataUtil.getRoutes();
 
@@ -14,6 +16,10 @@ export const Query: QueryResolvers = {
       return {
         routeId: def.id,
         title: def.title,
+        isSuggested: false,
+        numberOfSteps: 10,
+        totalPoints: 10,
+        targetAudience: 'anyone',
       };
     });
   },

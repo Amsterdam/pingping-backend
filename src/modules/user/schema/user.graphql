@@ -4,14 +4,20 @@ type Query {
 
 type Mutation {
   createGoal(input: CreateGoalInput!): UserGoalResponse!
+  deleteUser(confirm: String): MessageResponse
 }
 
 # Response
+type MessageResponse {
+  message: String!
+}
+
 type StatusResponse {
   user: UserResponse!
   currentTask: UserTaskResponse
   previousTask: UserTaskResponse
   routes: [UserRouteResponse]
+  exportUrl: String
 }
 
 type UserGoalResponse {

@@ -46,6 +46,7 @@ export interface Device {
   id: string;
   os?: string;
   type?: string;
+  token?: string;
 }
 
 const userSchema = new Schema(

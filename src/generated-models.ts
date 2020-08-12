@@ -112,6 +112,7 @@ export type RegisterDeviceInput = {
   deviceId: Scalars['String'];
   deviceOs?: Maybe<Scalars['String']>;
   deviceType?: Maybe<Scalars['String']>;
+  deviceToken?: Maybe<Scalars['String']>;
   locale?: Maybe<Locale>;
   location?: Maybe<LocactionInput>;
 };
@@ -563,7 +564,7 @@ export type UserRewardResponseResolvers<ContextType = ModuleContext, ParentType 
 
 export type UserRouteResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserRouteResponse'] = ResolversParentTypes['UserRouteResponse']> = {
   route?: Resolver<ResolversTypes['RouteResponse'], ParentType, ContextType>,
-  progress?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  progress?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   status?: Resolver<ResolversTypes['UserRouteStatus'], ParentType, ContextType>,
   tasks?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserTaskResponse']>>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
@@ -573,6 +574,7 @@ export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType ex
   status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>,
   task?: Resolver<ResolversTypes['TaskResponse'], ParentType, ContextType>,
   answer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  progress?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
