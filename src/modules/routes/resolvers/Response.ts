@@ -11,11 +11,13 @@ export const UserTaskResponse: any = {
   status: (doc: UserTask) => doc.status,
   answer: (doc: UserTask) => doc.answer,
   task: (doc: UserTask) => TaskUtil.getDefinition(doc.taskId),
+  progress: (doc: UserTask) => 0.1, // @todo Calculate
 };
 
 export const TaskResponse: any = {
   taskId: (doc: TaskDefinition) => doc.id,
   title: (doc: TaskDefinition) => doc.title,
+  headerTitle: (doc: TaskDefinition) => doc.headerTitle,
   description: (doc: TaskDefinition) => doc.description,
   media: (doc: TaskDefinition) => doc.media,
   choices: (doc: TaskDefinition) => doc.choices,

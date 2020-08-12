@@ -149,17 +149,18 @@ export type StatusResponse = {
   currentTask?: Maybe<UserTaskResponse>;
   previousTask?: Maybe<UserTaskResponse>;
   routes?: Maybe<Array<Maybe<UserRouteResponse>>>;
+  exportUrl?: Maybe<Scalars['String']>;
 };
 
 export type TaskResponse = {
    __typename?: 'TaskResponse';
   taskId: Scalars['String'];
   title: Scalars['String'];
+  headerTitle: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   media?: Maybe<Scalars['String']>;
   choices?: Maybe<Scalars['Choices']>;
   type: TaskType;
-  progressPercentile?: Maybe<Scalars['Int']>;
 };
 
 export enum TaskStatus {
@@ -453,17 +454,18 @@ export type StatusResponseResolvers<ContextType = ModuleContext, ParentType exte
   currentTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   previousTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   routes?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserRouteResponse']>>>, ParentType, ContextType>,
+  exportUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type TaskResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['TaskResponse'] = ResolversParentTypes['TaskResponse']> = {
   taskId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  headerTitle?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   media?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   choices?: Resolver<Maybe<ResolversTypes['Choices']>, ParentType, ContextType>,
   type?: Resolver<ResolversTypes['TaskType'], ParentType, ContextType>,
-  progressPercentile?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 

@@ -19,6 +19,7 @@ class TaskUtil {
     const def = {
       id: taskId,
       title: taskFound.title,
+      headerTitle: taskFound.headerTitle,
       choices: taskFound.choices,
       description: taskFound.description,
       routeTaskId: taskFound.routeTaskId,

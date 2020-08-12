@@ -3,7 +3,8 @@
     {
       "id": "onboarding.dateOfBirth",
       "type": "DateOfBirth",
-      "title": "Wat is je geboortedatum?",
+      "title": "Wat is je geboorte datum?",
+      "headerTitle": "geboortedatum",
       "initial": true,
       "nextTaskId": "onboarding.woonAdres"
     },
@@ -95,6 +96,7 @@
           "title": "Regel je woonadres",
           "media": "https://www.youtube.com/embed/7UCAuTfZbNA",
           "points": 20,
+          "headerTitle": "woonadres",
           "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",
           "icon": ""
         },
@@ -103,6 +105,7 @@
           "title": "Bankrekening Openen",
           "media": "https://www.youtube.com/embed/EiiPeWmLpWM",
           "points": 20,
+          "headerTitle": "bankrekening",
           "description": "<ul> <li>Je hebt een bankrekening nodig om je geldzaken te regelen. Je kan zelf kiezen bij welke bank je een bankrekening neemt.</li> <li>Op je bankrekening kan geld worden gestort en jij kunt het weer opnemen door te pinnen. Je kunt je eigen geld ook overmaken naar je spaarrekening.</li> <li><strong>Rood staan</strong>: als er niks&nbsp;op je rekening staat, kun je er ook niks van afhalen. Je kan ervoor kiezen om &#39;rood&#39; te kunnen staan (geld uitgeven dat je niet hebt). Let op: het kan verleidelijk zijn om rood te kunnen staan. Maar er zijn ook nadelen,&nbsp;je betaalt rente over je geleende geld. Het is dus niet gratis.</li> </ul>",
           "icon": ""
         },
@@ -111,6 +114,7 @@
           "title": "Digid Aanmaken",
           "media": "https://www.youtube.com/embed/jv68lO2uPUw",
           "points": 20,
+          "headerTitle": "digid",
           "description": "<p>Voor zaken die je regelt met de overheid hebt je een DigiD nodig.Met een DigiD laat je zien wie je bent. Net als met je ID of paspoort. Een DigiD heb je bijvoorbeeld nodig voor je belastingen.&nbsp;</p> <ul> <li><a href=\"https://digid.nl/aanvragen\">Hier </a>kan je jouw DigiD aanvragen.</li> <li>Je krijgt binnen 5 dagen een brief op je adres.&nbsp;</li> <li>In die brief staat een code. Dat is een tijdelijke code. Met die code kan je jouw eigen DigiD aanvragen.</li> <li>In de brief staat hoe je dat moet doen. Doe dat snel. Als je lang wacht, is de code niet meer geldig.</li> </ul>",
           "icon": ""
         },
@@ -119,6 +123,7 @@
           "title": "Zorgverzekering regelen",
           "media": "https://www.youtube.com/embed/mstc5u40iyM",
           "points": 20,
+          "headerTitle": "zorgverzekering",
           "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",
           "icon": ""
         },
@@ -127,6 +132,7 @@
           "title": "Kijk of je recht hebt op zorgtoeslag",
           "media": "https://www.youtube.com/embed/N3GzCO0CSoA",
           "points": 20,
+          "headerTitle": "zorgtoeslag",
           "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",
           "icon": ""
         },
@@ -136,6 +142,7 @@
           "choices": {},
           "media": "https://www.youtube.com/embed/JBumC4H-NBw",
           "points": 20,
+          "headerTitle": "inkomen",
           "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"http://www.amsterdam.nl/veelgevraagd/?caseid=%7BB5E2584B-217C-489D-B346-42EE7511D445%7D\">een briefadres krijgen.</a></p><p>Verblijf je in Amsterdam, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"http://www.amsterdam.nl/werk-inkomen/jongerenpunt/\">Jongerenpunt van de gemeente Amsterdam.</a></p>",
           "icon": ""
         },
