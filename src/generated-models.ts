@@ -141,12 +141,35 @@ export enum RewardStatus {
 }
 
 
+export type RouteFeedbackInput = {
+  routeId: Scalars['String'];
+  taskName: Scalars['String'];
+  feedback: Scalars['String'];
+};
+
+export type RouteFeedbackResponse = {
+   __typename?: 'RouteFeedbackResponse';
+  taskName: Scalars['String'];
+  feedback: Scalars['String'];
+};
+
 export type RouteResponse = {
    __typename?: 'RouteResponse';
   routeId: Scalars['String'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  imageUrl?: Maybe<Scalars['String']>;
+  coverImageUrl?: Maybe<Scalars['String']>;
+  isSuggested: Scalars['Boolean'];
+  numberOfSteps: Scalars['Int'];
+  totalPoints: Scalars['Int'];
+  targetAudience: Scalars['String'];
+  tips?: Maybe<Array<RouteTip>>;
+};
+
+export type RouteTip = {
+   __typename?: 'RouteTip';
+  title: Scalars['String'];
+  description: Scalars['String'];
 };
 
 export type StatusResponse = {
@@ -225,7 +248,7 @@ export type UserRewardResponse = {
 export type UserRouteResponse = {
    __typename?: 'UserRouteResponse';
   route: RouteResponse;
-  progress?: Maybe<Scalars['Int']>;
+  progress?: Maybe<Scalars['Float']>;
   status: UserRouteStatus;
   tasks?: Maybe<Array<Maybe<UserTaskResponse>>>;
 };
@@ -240,6 +263,7 @@ export type UserTaskResponse = {
   status: TaskStatus;
   task: TaskResponse;
   answer?: Maybe<Scalars['String']>;
+  progress?: Maybe<Scalars['Float']>;
 };
 
 
@@ -320,7 +344,10 @@ export type ResolversTypes = {
   UserRouteResponse: ResolverTypeWrapper<UserRouteResponse>,
   RouteResponse: ResolverTypeWrapper<RouteResponse>,
   String: ResolverTypeWrapper<Scalars['String']>,
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
+  RouteTip: ResolverTypeWrapper<RouteTip>,
+  Float: ResolverTypeWrapper<Scalars['Float']>,
   UserRouteStatus: UserRouteStatus,
   UserTaskResponse: ResolverTypeWrapper<UserTaskResponse>,
   TaskStatus: TaskStatus,
@@ -338,13 +365,14 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>,
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
+  RouteFeedbackInput: RouteFeedbackInput,
+  RouteFeedbackResponse: ResolverTypeWrapper<RouteFeedbackResponse>,
   CreateGoalInput: CreateGoalInput,
+  MessageResponse: ResolverTypeWrapper<MessageResponse>,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
-  Float: ResolverTypeWrapper<Scalars['Float']>,
   RegisterDeviceResponse: ResolverTypeWrapper<RegisterDeviceResponse>,
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   AchivementResponse: ResolverTypeWrapper<AchivementResponse>,
   AchivementStatus: AchivementStatus,
   RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
@@ -356,7 +384,10 @@ export type ResolversParentTypes = {
   UserRouteResponse: UserRouteResponse,
   RouteResponse: RouteResponse,
   String: Scalars['String'],
+  Boolean: Scalars['Boolean'],
   Int: Scalars['Int'],
+  RouteTip: RouteTip,
+  Float: Scalars['Float'],
   UserRouteStatus: UserRouteStatus,
   UserTaskResponse: UserTaskResponse,
   TaskStatus: TaskStatus,
@@ -374,13 +405,14 @@ export type ResolversParentTypes = {
   Mutation: {},
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: UpdateTaskResponse,
+  RouteFeedbackInput: RouteFeedbackInput,
+  RouteFeedbackResponse: RouteFeedbackResponse,
   CreateGoalInput: CreateGoalInput,
+  MessageResponse: MessageResponse,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
-  Float: Scalars['Float'],
   RegisterDeviceResponse: RegisterDeviceResponse,
-  Boolean: Scalars['Boolean'],
   AchivementResponse: AchivementResponse,
   AchivementStatus: AchivementStatus,
   RouteAnswer: Scalars['RouteAnswer'],
@@ -448,11 +480,28 @@ export interface RouteAnswerScalarConfig extends GraphQLScalarTypeConfig<Resolve
   name: 'RouteAnswer'
 }
 
+export type RouteFeedbackResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RouteFeedbackResponse'] = ResolversParentTypes['RouteFeedbackResponse']> = {
+  taskName?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  feedback?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export type RouteResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RouteResponse'] = ResolversParentTypes['RouteResponse']> = {
   routeId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  coverImageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  isSuggested?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
+  numberOfSteps?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  totalPoints?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  targetAudience?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  tips?: Resolver<Maybe<Array<ResolversTypes['RouteTip']>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
+export type RouteTipResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RouteTip'] = ResolversParentTypes['RouteTip']> = {
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -539,6 +588,7 @@ export type Resolvers<ContextType = ModuleContext> = {
   RouteAnswer?: GraphQLScalarType,
   RouteFeedbackResponse?: RouteFeedbackResponseResolvers<ContextType>,
   RouteResponse?: RouteResponseResolvers<ContextType>,
+  RouteTip?: RouteTipResolvers<ContextType>,
   StatusResponse?: StatusResponseResolvers<ContextType>,
   TaskResponse?: TaskResponseResolvers<ContextType>,
   UpdateTaskResponse?: UpdateTaskResponseResolvers<ContextType>,

@@ -40,4 +40,10 @@ export type RouteDefinition = {
   description?: string;
   imageUrl?: string;
   tasks: Array<TaskDefinition>;
+  tips: Array<RouteTipsDefinition>;
+};
+
+export type RouteTipsDefinition = {
+  title: string;
+  description: string;
 };

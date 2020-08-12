@@ -50,6 +50,11 @@ type RouteFeedbackResponse {
   feedback: String!
 }
 
+type RouteTip {
+  title: String!
+  description: String!
+}
+
 # Input
 input UpdateTaskInput {
   taskId: String!
