@@ -11,6 +11,7 @@ export const UserModule = new GraphQLModule({
   resolversComposition: {
     'Query.getStatus': [AuthMiddleware.isAuthenticated()],
     'Mutation.createGoal': [AuthMiddleware.isAuthenticated()],
+    'Mutation.deleteUser': [AuthMiddleware.isAuthenticated()],
   },
   typeDefs: loadSchemaFiles(__dirname + '/schema/'),
   resolvers: loadResolversFiles(__dirname + '/resolvers/'),

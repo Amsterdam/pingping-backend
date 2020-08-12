@@ -1,7 +1,14 @@
-import { MutationResolvers, UserGoalResponse, MutationCreateGoalArgs } from '@models';
+import {
+  MutationResolvers,
+  UserGoalResponse,
+  MutationCreateGoalArgs,
+  MutationDeleteUserArgs,
+  MessageResponse,
+} from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 import GoalUtil from 'utils/GoalUtil';
 import { UserGoal } from 'models/UserGoal';
+import { User } from 'models/User';
 
 export const Mutation: MutationResolvers = {
   async createGoal(root: any, args: MutationCreateGoalArgs, context: ModuleContext): Promise<UserGoalResponse> {
@@ -17,6 +24,17 @@ export const Mutation: MutationResolvers = {
       title: userGoal.title,
       description: userGoal.description,
       amount: userGoal.amount,
+    };
+  },
+
+  async deleteUser(root: any, args: MutationDeleteUserArgs, context: ModuleContext): Promise<MessageResponse> {
+    // @todo Mani Implement
+    if (args.confirm === 'delete') {
+      await User.deleteOne({ _id: context._id });
+    }
+
+    return {
+      message: 'no_confirmed',
     };
   },
 };

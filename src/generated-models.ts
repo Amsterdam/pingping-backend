@@ -61,6 +61,7 @@ export type Mutation = {
   createRouteFeedback: RouteFeedbackResponse;
   claimReward: UserRewardResponse;
   createGoal: UserGoalResponse;
+  deleteUser?: Maybe<MessageResponse>;
   registerDevice: RegisterDeviceResponse;
 };
 
@@ -87,6 +88,11 @@ export type MutationClaimRewardArgs = {
 
 export type MutationCreateGoalArgs = {
   input: CreateGoalInput;
+};
+
+
+export type MutationDeleteUserArgs = {
+  confirm?: Maybe<Scalars['String']>;
 };
 
 
@@ -410,6 +416,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   createRouteFeedback?: Resolver<ResolversTypes['RouteFeedbackResponse'], ParentType, ContextType, RequireFields<MutationCreateRouteFeedbackArgs, 'input'>>,
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
+  deleteUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, never>>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };
 
