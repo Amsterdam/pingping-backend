@@ -14,8 +14,6 @@ export const RoutesModule = new GraphQLModule({
     'Mutation.createRouteFeedback': [AuthMiddleware.isAuthenticated()],
   },
   typeDefs: loadSchemaFiles(__dirname + '/schema/'),
-  resolvers: {
-    ...Resolvers,
-  },
+  resolvers: loadResolversFiles(__dirname + '/resolvers/'),
   context,
 });

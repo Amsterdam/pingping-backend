@@ -102,7 +102,7 @@ export type MutationRegisterDeviceArgs = {
 
 export type Query = {
    __typename?: 'Query';
-  getCurrentRoutes: Array<Maybe<UserRouteResponse>>;
+  getCurrentRoutes?: Maybe<Array<UserRouteResponse>>;
   getAvailableRoutes: Array<Maybe<RouteResponse>>;
   getAvailableRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
@@ -454,7 +454,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
 };
 
 export type QueryResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  getCurrentRoutes?: Resolver<Array<Maybe<ResolversTypes['UserRouteResponse']>>, ParentType, ContextType>,
+  getCurrentRoutes?: Resolver<Maybe<Array<ResolversTypes['UserRouteResponse']>>, ParentType, ContextType>,
   getAvailableRoutes?: Resolver<Array<Maybe<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
   getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,

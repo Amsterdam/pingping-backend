@@ -5,7 +5,7 @@ type Mutation {
 }
 
 type Query {
-  getCurrentRoutes: [UserRouteResponse]!
+  getCurrentRoutes: [UserRouteResponse!]
   getAvailableRoutes: [RouteResponse]!
 }
 
