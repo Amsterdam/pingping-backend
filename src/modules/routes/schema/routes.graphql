@@ -24,6 +24,7 @@ type TaskResponse {
   description: String
   media: String
   choices: Choices
+  progress: Float
   type: TaskType!
 }
 

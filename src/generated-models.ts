@@ -190,6 +190,7 @@ export type TaskResponse = {
   description?: Maybe<Scalars['String']>;
   media?: Maybe<Scalars['String']>;
   choices?: Maybe<Scalars['Choices']>;
+  progress?: Maybe<Scalars['Float']>;
   type: TaskType;
 };
 
@@ -522,6 +523,7 @@ export type TaskResponseResolvers<ContextType = ModuleContext, ParentType extend
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   media?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   choices?: Resolver<Maybe<ResolversTypes['Choices']>, ParentType, ContextType>,
+  progress?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   type?: Resolver<ResolversTypes['TaskType'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
