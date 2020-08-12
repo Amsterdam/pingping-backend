@@ -75,9 +75,15 @@
       }
     },
     {
-      "routeTaskId": "financieleBasis.waarKomtJeInkomenVandaan",
       "id": "onboarding.waarKomtJeInkomenVandaan",
       "type": "MultipleChoices",
+      "headerTitle": "inkomen",
+      "title": "Waar komt je inkomen vandaan?",
+      "choices": {
+        "bijbaan": "Een bijbaan",
+        "studiefinanciering": "Studiefinanciering",
+        "family": "Ouders / Familie"
+      },
       "nextTaskId": "onboarding.ingeschrevenVoorWoning"
     },
     {
@@ -143,7 +149,6 @@
         {
           "id": "financieleBasis.inkomen",
           "title": "Heb je al een inkomen?",
-          "choices": {},
           "media": "https://www.youtube.com/embed/JBumC4H-NBw",
           "points": 20,
           "headerTitle": "inkomen",
