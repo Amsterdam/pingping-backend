@@ -16,6 +16,7 @@ export type TaskDefinition = {
   title: string;
   description: string;
   icon: string;
+  points: number;
   media?: string;
   choices?: object;
   initial?: boolean;
@@ -41,6 +42,7 @@ export type RouteDefinition = {
   imageUrl?: string;
   tasks: Array<TaskDefinition>;
   tips: Array<RouteTipsDefinition>;
+  targetAudience: string;
 };
 
 export type RouteTipsDefinition = {

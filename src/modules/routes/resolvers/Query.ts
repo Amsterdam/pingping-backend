@@ -6,10 +6,10 @@ import { UserRoute } from 'models/UserRoute';
 import { ModuleContext } from '@graphql-modules/core';
 
 export const Query: QueryResolvers = {
-  // @todo Revise
-  async getCurrentRoutes(root: any, args: any, context: ModuleContext): Promise<Array<any>> {
+  getCurrentRoutes(root: any, args: any, context: ModuleContext): Array<any> {
     const routes: Array<UserRoute> = RouteUtil.getCurrentUserRoutes(context.user);
-    return [];
+
+    return routes;
   },
 
   // @todo Revise

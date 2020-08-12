@@ -21,6 +21,7 @@ class TaskUtil {
       title: taskFound.title,
       headerTitle: taskFound.headerTitle,
       choices: taskFound.choices,
+      points: taskFound.points,
       description: taskFound.description,
       routeTaskId: taskFound.routeTaskId,
       nextTaskId: taskFound.nextTaskId,

@@ -17,6 +17,7 @@ class RouteUtil {
         title: routeFound.title,
         tasks: routeFound.tasks,
         tips: routeFound.tips || [],
+        targetAudience: routeFound.targetAudience,
       };
 
       return def;
