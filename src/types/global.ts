@@ -17,6 +17,7 @@ export type TaskDefinition = {
   description: string;
   icon: string;
   points: number;
+  progress: number;
   media?: string;
   choices?: object;
   initial?: boolean;

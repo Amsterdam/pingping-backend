@@ -3,9 +3,11 @@ import { TaskDefinition } from '../types/global';
 
 export class UserTask {
   taskId: string;
+  routeTaskId: string;
   answer: string;
   status: TaskStatus;
   task: TaskDefinition;
+  progress: number = null;
 
   constructor(taskId: string, status: TaskStatus, answer: string = null) {
     this.taskId = taskId;

@@ -17,6 +17,7 @@ type InitialData = {
 type OnboardingTaskDefinition = TaskDefinition & {
   nextTaskId?: string;
   nextRotueId?: string;
+  progress: number;
 };
 
 type TaskIdObject = {
@@ -33,6 +34,12 @@ class InitialDataUtil {
       routeId,
       taskId,
     };
+  }
+
+  static getRouteIdFromTaskId(id: string): string {
+    const [routeId, taskId] = id.split('.');
+
+    return routeId;
   }
 
   static getTaskFromArray(id: string, items: Array<TaskDefinition>): TaskDefinition {
@@ -97,6 +104,13 @@ class InitialDataUtil {
     }
 
     return task;
+  }
+
+  static getOnboardingProgress(taskId: string): number {
+    const tasks = initialData.onboardingTasks.length;
+    const index = initialData.onboardingTasks.map((i) => i.id).indexOf(taskId);
+
+    return _.round((index + 1) / tasks, 2);
   }
 
   static getInitialUserOnboardingTasks(): Array<any> {

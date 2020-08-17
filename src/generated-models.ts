@@ -265,7 +265,6 @@ export type UserTaskResponse = {
   status: TaskStatus;
   task: TaskResponse;
   answer?: Maybe<Scalars['String']>;
-  progress?: Maybe<Scalars['Float']>;
 };
 
 
@@ -576,7 +575,6 @@ export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType ex
   status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>,
   task?: Resolver<ResolversTypes['TaskResponse'], ParentType, ContextType>,
   answer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  progress?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 

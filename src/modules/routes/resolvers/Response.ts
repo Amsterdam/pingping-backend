@@ -11,7 +11,6 @@ export const UserTaskResponse: any = {
   status: (doc: UserTask) => doc.status,
   answer: (doc: UserTask) => doc.answer,
   task: (doc: UserTask) => TaskUtil.getDefinition(doc.taskId),
-  progress: (doc: UserTask) => 0.1, // @todo Calculate
 };
 
 export const TaskResponse: any = {
@@ -22,7 +21,6 @@ export const TaskResponse: any = {
   media: (doc: TaskDefinition) => doc.media,
   choices: (doc: TaskDefinition) => doc.choices,
   type: (doc: TaskDefinition) => doc.type,
-  progressPercentile: (doc: TaskDefinition) => 0,
 };
 
 export const RouteResponse: any = {
@@ -37,7 +35,15 @@ export const RouteResponse: any = {
 
 export const UserRouteResponse: any = {
   status: (doc: UserRoute) => doc.status,
-  progress: (doc: UserRoute) => doc.progress,
+  progress: (doc: UserRoute, args: any, context: ModuleContext) => {
+    const definedTasks = InitialDataUtil.getRouteById(doc.routeId).tasks;
+    const onboardingTasks = context.user.tasks
+      .filter((ut: UserTask) => ut.status === TaskStatus.Completed)
+      .filter((ut: UserTask) => (ut.routeTaskId || '').indexOf(`${doc.routeId}.`) !== -1);
+    const routeTasks = doc.tasks.filter((ut: UserTask) => ut.status === TaskStatus.Completed);
+
+    return _.round((onboardingTasks.length + routeTasks.length) / definedTasks.length, 2);
+  },
   route: (doc: UserRoute) => InitialDataUtil.getRouteById(doc.routeId),
   tasks: (doc: UserRoute, args: any, context: ModuleContext) => {
     const definedTasks = InitialDataUtil.getRouteById(doc.routeId).tasks;
@@ -66,7 +72,6 @@ export const UserRouteResponse: any = {
       return {
         taskId: t.id,
         status,
-        progress: 0.1, // @todo Mani fix
         answer,
       };
     });

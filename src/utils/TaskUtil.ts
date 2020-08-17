@@ -9,6 +9,18 @@ import RouteUtil from './RouteUtil';
 import { TaskStatus, TaskType } from '../generated-models';
 
 class TaskUtil {
+  static getProgress(taskId: string): number {
+    if (taskId.indexOf('onboarding.') !== -1) {
+      return InitialDataUtil.getOnboardingProgress(taskId);
+    }
+
+    // GetRoute
+    const tasks = InitialDataUtil.getRouteById(InitialDataUtil.getRouteIdFromTaskId(taskId)).tasks;
+    const index = tasks.map((i) => i.id).indexOf(taskId);
+
+    return _.round((index + 1) / tasks.length, 2);
+  }
+
   static getDefinition(taskId: string): TaskDefinition {
     const taskFound = InitialDataUtil.getTaskById(taskId);
 
@@ -22,6 +34,7 @@ class TaskUtil {
       headerTitle: taskFound.headerTitle,
       choices: taskFound.choices,
       points: taskFound.points,
+      progress: TaskUtil.getProgress(taskId),
       description: taskFound.description,
       routeTaskId: taskFound.routeTaskId,
       nextTaskId: taskFound.nextTaskId,
@@ -97,7 +110,8 @@ class TaskUtil {
   static addNextTaskToUser(user: UserDocument, taskId: string): UserDocument {
     const taskDef: TaskDefinition = InitialDataUtil.getTaskById(taskId);
 
-    const userTask: UserTask = new UserTask(taskDef.id, TaskStatus.PendingUser, taskDef.type);
+    const userTask: UserTask = new UserTask(taskDef.id, TaskStatus.PendingUser);
+    userTask.routeTaskId = taskDef.routeTaskId;
     user.tasks.push(userTask);
 
     return user;
@@ -124,6 +138,7 @@ class TaskUtil {
     const newStatus =
       taskDef.type === TaskType.YesOrNo && answer === 'no' ? TaskStatus.Dismissed : TaskStatus.Completed;
 
+    userTask.routeTaskId = taskDef.routeTaskId;
     userTask.status = newStatus;
     userTask.answer = answer;
 

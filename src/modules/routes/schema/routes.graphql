@@ -14,7 +14,6 @@ type UserTaskResponse {
   status: TaskStatus!
   task: TaskResponse!
   answer: String
-  progress: Float
 }
 
 type TaskResponse {

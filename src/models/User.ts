@@ -69,6 +69,8 @@ const userSchema = new Schema(
 
     tasks: [
       {
+        routeId: String,
+        routeTaskId: String,
         taskId: String,
         answer: String,
         status: String,
