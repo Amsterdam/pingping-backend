@@ -25,11 +25,15 @@ export const Mutation: MutationResolvers = {
     let task = TaskUtil.getUserTask(context.user, args.input.taskId);
 
     if (!task) {
-      throw new Error('task_not_found_on_user');
+      // Look for RouteTask
+      task = RouteUtil.getRouteTask(context.user, args.input.taskId);
+
+      if (!task) {
+        throw new Error('task_not_found_on_user');
+      }
     }
 
     task = await TaskUtil.handleTask(context.user, args.input.taskId, args.input.answer || '');
-
     const nextTask = TaskUtil.getNextTask(context.user);
 
     return {

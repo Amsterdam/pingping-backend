@@ -13,18 +13,9 @@ export const Query: QueryResolvers = {
   },
 
   // @todo Revise
-  getAvailableRoutes(): Array<RouteResponse> {
+  getAvailableRoutes(): Array<any> {
     const routeDefs = InitialDataUtil.getRoutes();
 
-    return routeDefs.map((def: RouteDefinition) => {
-      return {
-        routeId: def.id,
-        title: def.title,
-        isSuggested: false,
-        numberOfSteps: 10,
-        totalPoints: 10,
-        targetAudience: 'anyone',
-      };
-    });
+    return routeDefs;
   },
 };

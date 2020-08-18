@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 import { UserDocument, User } from '../models/User';
 import { UserRoute } from '../models/UserRoute';
 import { Types } from 'mongoose';
@@ -7,6 +6,7 @@ import InitialDataUtil from './InitialDataUtil';
 import { RouteDefinition } from '../types/global';
 import { UserTask } from '../models/UserTask';
 import { TaskStatus, UserRouteStatus } from '../generated-models';
+import TaskUtil from './TaskUtil';
 
 class RouteUtil {
   static getDefinition(routeId: string): RouteDefinition {
@@ -28,6 +28,25 @@ class RouteUtil {
 
       throw e;
     }
+  }
+
+  static getRouteTask(user: UserDocument, taskId: string): UserTask {
+    let status = TaskStatus.PendingUser;
+    let answer = null;
+
+    let userTaskIndex = user.tasks.map((ut: UserTask) => ut.taskId).indexOf(taskId);
+    let taskDef = TaskUtil.getDefinition(taskId);
+
+    if (!taskDef) {
+      return null;
+    }
+
+    if (userTaskIndex !== -1) {
+      status = _.get(user, `tasks.${userTaskIndex}.status`);
+      answer = _.get(user, `tasks.${userTaskIndex}.answer`);
+    }
+
+    return new UserTask(taskId, status, answer);
   }
 
   static getNextTask(user: UserDocument, routeId: string): UserTask {
@@ -70,7 +89,7 @@ class RouteUtil {
       throw new Error('route_already_assigned');
     }
 
-    const userRoute = new UserRoute(routeId, UserRouteStatus.Active, new Types.Array());
+    const userRoute = new UserRoute(routeId, UserRouteStatus.Active);
 
     user.routes.push(userRoute);
     await user.save();

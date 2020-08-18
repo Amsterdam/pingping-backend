@@ -63,7 +63,13 @@ class TaskUtil {
       return new UserTask(firstTask.taskId, firstTask.status, firstTask.answer);
     }
 
-    throw new Error('task_not_found_on_user');
+    return new UserTask(taskId, TaskStatus.PendingUser, null);
+  }
+
+  static getRouteIdFromTaskId(id: string): string {
+    const [routeId, taskId] = id.split('.');
+
+    return routeId;
   }
 
   static getCurrentUserTask(user: UserDocument): UserTask {
@@ -93,6 +99,8 @@ class TaskUtil {
 
     if (index !== -1) {
       user.tasks.set(index, userTask);
+    } else {
+      user.tasks.push(userTask);
     }
 
     return user;

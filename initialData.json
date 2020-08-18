@@ -175,6 +175,7 @@
     },
     "SomeOtherRoute": {
       "title": "Just another route",
+      "targetAudience": "Jongvolwassenen",
       "tasks": [],
       "tips": []
     }

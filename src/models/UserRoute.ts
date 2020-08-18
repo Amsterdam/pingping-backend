@@ -9,10 +9,9 @@ export class UserRoute {
   progress: number;
   tasks: Types.Array<UserTask>;
 
-  constructor(routeId: string, status: UserRouteStatus, tasks: Types.Array<UserTask>) {
+  constructor(routeId: string, status: UserRouteStatus) {
     this.routeId = routeId;
     this.status = status;
-    this.tasks = tasks;
     this.progress = 0;
   }
 }

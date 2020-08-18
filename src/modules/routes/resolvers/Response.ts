@@ -37,12 +37,15 @@ export const UserRouteResponse: any = {
   status: (doc: UserRoute) => doc.status,
   progress: (doc: UserRoute, args: any, context: ModuleContext) => {
     const definedTasks = InitialDataUtil.getRouteById(doc.routeId).tasks;
-    const onboardingTasks = context.user.tasks
+    const tasks = context.user.tasks
       .filter((ut: UserTask) => ut.status === TaskStatus.Completed)
       .filter((ut: UserTask) => (ut.routeTaskId || '').indexOf(`${doc.routeId}.`) !== -1);
-    const routeTasks = doc.tasks.filter((ut: UserTask) => ut.status === TaskStatus.Completed);
+    // const routeTasks = context.user.tasks
+    //   .filter((ut: UserTask) => ut.status === TaskStatus.Completed)
+    //   .filter((ut: UserTask) => (ut.routeTaskId || '').indexOf(`${doc.routeId}.`) !== -1);
+    // const routeTasks = doc.tasks.filter((ut: UserTask) => ut.status === TaskStatus.Completed);
 
-    return _.round((onboardingTasks.length + routeTasks.length) / definedTasks.length, 2);
+    return _.round(tasks.length / definedTasks.length, 2);
   },
   route: (doc: UserRoute) => InitialDataUtil.getRouteById(doc.routeId),
   tasks: (doc: UserRoute, args: any, context: ModuleContext) => {
@@ -52,7 +55,8 @@ export const UserRouteResponse: any = {
       let status = TaskStatus.PendingUser;
       let answer = null;
 
-      const taskFoundIndex = doc.tasks.map((ut: UserTask) => ut.taskId).indexOf(t.id);
+      // const taskFoundIndex = doc.tasks.map((ut: UserTask) => ut.taskId).indexOf(t.id);
+      const taskFoundIndex = context.user.tasks.map((ut: UserTask) => ut.routeTaskId).indexOf(t.id);
       const onboardingTaskFoundIndex = context.user.tasks
         .map((ut: any) => InitialDataUtil.getTaskById(ut.taskId))
         .map((ut: any) => ut.routeTaskId)
