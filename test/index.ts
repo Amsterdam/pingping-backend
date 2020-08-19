@@ -29,7 +29,7 @@ require('ts-mocha');
 const Mocha = require('mocha');
 
 const mocha = new Mocha({
-  // reporter: 'mocha-junit-reporter',
+  reporter: 'mocha-junit-reporter',
   name: 'PingPing Backend',
 });
 mocha.addFile(`./test/taskUtil.test.ts`);
