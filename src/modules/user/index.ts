@@ -1,9 +1,15 @@
 import { GraphQLModule } from '@graphql-modules/core';
-import { loadSchemaFiles, loadResolversFiles } from 'graphql-toolkit';
 import AuthMiddleware from 'middleware/AuthMiddleware';
 import { RewardsModule } from 'modules/rewards/index';
 import { RoutesModule } from 'modules/routes/index';
 import { CommonModule } from 'modules/common/index';
+import { mergeResolvers } from '@graphql-tools/merge';
+import { loadFilesSync } from '@graphql-tools/load-files';
+import { mergeTypeDefs } from '@graphql-tools/merge';
+
+const resolvers = loadFilesSync(`${__dirname}/resolvers`);
+const loadedFiles = loadFilesSync(`${__dirname}/schema/*.graphql`);
+const typeDefs = mergeTypeDefs(loadedFiles);
 
 export const UserModule = new GraphQLModule({
   imports: [CommonModule, RoutesModule, RewardsModule],
@@ -13,6 +19,6 @@ export const UserModule = new GraphQLModule({
     'Mutation.createGoal': [AuthMiddleware.isAuthenticated()],
     'Mutation.deleteUser': [AuthMiddleware.isAuthenticated()],
   },
-  typeDefs: loadSchemaFiles(__dirname + '/schema/'),
-  resolvers: loadResolversFiles(__dirname + '/resolvers/'),
+  typeDefs,
+  resolvers: mergeResolvers(resolvers),
 });

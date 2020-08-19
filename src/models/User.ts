@@ -7,28 +7,27 @@ import { UserGoal } from './UserGoal';
 import { UserTransaction } from './UserTransaction';
 
 export type UserDocument = Document & {
-  email: string;
-  password: string;
-  passwordResetToken: string;
-  passwordResetExpires: Date;
+  email?: string;
+  password?: string;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
 
-  facebook: string;
-  tokens: AuthToken[];
-  devices: Device[];
+  tokens?: AuthToken[];
+  devices?: Device[];
 
   profile: {
-    fullName: string;
-    dateOfBirth: Date;
+    fullName?: string;
+    dateOfBirth?: Date;
   };
 
   balance: number;
 
-  transactions: Types.Array<UserTransaction>;
+  transactions?: Types.Array<UserTransaction>;
   routes: Types.Array<UserRoute>;
-  achivements: Types.Array<UserAchivement>;
-  goals: Types.Array<UserGoal>;
-  rewards: Types.Array<UserReward>;
-  tasks: Types.Array<UserTask>;
+  achivements?: Types.Array<UserAchivement>;
+  goals?: Types.Array<UserGoal>;
+  rewards?: Types.Array<UserReward>;
+  tasks?: Types.Array<UserTask>;
 };
 
 export enum AuthTokenKind {
@@ -57,13 +56,6 @@ const userSchema = new Schema(
       {
         routeId: String,
         status: String,
-        tasks: [
-          {
-            taskId: String,
-            answer: String,
-            status: String,
-          },
-        ],
       },
     ],
 

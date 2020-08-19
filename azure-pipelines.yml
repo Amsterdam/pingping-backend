@@ -39,3 +39,9 @@ steps:
       MONGO_STRING: mongodb://mongo:27017/pingping
       SECRET: somesillyfakesecret
     displayName: Test
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: '**/test-results.xml'

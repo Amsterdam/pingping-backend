@@ -28,7 +28,10 @@ process.env.TS_CONFIG_PATHS = './tsconfig.json';
 require('ts-mocha');
 const Mocha = require('mocha');
 
-const mocha = new Mocha();
+const mocha = new Mocha({
+  reporter: 'mocha-junit-reporter',
+  name: 'PingPing Backend',
+});
 mocha.addFile(`./test/taskUtil.test.ts`);
 mocha.addFile(`./test/initialDataUtil.test.ts`);
 mocha.addFile(`./test/mutations.test.ts`);

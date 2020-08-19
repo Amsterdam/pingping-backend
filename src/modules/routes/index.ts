@@ -1,10 +1,14 @@
 import { GraphQLModule } from '@graphql-modules/core';
-import { loadResolversFiles, loadSchemaFiles } from 'graphql-toolkit';
 import { CommonModule } from '../common';
 import { context } from 'lib/Context';
 import AuthMiddleware from 'middleware/AuthMiddleware';
 import { RouteProvider } from './RouteProvider';
-import * as Resolvers from './resolvers/Response';
+import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
+import { loadFilesSync } from '@graphql-tools/load-files';
+
+const resolvers = loadFilesSync(`${__dirname}/resolvers`);
+const loadedFiles = loadFilesSync(`${__dirname}/schema/*.graphql`);
+const typeDefs = mergeTypeDefs(loadedFiles);
 
 export const RoutesModule = new GraphQLModule({
   imports: [CommonModule],
@@ -13,7 +17,7 @@ export const RoutesModule = new GraphQLModule({
     'Mutation.updateTask': [AuthMiddleware.isAuthenticated()],
     'Mutation.createRouteFeedback': [AuthMiddleware.isAuthenticated()],
   },
-  typeDefs: loadSchemaFiles(__dirname + '/schema/'),
-  resolvers: loadResolversFiles(__dirname + '/resolvers/'),
+  typeDefs,
+  resolvers: mergeResolvers(resolvers),
   context,
 });

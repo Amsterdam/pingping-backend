@@ -19,6 +19,9 @@ class UserUtil {
 
     const user = await User.create({
       tasks: initialTasks,
+      balance: 0,
+      routes: [],
+      profile: {},
     });
     const device: Device = {
       id: deviceInput.deviceId,

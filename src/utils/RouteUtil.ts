@@ -3,7 +3,7 @@ import { UserDocument, User } from '../models/User';
 import { UserRoute } from '../models/UserRoute';
 import { Types } from 'mongoose';
 import InitialDataUtil from './InitialDataUtil';
-import { RouteDefinition } from '../types/global';
+import { RouteDefinition, TaskDefinition } from '../types/global';
 import { UserTask } from '../models/UserTask';
 import { TaskStatus, UserRouteStatus } from '../generated-models';
 import TaskUtil from './TaskUtil';
@@ -56,10 +56,13 @@ class RouteUtil {
       throw new Error('route_not_found_on_user');
     }
 
-    const tasks = user.routes[index].tasks.filter((t: UserTask) => t.status === TaskStatus.PendingUser);
+    // @todo Mani Fix
+
+    // const tasks = user.routes[index].tasks.filter((t: UserTask) => t.status === TaskStatus.PendingUser);
+    const tasks: Array<UserTask> = [];
 
     if (tasks.length) {
-      const firstTask = _.first(tasks);
+      const firstTask: UserTask = _.first(tasks);
       return new UserTask(firstTask.taskId, firstTask.status, firstTask.answer);
     }
   }

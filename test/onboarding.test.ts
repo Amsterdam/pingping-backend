@@ -32,8 +32,8 @@ describe('onboarding', () => {
   });
 
   it('error, non existing', async () => {
-    const res = TaskUtil.handleTask(user, 'jibberish', '2012-24-01');
-    await expect(res).to.be.rejectedWith(/task_not_found_on_user/);
+    const res = TaskUtil.handleTask(user, 'lol.jibberish', '2012-24-01');
+    await expect(res).to.be.rejectedWith(/route_not_defined/);
   });
 
   it('error, invalid status', async () => {

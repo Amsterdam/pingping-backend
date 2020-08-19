@@ -7,7 +7,6 @@ export class UserRoute {
   routeId: string;
   status: UserRouteStatus;
   progress: number;
-  tasks: Types.Array<UserTask>;
 
   constructor(routeId: string, status: UserRouteStatus) {
     this.routeId = routeId;

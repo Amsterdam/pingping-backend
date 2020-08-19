@@ -1,6 +1,7 @@
 import { GraphQLModule } from '@graphql-modules/core';
-import { loadSchemaFiles } from 'graphql-toolkit';
 import _ from 'lodash';
+import { mergeTypeDefs } from '@graphql-tools/merge';
+import { loadFilesSync } from '@graphql-tools/load-files';
 import { RouteDefinition, RewardDefinition } from 'types/global';
 
 export const REWARDS = Symbol.for('REWARDS');
@@ -11,11 +12,14 @@ export interface CommonModuleConfig {
   rewards: RewardDefinition[];
 }
 
+const loadedFiles = loadFilesSync(`${__dirname}/schema/*.graphql`);
+const typeDefs = mergeTypeDefs(loadedFiles);
+
 export const CommonModule: any = new GraphQLModule<CommonModuleConfig, {}, {}>({
   providers: ({ config: { routes, rewards } }) => [
     { provide: ROUTES, useValue: routes },
     { provide: REWARDS, useValue: rewards },
   ],
-  typeDefs: [...loadSchemaFiles(__dirname + '/schema/')],
+  typeDefs,
   configRequired: true,
 });

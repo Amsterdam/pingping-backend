@@ -3,7 +3,6 @@ import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from '
 import { ModuleContext } from '@graphql-modules/core';
 export type Maybe<T> = T | null;
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
-
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -266,7 +265,6 @@ export type UserTaskResponse = {
   task: TaskResponse;
   answer?: Maybe<Scalars['String']>;
 };
-
 
 
 

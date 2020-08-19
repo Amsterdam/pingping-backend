@@ -61,11 +61,12 @@ class InitialDataUtil {
 
   static getRouteById(id: string): RouteDefinition {
     const route = _.get(initialData, `routes.${id}`);
-    route.id = id;
 
     if (!route) {
       throw new Error(`route_not_defined`);
     }
+
+    route.id = id;
 
     return route;
   }

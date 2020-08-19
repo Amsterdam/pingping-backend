@@ -3,7 +3,7 @@
     {
       "id": "onboarding.dateOfBirth",
       "type": "DateOfBirth",
-      "title": "Wat is je geboorte datum?",
+      "title": "Wat is je geboortedatum?",
       "headerTitle": "geboortedatum",
       "initial": true,
       "nextTaskId": "onboarding.woonAdres"
