@@ -19,9 +19,12 @@ services:
   mongo: mongo
 
 steps:
-  - script: dotnet build
-    displayName: 'build'
-
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk'
+    inputs:
+      packageType: sdk
+      version: 2.2.203
+      installationPath: $(Agent.ToolsDirectory)/dotnet
   - task: Cache@2
     inputs:
       key: 'yarn | "$(Agent.OS)" | yarn.lock'
