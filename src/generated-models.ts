@@ -39,6 +39,13 @@ export type CreateGoalInput = {
 };
 
 
+export type GetRoutesResponse = {
+   __typename?: 'GetRoutesResponse';
+  currentRoutes?: Maybe<Array<RouteResponse>>;
+  availableRoutes?: Maybe<Array<RouteResponse>>;
+  archivedRoutes?: Maybe<Array<RouteResponse>>;
+};
+
 export type LocactionInput = {
   lat?: Maybe<Scalars['Float']>;
   lon?: Maybe<Scalars['Float']>;
@@ -56,7 +63,6 @@ export type MessageResponse = {
 export type Mutation = {
    __typename?: 'Mutation';
   updateTask: UpdateTaskResponse;
-  startRoute: UserRouteResponse;
   createRouteFeedback: RouteFeedbackResponse;
   claimReward: UserRewardResponse;
   createGoal: UserGoalResponse;
@@ -67,11 +73,6 @@ export type Mutation = {
 
 export type MutationUpdateTaskArgs = {
   input: UpdateTaskInput;
-};
-
-
-export type MutationStartRouteArgs = {
-  routeId: Scalars['String'];
 };
 
 
@@ -101,8 +102,7 @@ export type MutationRegisterDeviceArgs = {
 
 export type Query = {
    __typename?: 'Query';
-  getCurrentRoutes?: Maybe<Array<UserRouteResponse>>;
-  getAvailableRoutes: Array<Maybe<RouteResponse>>;
+  getRoutes: GetRoutesResponse;
   getAvailableRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
 };
@@ -164,6 +164,8 @@ export type RouteResponse = {
   totalPoints: Scalars['Int'];
   targetAudience: Scalars['String'];
   tips?: Maybe<Array<RouteTip>>;
+  progress?: Maybe<Scalars['Float']>;
+  tasks?: Maybe<Array<Maybe<UserTaskResponse>>>;
 };
 
 export type RouteTip = {
@@ -177,7 +179,6 @@ export type StatusResponse = {
   user: UserResponse;
   currentTask?: Maybe<UserTaskResponse>;
   previousTask?: Maybe<UserTaskResponse>;
-  routes?: Maybe<Array<UserRouteResponse>>;
   exportUrl?: Maybe<Scalars['String']>;
 };
 
@@ -244,14 +245,6 @@ export type UserRewardResponse = {
   reward: RewardResponse;
   status: RewardStatus;
   barcodeImageUrl: Scalars['String'];
-};
-
-export type UserRouteResponse = {
-   __typename?: 'UserRouteResponse';
-  route: RouteResponse;
-  progress?: Maybe<Scalars['Float']>;
-  status: UserRouteStatus;
-  tasks?: Maybe<Array<Maybe<UserTaskResponse>>>;
 };
 
 export enum UserRouteStatus {
@@ -340,14 +333,13 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>,
-  UserRouteResponse: ResolverTypeWrapper<UserRouteResponse>,
+  GetRoutesResponse: ResolverTypeWrapper<GetRoutesResponse>,
   RouteResponse: ResolverTypeWrapper<RouteResponse>,
   String: ResolverTypeWrapper<Scalars['String']>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   RouteTip: ResolverTypeWrapper<RouteTip>,
   Float: ResolverTypeWrapper<Scalars['Float']>,
-  UserRouteStatus: UserRouteStatus,
   UserTaskResponse: ResolverTypeWrapper<UserTaskResponse>,
   TaskStatus: TaskStatus,
   TaskResponse: ResolverTypeWrapper<TaskResponse>,
@@ -375,19 +367,19 @@ export type ResolversTypes = {
   AchivementResponse: ResolverTypeWrapper<AchivementResponse>,
   AchivementStatus: AchivementStatus,
   RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
+  UserRouteStatus: UserRouteStatus,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Query: {},
-  UserRouteResponse: UserRouteResponse,
+  GetRoutesResponse: GetRoutesResponse,
   RouteResponse: RouteResponse,
   String: Scalars['String'],
   Boolean: Scalars['Boolean'],
   Int: Scalars['Int'],
   RouteTip: RouteTip,
   Float: Scalars['Float'],
-  UserRouteStatus: UserRouteStatus,
   UserTaskResponse: UserTaskResponse,
   TaskStatus: TaskStatus,
   TaskResponse: TaskResponse,
@@ -415,6 +407,7 @@ export type ResolversParentTypes = {
   AchivementResponse: AchivementResponse,
   AchivementStatus: AchivementStatus,
   RouteAnswer: Scalars['RouteAnswer'],
+  UserRouteStatus: UserRouteStatus,
 };
 
 export type AchivementResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AchivementResponse'] = ResolversParentTypes['AchivementResponse']> = {
@@ -436,6 +429,13 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'Date'
 }
 
+export type GetRoutesResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['GetRoutesResponse'] = ResolversParentTypes['GetRoutesResponse']> = {
+  currentRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
+  availableRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
+  archivedRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export type MessageResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['MessageResponse'] = ResolversParentTypes['MessageResponse']> = {
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
@@ -443,7 +443,6 @@ export type MessageResponseResolvers<ContextType = ModuleContext, ParentType ext
 
 export type MutationResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   updateTask?: Resolver<ResolversTypes['UpdateTaskResponse'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input'>>,
-  startRoute?: Resolver<ResolversTypes['UserRouteResponse'], ParentType, ContextType, RequireFields<MutationStartRouteArgs, 'routeId'>>,
   createRouteFeedback?: Resolver<ResolversTypes['RouteFeedbackResponse'], ParentType, ContextType, RequireFields<MutationCreateRouteFeedbackArgs, 'input'>>,
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
@@ -452,8 +451,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
 };
 
 export type QueryResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  getCurrentRoutes?: Resolver<Maybe<Array<ResolversTypes['UserRouteResponse']>>, ParentType, ContextType>,
-  getAvailableRoutes?: Resolver<Array<Maybe<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
+  getRoutes?: Resolver<ResolversTypes['GetRoutesResponse'], ParentType, ContextType>,
   getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
 };
@@ -495,6 +493,8 @@ export type RouteResponseResolvers<ContextType = ModuleContext, ParentType exten
   totalPoints?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   targetAudience?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   tips?: Resolver<Maybe<Array<ResolversTypes['RouteTip']>>, ParentType, ContextType>,
+  progress?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
+  tasks?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserTaskResponse']>>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -508,7 +508,6 @@ export type StatusResponseResolvers<ContextType = ModuleContext, ParentType exte
   user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
   currentTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   previousTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
-  routes?: Resolver<Maybe<Array<ResolversTypes['UserRouteResponse']>>, ParentType, ContextType>,
   exportUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
@@ -561,14 +560,6 @@ export type UserRewardResponseResolvers<ContextType = ModuleContext, ParentType 
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type UserRouteResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserRouteResponse'] = ResolversParentTypes['UserRouteResponse']> = {
-  route?: Resolver<ResolversTypes['RouteResponse'], ParentType, ContextType>,
-  progress?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
-  status?: Resolver<ResolversTypes['UserRouteStatus'], ParentType, ContextType>,
-  tasks?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserTaskResponse']>>>, ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn<ParentType>,
-};
-
 export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserTaskResponse'] = ResolversParentTypes['UserTaskResponse']> = {
   status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>,
   task?: Resolver<ResolversTypes['TaskResponse'], ParentType, ContextType>,
@@ -580,6 +571,7 @@ export type Resolvers<ContextType = ModuleContext> = {
   AchivementResponse?: AchivementResponseResolvers<ContextType>,
   Choices?: GraphQLScalarType,
   Date?: GraphQLScalarType,
+  GetRoutesResponse?: GetRoutesResponseResolvers<ContextType>,
   MessageResponse?: MessageResponseResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
@@ -596,7 +588,6 @@ export type Resolvers<ContextType = ModuleContext> = {
   UserProfileResponse?: UserProfileResponseResolvers<ContextType>,
   UserResponse?: UserResponseResolvers<ContextType>,
   UserRewardResponse?: UserRewardResponseResolvers<ContextType>,
-  UserRouteResponse?: UserRouteResponseResolvers<ContextType>,
   UserTaskResponse?: UserTaskResponseResolvers<ContextType>,
 };
 

@@ -6,6 +6,7 @@ import { UserRoute } from 'models/UserRoute';
 import { TaskStatus } from '@models';
 import InitialDataUtil from 'utils/InitialDataUtil';
 import { ModuleContext } from '@graphql-modules/core';
+import { defaultCoreCipherList } from 'constants';
 
 export const UserTaskResponse: any = {
   status: (doc: UserTask) => doc.status,
@@ -31,46 +32,28 @@ export const RouteResponse: any = {
   isSuggested: (doc: RouteDefinition) => false, // @todo Calculate
   totalPoints: (doc: RouteDefinition) => doc.tasks.reduce((sum: number, val: TaskDefinition) => sum + val.points, 0),
   numberOfSteps: (doc: RouteDefinition) => doc.tasks.length,
-};
-
-export const UserRouteResponse: any = {
-  status: (doc: UserRoute) => doc.status,
-  progress: (doc: UserRoute, args: any, context: ModuleContext) => {
-    const definedTasks = InitialDataUtil.getRouteById(doc.routeId).tasks;
+  progress: (doc: RouteDefinition, args: any, context: ModuleContext) => {
     const tasks = context.user.tasks
       .filter((ut: UserTask) => ut.status === TaskStatus.Completed)
-      .filter((ut: UserTask) => (ut.routeTaskId || '').indexOf(`${doc.routeId}.`) !== -1);
-    // const routeTasks = context.user.tasks
-    //   .filter((ut: UserTask) => ut.status === TaskStatus.Completed)
-    //   .filter((ut: UserTask) => (ut.routeTaskId || '').indexOf(`${doc.routeId}.`) !== -1);
-    // const routeTasks = doc.tasks.filter((ut: UserTask) => ut.status === TaskStatus.Completed);
+      .filter((ut: UserTask) => (ut.routeTaskId || '').indexOf(`${doc.id}.`) !== -1);
 
-    return _.round(tasks.length / definedTasks.length, 2);
+    return _.round(tasks.length / doc.tasks.length, 2);
   },
-  route: (doc: UserRoute) => InitialDataUtil.getRouteById(doc.routeId),
-  tasks: (doc: UserRoute, args: any, context: ModuleContext) => {
-    const definedTasks = InitialDataUtil.getRouteById(doc.routeId).tasks;
-
-    return definedTasks.map((t: TaskDefinition) => {
+  tasks: (doc: RouteDefinition, args: any, context: ModuleContext) => {
+    return doc.tasks.map((t: TaskDefinition) => {
       let status = TaskStatus.PendingUser;
       let answer = null;
 
-      // const taskFoundIndex = doc.tasks.map((ut: UserTask) => ut.taskId).indexOf(t.id);
-      const taskFoundIndex = context.user.tasks.map((ut: UserTask) => ut.routeTaskId).indexOf(t.id);
-      const onboardingTaskFoundIndex = context.user.tasks
-        .map((ut: any) => InitialDataUtil.getTaskById(ut.taskId))
-        .map((ut: any) => ut.routeTaskId)
-        .indexOf(`${t.id}`);
+      const taskFound = _.first(
+        context.user.tasks.filter((ut: UserTask) => ut.routeTaskId === t.id || ut.taskId === t.id)
+      );
 
-      if (taskFoundIndex !== -1) {
-        status = _.get(doc, `${taskFoundIndex}.status`, TaskStatus.PendingUser);
-        answer = _.get(doc, `${taskFoundIndex}.answer`);
-      } else if (onboardingTaskFoundIndex !== -1) {
+      if (taskFound) {
         status =
-          _.get(context.user.tasks, `${onboardingTaskFoundIndex}.status`) === TaskStatus.Dismissed
+          _.get(taskFound, `status`, TaskStatus.PendingUser) === TaskStatus.Dismissed
             ? TaskStatus.PendingUser
             : TaskStatus.Completed;
-        answer = _.get(context.user.tasks, `${onboardingTaskFoundIndex}.answer`);
+        answer = _.get(taskFound, `answer`);
       }
 
       return {

@@ -4,6 +4,7 @@ import { TaskDefinition } from '../types/global';
 export class UserTask {
   taskId: string;
   routeTaskId: string;
+  routeId: string;
   answer: string;
   status: TaskStatus;
   task: TaskDefinition;

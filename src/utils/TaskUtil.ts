@@ -120,6 +120,7 @@ class TaskUtil {
 
     const userTask: UserTask = new UserTask(taskDef.id, TaskStatus.PendingUser);
     userTask.routeTaskId = taskDef.routeTaskId;
+    userTask.routeId = RouteUtil.getRouteIdFromTaskId(taskDef.routeTaskId || taskId);
     user.tasks.push(userTask);
 
     return user;
@@ -147,6 +148,7 @@ class TaskUtil {
       taskDef.type === TaskType.YesOrNo && answer === 'no' ? TaskStatus.Dismissed : TaskStatus.Completed;
 
     userTask.routeTaskId = taskDef.routeTaskId;
+    userTask.routeId = RouteUtil.getRouteIdFromTaskId(taskDef.routeTaskId || taskId);
     userTask.status = newStatus;
     userTask.answer = answer;
 

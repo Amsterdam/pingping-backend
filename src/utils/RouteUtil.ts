@@ -30,6 +30,12 @@ class RouteUtil {
     }
   }
 
+  static getRouteIdFromTaskId(id: string): string {
+    const [routeId, taskId] = id.split('.');
+
+    return routeId;
+  }
+
   static getRouteTask(user: UserDocument, taskId: string): UserTask {
     let status = TaskStatus.PendingUser;
     let answer = null;

@@ -1,15 +1,19 @@
 type Mutation {
   updateTask(input: UpdateTaskInput!): UpdateTaskResponse!
-  startRoute(routeId: String!): UserRouteResponse!
   createRouteFeedback(input: RouteFeedbackInput!): RouteFeedbackResponse!
 }
 
 type Query {
-  getCurrentRoutes: [UserRouteResponse!]
-  getAvailableRoutes: [RouteResponse]!
+  getRoutes: GetRoutesResponse!
 }
 
 # Response
+type GetRoutesResponse {
+  currentRoutes: [RouteResponse!]
+  availableRoutes: [RouteResponse!]
+  archivedRoutes: [RouteResponse!]
+}
+
 type UserTaskResponse {
   status: TaskStatus!
   task: TaskResponse!
@@ -37,14 +41,16 @@ type RouteResponse {
   totalPoints: Int!
   targetAudience: String!
   tips: [RouteTip!]
-}
-
-type UserRouteResponse {
-  route: RouteResponse!
   progress: Float
-  status: UserRouteStatus!
   tasks: [UserTaskResponse]
 }
+
+# type UserRouteResponse {
+#   route: RouteResponse!
+#   progress: Float
+#   status: UserRouteStatus!
+#   tasks: [UserTaskResponse]
+# }
 
 type UpdateTaskResponse {
   previousTask: UserTaskResponse

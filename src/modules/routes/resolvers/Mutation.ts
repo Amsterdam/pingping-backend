@@ -1,10 +1,4 @@
-import {
-  MutationResolvers,
-  MutationStartRouteArgs,
-  MutationUpdateTaskArgs,
-  UpdateTaskResponse,
-  MutationCreateRouteFeedbackArgs,
-} from '@models';
+import { MutationResolvers, MutationUpdateTaskArgs, MutationCreateRouteFeedbackArgs } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 import InitialDataUtil from 'utils/InitialDataUtil';
 import RouteUtil from 'utils/RouteUtil';
@@ -12,14 +6,14 @@ import TaskUtil from 'utils/TaskUtil';
 import { RouteFeedback } from 'models/RouteFeedback';
 
 export const Mutation: MutationResolvers = {
-  async startRoute(root: any, args: MutationStartRouteArgs, context: ModuleContext): Promise<any> {
-    // Check if exists
-    let routeDef = InitialDataUtil.getRouteById(args.routeId);
+  // async startRoute(root: any, args: MutationStartRouteArgs, context: ModuleContext): Promise<any> {
+  //   // Check if exists
+  //   let routeDef = InitialDataUtil.getRouteById(args.routeId);
 
-    const userRoute = await RouteUtil.assignToUser(context.user, args.routeId);
+  //   const userRoute = await RouteUtil.assignToUser(context.user, args.routeId);
 
-    return userRoute;
-  },
+  //   return userRoute;
+  // },
 
   async updateTask(root: any, args: MutationUpdateTaskArgs, context: ModuleContext): Promise<any> {
     let task = TaskUtil.getUserTask(context.user, args.input.taskId);
