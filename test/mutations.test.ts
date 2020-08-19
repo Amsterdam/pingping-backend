@@ -16,7 +16,7 @@ describe('mutations', () => {
     done();
   });
 
-  it('regiser device, error, wrong device id', (done) => {
+  it('register device, error, wrong device id', (done) => {
     request(server)
       .post('/')
       .send({
