@@ -176,7 +176,16 @@
     "SomeOtherRoute": {
       "title": "Just another route",
       "targetAudience": "Jongvolwassenen",
-      "tasks": [],
+      "tasks": [
+        {
+          "id": "SomeOtherRoute.TestOne",
+          "title": "TestOne",
+          "points": 120,
+          "headerTitle": "ho",
+          "description": "<p>Hi</p>",
+          "icon": ""
+        }
+      ],
       "tips": []
     }
   },

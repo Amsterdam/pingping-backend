@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
-import { UserRoute } from 'models/UserRoute';
 import { UserTask } from 'models/UserTask';
 
 import { UserDocument, User, AuthToken, AuthTokenKind } from '../models/User';
@@ -43,7 +42,6 @@ class auth {
         password,
         balance: 0,
         tasks: [] as Array<UserTask>,
-        routes: [] as Array<UserRoute>,
       });
 
       return user;

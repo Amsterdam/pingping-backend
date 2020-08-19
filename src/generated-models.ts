@@ -247,11 +247,6 @@ export type UserRewardResponse = {
   barcodeImageUrl: Scalars['String'];
 };
 
-export enum UserRouteStatus {
-  Active = 'Active',
-  Completed = 'Completed'
-}
-
 export type UserTaskResponse = {
    __typename?: 'UserTaskResponse';
   status: TaskStatus;
@@ -367,7 +362,6 @@ export type ResolversTypes = {
   AchivementResponse: ResolverTypeWrapper<AchivementResponse>,
   AchivementStatus: AchivementStatus,
   RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
-  UserRouteStatus: UserRouteStatus,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -407,7 +401,6 @@ export type ResolversParentTypes = {
   AchivementResponse: AchivementResponse,
   AchivementStatus: AchivementStatus,
   RouteAnswer: Scalars['RouteAnswer'],
-  UserRouteStatus: UserRouteStatus,
 };
 
 export type AchivementResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AchivementResponse'] = ResolversParentTypes['AchivementResponse']> = {

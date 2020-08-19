@@ -2,11 +2,8 @@ import _ from 'lodash';
 import { UserTask } from 'models/UserTask';
 import TaskUtil from 'utils/TaskUtil';
 import { TaskDefinition, RouteDefinition } from 'types/global';
-import { UserRoute } from 'models/UserRoute';
 import { TaskStatus } from '@models';
-import InitialDataUtil from 'utils/InitialDataUtil';
 import { ModuleContext } from '@graphql-modules/core';
-import { defaultCoreCipherList } from 'constants';
 
 export const UserTaskResponse: any = {
   status: (doc: UserTask) => doc.status,

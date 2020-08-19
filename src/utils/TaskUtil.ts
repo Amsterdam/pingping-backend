@@ -136,19 +136,14 @@ class TaskUtil {
     return _.get(nextTask, answer.toLowerCase(), _.first(Object.values(nextTask)));
   }
 
-  static async handleTask(user: UserDocument, taskId: string, answer: string): Promise<UserTask> {
-    const userTask = this.getUserTask(user, taskId);
-    const taskDef: TaskDefinition = InitialDataUtil.getTaskById(taskId);
-
-    if (userTask.status !== TaskStatus.PendingUser) {
-      throw new Error(`task_invalid_status`);
-    }
+  static async handleTask(user: UserDocument, taskDef: TaskDefinition, answer: string): Promise<UserTask> {
+    const userTask = this.getUserTask(user, taskDef.id);
 
     const newStatus =
       taskDef.type === TaskType.YesOrNo && answer === 'no' ? TaskStatus.Dismissed : TaskStatus.Completed;
 
     userTask.routeTaskId = taskDef.routeTaskId;
-    userTask.routeId = RouteUtil.getRouteIdFromTaskId(taskDef.routeTaskId || taskId);
+    userTask.routeId = RouteUtil.getRouteIdFromTaskId(taskDef.routeTaskId || taskDef.id);
     userTask.status = newStatus;
     userTask.answer = answer;
 
@@ -166,10 +161,6 @@ class TaskUtil {
 
     if (taskDef.nextTaskId) {
       user = this.addNextTaskToUser(user, this.getNextTaskId(answer, taskDef.nextTaskId));
-    }
-
-    if (taskDef.nextRouteId) {
-      await RouteUtil.assignToUser(user, taskDef.nextRouteId);
     }
 
     user = this.updateUserTask(user, userTask);

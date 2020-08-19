@@ -6,12 +6,6 @@ import { UserTask } from 'models/UserTask';
 import { ModuleContext } from '@graphql-modules/core';
 
 export const Query: QueryResolvers = {
-  // getCurrentRoutes(root: any, args: any, context: ModuleContext): Array<any> {
-  //   const routes: Array<UserRoute> = RouteUtil.getCurrentUserRoutes(context.user);
-
-  //   return routes;
-  // },
-
   async getRoutes(root: any, args: any, context: ModuleContext): Promise<any> {
     let routes: Array<RouteDefinition> = InitialDataUtil.getRoutes();
     let tasks: Array<UserTask> = context.user.tasks;
@@ -44,11 +38,4 @@ export const Query: QueryResolvers = {
       availableRoutes,
     };
   },
-
-  // // @todo Revise
-  // getAvailableRoutes(): Array<any> {
-  //   const routeDefs = InitialDataUtil.getRoutes();
-
-  //   return routeDefs;
-  // },
 };

@@ -1,33 +1,26 @@
 import { MutationResolvers, MutationUpdateTaskArgs, MutationCreateRouteFeedbackArgs } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
-import InitialDataUtil from 'utils/InitialDataUtil';
 import RouteUtil from 'utils/RouteUtil';
 import TaskUtil from 'utils/TaskUtil';
 import { RouteFeedback } from 'models/RouteFeedback';
+import InitialDataUtil from 'utils/InitialDataUtil';
 
 export const Mutation: MutationResolvers = {
-  // async startRoute(root: any, args: MutationStartRouteArgs, context: ModuleContext): Promise<any> {
-  //   // Check if exists
-  //   let routeDef = InitialDataUtil.getRouteById(args.routeId);
-
-  //   const userRoute = await RouteUtil.assignToUser(context.user, args.routeId);
-
-  //   return userRoute;
-  // },
-
   async updateTask(root: any, args: MutationUpdateTaskArgs, context: ModuleContext): Promise<any> {
-    let task = TaskUtil.getUserTask(context.user, args.input.taskId);
+    let taskDef = InitialDataUtil.getTaskById(args.input.taskId);
 
-    if (!task) {
-      // Look for RouteTask
-      task = RouteUtil.getRouteTask(context.user, args.input.taskId);
+    // let task = TaskUtil.getUserTask(context.user, args.input.taskId);
 
-      if (!task) {
-        throw new Error('task_not_found_on_user');
-      }
-    }
+    // if (!task) {
+    //   // Look for RouteTask
+    //   task = RouteUtil.getRouteTask(context.user, args.input.taskId);
 
-    task = await TaskUtil.handleTask(context.user, args.input.taskId, args.input.answer || '');
+    //   if (!task) {
+    //     throw new Error('task_not_found_on_user');
+    //   }
+    // }
+
+    let task = await TaskUtil.handleTask(context.user, taskDef, args.input.answer || '');
     const nextTask = TaskUtil.getNextTask(context.user);
 
     return {

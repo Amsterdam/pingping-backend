@@ -11,7 +11,7 @@ type AchivementResponse {
 
 # Input
 input LocactionInput {
-  lat: Float,
+  lat: Float
   lon: Float
 }
 
@@ -25,11 +25,6 @@ scalar Choices
 # enums
 enum Locale {
   nl_NL
-}
-
-enum UserRouteStatus {
-  Active
-  Completed
 }
 
 enum TaskStatus {
