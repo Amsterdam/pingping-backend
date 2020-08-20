@@ -103,8 +103,14 @@ export type MutationRegisterDeviceArgs = {
 export type Query = {
    __typename?: 'Query';
   getRoutes: GetRoutesResponse;
+  getRoute: RouteResponse;
   getAvailableRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
+};
+
+
+export type QueryGetRouteArgs = {
+  routeId: Scalars['String'];
 };
 
 export type RegisterDeviceInput = {
@@ -203,7 +209,8 @@ export enum TaskStatus {
 export enum TaskType {
   DateOfBirth = 'DateOfBirth',
   YesOrNo = 'YesOrNo',
-  MultipleChoices = 'MultipleChoices'
+  MultipleChoices = 'MultipleChoices',
+  Other = 'Other'
 }
 
 export type UpdateTaskInput = {
@@ -445,6 +452,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
 
 export type QueryResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getRoutes?: Resolver<ResolversTypes['GetRoutesResponse'], ParentType, ContextType>,
+  getRoute?: Resolver<ResolversTypes['RouteResponse'], ParentType, ContextType, RequireFields<QueryGetRouteArgs, 'routeId'>>,
   getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
 };

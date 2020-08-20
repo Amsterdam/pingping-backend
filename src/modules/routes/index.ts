@@ -17,6 +17,7 @@ export const RoutesModule = new GraphQLModule({
     'Mutation.updateTask': [AuthMiddleware.isAuthenticated()],
     'Mutation.createRouteFeedback': [AuthMiddleware.isAuthenticated()],
     'Query.getRoutes': [AuthMiddleware.isAuthenticated()],
+    'Query.getRoute': [AuthMiddleware.isAuthenticated()],
   },
   typeDefs,
   resolvers: mergeResolvers(resolvers),

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { QueryResolvers, TaskStatus } from '@models';
+import { QueryResolvers, TaskStatus, QueryGetRouteArgs } from '@models';
 import InitialDataUtil from 'utils/InitialDataUtil';
 import { RouteDefinition, TaskDefinition } from 'types/global';
 import { UserTask } from 'models/UserTask';
@@ -16,8 +16,6 @@ export const Query: QueryResolvers = {
       if (tasksFound.length <= 0) {
         return false;
       }
-
-      console.log('t', tasksFound, _.xor(r.tasks.map((td: TaskDefinition) => td.id)));
 
       // @Todo Check if the route is completed
 
@@ -37,5 +35,9 @@ export const Query: QueryResolvers = {
       archivedRoutes: [],
       availableRoutes,
     };
+  },
+
+  async getRoute(root: any, args: QueryGetRouteArgs, context: ModuleContext): Promise<any> {
+    return InitialDataUtil.getRouteById(args.routeId);
   },
 };

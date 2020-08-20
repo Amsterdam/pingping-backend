@@ -37,6 +37,7 @@ enum TaskType {
   DateOfBirth
   YesOrNo
   MultipleChoices
+  Other
 }
 
 enum AchivementStatus {

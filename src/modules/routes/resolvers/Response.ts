@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { UserTask } from 'models/UserTask';
 import TaskUtil from 'utils/TaskUtil';
 import { TaskDefinition, RouteDefinition } from 'types/global';
-import { TaskStatus } from '@models';
+import { TaskStatus, TaskType } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 
 export const UserTaskResponse: any = {
@@ -18,7 +18,7 @@ export const TaskResponse: any = {
   description: (doc: TaskDefinition) => doc.description,
   media: (doc: TaskDefinition) => doc.media,
   choices: (doc: TaskDefinition) => doc.choices,
-  type: (doc: TaskDefinition) => doc.type,
+  type: (doc: TaskDefinition) => doc.type || TaskType.Other,
 };
 
 export const RouteResponse: any = {

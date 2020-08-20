@@ -5,6 +5,7 @@ type Mutation {
 
 type Query {
   getRoutes: GetRoutesResponse!
+  getRoute(routeId: String!): RouteResponse!
 }
 
 # Response
@@ -44,13 +45,6 @@ type RouteResponse {
   progress: Float
   tasks: [UserTaskResponse]
 }
-
-# type UserRouteResponse {
-#   route: RouteResponse!
-#   progress: Float
-#   status: UserRouteStatus!
-#   tasks: [UserTaskResponse]
-# }
 
 type UpdateTaskResponse {
   previousTask: UserTaskResponse

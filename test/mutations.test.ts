@@ -58,7 +58,6 @@ describe('mutations', () => {
       .expect(200)
       .end((err: any, res: any) => {
         const data = _.get(res, 'body.data.registerDevice', {});
-        console.log('ddd', data);
         expect(_.get(data, 'currentTask.task.taskId')).to.eq('onboarding.dateOfBirth', 'arg');
         expect(_.get(data, 'accessToken').length).to.eq(153);
         done();
