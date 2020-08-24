@@ -1,6 +1,5 @@
 type Mutation {
   registerDevice(input: RegisterDeviceInput!): RegisterDeviceResponse!
-  # setDeviceToken(input: String!)
 }
 
 # Response

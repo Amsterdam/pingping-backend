@@ -25,7 +25,7 @@ export const RouteResponse: any = {
   routeId: (doc: RouteDefinition) => doc.id,
   title: (doc: RouteDefinition) => doc.title,
   description: (doc: RouteDefinition) => doc.description,
-  imageUrl: (doc: RouteDefinition) => doc.imageUrl,
+  coverImageUrl: (doc: RouteDefinition) => `${doc.imageUrl}`,
   isSuggested: (doc: RouteDefinition) => false, // @todo Calculate
   totalPoints: (doc: RouteDefinition) => doc.tasks.reduce((sum: number, val: TaskDefinition) => sum + val.points, 0),
   numberOfSteps: (doc: RouteDefinition) => doc.tasks.length,

@@ -168,6 +168,22 @@ class TaskUtil {
 
     return userTask;
   }
+
+  static async completeTask(user: UserDocument, taskDef: TaskDefinition): Promise<UserTask> {
+    const userTask = this.getUserTask(user, taskDef.id);
+
+    if (taskDef.id.indexOf('onboarding') !== -1) {
+      throw new Error('onboarding_task_cannot_be_completed_must_be_updated');
+    }
+
+    userTask.routeTaskId = taskDef.routeTaskId;
+    userTask.routeId = RouteUtil.getRouteIdFromTaskId(taskDef.routeTaskId || taskDef.id);
+    userTask.status = TaskStatus.Completed;
+    user = this.updateUserTask(user, userTask);
+    await User.findOneAndUpdate({ _id: user._id }, user);
+
+    return userTask;
+  }
 }
 
 export default TaskUtil;

@@ -101,6 +101,7 @@
     "financieleBasis": {
       "title": "Financiële Basis",
       "targetAudience": "Jongvolwassenen",
+      "imageUrl": "/images/route1.png",
       "tasks": [
         {
           "id": "financieleBasis.woonAdres",
@@ -176,6 +177,7 @@
     "SomeOtherRoute": {
       "title": "Just another route",
       "targetAudience": "Jongvolwassenen",
+      "imageUrl": "/images/route2.png",
       "tasks": [
         {
           "id": "SomeOtherRoute.TestOne",

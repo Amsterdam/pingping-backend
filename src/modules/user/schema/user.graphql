@@ -5,11 +5,17 @@ type Query {
 type Mutation {
   createGoal(input: CreateGoalInput!): UserGoalResponse!
   deleteUser(confirm: String): MessageResponse
+  exportUser: ExportResponse!
+  importUser(exportToken: String!): MessageResponse
 }
 
 # Response
 type MessageResponse {
   message: String!
+}
+
+type ExportResponse {
+  token: String!
 }
 
 type StatusResponse {

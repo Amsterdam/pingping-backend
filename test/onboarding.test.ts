@@ -33,11 +33,13 @@ describe('onboarding', () => {
     await expect(call()).to.be.rejectedWith(BadRequestError);
   });
 
-  // it('error, non existing', async () => {
-  //   let taskDef: TaskDefinition = InitialDataUtil.getTaskById('jib.mix');
-  //   const res = TaskUtil.handleTask(user, taskDef, '2012-24-01');
-  //   await expect(taskDef).to.be.rejectedWith('route_not_defined');
-  // });
+  it('error, cannot complete task', async () => {
+    const call = async () => {
+      let taskDef: TaskDefinition = InitialDataUtil.getTaskById('onboarding.dateOfBirth');
+      return await TaskUtil.completeTask(user, taskDef);
+    };
+    await expect(call()).to.be.rejectedWith('onboarding_task_cannot_be_completed_must_be_updated');
+  });
 
   it('handle task', async () => {
     let taskDef: TaskDefinition = InitialDataUtil.getTaskById('onboarding.dateOfBirth');

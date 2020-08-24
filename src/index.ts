@@ -1,5 +1,6 @@
-import createServer from "./server";
-import boot from "./boot";
+import createServer from './server';
+import express from 'express';
+import boot from './boot';
 
 boot.start();
 const server = createServer();
@@ -9,15 +10,17 @@ const corsOptions: object = {
   origin: process.env.APP_URL,
 };
 
+server.use(express.static('public'));
+
 server.start(
   {
     cors: corsOptions,
-    playground: process.env.NODE_ENV === "production" ? false : "/",
+    playground: process.env.NODE_ENV === 'production' ? false : '/',
   },
   (server: any) => {
     console.log(`Server started: ${server.port}`);
-    return server
+    return server;
   }
 );
 
-export default server
+export default server;

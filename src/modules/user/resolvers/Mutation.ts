@@ -30,7 +30,11 @@ export const Mutation: MutationResolvers = {
   async deleteUser(root: any, args: MutationDeleteUserArgs, context: ModuleContext): Promise<MessageResponse> {
     // @todo Mani Implement
     if (args.confirm === 'delete') {
-      await User.deleteOne({ _id: context._id });
+      await User.deleteOne({ _id: context.user._id });
+
+      return {
+        message: 'deleted',
+      };
     }
 
     return {

@@ -1,5 +1,6 @@
 type Mutation {
   updateTask(input: UpdateTaskInput!): UpdateTaskResponse!
+  completeTask: CompleteTaskResponse!
   createRouteFeedback(input: RouteFeedbackInput!): RouteFeedbackResponse!
 }
 
@@ -49,6 +50,10 @@ type RouteResponse {
 type UpdateTaskResponse {
   previousTask: UserTaskResponse
   nextTask: UserTaskResponse
+}
+
+type CompleteTaskResponse {
+  previousTask: UserTaskResponse
 }
 
 type RouteFeedbackResponse {

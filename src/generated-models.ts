@@ -32,12 +32,22 @@ export enum AchivementStatus {
 }
 
 
+export type CompleteTaskResponse = {
+   __typename?: 'CompleteTaskResponse';
+  previousTask?: Maybe<UserTaskResponse>;
+};
+
 export type CreateGoalInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   amount: Scalars['Int'];
 };
 
+
+export type ExportResponse = {
+   __typename?: 'ExportResponse';
+  token: Scalars['String'];
+};
 
 export type GetRoutesResponse = {
    __typename?: 'GetRoutesResponse';
@@ -63,10 +73,13 @@ export type MessageResponse = {
 export type Mutation = {
    __typename?: 'Mutation';
   updateTask: UpdateTaskResponse;
+  completeTask: CompleteTaskResponse;
   createRouteFeedback: RouteFeedbackResponse;
   claimReward: UserRewardResponse;
   createGoal: UserGoalResponse;
   deleteUser?: Maybe<MessageResponse>;
+  exportUser: ExportResponse;
+  importUser?: Maybe<MessageResponse>;
   registerDevice: RegisterDeviceResponse;
 };
 
@@ -93,6 +106,11 @@ export type MutationCreateGoalArgs = {
 
 export type MutationDeleteUserArgs = {
   confirm?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationImportUserArgs = {
+  exportToken: Scalars['String'];
 };
 
 
@@ -358,10 +376,12 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>,
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
+  CompleteTaskResponse: ResolverTypeWrapper<CompleteTaskResponse>,
   RouteFeedbackInput: RouteFeedbackInput,
   RouteFeedbackResponse: ResolverTypeWrapper<RouteFeedbackResponse>,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: ResolverTypeWrapper<MessageResponse>,
+  ExportResponse: ResolverTypeWrapper<ExportResponse>,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
@@ -397,10 +417,12 @@ export type ResolversParentTypes = {
   Mutation: {},
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: UpdateTaskResponse,
+  CompleteTaskResponse: CompleteTaskResponse,
   RouteFeedbackInput: RouteFeedbackInput,
   RouteFeedbackResponse: RouteFeedbackResponse,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: MessageResponse,
+  ExportResponse: ExportResponse,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
@@ -425,9 +447,19 @@ export interface ChoicesScalarConfig extends GraphQLScalarTypeConfig<ResolversTy
   name: 'Choices'
 }
 
+export type CompleteTaskResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['CompleteTaskResponse'] = ResolversParentTypes['CompleteTaskResponse']> = {
+  previousTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date'
 }
+
+export type ExportResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['ExportResponse'] = ResolversParentTypes['ExportResponse']> = {
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
 
 export type GetRoutesResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['GetRoutesResponse'] = ResolversParentTypes['GetRoutesResponse']> = {
   currentRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
@@ -443,10 +475,13 @@ export type MessageResponseResolvers<ContextType = ModuleContext, ParentType ext
 
 export type MutationResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   updateTask?: Resolver<ResolversTypes['UpdateTaskResponse'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input'>>,
+  completeTask?: Resolver<ResolversTypes['CompleteTaskResponse'], ParentType, ContextType>,
   createRouteFeedback?: Resolver<ResolversTypes['RouteFeedbackResponse'], ParentType, ContextType, RequireFields<MutationCreateRouteFeedbackArgs, 'input'>>,
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
   deleteUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, never>>,
+  exportUser?: Resolver<ResolversTypes['ExportResponse'], ParentType, ContextType>,
+  importUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationImportUserArgs, 'exportToken'>>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };
 
@@ -571,7 +606,9 @@ export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType ex
 export type Resolvers<ContextType = ModuleContext> = {
   AchivementResponse?: AchivementResponseResolvers<ContextType>,
   Choices?: GraphQLScalarType,
+  CompleteTaskResponse?: CompleteTaskResponseResolvers<ContextType>,
   Date?: GraphQLScalarType,
+  ExportResponse?: ExportResponseResolvers<ContextType>,
   GetRoutesResponse?: GetRoutesResponseResolvers<ContextType>,
   MessageResponse?: MessageResponseResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
