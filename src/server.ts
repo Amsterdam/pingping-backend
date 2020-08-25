@@ -1,12 +1,13 @@
 import 'graphql-import-node';
 import 'reflect-metadata';
-import { GraphQLServer } from 'graphql-yoga';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
 import { AppModule } from './modules/app';
 import { ModuleContext } from '@graphql-modules/core';
 import InitialDataUtil from './utils/InitialDataUtil';
 
-const context = async ({ request }: any): Promise<ModuleContext> => {
-  return { req: request, user: null, injector: null } as ModuleContext;
+const context = async (context: any): Promise<ModuleContext> => {
+  return context as ModuleContext;
 };
 
 const { schema } = AppModule.forRoot({
@@ -15,13 +16,18 @@ const { schema } = AppModule.forRoot({
 });
 
 function createServer() {
-  return new GraphQLServer({
+  const server = new ApolloServer({
     schema,
-    resolverValidationOptions: {
-      requireResolversForResolveType: false,
-    },
+    // resolverValidationOptions: {
+    //   requireResolversForResolveType: false,
+    // },
     context,
   });
+
+  const app = express();
+  server.applyMiddleware({ app, path: '/' });
+
+  return app;
 }
 
 export default createServer;

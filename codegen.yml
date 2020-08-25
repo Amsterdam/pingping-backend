@@ -12,5 +12,4 @@ generates:
       - typescript-operations
       - typescript-resolvers
     config:
-      contextType: "@graphql-modules/core#ModuleContext"
-      mappers:
+      contextType: '@graphql-modules/core#ModuleContext'

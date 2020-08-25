@@ -12,13 +12,14 @@ const corsOptions: object = {
 
 server.use(express.static('public'));
 
-server.start(
+server.listen(
   {
+    port: process.env.PORT || 4000,
     cors: corsOptions,
     playground: process.env.NODE_ENV === 'production' ? false : '/',
   },
-  (server: any) => {
-    console.log(`Server started: ${server.port}`);
+  () => {
+    console.log(`Server started: ${process.env.PORT || 4000}`);
     return server;
   }
 );
