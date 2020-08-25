@@ -32,7 +32,7 @@ export const RouteResponse: any = {
   progress: (doc: RouteDefinition, args: any, context: ModuleContext) => {
     const tasks = context.user.tasks
       .filter((ut: UserTask) => ut.status === TaskStatus.Completed)
-      .filter((ut: UserTask) => (ut.routeTaskId || '').indexOf(`${doc.id}.`) !== -1);
+      .filter((ut: UserTask) => ut.routeId === doc.id);
 
     return _.round(tasks.length / doc.tasks.length, 2);
   },
