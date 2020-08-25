@@ -16,7 +16,7 @@ server.listen(
   {
     port: process.env.PORT || 4000,
     cors: corsOptions,
-    playground: process.env.NODE_ENV === 'production' ? false : '/',
+    playground: process.env.NODE_ENV === 'production' ? false : '/api',
   },
   () => {
     console.log(`Server started: ${process.env.PORT || 4000}`);

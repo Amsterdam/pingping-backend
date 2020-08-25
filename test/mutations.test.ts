@@ -18,7 +18,7 @@ describe('mutations', () => {
 
   it('register device, error, wrong device id', (done) => {
     request(server)
-      .post('/')
+      .post('/api')
       .send({
         query: `mutation registerDevice($input:RegisterDeviceInput!) {
             registerDevice(input:$input) {
@@ -39,7 +39,7 @@ describe('mutations', () => {
 
   it('regiser device, successful', (done) => {
     request(server)
-      .post('/')
+      .post('/api')
       .send({
         query: `mutation registerDevice($input:RegisterDeviceInput!) {
             registerDevice(input:$input) {
@@ -66,7 +66,7 @@ describe('mutations', () => {
 
   it('make secure request without token and fail', (done) => {
     request(server)
-      .post('/')
+      .post('/api')
       .send({
         query: `mutation updateTask($input:UpdateTaskInput!) {
             updateTask(input:$input) {
@@ -93,7 +93,7 @@ describe('mutations', () => {
       let accessToken = _.get(res, 'tokens.0.accessToken');
 
       request(server)
-        .post('/')
+        .post('/api')
         .send({
           query: `mutation updateTask($input:UpdateTaskInput!) {
           updateTask(input:$input) {

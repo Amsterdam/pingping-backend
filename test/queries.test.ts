@@ -24,7 +24,7 @@ describe('queries', () => {
 
   it('get status', (done) => {
     request(server)
-      .post('/')
+      .post('/api')
       .send({
         query: `query getStatus {
             getStatus {
@@ -57,7 +57,7 @@ describe('queries', () => {
 
   it('get available rewards', (done) => {
     request(server)
-      .post('/')
+      .post('/api')
       .send({
         query: `query getAvailableRewards {
             getAvailableRewards {

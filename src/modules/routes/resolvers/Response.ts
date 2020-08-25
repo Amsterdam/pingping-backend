@@ -41,9 +41,19 @@ export const RouteResponse: any = {
       let status = TaskStatus.PendingUser;
       let answer = null;
 
-      const taskFound = _.first(
-        context.user.tasks.filter((ut: UserTask) => ut.routeTaskId === t.id || ut.taskId === t.id)
-      );
+      const taskFound = context.user.tasks
+        .filter((ut: UserTask) => ut.routeTaskId === t.id || ut.taskId === t.id)
+        .reduce((val: UserTask, item: any) => {
+          if (!val) {
+            return item;
+          }
+
+          if (val.status === TaskStatus.Dismissed) {
+            val.status = item.status;
+          }
+
+          return val;
+        }, null);
 
       if (taskFound) {
         status =

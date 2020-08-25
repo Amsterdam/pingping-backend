@@ -25,7 +25,7 @@ function createServer() {
   });
 
   const app = express();
-  server.applyMiddleware({ app, path: '/' });
+  server.applyMiddleware({ app, path: '/api' });
 
   return app;
 }

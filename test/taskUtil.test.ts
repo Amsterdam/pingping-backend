@@ -32,4 +32,13 @@ describe('taskUtil', () => {
 
     expect(userTask.status).to.eq(TaskStatus.Completed);
   });
+
+  it('completeTask task already dismissed', async () => {
+    const defOne = TaskUtil.getDefinition('onboarding.inkomen');
+    await TaskUtil.handleTask(user, defOne, 'no');
+    const def = TaskUtil.getDefinition('financieleBasis.inkomen');
+    let userTask: UserTask = await TaskUtil.completeTask(user, def);
+
+    expect(userTask.status).to.eq(TaskStatus.Completed);
+  });
 });
