@@ -89,6 +89,11 @@ export type MutationUpdateTaskArgs = {
 };
 
 
+export type MutationCompleteTaskArgs = {
+  taskId: Scalars['String'];
+};
+
+
 export type MutationCreateRouteFeedbackArgs = {
   input: RouteFeedbackInput;
 };
@@ -475,7 +480,7 @@ export type MessageResponseResolvers<ContextType = ModuleContext, ParentType ext
 
 export type MutationResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   updateTask?: Resolver<ResolversTypes['UpdateTaskResponse'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input'>>,
-  completeTask?: Resolver<ResolversTypes['CompleteTaskResponse'], ParentType, ContextType>,
+  completeTask?: Resolver<ResolversTypes['CompleteTaskResponse'], ParentType, ContextType, RequireFields<MutationCompleteTaskArgs, 'taskId'>>,
   createRouteFeedback?: Resolver<ResolversTypes['RouteFeedbackResponse'], ParentType, ContextType, RequireFields<MutationCreateRouteFeedbackArgs, 'input'>>,
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,

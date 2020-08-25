@@ -1,4 +1,9 @@
-import { MutationResolvers, MutationUpdateTaskArgs, MutationCreateRouteFeedbackArgs } from '@models';
+import {
+  MutationResolvers,
+  MutationUpdateTaskArgs,
+  MutationCreateRouteFeedbackArgs,
+  MutationCompleteTaskArgs,
+} from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 import TaskUtil from 'utils/TaskUtil';
 import { RouteFeedback } from 'models/RouteFeedback';
@@ -17,8 +22,8 @@ export const Mutation: MutationResolvers = {
     };
   },
 
-  async completeTask(root: any, args: any, context: ModuleContext): Promise<any> {
-    let taskDef = InitialDataUtil.getTaskById(args.input.taskId);
+  async completeTask(root: any, args: MutationCompleteTaskArgs, context: ModuleContext): Promise<any> {
+    let taskDef = InitialDataUtil.getTaskById(args.taskId);
 
     let task = await TaskUtil.completeTask(context.user, taskDef);
     const nextTask = TaskUtil.getNextTask(context.user);

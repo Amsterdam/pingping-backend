@@ -10,6 +10,7 @@ export type UserDocument = Document & {
   password?: string;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
+  exportToken?: string;
 
   tokens?: AuthToken[];
   devices?: Device[];
@@ -50,6 +51,7 @@ const userSchema = new Schema(
   {
     tokens: Array,
     devices: Array,
+    exportToken: String,
     tasks: [
       {
         routeId: String,

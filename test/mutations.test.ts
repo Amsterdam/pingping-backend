@@ -9,7 +9,7 @@ describe('mutations', () => {
   let server: any;
 
   beforeEach(() => {
-    server = index.express;
+    server = index;
   });
 
   afterEach((done) => {

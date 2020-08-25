@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { ModuleContext } from '@graphql-modules/core';
-// import { getScope } from 'apollo-server-express';
 
 import { UserDocument } from '../models/User';
 import auth from './auth';

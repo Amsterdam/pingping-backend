@@ -1,6 +1,6 @@
 type Mutation {
   updateTask(input: UpdateTaskInput!): UpdateTaskResponse!
-  completeTask: CompleteTaskResponse!
+  completeTask(taskId: String!): CompleteTaskResponse!
   createRouteFeedback(input: RouteFeedbackInput!): RouteFeedbackResponse!
 }
 

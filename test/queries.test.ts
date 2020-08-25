@@ -13,7 +13,7 @@ describe('queries', () => {
   let accessToken: string;
 
   beforeEach(async () => {
-    server = index.express;
+    server = index;
     user = await UserUtil.createOrFindUser({ deviceId: 'test1234test' });
     accessToken = _.get(user, 'tokens.0.accessToken');
   });
