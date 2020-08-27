@@ -54,7 +54,7 @@ type UserResponse {
 
 type DeviceResponse {
   id: String!
-  token: String!
+  token: String
   notificationStatus: NotificationStatus
 }
 
