@@ -24,7 +24,10 @@ export const Query: QueryResolvers = {
 
     let availableRoutes = routes.filter((r: RouteDefinition) => {
       let tasksFound = tasks
-        .filter((ut: UserTask) => ut.status === TaskStatus.Completed && ut.routeId === r.id)
+        .filter(
+          (ut: UserTask) =>
+            (ut.status === TaskStatus.Completed || ut.status === TaskStatus.Dismissed) && ut.routeId === r.id
+        )
         .map((ut: UserTask) => ut.routeTaskId);
 
       return tasksFound.length <= 0;

@@ -5,7 +5,6 @@ type Query {
 type Mutation {
   createGoal(input: CreateGoalInput!): UserGoalResponse!
   deleteUser(confirm: String): MessageResponse
-  # updateUser(input: UserInput): UserResponse!
   registerNotifications(input: RegisterNotificationsInput!): DeviceResponse!
   exportUser: ExportResponse!
   importUser(exportToken: String!): MessageResponse
