@@ -100,6 +100,7 @@
   "routes": {
     "financieleBasis": {
       "title": "Financiële Basis",
+      "description": "We gaan er samen voor zorgen dat jij je basis op orde hebt",
       "targetAudience": "Jongvolwassenen",
       "imageUrl": "/images/route1.png",
       "tasks": [
