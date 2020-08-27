@@ -4,9 +4,10 @@ import InitialDataUtil from 'utils/InitialDataUtil';
 import { RouteDefinition, TaskDefinition } from 'types/global';
 import { UserTask } from 'models/UserTask';
 import { ModuleContext } from '@graphql-modules/core';
+import { ContextType } from 'lib/Context';
 
 export const Query: QueryResolvers = {
-  async getRoutes(root: any, args: any, context: ModuleContext): Promise<any> {
+  async getRoutes(root: any, args: any, context: ContextType): Promise<any> {
     let routes: Array<RouteDefinition> = InitialDataUtil.getRoutes();
     let tasks: Array<UserTask> = context.user.tasks;
 

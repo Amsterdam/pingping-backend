@@ -4,6 +4,7 @@ import AuthMiddleware from 'middleware/AuthMiddleware';
 import { RouteProvider } from './RouteProvider';
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
 import { loadFilesSync } from '@graphql-tools/load-files';
+import { getContext as context } from '../../lib/Context';
 
 const resolvers = loadFilesSync(`${__dirname}/resolvers`);
 const loadedFiles = loadFilesSync(`${__dirname}/schema/*.graphql`);
@@ -21,4 +22,5 @@ export const RoutesModule = new GraphQLModule({
   },
   typeDefs,
   resolvers: mergeResolvers(resolvers),
+  context,
 });
