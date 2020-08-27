@@ -1,9 +1,9 @@
 import { QueryResolvers } from '@models';
-import { ModuleContext } from '@graphql-modules/core';
 import TaskUtil from 'utils/TaskUtil';
+import { ContextType } from 'lib/Context';
 
 export const Query: QueryResolvers = {
-  getStatus(root: any, args: any, context: ModuleContext): any {
+  getStatus(root: any, args: any, context: ContextType): any {
     const currentTask = TaskUtil.getCurrentUserTask(context.user);
     const previousTask = TaskUtil.getPreviousUserTask(context.user);
 
@@ -11,6 +11,7 @@ export const Query: QueryResolvers = {
       user: context.user,
       currentTask: currentTask ? currentTask : null,
       previousTask: previousTask || null,
+      device: context.device,
     };
   },
 };

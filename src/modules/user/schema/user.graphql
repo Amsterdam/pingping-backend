@@ -5,6 +5,8 @@ type Query {
 type Mutation {
   createGoal(input: CreateGoalInput!): UserGoalResponse!
   deleteUser(confirm: String): MessageResponse
+  # updateUser(input: UserInput): UserResponse!
+  registerNotifications(input: RegisterNotificationsInput!): DeviceResponse!
   exportUser: ExportResponse!
   importUser(exportToken: String!): MessageResponse
 }
@@ -23,6 +25,7 @@ type StatusResponse {
   currentTask: UserTaskResponse
   previousTask: UserTaskResponse
   exportUrl: String
+  device: DeviceResponse!
 }
 
 type UserGoalResponse {
@@ -50,6 +53,12 @@ type UserResponse {
   rewards: [UserRewardResponse!]
 }
 
+type DeviceResponse {
+  id: String!
+  token: String!
+  notificationStatus: NotificationStatus
+}
+
 type UserProfileResponse {
   dateOfBirth: Date
 }
@@ -59,4 +68,9 @@ input CreateGoalInput {
   title: String!
   description: String
   amount: Int!
+}
+
+input RegisterNotificationsInput {
+  notificationStatus: NotificationStatus!
+  deviceToken: String!
 }

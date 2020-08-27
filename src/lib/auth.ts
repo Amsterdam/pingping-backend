@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import moment from 'moment';
 import { UserTask } from 'models/UserTask';
 
-import { UserDocument, User, AuthToken, AuthTokenKind } from '../models/User';
+import { UserDocument, User, AuthToken, AuthTokenKind, Device } from '../models/User';
 
 const TOKEN_VALIDITY_MINUTES = process.env.TOKEN_VALIDITY_MINUTES || 180;
 
@@ -61,6 +61,27 @@ class auth {
       const user = await this.userQuery(token.userId);
 
       return user;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+
+  static async getDevice(headerToken: string): Promise<Device> {
+    let token: any;
+    try {
+      const tokenString = headerToken.replace(/bearer/gi, '').trim();
+      token = jwt.verify(tokenString, process.env.SECRET);
+      const user = await this.userQuery(token.userId);
+
+      if (!user) {
+        return null;
+      }
+
+      const tokenItem: AuthToken = _.first(user.tokens.filter((t: AuthToken) => t.accessToken === tokenString));
+      const deviceItem: Device = _.first(user.devices.filter((d: Device) => d.id === tokenItem.deviceId));
+
+      return deviceItem;
     } catch (e) {
       console.error(e);
       return null;

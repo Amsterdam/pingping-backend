@@ -1,6 +1,5 @@
 import { GraphQLModule } from '@graphql-modules/core';
 import { CommonModule } from '../common';
-import { context } from 'lib/Context';
 import { UserModule } from 'modules/user';
 import { RoutesModule } from 'modules/routes';
 import { loadFilesSync } from '@graphql-tools/load-files';
@@ -14,5 +13,4 @@ export const AuthModule = new GraphQLModule({
   imports: [CommonModule, UserModule, RoutesModule],
   typeDefs,
   resolvers: mergeResolvers(resolvers),
-  context,
 });

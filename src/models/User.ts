@@ -4,6 +4,7 @@ import { UserAchivement } from './UserAchivement';
 import { UserReward } from './UserReward';
 import { UserGoal } from './UserGoal';
 import { UserTransaction } from './UserTransaction';
+import { NotificationStatus } from '@models';
 
 export type UserDocument = Document & {
   email?: string;
@@ -45,6 +46,7 @@ export interface Device {
   os?: string;
   type?: string;
   token?: string;
+  notificationStatus: NotificationStatus;
 }
 
 const userSchema = new Schema(

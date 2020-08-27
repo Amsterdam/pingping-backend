@@ -4,11 +4,13 @@ import {
   MutationCreateGoalArgs,
   MutationDeleteUserArgs,
   MessageResponse,
+  MutationRegisterNotificationsArgs,
 } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 import GoalUtil from 'utils/GoalUtil';
 import { UserGoal } from 'models/UserGoal';
 import { User } from 'models/User';
+import { ContextType } from 'lib/Context';
 
 export const Mutation: MutationResolvers = {
   async createGoal(root: any, args: MutationCreateGoalArgs, context: ModuleContext): Promise<UserGoalResponse> {
@@ -28,7 +30,6 @@ export const Mutation: MutationResolvers = {
   },
 
   async deleteUser(root: any, args: MutationDeleteUserArgs, context: ModuleContext): Promise<MessageResponse> {
-    // @todo Mani Implement
     if (args.confirm === 'delete') {
       await User.deleteOne({ _id: context.user._id });
 
@@ -40,5 +41,22 @@ export const Mutation: MutationResolvers = {
     return {
       message: 'not_confirmed',
     };
+  },
+
+  async registerNotifications(root: any, args: MutationRegisterNotificationsArgs, context: ContextType): Promise<any> {
+    context.device.token = args.input.deviceToken;
+    context.device.notificationStatus = args.input.notificationStatus;
+
+    await User.update(
+      { 'devices.id': context.device.id },
+      {
+        $set: {
+          'devices.$.token': args.input.deviceToken,
+          'devices.$.notificationStatus': args.input.notificationStatus,
+        },
+      }
+    );
+
+    return context.device;
   },
 };

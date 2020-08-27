@@ -1,7 +1,7 @@
 import { GraphQLModule } from '@graphql-modules/core';
 import AuthMiddleware from 'middleware/AuthMiddleware';
 import _ from 'lodash';
-import { context } from '../../lib/Context';
+import { getContext as context } from '../../lib/Context';
 import { CommonModule } from 'modules/common';
 import { RewardsProvider } from './RewardsProvider';
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';

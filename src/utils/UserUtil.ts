@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { User, Device, AuthToken, AuthTokenKind, UserDocument } from '../models/User';
 import InitialDataUtil from './InitialDataUtil';
 import auth from '../lib/auth';
-import { RegisterDeviceInput } from '@models';
+import { RegisterDeviceInput, NotificationStatus } from '@models';
 
 class UserUtil {
   static async createOrFindUser(deviceInput: RegisterDeviceInput): Promise<UserDocument> {
@@ -12,6 +12,8 @@ class UserUtil {
     });
 
     if (userFound) {
+      // Update the device
+
       return userFound;
     }
 
@@ -27,6 +29,7 @@ class UserUtil {
       os: deviceInput.deviceOs,
       type: deviceInput.deviceType,
       token: deviceInput.deviceToken,
+      notificationStatus: NotificationStatus.Initial,
     };
     const token: AuthToken = {
       deviceId: deviceInput.deviceId,

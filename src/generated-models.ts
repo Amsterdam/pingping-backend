@@ -44,6 +44,13 @@ export type CreateGoalInput = {
 };
 
 
+export type DeviceResponse = {
+   __typename?: 'DeviceResponse';
+  id: Scalars['String'];
+  token: Scalars['String'];
+  notificationStatus?: Maybe<NotificationStatus>;
+};
+
 export type ExportResponse = {
    __typename?: 'ExportResponse';
   token: Scalars['String'];
@@ -78,6 +85,7 @@ export type Mutation = {
   claimReward: UserRewardResponse;
   createGoal: UserGoalResponse;
   deleteUser?: Maybe<MessageResponse>;
+  registerNotifications: DeviceResponse;
   exportUser: ExportResponse;
   importUser?: Maybe<MessageResponse>;
   registerDevice: RegisterDeviceResponse;
@@ -114,6 +122,11 @@ export type MutationDeleteUserArgs = {
 };
 
 
+export type MutationRegisterNotificationsArgs = {
+  input: RegisterNotificationsInput;
+};
+
+
 export type MutationImportUserArgs = {
   exportToken: Scalars['String'];
 };
@@ -122,6 +135,12 @@ export type MutationImportUserArgs = {
 export type MutationRegisterDeviceArgs = {
   input: RegisterDeviceInput;
 };
+
+export enum NotificationStatus {
+  Initial = 'Initial',
+  Declined = 'Declined',
+  Approved = 'Approved'
+}
 
 export type Query = {
    __typename?: 'Query';
@@ -150,6 +169,11 @@ export type RegisterDeviceResponse = {
   accessToken: Scalars['String'];
   user: UserResponse;
   currentTask?: Maybe<UserTaskResponse>;
+};
+
+export type RegisterNotificationsInput = {
+  notificationStatus: NotificationStatus;
+  deviceToken: Scalars['String'];
 };
 
 export type RewardResponse = {
@@ -209,6 +233,7 @@ export type StatusResponse = {
   currentTask?: Maybe<UserTaskResponse>;
   previousTask?: Maybe<UserTaskResponse>;
   exportUrl?: Maybe<Scalars['String']>;
+  device: DeviceResponse;
 };
 
 export type TaskResponse = {
@@ -378,6 +403,8 @@ export type ResolversTypes = {
   Date: ResolverTypeWrapper<Scalars['Date']>,
   UserGoalResponse: ResolverTypeWrapper<UserGoalResponse>,
   UserRewardResponse: ResolverTypeWrapper<UserRewardResponse>,
+  DeviceResponse: ResolverTypeWrapper<DeviceResponse>,
+  NotificationStatus: NotificationStatus,
   Mutation: ResolverTypeWrapper<{}>,
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
@@ -386,6 +413,7 @@ export type ResolversTypes = {
   RouteFeedbackResponse: ResolverTypeWrapper<RouteFeedbackResponse>,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: ResolverTypeWrapper<MessageResponse>,
+  RegisterNotificationsInput: RegisterNotificationsInput,
   ExportResponse: ResolverTypeWrapper<ExportResponse>,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
@@ -419,6 +447,8 @@ export type ResolversParentTypes = {
   Date: Scalars['Date'],
   UserGoalResponse: UserGoalResponse,
   UserRewardResponse: UserRewardResponse,
+  DeviceResponse: DeviceResponse,
+  NotificationStatus: NotificationStatus,
   Mutation: {},
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: UpdateTaskResponse,
@@ -427,6 +457,7 @@ export type ResolversParentTypes = {
   RouteFeedbackResponse: RouteFeedbackResponse,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: MessageResponse,
+  RegisterNotificationsInput: RegisterNotificationsInput,
   ExportResponse: ExportResponse,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
@@ -461,6 +492,13 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'Date'
 }
 
+export type DeviceResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['DeviceResponse'] = ResolversParentTypes['DeviceResponse']> = {
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  notificationStatus?: Resolver<Maybe<ResolversTypes['NotificationStatus']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export type ExportResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['ExportResponse'] = ResolversParentTypes['ExportResponse']> = {
   token?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
@@ -485,6 +523,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
   deleteUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, never>>,
+  registerNotifications?: Resolver<ResolversTypes['DeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterNotificationsArgs, 'input'>>,
   exportUser?: Resolver<ResolversTypes['ExportResponse'], ParentType, ContextType>,
   importUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationImportUserArgs, 'exportToken'>>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
@@ -550,6 +589,7 @@ export type StatusResponseResolvers<ContextType = ModuleContext, ParentType exte
   currentTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   previousTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   exportUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  device?: Resolver<ResolversTypes['DeviceResponse'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -613,6 +653,7 @@ export type Resolvers<ContextType = ModuleContext> = {
   Choices?: GraphQLScalarType,
   CompleteTaskResponse?: CompleteTaskResponseResolvers<ContextType>,
   Date?: GraphQLScalarType,
+  DeviceResponse?: DeviceResponseResolvers<ContextType>,
   ExportResponse?: ExportResponseResolvers<ContextType>,
   GetRoutesResponse?: GetRoutesResponseResolvers<ContextType>,
   MessageResponse?: MessageResponseResolvers<ContextType>,

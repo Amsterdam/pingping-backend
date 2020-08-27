@@ -44,3 +44,9 @@ enum AchivementStatus {
   AvailableToEarn
   Earned
 }
+
+enum NotificationStatus {
+  Initial
+  Declined
+  Approved
+}
