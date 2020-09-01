@@ -164,7 +164,7 @@ class TaskUtil {
     }
 
     if (taskDef.points) {
-      await TransactionUtil.addTransaction(user, 'Task Completed', taskDef.points);
+      await TransactionUtil.addTransaction(user, `Voltooid: ${taskDef.title}`, taskDef.points);
     }
 
     if (taskDef.nextTaskId) {
