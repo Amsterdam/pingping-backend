@@ -25,7 +25,11 @@ export const Mutation: MutationResolvers = {
   async completeTask(root: any, args: MutationCompleteTaskArgs, context: ModuleContext): Promise<any> {
     let taskDef = InitialDataUtil.getTaskById(args.taskId);
 
-    let task = await TaskUtil.completeTask(context.user, taskDef);
+    if (taskDef.id.indexOf('onboarding') !== -1) {
+      throw new Error('onboarding_task_cannot_be_completed_must_be_updated');
+    }
+
+    let task = await TaskUtil.handleTask(context.user, taskDef);
     const nextTask = TaskUtil.getNextTask(context.user);
 
     return {

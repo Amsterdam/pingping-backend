@@ -2,20 +2,20 @@ import { UserDocument } from '../models/User';
 import { UserTransaction } from '../models/UserTransaction';
 
 class TransactionUtil {
-  static async addTransaction(user:UserDocument, title:string, amount:number):Promise<UserTransaction> {
-    user.balance = user.balance + amount
+  static async addTransaction(user: UserDocument, title: string, amount: number): Promise<UserTransaction> {
+    user.balance += amount;
 
-    const transaction:UserTransaction = {
+    const transaction: UserTransaction = {
       title,
       amount,
-      balance: user.balance
-    } as UserTransaction
+      balance: user.balance,
+    } as UserTransaction;
 
-    user.transactions.push(transaction)
-    await user.save()
+    user.transactions.push(transaction);
+    await user.save();
 
-    return transaction
+    return transaction;
   }
 }
 
-export default TransactionUtil
+export default TransactionUtil;

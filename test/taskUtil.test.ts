@@ -28,16 +28,24 @@ describe('taskUtil', () => {
 
   it('completeTask', async () => {
     const def = TaskUtil.getDefinition('financieleBasis.inkomen');
-    let userTask: UserTask = await TaskUtil.completeTask(user, def);
+    let userTask: UserTask = await TaskUtil.handleTask(user, def);
 
     expect(userTask.status).to.eq(TaskStatus.Completed);
+  });
+
+  it('completeTask & balance update', async () => {
+    const def = TaskUtil.getDefinition('financieleBasis.ingeschrevenVoorWoning');
+    const balance = user.balance;
+    await TaskUtil.handleTask(user, def);
+
+    expect(user.balance).to.eq(balance + 20);
   });
 
   it('completeTask task already dismissed', async () => {
     const defOne = TaskUtil.getDefinition('onboarding.inkomen');
     await TaskUtil.handleTask(user, defOne, 'no');
     const def = TaskUtil.getDefinition('financieleBasis.inkomen');
-    let userTask: UserTask = await TaskUtil.completeTask(user, def);
+    let userTask: UserTask = await TaskUtil.handleTask(user, def);
 
     expect(userTask.status).to.eq(TaskStatus.Completed);
   });

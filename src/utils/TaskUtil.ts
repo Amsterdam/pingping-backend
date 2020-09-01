@@ -7,6 +7,7 @@ import moment from 'moment';
 import BadRequestError from '../errors/BadRequestError';
 import RouteUtil from './RouteUtil';
 import { TaskStatus, TaskType } from '../generated-models';
+import TransactionUtil from './TransactionUtil';
 
 class TaskUtil {
   static getProgress(taskId: string): number {
@@ -136,49 +137,40 @@ class TaskUtil {
     return _.get(nextTask, answer.toLowerCase(), _.first(Object.values(nextTask)));
   }
 
-  static async handleTask(user: UserDocument, taskDef: TaskDefinition, answer: string): Promise<UserTask> {
+  static async handleTask(user: UserDocument, taskDef: TaskDefinition, answer: string = null): Promise<UserTask> {
     const userTask = this.getUserTask(user, taskDef.id);
-
-    const newStatus =
-      taskDef.type === TaskType.YesOrNo && answer === 'no' ? TaskStatus.Dismissed : TaskStatus.Completed;
 
     userTask.routeTaskId = taskDef.routeTaskId;
     userTask.routeId = RouteUtil.getRouteIdFromTaskId(taskDef.routeTaskId || taskDef.id);
-    userTask.status = newStatus;
-    userTask.answer = answer;
 
-    switch (taskDef.type) {
-      case TaskType.DateOfBirth:
-        // Check date
-        const date = moment(answer, 'YYYY-MM-DD');
+    if (answer) {
+      userTask.status =
+        taskDef.type === TaskType.YesOrNo && answer === 'no' ? TaskStatus.Dismissed : TaskStatus.Completed;
+      userTask.answer = answer;
 
-        if (!date.isValid()) {
-          throw new BadRequestError('invalid date input, expecting YYYY-MM-DD');
-        }
-      default:
-      // no validation
+      switch (taskDef.type) {
+        case TaskType.DateOfBirth:
+          // Check date
+          const date = moment(answer, 'YYYY-MM-DD');
+
+          if (!date.isValid()) {
+            throw new BadRequestError('invalid date input, expecting YYYY-MM-DD');
+          }
+        default:
+        // no validation
+      }
+    } else {
+      userTask.status = TaskStatus.Completed;
+    }
+
+    if (taskDef.points) {
+      await TransactionUtil.addTransaction(user, 'Task Completed', taskDef.points);
     }
 
     if (taskDef.nextTaskId) {
       user = this.addNextTaskToUser(user, this.getNextTaskId(answer, taskDef.nextTaskId));
     }
 
-    user = this.updateUserTask(user, userTask);
-    await User.findOneAndUpdate({ _id: user._id }, user);
-
-    return userTask;
-  }
-
-  static async completeTask(user: UserDocument, taskDef: TaskDefinition): Promise<UserTask> {
-    const userTask = this.getUserTask(user, taskDef.id);
-
-    if (taskDef.id.indexOf('onboarding') !== -1) {
-      throw new Error('onboarding_task_cannot_be_completed_must_be_updated');
-    }
-
-    userTask.routeTaskId = taskDef.routeTaskId;
-    userTask.routeId = RouteUtil.getRouteIdFromTaskId(taskDef.routeTaskId || taskDef.id);
-    userTask.status = TaskStatus.Completed;
     user = this.updateUserTask(user, userTask);
     await User.findOneAndUpdate({ _id: user._id }, user);
 
