@@ -3,9 +3,10 @@ import InitialDataUtil from './InitialDataUtil';
 import { RewardDefinition } from '../types/global';
 import { UserReward } from '../models/UserReward';
 import { RewardStatus } from '../generated-models';
+import TransactionUtil from './TransactionUtil';
 
 class RewardUtil {
-  static async claim(user:UserDocument, id:string):Promise<UserReward> {
+  static async claim(user: UserDocument, id: string): Promise<UserReward> {
     const reward: RewardDefinition = InitialDataUtil.getReward(id);
 
     if (user.balance < reward.price) {
@@ -13,24 +14,24 @@ class RewardUtil {
     }
 
     // Check if reward is already claimed
-    const numberClaimed = user.rewards.filter(i => i.rewardId = id).length
+    const numberClaimed = user.rewards.filter((i) => (i.rewardId = id)).length;
 
     if (numberClaimed >= reward.availablePerUser) {
       throw new Error(`reward_already_claimed`);
     }
 
-    const userReward:UserReward = {
+    const userReward: UserReward = {
       rewardId: id,
       status: RewardStatus.Claimed,
-      price: reward.price
-    } as UserReward
+      price: reward.price,
+    } as UserReward;
 
-    user.balance = user.balance - reward.price
-    const res = user.rewards.push(userReward)
-    await user.save()
+    await TransactionUtil.addTransaction(user, `Beloning: ${reward.title}`, reward.price * -1);
+    const res = user.rewards.push(userReward);
+    await user.save();
 
-    return user.rewards[res - 1]
+    return user.rewards[res - 1];
   }
 }
 
-export default RewardUtil
+export default RewardUtil;
