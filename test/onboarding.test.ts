@@ -139,6 +139,8 @@ describe('onboarding', () => {
       expect(taskSevenRes.answer).to.eq('no');
 
       expect(user.tasks.filter((i) => i.status === TaskStatus.PendingUser).length).to.eq(0);
+
+      expect(user.balance).to.eq(140);
     } catch (e) {
       console.error(e);
 

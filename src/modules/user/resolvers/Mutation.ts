@@ -43,6 +43,21 @@ export const Mutation: MutationResolvers = {
     };
   },
 
+  // @todo Implement this
+  async exportUser(root: any, args: any, context: ContextType): Promise<any> {
+    return {
+      token: 'placeholder_token',
+    };
+  },
+
+  async importUser(root: any, args: any, context: ContextType): Promise<any> {
+    // @todo Check the token
+
+    return {
+      message: 'error',
+    };
+  },
+
   async registerNotifications(root: any, args: MutationRegisterNotificationsArgs, context: ContextType): Promise<any> {
     context.device.token = args.input.deviceToken;
     context.device.notificationStatus = args.input.notificationStatus;
