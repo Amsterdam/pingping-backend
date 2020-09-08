@@ -8,7 +8,7 @@ class db {
   static async connect() {
     console.log('Setting up mongodb connection...');
     return await mongoose
-      .connect(process.env.MONGO_STRING, {
+      .connect(process.env.MONGO_STRING + '?authMechanism=SCRAM-SHA-1', {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
