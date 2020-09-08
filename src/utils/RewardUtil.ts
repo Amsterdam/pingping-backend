@@ -26,7 +26,7 @@ class RewardUtil {
       price: reward.price,
     } as UserReward;
 
-    await TransactionUtil.addTransaction(user, `Beloning: ${reward.title}`, reward.price * -1);
+    await TransactionUtil.addTransaction(user, `Beloning: ${reward.title}`, reward.price * -1, reward.id);
     const res = user.rewards.push(userReward);
     await user.save();
 

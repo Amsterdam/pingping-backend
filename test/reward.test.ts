@@ -30,7 +30,7 @@ describe('reward', () => {
   });
 
   it('claim reward', async () => {
-    await TransactionUtil.addTransaction(user, 'Test', 20);
+    await TransactionUtil.addTransaction(user, 'Test', 20, 'lkdfjg');
     const rew = await RewardUtil.claim(user, 'meelopen-met-jongeren');
 
     expect(user.rewards.length).to.eq(1);
@@ -45,7 +45,7 @@ describe('reward', () => {
 
   it('claim reward already claimed', async () => {
     // Add balance for test, enough to claim the reward twice.
-    await TransactionUtil.addTransaction(user, 'Test', 40);
+    await TransactionUtil.addTransaction(user, 'Test', 40, 'sdflj');
 
     await RewardUtil.claim(user, 'meelopen-met-jongeren');
 

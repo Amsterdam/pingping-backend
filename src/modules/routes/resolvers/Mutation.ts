@@ -11,7 +11,7 @@ import InitialDataUtil from 'utils/InitialDataUtil';
 
 export const Mutation: MutationResolvers = {
   async updateTask(root: any, args: MutationUpdateTaskArgs, context: ModuleContext): Promise<any> {
-    let taskDef = InitialDataUtil.getTaskById(args.input.taskId);
+    let taskDef = TaskUtil.getDefinition(args.input.taskId);
 
     let task = await TaskUtil.handleTask(context.user, taskDef, args.input.answer || '');
     const nextTask = TaskUtil.getNextTask(context.user);
@@ -23,7 +23,7 @@ export const Mutation: MutationResolvers = {
   },
 
   async completeTask(root: any, args: MutationCompleteTaskArgs, context: ModuleContext): Promise<any> {
-    let taskDef = InitialDataUtil.getTaskById(args.taskId);
+    let taskDef = TaskUtil.getDefinition(args.taskId);
 
     if (taskDef.id.indexOf('onboarding') !== -1) {
       throw new Error('onboarding_task_cannot_be_completed_must_be_updated');

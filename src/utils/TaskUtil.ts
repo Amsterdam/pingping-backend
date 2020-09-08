@@ -142,6 +142,7 @@ class TaskUtil {
 
     userTask.routeTaskId = taskDef.routeTaskId;
     userTask.routeId = RouteUtil.getRouteIdFromTaskId(taskDef.routeTaskId || taskDef.id);
+    const oldStatus = userTask.status;
 
     if (answer) {
       userTask.status =
@@ -163,8 +164,8 @@ class TaskUtil {
       userTask.status = TaskStatus.Completed;
     }
 
-    if (taskDef.points) {
-      await TransactionUtil.addTransaction(user, `Voltooid: ${taskDef.title}`, taskDef.points);
+    if (taskDef.points && oldStatus !== TaskStatus.Completed && userTask.status === TaskStatus.Completed) {
+      await TransactionUtil.addTransaction(user, `Voltooid: ${taskDef.title}`, taskDef.points, taskDef.id);
     }
 
     if (taskDef.nextTaskId) {

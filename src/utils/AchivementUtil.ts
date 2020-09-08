@@ -35,7 +35,7 @@ class AchivementUtil {
 
     // If the achivement has a point value to it, we need to update the users balance
     if (def.points && def.points > 0) {
-      await TransactionUtil.addTransaction(user, def.title, def.points);
+      await TransactionUtil.addTransaction(user, def.title, def.points, def.id);
     }
 
     const res = user.achivements.push(userAchivement);

@@ -40,7 +40,7 @@ steps:
   - script: yarn build
     displayName: Build
 
-  - script: yarn test-azure
+  - script: yarn test-azure --exit
     env:
       MONGO_STRING: mongodb://mongo:27017/pingping
       SECRET: somesillyfakesecret

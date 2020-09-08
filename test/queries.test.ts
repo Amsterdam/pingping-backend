@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import { describe, it } from 'mocha';
 import { expect, assert } from 'chai';
-import index from '../src/index';
+import App from '../src/App';
 import request from 'supertest';
 import { UserDocument } from '../src/models/User';
+import index from '../src/index';
 import UserUtil from '../src/utils/UserUtil';
-import { RewardResponse } from '../src/generated-models';
+import { RewardResponse, AchivementResponse } from '../src/generated-models';
 
 describe('queries', () => {
   let server: any;
@@ -79,9 +80,9 @@ describe('queries', () => {
       });
   });
 
-  // it("get achivements", (done) => {
+  // it('get achivements', (done) => {
   //   request(server)
-  //     .post("/")
+  //     .post('/')
   //     .send({
   //       query: `query getAchivements {
   //         getAchivements {
@@ -93,14 +94,14 @@ describe('queries', () => {
   //           points
   //         }
   //       }`,
-  //       operationName: "getAchivements"
+  //       operationName: 'getAchivements',
   //     })
-  //     .set({ 'Authorization': `Bearer ${accessToken}`, Accept: 'application/json' })
-  //     .expect("Content-Type", /json/)
+  //     .set({ Authorization: `Bearer ${accessToken}`, Accept: 'application/json' })
+  //     .expect('Content-Type', /json/)
   //     .expect(200)
   //     .end((err: any, res: any) => {
-  //       const body = res.body.data.getAchivements
-  //       const first:AchivementResponse = _.first(body)
+  //       const body = res.body.data.getAchivements;
+  //       const first: AchivementResponse = _.first(body);
   //       expect(first.title).to.equal('Zorgtoeslag');
   //       expect(first.description).to.equal('Zorgtoeslag');
   //       expect(first.points).to.equal(20);

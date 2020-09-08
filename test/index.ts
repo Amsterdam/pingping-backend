@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import boot from '../src/boot';
 import chaiAsPromised from 'chai-as-promised';
 import chai from 'chai';
@@ -32,18 +33,13 @@ const mocha = new Mocha({
   reporter: 'mocha-junit-reporter',
   name: 'PingPing Backend',
 });
-mocha.addFile(`./test/taskUtil.test.ts`);
-mocha.addFile(`./test/initialDataUtil.test.ts`);
-mocha.addFile(`./test/mutations.test.ts`);
-mocha.addFile(`./test/queries.test.ts`);
-mocha.addFile(`./test/route.test.ts`);
-mocha.addFile(`./test/onboarding.test.ts`);
-mocha.addFile(`./test/achivement.test.ts`);
-mocha.addFile(`./test/goal.test.ts`);
-mocha.addFile(`./test/reward.test.ts`);
-mocha.run((failures: any) => {
-  process.exit(failures);
-  // process.on('exit', () => {
-  //   process.exit(failures); // exit with non-zero status if there were failures
-  // });
-});
+
+require('./taskUtil.test.ts');
+require('./initialDataUtil.test.ts');
+require('./mutations.test.ts');
+require('./queries.test.ts');
+require('./route.test.ts');
+require('./onboarding.test.ts');
+require('./achivement.test.ts');
+require('./goal.test.ts');
+require('./reward.test.ts');

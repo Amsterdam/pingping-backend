@@ -22,13 +22,14 @@ export const LogPlugin: ApolloServerPlugin = {
 
 export class App {
   public app: any;
+  public server: any;
 
   constructor() {
     this.app = express();
     boot.start();
 
     const { schema } = AppModule.forRoot({ layouts: [] });
-    const server = new ApolloServer({
+    this.server = new ApolloServer({
       schema,
       context,
       plugins: [LogPlugin],
@@ -36,7 +37,7 @@ export class App {
 
     this.app.use(express.static('public'));
     this.registerStatusHealthRoute();
-    server.applyMiddleware({ app: this.app, path: '/api' });
+    this.server.applyMiddleware({ app: this.app, path: '/api' });
   }
 
   registerStatusHealthRoute() {

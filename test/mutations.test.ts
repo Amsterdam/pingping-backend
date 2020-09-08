@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { describe, it } from 'mocha';
 import { expect, assert } from 'chai';
 import request from 'supertest';
+import App from '../src/App';
 import index from '../src/index';
 import UserUtil from '../src/utils/UserUtil';
 

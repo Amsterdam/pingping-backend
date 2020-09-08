@@ -27,7 +27,7 @@ describe('onboarding', () => {
 
   it('error, handle invalid input', async () => {
     const call = async () => {
-      let taskDef: TaskDefinition = InitialDataUtil.getTaskById('onboarding.dateOfBirth');
+      let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.dateOfBirth');
       return await TaskUtil.handleTask(user, taskDef, '2012-24-01');
     };
     await expect(call()).to.be.rejectedWith(BadRequestError);
@@ -35,14 +35,14 @@ describe('onboarding', () => {
 
   // it('error, cannot complete task', async () => {
   //   const call = async () => {
-  //     let taskDef: TaskDefinition = InitialDataUtil.getTaskById('onboarding.dateOfBirth');
+  //     let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.dateOfBirth');
   //     return await TaskUtil.handleTask(user, taskDef);
   //   };
   //   await expect(call()).to.be.rejectedWith('onboarding_task_cannot_be_completed_must_be_updated');
   // });
 
   it('handle task', async () => {
-    let taskDef: TaskDefinition = InitialDataUtil.getTaskById('onboarding.dateOfBirth');
+    let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.dateOfBirth');
     const taskOneRes = await TaskUtil.handleTask(user, taskDef, '2012-01-01');
     expect(taskOneRes.status).to.eq(TaskStatus.Completed);
     expect(taskOneRes.answer).to.eq('2012-01-01');
@@ -50,7 +50,7 @@ describe('onboarding', () => {
 
   it('get next task in line', async () => {
     try {
-      let taskDef: TaskDefinition = InitialDataUtil.getTaskById('onboarding.dateOfBirth');
+      let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.dateOfBirth');
       await TaskUtil.handleTask(user, taskDef, '2012-01-01');
       const nextTask = await TaskUtil.getNextTask(user);
       expect(nextTask.status).to.eq(TaskStatus.PendingUser);
@@ -64,44 +64,45 @@ describe('onboarding', () => {
 
   it('handle next task', async () => {
     try {
-      let taskDef: TaskDefinition = InitialDataUtil.getTaskById('onboarding.dateOfBirth');
-      let taskDefTwo: TaskDefinition = InitialDataUtil.getTaskById('onboarding.woonAdres');
+      let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.dateOfBirth');
+      let taskDefTwo: TaskDefinition = TaskUtil.getDefinition('onboarding.woonAdres');
       await TaskUtil.handleTask(user, taskDef, '2012-01-01');
       await TaskUtil.handleTask(user, taskDefTwo, 'yes');
-      let taskDefThree: TaskDefinition = InitialDataUtil.getTaskById('onboarding.bankRekening');
+      let taskDefThree: TaskDefinition = TaskUtil.getDefinition('onboarding.bankRekening');
       const taskOneRes = await TaskUtil.handleTask(user, taskDefThree, 'yes');
       expect(taskOneRes.status).to.eq(TaskStatus.Completed);
       expect(taskOneRes.answer).to.eq('yes');
-      let taskDefFour: TaskDefinition = InitialDataUtil.getTaskById('onboarding.digiD');
+      let taskDefFour: TaskDefinition = TaskUtil.getDefinition('onboarding.digiD');
       const taskTwoRes = await TaskUtil.handleTask(user, taskDefFour, 'yes');
       expect(taskTwoRes.status).to.eq(TaskStatus.Completed);
       expect(taskTwoRes.answer).to.eq('yes');
 
-      let taskDefFive: TaskDefinition = InitialDataUtil.getTaskById('onboarding.zorgverzekering');
+      let taskDefFive: TaskDefinition = TaskUtil.getDefinition('onboarding.zorgverzekering');
       const taskThreeRes = await TaskUtil.handleTask(user, taskDefFive, 'yes');
       expect(taskThreeRes.status).to.eq(TaskStatus.Completed);
       expect(taskThreeRes.answer).to.eq('yes');
 
-      let taskDefSix: TaskDefinition = InitialDataUtil.getTaskById('onboarding.zorgtoeslag');
+      let taskDefSix: TaskDefinition = TaskUtil.getDefinition('onboarding.zorgtoeslag');
       const taskFourRes = await TaskUtil.handleTask(user, taskDefSix, 'yes');
       expect(taskFourRes.status).to.eq(TaskStatus.Completed);
       expect(taskFourRes.answer).to.eq('yes');
 
-      let taskDefSeven: TaskDefinition = InitialDataUtil.getTaskById('onboarding.inkomen');
+      let taskDefSeven: TaskDefinition = TaskUtil.getDefinition('onboarding.inkomen');
       const taskFiveRes = await TaskUtil.handleTask(user, taskDefSeven, 'yes');
       expect(taskFiveRes.status).to.eq(TaskStatus.Completed);
       expect(taskFiveRes.answer).to.eq('yes');
 
-      let taskDefEight: TaskDefinition = InitialDataUtil.getTaskById('onboarding.waarKomtJeInkomenVandaan');
+      let taskDefEight: TaskDefinition = TaskUtil.getDefinition('onboarding.waarKomtJeInkomenVandaan');
       const taskSixRes = await TaskUtil.handleTask(user, taskDefEight, 'yes');
       expect(taskSixRes.status).to.eq(TaskStatus.Completed);
       expect(taskSixRes.answer).to.eq('yes');
 
-      let taskDefNine: TaskDefinition = InitialDataUtil.getTaskById('onboarding.ingeschrevenVoorWoning');
+      let taskDefNine: TaskDefinition = TaskUtil.getDefinition('onboarding.ingeschrevenVoorWoning');
       const taskSevenRes = await TaskUtil.handleTask(user, taskDefNine, 'yes');
       expect(taskSevenRes.status).to.eq(TaskStatus.Completed);
       expect(taskSevenRes.answer).to.eq('yes');
       expect(user.tasks.filter((i) => i.status === TaskStatus.PendingUser).length).to.eq(0);
+      expect(user.balance).to.eq(140);
     } catch (e) {
       console.error(e);
 
@@ -111,36 +112,36 @@ describe('onboarding', () => {
 
   it('handle next task different path', async () => {
     try {
-      let taskDef: TaskDefinition = InitialDataUtil.getTaskById('onboarding.dateOfBirth');
-      let taskDefZ: TaskDefinition = InitialDataUtil.getTaskById('onboarding.woonAdres');
+      let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.dateOfBirth');
+      let taskDefZ: TaskDefinition = TaskUtil.getDefinition('onboarding.woonAdres');
       await TaskUtil.handleTask(user, taskDef, '2012-01-01');
       const taskZeroRes = await TaskUtil.handleTask(user, taskDefZ, 'no');
       expect(taskZeroRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskZeroRes.answer).to.eq('no');
 
-      let taskDef2: TaskDefinition = InitialDataUtil.getTaskById('onboarding.zorgverzekering');
+      let taskDef2: TaskDefinition = TaskUtil.getDefinition('onboarding.zorgverzekering');
       const taskThreeRes = await TaskUtil.handleTask(user, taskDef2, 'no');
       expect(taskThreeRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskThreeRes.answer).to.eq('no');
 
-      let taskDef3: TaskDefinition = InitialDataUtil.getTaskById('onboarding.zorgtoeslag');
+      let taskDef3: TaskDefinition = TaskUtil.getDefinition('onboarding.zorgtoeslag');
       const taskFourRes = await TaskUtil.handleTask(user, taskDef3, 'no');
       expect(taskFourRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskFourRes.answer).to.eq('no');
 
-      let taskDef4: TaskDefinition = InitialDataUtil.getTaskById('onboarding.inkomen');
+      let taskDef4: TaskDefinition = TaskUtil.getDefinition('onboarding.inkomen');
       const taskFiveRes = await TaskUtil.handleTask(user, taskDef4, 'no');
       expect(taskFiveRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskFiveRes.answer).to.eq('no');
 
-      let taskDef5: TaskDefinition = InitialDataUtil.getTaskById('onboarding.ingeschrevenVoorWoning');
+      let taskDef5: TaskDefinition = TaskUtil.getDefinition('onboarding.ingeschrevenVoorWoning');
       const taskSevenRes = await TaskUtil.handleTask(user, taskDef5, 'no');
       expect(taskSevenRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskSevenRes.answer).to.eq('no');
 
       expect(user.tasks.filter((i) => i.status === TaskStatus.PendingUser).length).to.eq(0);
 
-      expect(user.balance).to.eq(140);
+      expect(user.balance).to.eq(0);
     } catch (e) {
       console.error(e);
 
