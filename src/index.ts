@@ -12,6 +12,10 @@ const corsOptions: object = {
 
 server.use(express.static('public'));
 
+server.get('/status/health', (req, res) => {
+  res.send('OK');
+});
+
 server.listen(
   {
     port: process.env.PORT || 4000,
