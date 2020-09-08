@@ -4,6 +4,7 @@ FROM node:10
 WORKDIR /app
 
 ENV PORT=8000
+ENV NODE_ENV=production
 
 COPY package.json /app/package.json
 COPY yarn.lock /app/yarn.lock
