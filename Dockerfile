@@ -12,7 +12,7 @@ COPY yarn.lock /app/yarn.lock
 RUN yarn install
 
 # Bundle app source
-COPY .env /app/.env
+# COPY .env /app/.env
 COPY src /app/src
 COPY tsconfig.json /app/tsconfig.json
 COPY initialData.json /app/initialData.json
