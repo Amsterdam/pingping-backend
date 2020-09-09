@@ -10,8 +10,6 @@ const corsOptions: object = {
   origin: process.env.APP_URL,
 };
 
-server.use(express.static('public'));
-
 server.get('/status/health', (req, res) => {
   res.send('OK');
 });

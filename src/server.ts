@@ -19,6 +19,7 @@ function createServer() {
 
   const app = express();
   server.applyMiddleware({ app, path: '/api' });
+  app.use(express.static(__dirname + '/../public'));
 
   return app;
 }
