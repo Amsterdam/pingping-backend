@@ -12,8 +12,9 @@
       "routeTaskId": "financieleBasis.woonAdres",
       "id": "onboarding.woonAdres",
       "type": "YesOrNo",
+      "title": "Sta je ingeschreven op een vast adres?",
       "choices": {
-        "yes": "Ja ik heb een vast adres",
+        "yes": "Ja ik sta ingeschreven",
         "no": "Nee nog niet"
       },
       "nextTaskId": {
@@ -25,6 +26,7 @@
       "routeTaskId": "financieleBasis.bankRekening",
       "id": "onboarding.bankRekening",
       "type": "YesOrNo",
+      "title": "Heb je een bankrekening?",
       "choices": {
         "yes": "Ja ik heb een bankrekening",
         "no": "Nee nog niet"
@@ -35,6 +37,7 @@
       "routeTaskId": "financieleBasis.digiD",
       "id": "onboarding.digiD",
       "type": "YesOrNo",
+      "title": "Heb je al DigiD?",
       "choices": {
         "yes": "Ja ik heb een DigiD",
         "no": "Nee nog niet"
@@ -45,6 +48,7 @@
       "routeTaskId": "financieleBasis.zorgverzekering",
       "id": "onboarding.zorgverzekering",
       "type": "YesOrNo",
+      "title": "Heb je zelf een zorgverzekering afgesloten?",
       "choices": {
         "yes": "Ja ik ben verzekerd",
         "no": "Nee nog niet"
@@ -55,6 +59,7 @@
       "routeTaskId": "financieleBasis.zorgtoeslag",
       "id": "onboarding.zorgtoeslag",
       "type": "YesOrNo",
+      "title": "Heb je al zorgtoeslag?",
       "choices": {
         "yes": "Ja ik heb",
         "no": "Nee nog niet"
@@ -65,6 +70,7 @@
       "routeTaskId": "financieleBasis.inkomen",
       "id": "onboarding.inkomen",
       "type": "YesOrNo",
+      "title": "Heb je al inkomen?",
       "choices": {
         "yes": "Ja ik heb een inkomen",
         "no": "Nee nog niet"
@@ -90,6 +96,7 @@
       "routeTaskId": "financieleBasis.ingeschrevenVoorWoning",
       "id": "onboarding.ingeschrevenVoorWoning",
       "type": "YesOrNo",
+      "title": "Ben je al ingeschreven voor een woning?",
       "choices": {
         "yes": "Ja ik heb me ingeschreven",
         "no": "Nee nog niet"
@@ -174,22 +181,6 @@
           "description": "Body"
         }
       ]
-    },
-    "SomeOtherRoute": {
-      "title": "Just another route",
-      "targetAudience": "Jongvolwassenen",
-      "imageUrl": "/images/route2.png",
-      "tasks": [
-        {
-          "id": "SomeOtherRoute.TestOne",
-          "title": "TestOne",
-          "points": 120,
-          "headerTitle": "ho",
-          "description": "<p>Hi</p>",
-          "icon": ""
-        }
-      ],
-      "tips": []
     }
   },
   "rewards": [
