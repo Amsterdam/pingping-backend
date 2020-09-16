@@ -48,7 +48,7 @@ class TaskUtil {
     if (taskFound.routeTaskId) {
       return {
         ...InitialDataUtil.getTaskById(taskFound.routeTaskId),
-        ...def,
+        ..._.pickBy(def, _.identity),
         id: taskId,
       };
     }
