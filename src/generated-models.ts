@@ -60,7 +60,7 @@ export type GetRoutesResponse = {
    __typename?: 'GetRoutesResponse';
   currentRoutes?: Maybe<Array<RouteResponse>>;
   availableRoutes?: Maybe<Array<RouteResponse>>;
-  archievedRoutes?: Maybe<Array<RouteResponse>>;
+  archivedRoutes?: Maybe<Array<RouteResponse>>;
 };
 
 export type LocactionInput = {
@@ -523,7 +523,7 @@ export type ExportResponseResolvers<ContextType = ModuleContext, ParentType exte
 export type GetRoutesResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['GetRoutesResponse'] = ResolversParentTypes['GetRoutesResponse']> = {
   currentRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
   availableRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
-  archievedRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
+  archivedRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
