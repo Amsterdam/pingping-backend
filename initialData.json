@@ -1,11 +1,22 @@
 {
   "onboardingTasks": [
     {
+      "id": "onboarding.gemeente",
+      "type": "MultipleChoices",
+      "title": "In Welke Gemeente Woon je?",
+      "headerTitle": "gemeente",
+      "initial": true,
+      "choices": {
+        "yes": "Amsterdam",
+        "no": "Den Haag"
+      },
+      "nextTaskId": "onboarding.dateOfBirth"
+    },
+    {
       "id": "onboarding.dateOfBirth",
       "type": "DateOfBirth",
       "title": "Wat is je geboortedatum?",
       "headerTitle": "geboortedatum",
-      "initial": true,
       "nextTaskId": "onboarding.woonAdres"
     },
     {
