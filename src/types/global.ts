@@ -1,6 +1,6 @@
 import { TaskType } from '@models';
 
-export type AchivementDefinition = {
+export type AchievementDefinition = {
   id: string;
   title: string;
   description: string;

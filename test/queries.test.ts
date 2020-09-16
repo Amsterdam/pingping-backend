@@ -6,7 +6,7 @@ import request from 'supertest';
 import { UserDocument } from '../src/models/User';
 import index from '../src/index';
 import UserUtil from '../src/utils/UserUtil';
-import { RewardResponse, AchivementResponse } from '../src/generated-models';
+import { RewardResponse, AchievementResponse } from '../src/generated-models';
 
 describe('queries', () => {
   let server: any;
@@ -80,28 +80,28 @@ describe('queries', () => {
       });
   });
 
-  // it('get achivements', (done) => {
+  // it('get achievements', (done) => {
   //   request(server)
   //     .post('/')
   //     .send({
-  //       query: `query getAchivements {
-  //         getAchivements {
+  //       query: `query getAchievements {
+  //         getAchievements {
   //           title
   //           description
   //           icon
-  //           achivementId
+  //           achievementId
   //           status
   //           points
   //         }
   //       }`,
-  //       operationName: 'getAchivements',
+  //       operationName: 'getAchievements',
   //     })
   //     .set({ Authorization: `Bearer ${accessToken}`, Accept: 'application/json' })
   //     .expect('Content-Type', /json/)
   //     .expect(200)
   //     .end((err: any, res: any) => {
-  //       const body = res.body.data.getAchivements;
-  //       const first: AchivementResponse = _.first(body);
+  //       const body = res.body.data.getAchievements;
+  //       const first: AchievementResponse = _.first(body);
   //       expect(first.title).to.equal('Zorgtoeslag');
   //       expect(first.description).to.equal('Zorgtoeslag');
   //       expect(first.points).to.equal(20);

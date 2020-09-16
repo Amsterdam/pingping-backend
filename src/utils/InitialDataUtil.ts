@@ -1,8 +1,6 @@
 import _ from 'lodash';
-// import { TaskStatus } from "@models";
-import { TaskDefinition, RouteDefinition, AchivementDefinition, RewardDefinition } from '../types/global';
+import { TaskDefinition, RouteDefinition, AchievementDefinition, RewardDefinition } from '../types/global';
 import { TaskStatus } from '../generated-models';
-// import { TaskStatus } from "@models";
 const initialData: InitialData = require('../../initialData.json');
 
 type InitialData = {
@@ -10,7 +8,7 @@ type InitialData = {
   routes: {
     [key: string]: RouteDefinition;
   };
-  achivements: [AchivementDefinition];
+  achievements: [AchievementDefinition];
   rewards: [RewardDefinition];
 };
 
@@ -71,19 +69,19 @@ class InitialDataUtil {
     return route;
   }
 
-  static getAchivementById(id: string): AchivementDefinition {
-    const achivements = initialData.achivements.filter((i: AchivementDefinition) => i.id === id);
-    let achivement: AchivementDefinition = _.first(achivements);
+  static getAchievementById(id: string): AchievementDefinition {
+    const achievements = initialData.achievements.filter((i: AchievementDefinition) => i.id === id);
+    let achievement: AchievementDefinition = _.first(achievements);
 
-    if (!achivement) {
-      throw new Error(`achivement_not_defined`);
+    if (!achievement) {
+      throw new Error(`achievement_not_defined`);
     }
 
-    return achivement;
+    return achievement;
   }
 
-  static getAchivements(): Array<AchivementDefinition> {
-    return initialData.achivements;
+  static getAchievements(): Array<AchievementDefinition> {
+    return initialData.achievements;
   }
 
   static getTaskById(id: string): TaskDefinition {

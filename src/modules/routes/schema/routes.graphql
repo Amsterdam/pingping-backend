@@ -13,7 +13,7 @@ type Query {
 type GetRoutesResponse {
   currentRoutes: [RouteResponse!]
   availableRoutes: [RouteResponse!]
-  archivedRoutes: [RouteResponse!]
+  archievedRoutes: [RouteResponse!]
 }
 
 type UserTaskResponse {

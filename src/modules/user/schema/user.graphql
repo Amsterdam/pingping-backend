@@ -1,5 +1,6 @@
 type Query {
   getStatus: StatusResponse!
+  getAchievements: [AchievementResponse!]!
 }
 
 type Mutation {
@@ -34,12 +35,12 @@ type UserGoalResponse {
   amount: Int!
 }
 
-type AchivementResponse {
-  achivementId: String!
+type AchievementResponse {
+  achievementId: String!
   title: String!
   description: String
   points: Int!
-  status: AchivementStatus!
+  status: AchievementStatus!
   icon: String
   earnedDate: Date
 }

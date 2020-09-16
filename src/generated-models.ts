@@ -15,18 +15,18 @@ export type Scalars = {
   RouteAnswer: any;
 };
 
-export type AchivementResponse = {
-   __typename?: 'AchivementResponse';
-  achivementId: Scalars['String'];
+export type AchievementResponse = {
+   __typename?: 'AchievementResponse';
+  achievementId: Scalars['String'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   points: Scalars['Int'];
-  status: AchivementStatus;
+  status: AchievementStatus;
   icon?: Maybe<Scalars['String']>;
   earnedDate?: Maybe<Scalars['Date']>;
 };
 
-export enum AchivementStatus {
+export enum AchievementStatus {
   AvailableToEarn = 'AvailableToEarn',
   Earned = 'Earned'
 }
@@ -60,7 +60,7 @@ export type GetRoutesResponse = {
    __typename?: 'GetRoutesResponse';
   currentRoutes?: Maybe<Array<RouteResponse>>;
   availableRoutes?: Maybe<Array<RouteResponse>>;
-  archivedRoutes?: Maybe<Array<RouteResponse>>;
+  archievedRoutes?: Maybe<Array<RouteResponse>>;
 };
 
 export type LocactionInput = {
@@ -70,6 +70,17 @@ export type LocactionInput = {
 
 export enum Locale {
   NlNl = 'nl_NL'
+}
+
+export type Media = {
+   __typename?: 'Media';
+  type: MediaType;
+  value: Scalars['String'];
+};
+
+export enum MediaType {
+  YouTube = 'YouTube',
+  Image = 'Image'
 }
 
 export type MessageResponse = {
@@ -148,6 +159,7 @@ export type Query = {
   getRoute: RouteResponse;
   getAvailableRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
+  getAchievements: Array<AchievementResponse>;
 };
 
 
@@ -405,6 +417,8 @@ export type ResolversTypes = {
   UserRewardResponse: ResolverTypeWrapper<UserRewardResponse>,
   DeviceResponse: ResolverTypeWrapper<DeviceResponse>,
   NotificationStatus: NotificationStatus,
+  AchievementResponse: ResolverTypeWrapper<AchievementResponse>,
+  AchievementStatus: AchievementStatus,
   Mutation: ResolverTypeWrapper<{}>,
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
@@ -419,8 +433,8 @@ export type ResolversTypes = {
   Locale: Locale,
   LocactionInput: LocactionInput,
   RegisterDeviceResponse: ResolverTypeWrapper<RegisterDeviceResponse>,
-  AchivementResponse: ResolverTypeWrapper<AchivementResponse>,
-  AchivementStatus: AchivementStatus,
+  Media: ResolverTypeWrapper<Media>,
+  MediaType: MediaType,
   RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
 };
 
@@ -449,6 +463,8 @@ export type ResolversParentTypes = {
   UserRewardResponse: UserRewardResponse,
   DeviceResponse: DeviceResponse,
   NotificationStatus: NotificationStatus,
+  AchievementResponse: AchievementResponse,
+  AchievementStatus: AchievementStatus,
   Mutation: {},
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: UpdateTaskResponse,
@@ -463,17 +479,17 @@ export type ResolversParentTypes = {
   Locale: Locale,
   LocactionInput: LocactionInput,
   RegisterDeviceResponse: RegisterDeviceResponse,
-  AchivementResponse: AchivementResponse,
-  AchivementStatus: AchivementStatus,
+  Media: Media,
+  MediaType: MediaType,
   RouteAnswer: Scalars['RouteAnswer'],
 };
 
-export type AchivementResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AchivementResponse'] = ResolversParentTypes['AchivementResponse']> = {
-  achivementId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AchievementResponse'] = ResolversParentTypes['AchievementResponse']> = {
+  achievementId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   points?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
-  status?: Resolver<ResolversTypes['AchivementStatus'], ParentType, ContextType>,
+  status?: Resolver<ResolversTypes['AchievementStatus'], ParentType, ContextType>,
   icon?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   earnedDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
@@ -507,7 +523,13 @@ export type ExportResponseResolvers<ContextType = ModuleContext, ParentType exte
 export type GetRoutesResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['GetRoutesResponse'] = ResolversParentTypes['GetRoutesResponse']> = {
   currentRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
   availableRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
-  archivedRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
+  archievedRoutes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
+export type MediaResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Media'] = ResolversParentTypes['Media']> = {
+  type?: Resolver<ResolversTypes['MediaType'], ParentType, ContextType>,
+  value?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -534,6 +556,7 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   getRoute?: Resolver<ResolversTypes['RouteResponse'], ParentType, ContextType, RequireFields<QueryGetRouteArgs, 'routeId'>>,
   getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
+  getAchievements?: Resolver<Array<ResolversTypes['AchievementResponse']>, ParentType, ContextType>,
 };
 
 export type RegisterDeviceResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RegisterDeviceResponse'] = ResolversParentTypes['RegisterDeviceResponse']> = {
@@ -649,13 +672,14 @@ export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType ex
 };
 
 export type Resolvers<ContextType = ModuleContext> = {
-  AchivementResponse?: AchivementResponseResolvers<ContextType>,
+  AchievementResponse?: AchievementResponseResolvers<ContextType>,
   Choices?: GraphQLScalarType,
   CompleteTaskResponse?: CompleteTaskResponseResolvers<ContextType>,
   Date?: GraphQLScalarType,
   DeviceResponse?: DeviceResponseResolvers<ContextType>,
   ExportResponse?: ExportResponseResolvers<ContextType>,
   GetRoutesResponse?: GetRoutesResponseResolvers<ContextType>,
+  Media?: MediaResolvers<ContextType>,
   MessageResponse?: MessageResponseResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,

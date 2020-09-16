@@ -1,6 +1,6 @@
 import { Document, Schema, model, Types } from 'mongoose';
 import { UserTask } from './UserTask';
-import { UserAchivement } from './UserAchivement';
+import { UserAchievement } from './UserAchievement';
 import { UserReward } from './UserReward';
 import { UserGoal } from './UserGoal';
 import { UserTransaction } from './UserTransaction';
@@ -24,7 +24,7 @@ export type UserDocument = Document & {
   balance: number;
 
   transactions?: Types.Array<UserTransaction>;
-  achivements?: Types.Array<UserAchivement>;
+  achievements?: Types.Array<UserAchievement>;
   goals?: Types.Array<UserGoal>;
   rewards?: Types.Array<UserReward>;
   tasks?: Types.Array<UserTask>;
@@ -64,9 +64,9 @@ const userSchema = new Schema(
       },
     ],
 
-    achivements: [
+    achievements: [
       {
-        achivementId: String,
+        achievementId: String,
         createdAt: Date,
       },
     ],

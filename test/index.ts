@@ -40,6 +40,6 @@ require('./mutations.test.ts');
 require('./queries.test.ts');
 require('./route.test.ts');
 require('./onboarding.test.ts');
-require('./achivement.test.ts');
+require('./achievement.test.ts');
 require('./goal.test.ts');
 require('./reward.test.ts');

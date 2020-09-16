@@ -1,12 +1,7 @@
-# Response
-type AchivementResponse {
-  achivementId: String!
-  title: String!
-  description: String
-  points: Int!
-  status: AchivementStatus!
-  icon: String
-  earnedDate: Date
+# Types
+type Media {
+  type: MediaType!
+  value: String!
 }
 
 # Input
@@ -27,6 +22,11 @@ enum Locale {
   nl_NL
 }
 
+enum MediaType {
+  YouTube
+  Image
+}
+
 enum TaskStatus {
   Completed
   Dismissed
@@ -40,7 +40,7 @@ enum TaskType {
   Other
 }
 
-enum AchivementStatus {
+enum AchievementStatus {
   AvailableToEarn
   Earned
 }

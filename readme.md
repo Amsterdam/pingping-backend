@@ -88,9 +88,9 @@ Available routes and their definitions of tasks
 
 Available rewards for purchase
 
-#### achivements
+#### achievements
 
-Unlockable achivements
+Unlockable achievements
 
 ## Error handling
 
@@ -108,9 +108,9 @@ The task requested doesn't exist on the user. This means it hassn't been assigne
 
 The task has an invalid status on the user. This could mean the task is already completed.
 
-### achivement_not_defined
+### achievement_not_defined
 
-The achivement doesn't exist in the initialData definition file
+The achievement doesn't exist in the initialData definition file
 
 ### reward_not_defined
 

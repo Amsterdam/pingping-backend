@@ -36,7 +36,7 @@ export const Query: QueryResolvers = {
 
     return {
       currentRoutes,
-      archivedRoutes: [],
+      archievedRoutes: [],
       availableRoutes,
     };
   },

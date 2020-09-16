@@ -14,4 +14,8 @@ export const Query: QueryResolvers = {
       device: context.device,
     };
   },
+
+  getAchievements(root: any, args: any, context: ContextType): any {
+    return [];
+  },
 };
