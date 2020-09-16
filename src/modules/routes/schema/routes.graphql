@@ -27,7 +27,7 @@ type TaskResponse {
   title: String!
   headerTitle: String!
   description: String
-  media: String
+  media: Media
   choices: Choices
   progress: Float
   type: TaskType!

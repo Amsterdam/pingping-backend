@@ -254,7 +254,7 @@ export type TaskResponse = {
   title: Scalars['String'];
   headerTitle: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  media?: Maybe<Scalars['String']>;
+  media?: Maybe<Media>;
   choices?: Maybe<Scalars['Choices']>;
   progress?: Maybe<Scalars['Float']>;
   type: TaskType;
@@ -405,6 +405,8 @@ export type ResolversTypes = {
   UserTaskResponse: ResolverTypeWrapper<UserTaskResponse>,
   TaskStatus: TaskStatus,
   TaskResponse: ResolverTypeWrapper<TaskResponse>,
+  Media: ResolverTypeWrapper<Media>,
+  MediaType: MediaType,
   Choices: ResolverTypeWrapper<Scalars['Choices']>,
   TaskType: TaskType,
   RewardResponse: ResolverTypeWrapper<RewardResponse>,
@@ -433,8 +435,6 @@ export type ResolversTypes = {
   Locale: Locale,
   LocactionInput: LocactionInput,
   RegisterDeviceResponse: ResolverTypeWrapper<RegisterDeviceResponse>,
-  Media: ResolverTypeWrapper<Media>,
-  MediaType: MediaType,
   RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
 };
 
@@ -451,6 +451,8 @@ export type ResolversParentTypes = {
   UserTaskResponse: UserTaskResponse,
   TaskStatus: TaskStatus,
   TaskResponse: TaskResponse,
+  Media: Media,
+  MediaType: MediaType,
   Choices: Scalars['Choices'],
   TaskType: TaskType,
   RewardResponse: RewardResponse,
@@ -479,8 +481,6 @@ export type ResolversParentTypes = {
   Locale: Locale,
   LocactionInput: LocactionInput,
   RegisterDeviceResponse: RegisterDeviceResponse,
-  Media: Media,
-  MediaType: MediaType,
   RouteAnswer: Scalars['RouteAnswer'],
 };
 
@@ -621,7 +621,7 @@ export type TaskResponseResolvers<ContextType = ModuleContext, ParentType extend
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   headerTitle?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  media?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  media?: Resolver<Maybe<ResolversTypes['Media']>, ParentType, ContextType>,
   choices?: Resolver<Maybe<ResolversTypes['Choices']>, ParentType, ContextType>,
   progress?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   type?: Resolver<ResolversTypes['TaskType'], ParentType, ContextType>,
