@@ -3,7 +3,7 @@
     {
       "id": "onboarding.gemeente",
       "type": "MultipleChoices",
-      "title": "In Welke Gemeente Woon je?",
+      "title": "In welke gemeente woon je?",
       "headerTitle": "gemeente",
       "initial": true,
       "choices": {
