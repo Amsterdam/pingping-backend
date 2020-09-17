@@ -40,6 +40,7 @@ class TaskUtil {
       routeTaskId: taskFound.routeTaskId,
       nextTaskId: taskFound.nextTaskId,
       nextRouteId: taskFound.nextRouteId,
+      media: taskFound.media,
       icon: taskFound.icon,
       type: taskFound.type,
     };
