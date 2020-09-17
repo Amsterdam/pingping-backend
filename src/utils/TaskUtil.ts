@@ -48,7 +48,7 @@ class TaskUtil {
     if (taskFound.routeTaskId) {
       return {
         ...InitialDataUtil.getTaskById(taskFound.routeTaskId),
-        ..._.pickBy(def, _.identity),
+        ..._.pickBy(def, _.identity), // Remove undefined
         id: taskId,
       };
     }
