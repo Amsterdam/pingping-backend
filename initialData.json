@@ -8,7 +8,9 @@
       "initial": true,
       "choices": {
         "amsterdam": "Amsterdam",
-        "denhaag": "Den Haag"
+        "denhaag": "Den Haag",
+        "diemen": "Diemen",
+        "Weesp": "Weesp"
       },
       "nextTaskId": "onboarding.dateOfBirth"
     },
