@@ -1,8 +1,9 @@
 import { Document, Schema, model, Types } from 'mongoose';
 
 export type RouteFeedbackDocument = Document & {
-  routeId: string;
-  taskName: string;
+  routeId?: string;
+  routeName?: string;
+  taskName?: string;
   feedback: string;
   userId: string;
 };
@@ -11,6 +12,7 @@ const schema = new Schema(
   {
     routeId: String,
     taskName: String,
+    routeName: String,
     feedback: String,
     userId: String,
   },

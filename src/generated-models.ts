@@ -207,8 +207,9 @@ export enum RewardStatus {
 
 
 export type RouteFeedbackInput = {
-  routeId: Scalars['String'];
-  taskName: Scalars['String'];
+  routeId?: Maybe<Scalars['String']>;
+  taskName?: Maybe<Scalars['String']>;
+  routeName?: Maybe<Scalars['String']>;
   feedback: Scalars['String'];
 };
 

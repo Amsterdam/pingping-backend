@@ -73,7 +73,8 @@ input UpdateTaskInput {
 }
 
 input RouteFeedbackInput {
-  routeId: String!
-  taskName: String!
+  routeId: String
+  taskName: String
+  routeName: String
   feedback: String!
 }
