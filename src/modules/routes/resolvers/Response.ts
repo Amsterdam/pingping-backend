@@ -26,7 +26,7 @@ export const RouteResponse: any = {
   title: (doc: RouteDefinition) => doc.title,
   description: (doc: RouteDefinition) => doc.description,
   coverImageUrl: (doc: RouteDefinition) => `${doc.imageUrl}`,
-  isSuggested: (doc: RouteDefinition) => false, // @todo Calculate
+  isSuggested: (doc: RouteDefinition) => doc.isSuggested,
   totalPoints: (doc: RouteDefinition) => doc.tasks.reduce((sum: number, val: TaskDefinition) => sum + val.points, 0),
   numberOfSteps: (doc: RouteDefinition) => doc.tasks.length,
   progress: (doc: RouteDefinition, args: any, context: ModuleContext) => {

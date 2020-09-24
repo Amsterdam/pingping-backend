@@ -14,6 +14,7 @@ class RouteUtil {
       const def = {
         title: routeFound.title,
         tasks: routeFound.tasks,
+        isSuggested: routeFound.isSuggested,
         tips: routeFound.tips || [],
         targetAudience: routeFound.targetAudience,
       };

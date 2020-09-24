@@ -3,6 +3,5 @@ node_modules
 yarn-error.log
 dist
 test-results.xml
-yarn.lock
 .nyc_output
 cobertura-coverage.xml
