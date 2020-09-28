@@ -1,5 +1,11 @@
 #!groovy
 
+String PROJECTNAME = "pingping"
+String CONTAINERNAME = "cto/pingping_backend:${env.BUILD_NUMBER}"
+String DOCKERFILE = "Dockerfile"
+String CONTAINERDIR = "."
+
+
 def tryStep(String message, Closure block, Closure tearDown = null) {
     try {
         block();
@@ -32,8 +38,10 @@ node {
 
     stage("Build image") {
         tryStep "build", {
-                def image = docker.build("build.app.amsterdam.nl:5000/cto/pingping_backend:${env.BUILD_NUMBER}")
+            docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
+                image = docker.build("${CONTAINERNAME}","-f ${DOCKERFILE} ${CONTAINERDIR}")
                 image.push()
+            }
         }
     }
 }
@@ -48,9 +56,9 @@ if (BRANCH != "master") {
     node {
         stage('Push acceptance image') {
             tryStep "image tagging", {
-                    def image = docker.image("build.app.amsterdam.nl:5000/cto/pingping_backend:${env.BUILD_NUMBER}")
-                    image.pull()
+                docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
                     image.push("acceptance")
+                }
             }
         }
     }
@@ -61,7 +69,8 @@ if (BRANCH != "master") {
                 build job: 'Subtask_Openstack_Playbook',
                 parameters: [
                     [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-pingping-backend.yml'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy.yml'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOKPARAMS', value: "-e cmdb_id=app_${PROJECTNAME}"],
                 ]
             }
         }
@@ -73,9 +82,9 @@ if (BRANCH == "master") {
     node {
         stage('Push acceptance image') {
             tryStep "image tagging", {
-                    def image = docker.image("build.app.amsterdam.nl:5000/cto/pingping_backend:${env.BUILD_NUMBER}")
-                    image.pull()
+                docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
                     image.push("acceptance")
+                }
             }
         }
     }
@@ -86,7 +95,8 @@ if (BRANCH == "master") {
                 build job: 'Subtask_Openstack_Playbook',
                 parameters: [
                     [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-pingping-backend.yml'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy.yml'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOKPARAMS', value: "-e cmdb_id=app_${PROJECTNAME}"],
                 ]
             }
         }
@@ -100,11 +110,11 @@ if (BRANCH == "master") {
 
     node {
         stage('Push production image') {
-        tryStep "image tagging", {
-                def image = docker.image("build.app.amsterdam.nl:5000/cto/pingping_backend:${env.BUILD_NUMBER}")
-                image.pull()
+            tryStep "image tagging", {
+                docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
                     image.push("production")
                     image.push("latest")
+                }
             }
         }
     }
@@ -115,7 +125,8 @@ if (BRANCH == "master") {
                 build job: 'Subtask_Openstack_Playbook',
                 parameters: [
                     [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
-                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-pingping-backend.yml'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy.yml'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOKPARAMS', value: "-e cmdb_id=app_${PROJECTNAME}"],
                 ]
             }
         }
