@@ -22,8 +22,8 @@ COPY initialData.json /app/initialData.json
 RUN yarn run build
 
 WORKDIR /app/admin
-RUN npm install
-RUN npm run build
+RUN NODE_ENV=development yarn install
+RUN yarn run build
 WORKDIR /app
 
 EXPOSE 8000
