@@ -28,6 +28,7 @@ export type UserDocument = Document & {
   goals?: Types.Array<UserGoal>;
   rewards?: Types.Array<UserReward>;
   tasks?: Types.Array<UserTask>;
+  // createdAt: any;
 };
 
 export enum AuthTokenKind {

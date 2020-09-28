@@ -1,6 +1,7 @@
 type Query {
   getStatus: StatusResponse!
   getAchievements: [AchievementResponse!]!
+  getUsers(token: String!): [UserResponse]!
 }
 
 type Mutation {
@@ -9,6 +10,7 @@ type Mutation {
   registerNotifications(input: RegisterNotificationsInput!): DeviceResponse!
   exportUser: ExportResponse!
   importUser(exportToken: String!): MessageResponse
+  sendNotification(messahe: String!, deviceId: String): MessageResponse!
 }
 
 # Response
@@ -51,6 +53,8 @@ type UserResponse {
   balance: Int!
   goals: [UserGoalResponse!]
   rewards: [UserRewardResponse!]
+  devices: [DeviceResponse!]
+  createdAt: String!
 }
 
 type DeviceResponse {

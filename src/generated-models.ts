@@ -99,6 +99,7 @@ export type Mutation = {
   registerNotifications: DeviceResponse;
   exportUser: ExportResponse;
   importUser?: Maybe<MessageResponse>;
+  sendNotification: MessageResponse;
   registerDevice: RegisterDeviceResponse;
 };
 
@@ -143,6 +144,12 @@ export type MutationImportUserArgs = {
 };
 
 
+export type MutationSendNotificationArgs = {
+  messahe: Scalars['String'];
+  deviceId?: Maybe<Scalars['String']>;
+};
+
+
 export type MutationRegisterDeviceArgs = {
   input: RegisterDeviceInput;
 };
@@ -160,11 +167,17 @@ export type Query = {
   getAvailableRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
   getAchievements: Array<AchievementResponse>;
+  getUsers: Array<Maybe<UserResponse>>;
 };
 
 
 export type QueryGetRouteArgs = {
   routeId: Scalars['String'];
+};
+
+
+export type QueryGetUsersArgs = {
+  token: Scalars['String'];
 };
 
 export type RegisterDeviceInput = {
@@ -305,6 +318,8 @@ export type UserResponse = {
   balance: Scalars['Int'];
   goals?: Maybe<Array<UserGoalResponse>>;
   rewards?: Maybe<Array<UserRewardResponse>>;
+  devices?: Maybe<Array<DeviceResponse>>;
+  createdAt: Scalars['String'];
 };
 
 export type UserRewardResponse = {
@@ -549,6 +564,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   registerNotifications?: Resolver<ResolversTypes['DeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterNotificationsArgs, 'input'>>,
   exportUser?: Resolver<ResolversTypes['ExportResponse'], ParentType, ContextType>,
   importUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationImportUserArgs, 'exportToken'>>,
+  sendNotification?: Resolver<ResolversTypes['MessageResponse'], ParentType, ContextType, RequireFields<MutationSendNotificationArgs, 'messahe'>>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };
 
@@ -558,6 +574,7 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
   getAchievements?: Resolver<Array<ResolversTypes['AchievementResponse']>, ParentType, ContextType>,
+  getUsers?: Resolver<Array<Maybe<ResolversTypes['UserResponse']>>, ParentType, ContextType, RequireFields<QueryGetUsersArgs, 'token'>>,
 };
 
 export type RegisterDeviceResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RegisterDeviceResponse'] = ResolversParentTypes['RegisterDeviceResponse']> = {
@@ -654,6 +671,8 @@ export type UserResponseResolvers<ContextType = ModuleContext, ParentType extend
   balance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   goals?: Resolver<Maybe<Array<ResolversTypes['UserGoalResponse']>>, ParentType, ContextType>,
   rewards?: Resolver<Maybe<Array<ResolversTypes['UserRewardResponse']>>, ParentType, ContextType>,
+  devices?: Resolver<Maybe<Array<ResolversTypes['DeviceResponse']>>, ParentType, ContextType>,
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
