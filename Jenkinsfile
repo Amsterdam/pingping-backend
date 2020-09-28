@@ -31,8 +31,13 @@ node {
 
 
     stage("Build image") {
+        environment {
+            VUE_APP_GRAPHQL_HTTP = "https://acc.api.pingping.amsterdam.nl/api"
+        }
         tryStep "build", {
-                def image = docker.build("build.app.amsterdam.nl:5000/cto/pingping_backend:${env.BUILD_NUMBER}")
+                def image = docker.build("build.app.amsterdam.nl:5000/cto/pingping_backend:${env.BUILD_NUMBER}",
+                "--build-arg VUE_APP_GRAPHQL_HTTP=${env.VUE_APP_GRAPHQL_HTTP}" +
+                " .")
                 image.push()
         }
     }

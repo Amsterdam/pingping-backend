@@ -4,6 +4,7 @@
     <table class="table">
       <thead>
         <tr>
+          <th></th>
           <th>id</th>
           <th>created</th>
           <th>device</th>

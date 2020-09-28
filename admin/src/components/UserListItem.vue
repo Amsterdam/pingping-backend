@@ -1,5 +1,9 @@
 <template>
   <tr>
+    <td><input
+        type="checkbox"
+        v-model="isSelected"
+      />
     <td>{{ id }}</td>
     <td>{{ createdAt }}</td>
     <td>
@@ -23,7 +27,12 @@ export default {
   props: {
     devices: Array,
     id: String,
-    createdAt: String
+    createdAt: String,
+    selected: Boolean
+  },
+
+  mounted () {
+    this.isSelected = this.selected
   },
 
   methods: {
