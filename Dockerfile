@@ -2,6 +2,7 @@ FROM node:10
 
 # Create app directory
 WORKDIR /app
+RUN yarn global add @vue/cli -g
 
 ENV PORT=8000
 ENV NODE_ENV=production
