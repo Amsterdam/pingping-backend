@@ -118,6 +118,13 @@ class TaskUtil {
   }
 
   static addNextTaskToUser(user: UserDocument, taskId: string): UserDocument {
+    let index = user.tasks.map((i: UserTask) => i.taskId).indexOf(taskId);
+
+    // Only add it if it doesn already exist
+    if (index !== -1) {
+      return user;
+    }
+
     const taskDef: TaskDefinition = InitialDataUtil.getTaskById(taskId);
 
     const userTask: UserTask = new UserTask(taskDef.id, TaskStatus.PendingUser);

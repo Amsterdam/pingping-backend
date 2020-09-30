@@ -111,6 +111,7 @@ export type Mutation = {
   exportUser: ExportResponse;
   importUser?: Maybe<MessageResponse>;
   sendNotifications: MessageResponse;
+  adminActions: Scalars['String'];
   registerDevice: RegisterDeviceResponse;
 };
 
@@ -599,6 +600,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   exportUser?: Resolver<ResolversTypes['ExportResponse'], ParentType, ContextType>,
   importUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationImportUserArgs, 'exportToken'>>,
   sendNotifications?: Resolver<ResolversTypes['MessageResponse'], ParentType, ContextType, RequireFields<MutationSendNotificationsArgs, 'title' | 'body' | 'deviceTokens'>>,
+  adminActions?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };
 

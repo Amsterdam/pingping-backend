@@ -1,10 +1,11 @@
 <template>
   <div class="section container">
+    <AdminActions />
     <SendNotification
       v-if="selected.length"
       :deviceTokens="selected"
     />
-    <div>Filter: 'NotificationStatus=Approved'</div>
+    <div @click="isFilter = !isFilter">{{ isFilter ? 'Filter: \'NotificationStatus=Approved\'' : 'Filter: none' }}</div>
     <table class="table">
       <thead>
         <tr>
@@ -30,6 +31,7 @@
 <script>
 import _ from 'lodash'
 import gql from 'graphql-tag'
+import AdminActions from './AdminActions'
 import UserListItem from './UserListItem'
 import SendNotification from './SendNotification'
 
@@ -37,21 +39,26 @@ export default {
   name: 'Users',
 
   components: {
+    AdminActions,
     UserListItem,
     SendNotification
   },
 
   computed: {
     filteredUsers () {
-      return this.users.filter((u => {
-        if (u.devices.length) {
-          const activeDevices = u.devices.filter(d => d.notificationStatus === 'Approved')
+      if (this.isFilter) {
+        return this.users.filter((u => {
+          if (u.devices.length) {
+            const activeDevices = u.devices.filter(d => d.notificationStatus === 'Approved')
 
-          return activeDevices.length > 0
-        }
+            return activeDevices.length > 0
+          }
 
-        return true
-      }))
+          return true
+        }))
+      } else {
+        return this.users
+      }
     }
   },
 
@@ -108,6 +115,7 @@ export default {
   data () {
     return {
       users: [],
+      isFilter: false,
       selected: ''
     }
   }

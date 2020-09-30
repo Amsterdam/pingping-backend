@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 
-mongoose.set('useFindAndModify', true);
+mongoose.set('useFindAndModify', false);
 
 class db {
   static async connect() {

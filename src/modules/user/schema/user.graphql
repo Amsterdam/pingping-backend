@@ -11,6 +11,7 @@ type Mutation {
   exportUser: ExportResponse!
   importUser(exportToken: String!): MessageResponse
   sendNotifications(title: String!, body: String!, deviceTokens: String!): MessageResponse!
+  adminActions: String!
 }
 
 # Response

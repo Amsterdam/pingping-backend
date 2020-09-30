@@ -2,7 +2,7 @@
   "onboardingTasks": [
     {
       "id": "onboarding.gemeente",
-      "type": "MultipleChoices",
+      "type": "YesOrNo",
       "title": "In welke gemeente woon je?",
       "headerTitle": "gemeente",
       "initial": true,

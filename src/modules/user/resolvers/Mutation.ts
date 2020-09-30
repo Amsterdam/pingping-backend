@@ -7,6 +7,7 @@ import {
   MutationRegisterNotificationsArgs,
   MutationSendNotificationsArgs,
 } from '@models';
+import _ from 'lodash';
 import { ModuleContext } from '@graphql-modules/core';
 import GoalUtil from 'utils/GoalUtil';
 import { UserGoal } from 'models/UserGoal';
@@ -83,5 +84,20 @@ export const Mutation: MutationResolvers = {
     );
 
     return context.device;
+  },
+
+  async adminActions(root: any, args: any, context: ContextType): Promise<any> {
+    const users = await User.find({});
+
+    for (var u in users) {
+      let user = users[u];
+
+      user.tasks = _.uniqBy(user.tasks, (e) => {
+        return e.taskId;
+      }) as any;
+      await user.save();
+    }
+
+    return 'done';
   },
 };
