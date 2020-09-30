@@ -8,9 +8,9 @@
         v-model="selected"
       />
     <td>{{ id }}</td>
-    <td>{{ createdAt }}</td>
+    <td>{{ date }}</td>
     <td>
-      <span v-if="device">{{ device.id }} - {{ device.notificationStatus }}</span>
+      <span v-if="device">{{ device }}</span>
 
     </td>
     <td>
@@ -29,6 +29,7 @@
 
 <script>
 import _ from 'lodash'
+import moment from 'moment'
 import VueJsonPretty from 'vue-json-pretty'
 
 export default {
@@ -67,8 +68,18 @@ export default {
   },
 
   computed: {
+    date () {
+      return moment(this.createdAt / 1).format('DD.MM.Y HH:MM')
+    },
     device () {
-      return _.first(this.devices.filter(d => d.notificationStatus === 'Approved'))
+      // return _.first(this.devices.filter(d => d.notificationStatus === 'Approved'))
+      let device = _.first(this.devices)
+
+      return [
+        device.os,
+        device.token,
+        device.status
+      ].filter(i => i).join(' - ')
     }
   },
 
