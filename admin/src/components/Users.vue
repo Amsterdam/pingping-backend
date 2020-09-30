@@ -85,6 +85,7 @@ export default {
         devices {
           id
           token
+          deviceOs
           notificationStatus
         }
       }}`,
