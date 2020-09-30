@@ -1,6 +1,7 @@
 type Mutation {
   updateTask(input: UpdateTaskInput!): UpdateTaskResponse!
   completeTask(taskId: String!): CompleteTaskResponse!
+  revertTask(taskId: String!): String!
   createRouteFeedback(input: RouteFeedbackInput!): RouteFeedbackResponse!
 }
 
@@ -55,6 +56,11 @@ type UpdateTaskResponse {
 type CompleteTaskResponse {
   previousTask: UserTaskResponse
 }
+
+# type RevertTaskResponse {
+#   currentTask: UserTaskResponse
+#   previousTask: UserTaskResponse
+# }
 
 type RouteFeedbackResponse {
   taskName: String!

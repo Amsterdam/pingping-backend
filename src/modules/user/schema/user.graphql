@@ -10,7 +10,7 @@ type Mutation {
   registerNotifications(input: RegisterNotificationsInput!): DeviceResponse!
   exportUser: ExportResponse!
   importUser(exportToken: String!): MessageResponse
-  sendNotification(messahe: String!, deviceId: String): MessageResponse!
+  sendNotifications(title: String!, body: String!, deviceTokens: String!): MessageResponse!
 }
 
 # Response

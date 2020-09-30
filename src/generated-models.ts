@@ -92,6 +92,7 @@ export type Mutation = {
    __typename?: 'Mutation';
   updateTask: UpdateTaskResponse;
   completeTask: CompleteTaskResponse;
+  revertTask: Scalars['String'];
   createRouteFeedback: RouteFeedbackResponse;
   claimReward: UserRewardResponse;
   createGoal: UserGoalResponse;
@@ -99,7 +100,7 @@ export type Mutation = {
   registerNotifications: DeviceResponse;
   exportUser: ExportResponse;
   importUser?: Maybe<MessageResponse>;
-  sendNotification: MessageResponse;
+  sendNotifications: MessageResponse;
   registerDevice: RegisterDeviceResponse;
 };
 
@@ -110,6 +111,11 @@ export type MutationUpdateTaskArgs = {
 
 
 export type MutationCompleteTaskArgs = {
+  taskId: Scalars['String'];
+};
+
+
+export type MutationRevertTaskArgs = {
   taskId: Scalars['String'];
 };
 
@@ -144,9 +150,10 @@ export type MutationImportUserArgs = {
 };
 
 
-export type MutationSendNotificationArgs = {
-  messahe: Scalars['String'];
-  deviceId?: Maybe<Scalars['String']>;
+export type MutationSendNotificationsArgs = {
+  title: Scalars['String'];
+  body: Scalars['String'];
+  deviceTokens: Scalars['String'];
 };
 
 
@@ -557,6 +564,7 @@ export type MessageResponseResolvers<ContextType = ModuleContext, ParentType ext
 export type MutationResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   updateTask?: Resolver<ResolversTypes['UpdateTaskResponse'], ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'input'>>,
   completeTask?: Resolver<ResolversTypes['CompleteTaskResponse'], ParentType, ContextType, RequireFields<MutationCompleteTaskArgs, 'taskId'>>,
+  revertTask?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationRevertTaskArgs, 'taskId'>>,
   createRouteFeedback?: Resolver<ResolversTypes['RouteFeedbackResponse'], ParentType, ContextType, RequireFields<MutationCreateRouteFeedbackArgs, 'input'>>,
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
@@ -564,7 +572,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   registerNotifications?: Resolver<ResolversTypes['DeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterNotificationsArgs, 'input'>>,
   exportUser?: Resolver<ResolversTypes['ExportResponse'], ParentType, ContextType>,
   importUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationImportUserArgs, 'exportToken'>>,
-  sendNotification?: Resolver<ResolversTypes['MessageResponse'], ParentType, ContextType, RequireFields<MutationSendNotificationArgs, 'messahe'>>,
+  sendNotifications?: Resolver<ResolversTypes['MessageResponse'], ParentType, ContextType, RequireFields<MutationSendNotificationsArgs, 'title' | 'body' | 'deviceTokens'>>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };
 

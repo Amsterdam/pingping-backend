@@ -16,8 +16,9 @@ export const UserModule = new GraphQLModule({
   providers: [],
   resolversComposition: {
     'Query.getStatus': [AuthMiddleware.isAuthenticated()],
-    // 'Query.getUsers': [AuthMiddleware.isAuthenticated(), AuthMiddleware.isAdmin()],
+    'Query.getUsers': [AuthMiddleware.isAuthenticated(), AuthMiddleware.isAdmin()],
     'Query.getAchievements': [AuthMiddleware.isAuthenticated()],
+    'Mutation.sendPushNotifications': [AuthMiddleware.isAuthenticated(), AuthMiddleware.isAdmin()],
     'Mutation.createGoal': [AuthMiddleware.isAuthenticated()],
     'Mutation.deleteUser': [AuthMiddleware.isAuthenticated()],
     'Mutation.registerNotifications': [AuthMiddleware.isAuthenticated()],

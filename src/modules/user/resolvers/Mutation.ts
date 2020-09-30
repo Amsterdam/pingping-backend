@@ -58,7 +58,7 @@ export const Mutation: MutationResolvers = {
     };
   },
 
-  async sendNotification(root: any, args: any, context: ContextType): Promise<any> {},
+  async sendNotifications(root: any, args: any, context: ContextType): Promise<any> {},
 
   async registerNotifications(root: any, args: MutationRegisterNotificationsArgs, context: ContextType): Promise<any> {
     context.device.token = args.input.deviceToken;

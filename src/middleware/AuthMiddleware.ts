@@ -18,12 +18,9 @@ export default class AuthMiddleware {
   static isAdmin() {
     return (next: Function) => {
       return async (root: any, args: any, context: ContextType, info: any) => {
-        console.log(context);
-        // if (!context.user) {
-        // throw new UnauthorizedError();
-        // }
-
-        // @todo do admin check
+        if (!context.user || !context.device || context.device.id !== process.env.SECRET.substr(0, 12)) {
+          throw new UnauthorizedError();
+        }
 
         return next(root, args, context, info);
       };

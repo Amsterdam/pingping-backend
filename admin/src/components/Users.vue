@@ -1,5 +1,9 @@
 <template>
   <div class="section container">
+    <SendNotification
+      v-if="selected.length"
+      :deviceTokens="selected"
+    />
     <div>Filter: 'NotificationStatus=Approved'</div>
     <table class="table">
       <thead>
@@ -15,6 +19,7 @@
         <UserListItem
           v-for="(item,i) in filteredUsers"
           :key="i"
+          @set="setItem"
           v-bind="item"
         />
       </tbody>
@@ -23,14 +28,17 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import gql from 'graphql-tag'
 import UserListItem from './UserListItem'
+import SendNotification from './SendNotification'
 
 export default {
   name: 'Users',
 
   components: {
-    UserListItem
+    UserListItem,
+    SendNotification
   },
 
   computed: {
@@ -44,6 +52,20 @@ export default {
 
         return true
       }))
+    }
+  },
+
+  methods: {
+    setItem (set) {
+      let index = this.users.map(i => i.id).indexOf(set.id)
+
+      console.log('index', index, set)
+
+      if (index !== -1) {
+        this.users[index] = Object.assign(this.users[index], set)
+      }
+
+      this.selected = this.users.filter(i => i.selected === true).map(u => u.device.id).join(',')
     }
   },
 
@@ -62,7 +84,13 @@ export default {
         token: window.localStorage.getItem('pp:token')
       },
       update: data => {
-        return data.getUsers
+        return data.getUsers.map(i => {
+          return {
+            ...i,
+            selected: false,
+            device: _.first(i.devices.filter(d => d.notificationStatus === 'Approved'))
+          }
+        })
       },
       error: error => {
         if (error.message === 'GraphQL error: unauthorized') {
@@ -78,13 +106,19 @@ export default {
 
   data () {
     return {
-      users: []
+      users: [],
+      selected: ''
     }
   }
 }
 </script>
 
 <style lang="css" scoped>
+.jumbotron {
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
 .section {
   text-align: left;
 }

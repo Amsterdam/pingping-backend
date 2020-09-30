@@ -1,19 +1,16 @@
 <template>
-  <tr>
+  <tr
+    :class="['hover', selected && 'selected']"
+    @click="toggleSelected"
+  >
     <td><input
         type="checkbox"
-        v-model="isSelected"
+        v-model="selected"
       />
     <td>{{ id }}</td>
     <td>{{ createdAt }}</td>
     <td>
       <span v-if="device">{{ device.id }} - {{ device.notificationStatus }}</span>
-    </td>
-    <td>
-      <button
-        v-if="device"
-        @click="sendNotification"
-      >Send</button>
     </td>
   </tr>
 </template>
@@ -36,7 +33,18 @@ export default {
   },
 
   methods: {
-    sendNotification () {
+    toggleSelected () {
+      this.$emit('set', { id: this.id, selected: !this.selected })
+    }
+  },
+
+  watch: {
+    isSelected (val) {
+      this.$emit('changeSelected', { id: this.id, selected: val })
+    },
+
+    selected (val) {
+      this.isSelected = val
     }
   },
 
@@ -45,8 +53,17 @@ export default {
       return _.first(this.devices.filter(d => d.notificationStatus === 'Approved'))
     }
   },
+
+  data () {
+    return {
+      isSelected: false
+    }
+  }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
+.hover {
+  cursor: pointer;
+}
 </style>
