@@ -5,6 +5,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import { createProvider } from './vue-apollo';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'vue-json-pretty/lib/styles.css';
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);

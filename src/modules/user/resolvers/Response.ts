@@ -8,3 +8,7 @@ export const UserResponse: any = {
   rewards: (doc: UserDocument) => doc.rewards,
   createdAt: (doc: any) => moment(doc.createdAt).toString(),
 };
+
+export const AdminUserResponse: any = {
+  data: (doc: UserDocument) => doc,
+};

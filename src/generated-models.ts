@@ -12,6 +12,7 @@ export type Scalars = {
   Float: number;
   Choices: any;
   Date: any;
+  JSON: any;
   RouteAnswer: any;
 };
 
@@ -30,6 +31,14 @@ export enum AchievementStatus {
   AvailableToEarn = 'AvailableToEarn',
   Earned = 'Earned'
 }
+
+export type AdminUserResponse = {
+   __typename?: 'AdminUserResponse';
+  id: Scalars['String'];
+  data?: Maybe<Scalars['JSON']>;
+  devices?: Maybe<Array<DeviceResponse>>;
+  createdAt: Scalars['String'];
+};
 
 
 export type CompleteTaskResponse = {
@@ -62,6 +71,7 @@ export type GetRoutesResponse = {
   availableRoutes?: Maybe<Array<RouteResponse>>;
   archivedRoutes?: Maybe<Array<RouteResponse>>;
 };
+
 
 export type LocactionInput = {
   lat?: Maybe<Scalars['Float']>;
@@ -174,7 +184,7 @@ export type Query = {
   getAvailableRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
   getAchievements: Array<AchievementResponse>;
-  getUsers: Array<Maybe<UserResponse>>;
+  getUsers: Array<Maybe<AdminUserResponse>>;
 };
 
 
@@ -444,6 +454,8 @@ export type ResolversTypes = {
   NotificationStatus: NotificationStatus,
   AchievementResponse: ResolverTypeWrapper<AchievementResponse>,
   AchievementStatus: AchievementStatus,
+  AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
+  JSON: ResolverTypeWrapper<Scalars['JSON']>,
   Mutation: ResolverTypeWrapper<{}>,
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
@@ -490,6 +502,8 @@ export type ResolversParentTypes = {
   NotificationStatus: NotificationStatus,
   AchievementResponse: AchievementResponse,
   AchievementStatus: AchievementStatus,
+  AdminUserResponse: AdminUserResponse,
+  JSON: Scalars['JSON'],
   Mutation: {},
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: UpdateTaskResponse,
@@ -515,6 +529,14 @@ export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType
   status?: Resolver<ResolversTypes['AchievementStatus'], ParentType, ContextType>,
   icon?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   earnedDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
+export type AdminUserResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AdminUserResponse'] = ResolversParentTypes['AdminUserResponse']> = {
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  data?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
+  devices?: Resolver<Maybe<Array<ResolversTypes['DeviceResponse']>>, ParentType, ContextType>,
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -550,6 +572,10 @@ export type GetRoutesResponseResolvers<ContextType = ModuleContext, ParentType e
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
+export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
+  name: 'JSON'
+}
+
 export type MediaResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Media'] = ResolversParentTypes['Media']> = {
   type?: Resolver<ResolversTypes['MediaType'], ParentType, ContextType>,
   value?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
@@ -582,7 +608,7 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
   getAchievements?: Resolver<Array<ResolversTypes['AchievementResponse']>, ParentType, ContextType>,
-  getUsers?: Resolver<Array<Maybe<ResolversTypes['UserResponse']>>, ParentType, ContextType, RequireFields<QueryGetUsersArgs, 'token'>>,
+  getUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType, RequireFields<QueryGetUsersArgs, 'token'>>,
 };
 
 export type RegisterDeviceResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RegisterDeviceResponse'] = ResolversParentTypes['RegisterDeviceResponse']> = {
@@ -701,12 +727,14 @@ export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType ex
 
 export type Resolvers<ContextType = ModuleContext> = {
   AchievementResponse?: AchievementResponseResolvers<ContextType>,
+  AdminUserResponse?: AdminUserResponseResolvers<ContextType>,
   Choices?: GraphQLScalarType,
   CompleteTaskResponse?: CompleteTaskResponseResolvers<ContextType>,
   Date?: GraphQLScalarType,
   DeviceResponse?: DeviceResponseResolvers<ContextType>,
   ExportResponse?: ExportResponseResolvers<ContextType>,
   GetRoutesResponse?: GetRoutesResponseResolvers<ContextType>,
+  JSON?: GraphQLScalarType,
   Media?: MediaResolvers<ContextType>,
   MessageResponse?: MessageResponseResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,

@@ -11,12 +11,25 @@
     <td>{{ createdAt }}</td>
     <td>
       <span v-if="device">{{ device.id }} - {{ device.notificationStatus }}</span>
+
     </td>
+    <td>
+      <div @click.stop="expanded = true">More...</div>
+    </td>
+    <b-modal
+      size="xl"
+      v-model="expanded"
+      :title="id"
+    >
+      <vue-json-pretty :data="data">
+      </vue-json-pretty>
+    </b-modal>
   </tr>
 </template>
 
 <script>
 import _ from 'lodash'
+import VueJsonPretty from 'vue-json-pretty'
 
 export default {
   name: 'UserListItem',
@@ -25,7 +38,12 @@ export default {
     devices: Array,
     id: String,
     createdAt: String,
-    selected: Boolean
+    selected: Boolean,
+    data: Object
+  },
+
+  components: {
+    VueJsonPretty
   },
 
   mounted () {
@@ -56,7 +74,8 @@ export default {
 
   data () {
     return {
-      isSelected: false
+      isSelected: false,
+      expanded: false
     }
   }
 }

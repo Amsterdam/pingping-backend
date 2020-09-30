@@ -13,7 +13,8 @@
     "core-js": "^3.6.5",
     "lodash": "^4.17.20",
     "vue": "^2.6.11",
-    "vue-apollo": "^3.0.0-beta.11"
+    "vue-apollo": "^3.0.0-beta.11",
+    "vue-json-pretty": "^1.7.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.0",

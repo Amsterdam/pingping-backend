@@ -5,12 +5,14 @@ import {
   MutationDeleteUserArgs,
   MessageResponse,
   MutationRegisterNotificationsArgs,
+  MutationSendNotificationsArgs,
 } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 import GoalUtil from 'utils/GoalUtil';
 import { UserGoal } from 'models/UserGoal';
 import { User } from 'models/User';
 import { ContextType } from 'lib/Context';
+import { PushNotificationUtil } from 'utils/PushNotificationUtil';
 
 export const Mutation: MutationResolvers = {
   async createGoal(root: any, args: MutationCreateGoalArgs, context: ModuleContext): Promise<UserGoalResponse> {
@@ -58,7 +60,13 @@ export const Mutation: MutationResolvers = {
     };
   },
 
-  async sendNotifications(root: any, args: any, context: ContextType): Promise<any> {},
+  async sendNotifications(root: any, args: MutationSendNotificationsArgs, context: ContextType): Promise<any> {
+    await PushNotificationUtil.send(args.deviceTokens.split(','), args.title, args.body);
+
+    return {
+      message: 'success',
+    };
+  },
 
   async registerNotifications(root: any, args: MutationRegisterNotificationsArgs, context: ContextType): Promise<any> {
     context.device.token = args.input.deviceToken;

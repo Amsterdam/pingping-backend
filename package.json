@@ -29,6 +29,7 @@
     "@types/mongodb": "^3.3.14",
     "@types/mongoose": "^5.5.41",
     "@types/node": "^13.7.7",
+    "@types/node-pushnotifications": "^1.0.3",
     "@types/ws": "^7.2.3",
     "apollo-server-express": "^2.16.1",
     "bcrypt-nodejs": "^0.0.3",
@@ -42,10 +43,11 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.8.7",
+    "node-pushnotifications": "^1.4.1",
     "reflect-metadata": "^0.1.13",
+    "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.7.4",
-    "ts-node": "^8.6.2"
+    "typescript": "^3.7.4"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^1.15.0",

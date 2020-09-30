@@ -1,7 +1,7 @@
 type Query {
   getStatus: StatusResponse!
   getAchievements: [AchievementResponse!]!
-  getUsers(token: String!): [UserResponse]!
+  getUsers(token: String!): [AdminUserResponse]!
 }
 
 type Mutation {
@@ -56,6 +56,15 @@ type UserResponse {
   devices: [DeviceResponse!]
   createdAt: String!
 }
+
+type AdminUserResponse {
+  id: String!
+  data: JSON
+  devices: [DeviceResponse!]
+  createdAt: String!
+}
+
+scalar JSON
 
 type DeviceResponse {
   id: String!

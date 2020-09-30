@@ -65,7 +65,7 @@ export default {
         this.users[index] = Object.assign(this.users[index], set)
       }
 
-      this.selected = this.users.filter(i => i.selected === true).map(u => u.device.id).join(',')
+      this.selected = this.users.filter(i => i.selected === true).map(u => u.device.token).join(',')
     }
   },
 
@@ -74,6 +74,7 @@ export default {
       query: gql`query users($token:String!) { getUsers(token:$token) {
         id
         createdAt
+        data
         devices {
           id
           token
