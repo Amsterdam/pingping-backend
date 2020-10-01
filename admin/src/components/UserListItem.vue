@@ -76,7 +76,7 @@ export default {
       let device = _.first(this.devices)
 
       return [
-        device.deviceOs,
+        device.os,
         device.status
       ].filter(i => i).join(' - ')
     }

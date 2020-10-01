@@ -57,6 +57,7 @@ export type DeviceResponse = {
    __typename?: 'DeviceResponse';
   id: Scalars['String'];
   token?: Maybe<Scalars['String']>;
+  os?: Maybe<Scalars['String']>;
   notificationStatus?: Maybe<NotificationStatus>;
 };
 
@@ -557,6 +558,7 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 export type DeviceResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['DeviceResponse'] = ResolversParentTypes['DeviceResponse']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  os?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   notificationStatus?: Resolver<Maybe<ResolversTypes['NotificationStatus']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
