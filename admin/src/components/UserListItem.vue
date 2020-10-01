@@ -69,7 +69,7 @@ export default {
 
   computed: {
     date () {
-      return moment(this.createdAt / 1).format('DD.MM.Y HH:MM')
+      return moment(this.createdAt / 1).format('DD.MM.Y HH:mm')
     },
     device () {
       // return _.first(this.devices.filter(d => d.notificationStatus === 'Approved'))

@@ -59,9 +59,7 @@ export default {
       this.loading = true
       this.$apollo.mutate({
         mutation: gql`mutation ($title: String!, $body: String!, $deviceTokens: String!) {
-          sendNotifications(title: $title, body: $body, deviceTokens: $deviceTokens) {
-            message
-          }
+          sendNotifications(title: $title, body: $body, deviceTokens: $deviceTokens)
         }`,
         variables: {
           title: this.title,
