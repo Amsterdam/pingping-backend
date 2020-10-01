@@ -62,10 +62,10 @@ export const Mutation: MutationResolvers = {
   },
 
   async sendNotifications(root: any, args: MutationSendNotificationsArgs, context: ContextType): Promise<any> {
-    await PushNotificationUtil.send(args.deviceTokens.split(','), args.title, args.body);
+    const res = await PushNotificationUtil.send(args.deviceTokens.split(','), args.title, args.body);
 
     return {
-      message: 'success',
+      result: res,
     };
   },
 
