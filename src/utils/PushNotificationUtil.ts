@@ -1,26 +1,26 @@
 import PushNotifications from 'node-pushnotifications';
 
-const APNS_P8 = process.env.APNS_P8 || '';
-
-const settings = {
-  gcm: {
-    id: process.env.FCM_API_KEY,
-    phonegap: false,
-  },
-  apn: {
-    token: {
-      key: APNS_P8.replace(/\\n/g, '\n'),
-      keyId: process.env.APNS_KEY_ID,
-      teamId: process.env.APNS_TEAM_ID,
-    },
-    production: false,
-  },
-};
-
-const push = new PushNotifications(settings);
-
 export class PushNotificationUtil {
   static async send(tokens: Array<string>, title: string, body: string) {
+    const APNS_P8 = process.env.APNS_P8 || '';
+
+    const settings = {
+      gcm: {
+        id: process.env.FCM_API_KEY,
+        phonegap: false,
+      },
+      apn: {
+        token: {
+          key: APNS_P8.replace(/\\n/g, '\n'),
+          keyId: process.env.APNS_KEY_ID,
+          teamId: process.env.APNS_TEAM_ID,
+        },
+        production: true,
+      },
+    };
+
+    const push = new PushNotifications(settings);
+
     const custom = {
       type: 'SHOW_TEAM',
     };
@@ -49,13 +49,5 @@ export class PushNotificationUtil {
     } catch (e) {
       console.error(e);
     }
-
-    push.send(tokens, data, (err: any, result: any) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(result);
-      }
-    });
   }
 }

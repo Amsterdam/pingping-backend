@@ -5,6 +5,7 @@
   >
     <td><input
         type="checkbox"
+        v-if="canSendNotifications"
         v-model="selected"
       />
     <td>{{ id }}</td>
@@ -79,6 +80,10 @@ export default {
         device.os,
         device.status
       ].filter(i => i).join(' - ')
+    },
+
+    canSendNotifications () {
+      return this.devices.filter(d => d.notificationStatus === 'Approved').length > 0
     }
   },
 

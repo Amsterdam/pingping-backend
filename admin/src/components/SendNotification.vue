@@ -7,8 +7,7 @@
       v-if="!loading"
     >
       <b-form-input
-        v-model="deviceTokens"
-        disabled
+        v-model="sendTokens"
         placeholder="Device Tokens"
         autofocus
         required
@@ -49,8 +48,12 @@ export default {
 
   computed: {
     items () {
-      return this.deviceTokens.split(',')
+      return this.sendTokens.split(',')
     }
+  },
+
+  mounted () {
+    this.sendTokens = this.deviceTokens
   },
 
   methods: {
@@ -64,13 +67,21 @@ export default {
         variables: {
           title: this.title,
           body: this.body,
-          deviceTokens: this.deviceTokens
+          deviceTokens: this.sendTokens
         }
       }).then((data) => {
         console.log(data)
+        this.loading = false
       }).catch((error) => {
         console.error(error)
+        this.loading = false
       })
+    }
+  },
+
+  watch: {
+    deviceTokens (val) {
+      this.sendTokens = val
     }
   },
 
@@ -78,7 +89,8 @@ export default {
     return {
       title: '',
       body: '',
-      loading: false
+      loading: false,
+      sendTokens: ''
     }
   }
 }
