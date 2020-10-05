@@ -19,26 +19,32 @@ import SendGridMail from '@sendgrid/mail';
 
 export const Mutation: MutationResolvers = {
   async contact(root: any, args: MutationContactArgs, context: ContextType): Promise<any> {
-    SendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
+    try {
+      SendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
+    } catch {
+      return 'configuration error';
+    }
+
     const msg = {
       to: 'm.gudvardarson@amsterdam.nl',
       from: 'm.gudvardarson@amsterdam.nl',
       subject: 'Bericht van pingping.amsterdam.nl',
       html: `<strong>Naam: </strong>${args.input.name}<br/><strong>Email: </strong>${args.input.email}<br/><strong>Bericht: </strong>${args.input.body}<br/>`,
     };
-    (async () => {
-      try {
-        await SendGridMail.send(msg);
-      } catch (error) {
-        console.error(error);
 
-        if (error.response) {
-          console.error(error.response.body);
+    try {
+      await SendGridMail.send(msg);
+      return 'success';
+    } catch (error) {
+      console.error(error);
+      if (error.response) {
+        console.error(error.response.body);
 
-          return 'success';
-        }
+        return 'error';
       }
-    })();
+
+      return 'unknown error';
+    }
   },
 
   async createGoal(root: any, args: MutationCreateGoalArgs, context: ModuleContext): Promise<UserGoalResponse> {
