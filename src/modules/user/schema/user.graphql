@@ -12,6 +12,7 @@ type Mutation {
   importUser(exportToken: String!): MessageResponse
   sendNotifications(title: String!, body: String!, deviceTokens: String!): JSON!
   adminActions: String!
+  contact(input: ContactInput): String!
 }
 
 # Response

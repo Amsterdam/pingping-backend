@@ -46,6 +46,12 @@ export type CompleteTaskResponse = {
   previousTask?: Maybe<UserTaskResponse>;
 };
 
+export type ContactInput = {
+  name: Scalars['String'];
+  email: Scalars['String'];
+  body: Scalars['String'];
+};
+
 export type CreateGoalInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -113,6 +119,7 @@ export type Mutation = {
   importUser?: Maybe<MessageResponse>;
   sendNotifications: Scalars['JSON'];
   adminActions: Scalars['String'];
+  contact: Scalars['String'];
   registerDevice: RegisterDeviceResponse;
 };
 
@@ -166,6 +173,11 @@ export type MutationSendNotificationsArgs = {
   title: Scalars['String'];
   body: Scalars['String'];
   deviceTokens: Scalars['String'];
+};
+
+
+export type MutationContactArgs = {
+  input?: Maybe<ContactInput>;
 };
 
 
@@ -470,6 +482,7 @@ export type ResolversTypes = {
   MessageResponse: ResolverTypeWrapper<MessageResponse>,
   RegisterNotificationsInput: RegisterNotificationsInput,
   ExportResponse: ResolverTypeWrapper<ExportResponse>,
+  ContactInput: ContactInput,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
@@ -518,6 +531,7 @@ export type ResolversParentTypes = {
   MessageResponse: MessageResponse,
   RegisterNotificationsInput: RegisterNotificationsInput,
   ExportResponse: ExportResponse,
+  ContactInput: ContactInput,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
@@ -605,6 +619,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   importUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationImportUserArgs, 'exportToken'>>,
   sendNotifications?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<MutationSendNotificationsArgs, 'title' | 'body' | 'deviceTokens'>>,
   adminActions?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  contact?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationContactArgs, never>>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };
 

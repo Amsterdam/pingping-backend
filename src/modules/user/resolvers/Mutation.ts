@@ -6,6 +6,7 @@ import {
   MessageResponse,
   MutationRegisterNotificationsArgs,
   MutationSendNotificationsArgs,
+  MutationContactArgs,
 } from '@models';
 import _ from 'lodash';
 import { ModuleContext } from '@graphql-modules/core';
@@ -14,8 +15,32 @@ import { UserGoal } from 'models/UserGoal';
 import { User } from 'models/User';
 import { ContextType } from 'lib/Context';
 import { PushNotificationUtil } from 'utils/PushNotificationUtil';
+import SendGridMail from '@sendgrid/mail';
 
 export const Mutation: MutationResolvers = {
+  async contact(root: any, args: MutationContactArgs, context: ContextType): Promise<any> {
+    SendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: 'm.gudvardarson@amsterdam.nl',
+      from: 'm.gudvardarson@amsterdam.nl',
+      subject: 'Bericht van pingping.amsterdam.nl',
+      html: `<strong>Naam: </strong>${args.input.name}<br/><strong>Email: </strong>${args.input.email}<br/><strong>Bericht: </strong>${args.input.body}<br/>`,
+    };
+    (async () => {
+      try {
+        await SendGridMail.send(msg);
+      } catch (error) {
+        console.error(error);
+
+        if (error.response) {
+          console.error(error.response.body);
+
+          return 'success';
+        }
+      }
+    })();
+  },
+
   async createGoal(root: any, args: MutationCreateGoalArgs, context: ModuleContext): Promise<UserGoalResponse> {
     const userGoal: UserGoal = await GoalUtil.create(
       context.user,
