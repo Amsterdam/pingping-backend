@@ -34,7 +34,7 @@ export class PushNotificationUtil {
       contentAvailable: true, // gcm, apn. node-apn will translate true to 1 as required by apn.
       delayWhileIdle: true, // gcm for android
       dryRun: false, // gcm for android
-      badge: 1,
+      badge: 0,
       alert: {
         title,
         body,
