@@ -30,6 +30,7 @@ export type RewardDefinition = {
   title: string;
   description: string;
   imageUrl: string;
+  tumbnailUrl: string;
   vendor: string;
   price: number;
   availablePerUser: number;
@@ -42,6 +43,7 @@ export type RouteDefinition = {
   description?: string;
   isSuggested: boolean;
   imageUrl?: string;
+  thumbnailUrl?: string;
   tasks: Array<TaskDefinition>;
   tips: Array<RouteTipsDefinition>;
   targetAudience: string;

@@ -19,6 +19,7 @@ type RewardResponse {
   title: String!
   description: String
   imageUrl: String
+  thumbnailUrl: String
   price: Int!
   status: RewardStatus!
 }

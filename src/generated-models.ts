@@ -226,6 +226,7 @@ export type RewardResponse = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
+  thumbnailUrl?: Maybe<Scalars['String']>;
   price: Scalars['Int'];
   status: RewardStatus;
 };
@@ -257,6 +258,7 @@ export type RouteResponse = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   coverImageUrl?: Maybe<Scalars['String']>;
+  thumbnailUrl?: Maybe<Scalars['String']>;
   isSuggested: Scalars['Boolean'];
   numberOfSteps: Scalars['Int'];
   totalPoints: Scalars['Int'];
@@ -627,6 +629,7 @@ export type RewardResponseResolvers<ContextType = ModuleContext, ParentType exte
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  thumbnailUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   status?: Resolver<ResolversTypes['RewardStatus'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
@@ -647,6 +650,7 @@ export type RouteResponseResolvers<ContextType = ModuleContext, ParentType exten
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   coverImageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  thumbnailUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   isSuggested?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   numberOfSteps?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   totalPoints?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
