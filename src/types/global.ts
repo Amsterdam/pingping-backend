@@ -1,4 +1,4 @@
-import { TaskType } from '@models';
+import { RewardType, TaskType } from '@models';
 
 export type AchievementDefinition = {
   id: string;
@@ -32,6 +32,7 @@ export type RewardDefinition = {
   imageUrl: string;
   tumbnailUrl: string;
   vendor: string;
+  type: RewardType;
   price: number;
   availablePerUser: number;
   available: number;

@@ -12,4 +12,10 @@ export const Query: QueryResolvers = {
 
     // return rewards;
   },
+
+  getRewards(root: any, args: any, context: ModuleContext): Array<any> {
+    const rewards = InitialDataUtil.getRewards();
+
+    return rewards;
+  },
 };

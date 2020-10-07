@@ -53,4 +53,6 @@ describe('reward', () => {
 
     await expect(res).to.be.rejectedWith(/reward_already_claimed/);
   });
+
+  it('claim voucher', async () => {});
 });

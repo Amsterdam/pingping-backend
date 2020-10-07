@@ -1,9 +1,11 @@
 type Mutation {
   claimReward(rewardId: String!): UserRewardResponse!
+  updateReward(id: String, vouchers: [RewardVoucherInput]): RewardResponse!
 }
 
 type Query {
   getAvailableRewards: [RewardResponse!]!
+  getRewards: [RewardResponse!]!
 }
 
 # Models
@@ -22,13 +24,27 @@ type RewardResponse {
   thumbnailUrl: String
   price: Int!
   status: RewardStatus!
+  vouchers: [RewardVoucherResponse]
 }
 
 type UserRewardResponse {
   id: String!
   reward: RewardResponse!
   status: RewardStatus!
-  barcodeImageUrl: String!
+  barcodeImageUrl: String
+  data: JSON
+}
+
+type RewardVoucherResponse {
+  id: String!
+  userId: String
+  data: JSON
+}
+
+input RewardVoucherInput {
+  id: String
+  userId: String
+  data: JSON
 }
 
 enum RewardStatus {
@@ -36,4 +52,10 @@ enum RewardStatus {
   Claimed
   ClaimedAndUsed
   Expired
+  NotAvailable
+}
+
+enum RewardType {
+  Voucher
+  SelfIssued
 }

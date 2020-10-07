@@ -257,7 +257,20 @@
       "thumbnailUrl": "/images/reward1Thumb.jpg",
       "price": 20,
       "vendor": "unknown",
+      "type": "SelfIssued",
       "available": 10,
+      "availablePerUser": 1
+    },
+    {
+      "id": "pathe-test",
+      "title": "Pathe Thuis Film",
+      "description": "Test",
+      "imageUrl": "/images/reward1.png",
+      "thumbnailUrl": "/images/reward1Thumb.jpg",
+      "price": 140,
+      "vendor": "Pathe",
+      "type": "Voucher",
+      "available": null,
       "availablePerUser": 1
     }
   ],

@@ -4,6 +4,10 @@ type Media {
   value: String!
 }
 
+type MessageResponse {
+  message: String
+}
+
 # Input
 input LocactionInput {
   lat: Float
@@ -18,6 +22,7 @@ input ContactInput {
 
 # Dynamic type for an task answer
 scalar RouteAnswer
+scalar JSON
 
 # Scalar
 scalar Date

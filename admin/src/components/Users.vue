@@ -1,6 +1,5 @@
 <template>
   <div class="section container">
-    <AdminActions />
     <SendNotification
       v-if="selected.length"
       :deviceTokens="selected"
@@ -31,7 +30,6 @@
 <script>
 import _ from 'lodash'
 import gql from 'graphql-tag'
-import AdminActions from './AdminActions'
 import UserListItem from './UserListItem'
 import SendNotification from './SendNotification'
 
@@ -39,7 +37,6 @@ export default {
   name: 'Users',
 
   components: {
-    AdminActions,
     UserListItem,
     SendNotification
   },

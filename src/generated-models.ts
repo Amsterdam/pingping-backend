@@ -11,8 +11,8 @@ export type Scalars = {
   Int: number;
   Float: number;
   Choices: any;
-  Date: any;
   JSON: any;
+  Date: any;
   RouteAnswer: any;
 };
 
@@ -112,6 +112,7 @@ export type Mutation = {
   revertTask: Scalars['String'];
   createRouteFeedback: RouteFeedbackResponse;
   claimReward: UserRewardResponse;
+  updateReward: RewardResponse;
   createGoal: UserGoalResponse;
   deleteUser?: Maybe<MessageResponse>;
   registerNotifications: DeviceResponse;
@@ -146,6 +147,12 @@ export type MutationCreateRouteFeedbackArgs = {
 
 export type MutationClaimRewardArgs = {
   rewardId: Scalars['String'];
+};
+
+
+export type MutationUpdateRewardArgs = {
+  id?: Maybe<Scalars['String']>;
+  vouchers?: Maybe<Array<Maybe<RewardVoucherInput>>>;
 };
 
 
@@ -196,6 +203,7 @@ export type Query = {
   getRoutes: GetRoutesResponse;
   getRoute: RouteResponse;
   getAvailableRewards: Array<RewardResponse>;
+  getRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
   getAchievements: Array<AchievementResponse>;
   getUsers: Array<Maybe<AdminUserResponse>>;
@@ -241,14 +249,34 @@ export type RewardResponse = {
   thumbnailUrl?: Maybe<Scalars['String']>;
   price: Scalars['Int'];
   status: RewardStatus;
+  vouchers?: Maybe<Array<Maybe<RewardVoucherResponse>>>;
 };
 
 export enum RewardStatus {
   AvailableToClaim = 'AvailableToClaim',
   Claimed = 'Claimed',
   ClaimedAndUsed = 'ClaimedAndUsed',
-  Expired = 'Expired'
+  Expired = 'Expired',
+  NotAvailable = 'NotAvailable'
 }
+
+export enum RewardType {
+  Voucher = 'Voucher',
+  SelfIssued = 'SelfIssued'
+}
+
+export type RewardVoucherInput = {
+  id?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
+  data?: Maybe<Scalars['JSON']>;
+};
+
+export type RewardVoucherResponse = {
+   __typename?: 'RewardVoucherResponse';
+  id: Scalars['String'];
+  userId?: Maybe<Scalars['String']>;
+  data?: Maybe<Scalars['JSON']>;
+};
 
 
 export type RouteFeedbackInput = {
@@ -361,7 +389,8 @@ export type UserRewardResponse = {
   id: Scalars['String'];
   reward: RewardResponse;
   status: RewardStatus;
-  barcodeImageUrl: Scalars['String'];
+  barcodeImageUrl?: Maybe<Scalars['String']>;
+  data?: Maybe<Scalars['JSON']>;
 };
 
 export type UserTaskResponse = {
@@ -461,6 +490,8 @@ export type ResolversTypes = {
   TaskType: TaskType,
   RewardResponse: ResolverTypeWrapper<RewardResponse>,
   RewardStatus: RewardStatus,
+  RewardVoucherResponse: ResolverTypeWrapper<RewardVoucherResponse>,
+  JSON: ResolverTypeWrapper<Scalars['JSON']>,
   StatusResponse: ResolverTypeWrapper<StatusResponse>,
   UserResponse: ResolverTypeWrapper<UserResponse>,
   UserProfileResponse: ResolverTypeWrapper<UserProfileResponse>,
@@ -472,13 +503,13 @@ export type ResolversTypes = {
   AchievementResponse: ResolverTypeWrapper<AchievementResponse>,
   AchievementStatus: AchievementStatus,
   AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
-  JSON: ResolverTypeWrapper<Scalars['JSON']>,
   Mutation: ResolverTypeWrapper<{}>,
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
   CompleteTaskResponse: ResolverTypeWrapper<CompleteTaskResponse>,
   RouteFeedbackInput: RouteFeedbackInput,
   RouteFeedbackResponse: ResolverTypeWrapper<RouteFeedbackResponse>,
+  RewardVoucherInput: RewardVoucherInput,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: ResolverTypeWrapper<MessageResponse>,
   RegisterNotificationsInput: RegisterNotificationsInput,
@@ -489,6 +520,7 @@ export type ResolversTypes = {
   LocactionInput: LocactionInput,
   RegisterDeviceResponse: ResolverTypeWrapper<RegisterDeviceResponse>,
   RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
+  RewardType: RewardType,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -510,6 +542,8 @@ export type ResolversParentTypes = {
   TaskType: TaskType,
   RewardResponse: RewardResponse,
   RewardStatus: RewardStatus,
+  RewardVoucherResponse: RewardVoucherResponse,
+  JSON: Scalars['JSON'],
   StatusResponse: StatusResponse,
   UserResponse: UserResponse,
   UserProfileResponse: UserProfileResponse,
@@ -521,13 +555,13 @@ export type ResolversParentTypes = {
   AchievementResponse: AchievementResponse,
   AchievementStatus: AchievementStatus,
   AdminUserResponse: AdminUserResponse,
-  JSON: Scalars['JSON'],
   Mutation: {},
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: UpdateTaskResponse,
   CompleteTaskResponse: CompleteTaskResponse,
   RouteFeedbackInput: RouteFeedbackInput,
   RouteFeedbackResponse: RouteFeedbackResponse,
+  RewardVoucherInput: RewardVoucherInput,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: MessageResponse,
   RegisterNotificationsInput: RegisterNotificationsInput,
@@ -538,6 +572,7 @@ export type ResolversParentTypes = {
   LocactionInput: LocactionInput,
   RegisterDeviceResponse: RegisterDeviceResponse,
   RouteAnswer: Scalars['RouteAnswer'],
+  RewardType: RewardType,
 };
 
 export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AchievementResponse'] = ResolversParentTypes['AchievementResponse']> = {
@@ -613,6 +648,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   revertTask?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationRevertTaskArgs, 'taskId'>>,
   createRouteFeedback?: Resolver<ResolversTypes['RouteFeedbackResponse'], ParentType, ContextType, RequireFields<MutationCreateRouteFeedbackArgs, 'input'>>,
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
+  updateReward?: Resolver<ResolversTypes['RewardResponse'], ParentType, ContextType, RequireFields<MutationUpdateRewardArgs, never>>,
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
   deleteUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, never>>,
   registerNotifications?: Resolver<ResolversTypes['DeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterNotificationsArgs, 'input'>>,
@@ -628,6 +664,7 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   getRoutes?: Resolver<ResolversTypes['GetRoutesResponse'], ParentType, ContextType>,
   getRoute?: Resolver<ResolversTypes['RouteResponse'], ParentType, ContextType, RequireFields<QueryGetRouteArgs, 'routeId'>>,
   getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
+  getRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
   getAchievements?: Resolver<Array<ResolversTypes['AchievementResponse']>, ParentType, ContextType>,
   getUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType, RequireFields<QueryGetUsersArgs, 'token'>>,
@@ -648,6 +685,14 @@ export type RewardResponseResolvers<ContextType = ModuleContext, ParentType exte
   thumbnailUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   status?: Resolver<ResolversTypes['RewardStatus'], ParentType, ContextType>,
+  vouchers?: Resolver<Maybe<Array<Maybe<ResolversTypes['RewardVoucherResponse']>>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
+export type RewardVoucherResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RewardVoucherResponse'] = ResolversParentTypes['RewardVoucherResponse']> = {
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  data?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -739,7 +784,8 @@ export type UserRewardResponseResolvers<ContextType = ModuleContext, ParentType 
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   reward?: Resolver<ResolversTypes['RewardResponse'], ParentType, ContextType>,
   status?: Resolver<ResolversTypes['RewardStatus'], ParentType, ContextType>,
-  barcodeImageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  barcodeImageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  data?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -766,6 +812,7 @@ export type Resolvers<ContextType = ModuleContext> = {
   Query?: QueryResolvers<ContextType>,
   RegisterDeviceResponse?: RegisterDeviceResponseResolvers<ContextType>,
   RewardResponse?: RewardResponseResolvers<ContextType>,
+  RewardVoucherResponse?: RewardVoucherResponseResolvers<ContextType>,
   RouteAnswer?: GraphQLScalarType,
   RouteFeedbackResponse?: RouteFeedbackResponseResolvers<ContextType>,
   RouteResponse?: RouteResponseResolvers<ContextType>,

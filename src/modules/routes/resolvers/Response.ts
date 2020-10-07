@@ -6,27 +6,17 @@ import { TaskStatus, TaskType } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 
 export const UserTaskResponse: any = {
-  status: (doc: UserTask) => doc.status,
-  answer: (doc: UserTask) => doc.answer,
   task: (doc: UserTask) => TaskUtil.getDefinition(doc.taskId),
 };
 
 export const TaskResponse: any = {
   taskId: (doc: TaskDefinition) => doc.id,
-  title: (doc: TaskDefinition) => doc.title,
-  headerTitle: (doc: TaskDefinition) => doc.headerTitle,
-  description: (doc: TaskDefinition) => doc.description,
-  media: (doc: TaskDefinition) => doc.media,
-  choices: (doc: TaskDefinition) => doc.choices,
   type: (doc: TaskDefinition) => doc.type || TaskType.Other,
 };
 
 export const RouteResponse: any = {
   routeId: (doc: RouteDefinition) => doc.id,
-  title: (doc: RouteDefinition) => doc.title,
-  description: (doc: RouteDefinition) => doc.description,
   coverImageUrl: (doc: RouteDefinition) => `${doc.imageUrl}`,
-  isSuggested: (doc: RouteDefinition) => doc.isSuggested,
   totalPoints: (doc: RouteDefinition) => doc.tasks.reduce((sum: number, val: TaskDefinition) => sum + val.points, 0),
   numberOfSteps: (doc: RouteDefinition) => doc.tasks.length,
   progress: (doc: RouteDefinition, args: any, context: ModuleContext) => {

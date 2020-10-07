@@ -61,7 +61,7 @@ class InitialDataUtil {
     const route = _.get(initialData, `routes.${id}`);
 
     if (!route) {
-      throw new Error(`route_not_defined`);
+      throw new Error(`route_not_defined:${id}`);
     }
 
     route.id = id;

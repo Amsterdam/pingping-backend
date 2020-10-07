@@ -21,7 +21,7 @@ class RouteUtil {
 
       return def;
     } catch (e) {
-      if (e.message === 'route_not_defined') {
+      if (e.message === `route_not_defined::${routeId}`) {
         return null;
       }
 

@@ -2,7 +2,23 @@
   <div id="app">
     <h2>PingPing Admin</h2>
 
-    <Users v-if="isLoggedIn" />
+    <div v-if="isLoggedIn">
+      <b-tabs content-class="mt-3">
+        <b-tab
+          title="Users"
+          active
+        >
+          <Users />
+        </b-tab>
+        <b-tab title="Rewards">
+          <Rewards />
+        </b-tab>
+        <b-tab title="Other">
+          <AdminActions />
+        </b-tab>
+      </b-tabs>
+    </div>
+
     <Login
       v-else
       @login="update"
@@ -12,14 +28,18 @@
 
 <script>
 import Users from './components/Users'
+import Rewards from './components/Rewards'
 import Login from './components/Login'
+import AdminActions from './components/AdminActions'
 
 export default {
   name: 'App',
 
   components: {
     Users,
-    Login
+    Rewards,
+    Login,
+    AdminActions
   },
 
   methods: {
@@ -49,6 +69,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 </style>
