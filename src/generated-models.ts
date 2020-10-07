@@ -270,6 +270,7 @@ export type RouteResponse = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   coverImageUrl?: Maybe<Scalars['String']>;
+  mainColor?: Maybe<Scalars['String']>;
   thumbnailUrl?: Maybe<Scalars['String']>;
   isSuggested: Scalars['Boolean'];
   numberOfSteps: Scalars['Int'];
@@ -665,6 +666,7 @@ export type RouteResponseResolvers<ContextType = ModuleContext, ParentType exten
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   coverImageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  mainColor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   thumbnailUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   isSuggested?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   numberOfSteps?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,

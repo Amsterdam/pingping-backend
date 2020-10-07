@@ -39,6 +39,7 @@ type RouteResponse {
   title: String!
   description: String
   coverImageUrl: String
+  mainColor: String
   thumbnailUrl: String
   isSuggested: Boolean!
   numberOfSteps: Int!

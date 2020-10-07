@@ -26,8 +26,8 @@ export const Mutation: MutationResolvers = {
     }
 
     const msg = {
-      to: 'm.gudvardarson@amsterdam.nl',
-      from: 'm.gudvardarson@amsterdam.nl',
+      to: process.env.CONTACT_EMAIL,
+      from: process.env.CONTACT_EMAIL,
       subject: 'Bericht van pingping.amsterdam.nl',
       html: `<strong>Naam: </strong>${args.input.name}<br/><strong>Email: </strong>${args.input.email}<br/><strong>Bericht: </strong>${args.input.body}<br/>`,
     };
