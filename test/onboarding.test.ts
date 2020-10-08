@@ -42,10 +42,10 @@ describe('onboarding', () => {
   // });
 
   it('handle task', async () => {
-    let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.dateOfBirth');
-    const taskOneRes = await TaskUtil.handleTask(user, taskDef, '2012-01-01');
+    let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.gemeente');
+    const taskOneRes = await TaskUtil.handleTask(user, taskDef, 'amsterdam');
     expect(taskOneRes.status).to.eq(TaskStatus.Completed);
-    expect(taskOneRes.answer).to.eq('2012-01-01');
+    expect(taskOneRes.answer).to.eq('amsterdam');
   });
 
   it('get next task in line', async () => {
@@ -54,7 +54,7 @@ describe('onboarding', () => {
       await TaskUtil.handleTask(user, taskDef, '2012-01-01');
       const nextTask = await TaskUtil.getNextTask(user);
       expect(nextTask.status).to.eq(TaskStatus.PendingUser);
-      expect(nextTask.taskId).to.eq('onboarding.woonAdres');
+      expect(nextTask.taskId).to.eq('onboarding.gemeente');
     } catch (e) {
       console.error(e);
 
@@ -64,6 +64,8 @@ describe('onboarding', () => {
 
   it('handle next task', async () => {
     try {
+      let taskDef0: TaskDefinition = TaskUtil.getDefinition('onboarding.gemeente');
+      await TaskUtil.handleTask(user, taskDef0, 'amsterdam');
       let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.dateOfBirth');
       let taskDefTwo: TaskDefinition = TaskUtil.getDefinition('onboarding.woonAdres');
       await TaskUtil.handleTask(user, taskDef, '2012-01-01');
@@ -112,12 +114,20 @@ describe('onboarding', () => {
 
   it('handle next task different path', async () => {
     try {
+      let taskDef0: TaskDefinition = TaskUtil.getDefinition('onboarding.gemeente');
+      await TaskUtil.handleTask(user, taskDef0, 'amsterdam');
       let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.dateOfBirth');
       let taskDefZ: TaskDefinition = TaskUtil.getDefinition('onboarding.woonAdres');
       await TaskUtil.handleTask(user, taskDef, '2012-01-01');
       const taskZeroRes = await TaskUtil.handleTask(user, taskDefZ, 'no');
       expect(taskZeroRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskZeroRes.answer).to.eq('no');
+
+      let taskDefThree: TaskDefinition = TaskUtil.getDefinition('onboarding.bankRekening');
+      await TaskUtil.handleTask(user, taskDefThree, 'no');
+
+      let taskDefFour: TaskDefinition = TaskUtil.getDefinition('onboarding.digiD');
+      await TaskUtil.handleTask(user, taskDefFour, 'no');
 
       let taskDef2: TaskDefinition = TaskUtil.getDefinition('onboarding.zorgverzekering');
       const taskThreeRes = await TaskUtil.handleTask(user, taskDef2, 'no');
@@ -138,8 +148,8 @@ describe('onboarding', () => {
       const taskSevenRes = await TaskUtil.handleTask(user, taskDef5, 'no');
       expect(taskSevenRes.status).to.eq(TaskStatus.Dismissed);
       expect(taskSevenRes.answer).to.eq('no');
-
-      expect(user.tasks.filter((i) => i.status === TaskStatus.PendingUser).length).to.eq(0);
+      const pending = user.tasks.filter((i) => i.status === TaskStatus.PendingUser);
+      expect(pending.length, pending.toString()).to.eq(0);
 
       expect(user.balance).to.eq(0);
     } catch (e) {

@@ -1,10 +1,9 @@
 import { ModuleContext } from '@graphql-modules/core';
-import { MutationResolvers, MutationClaimRewardArgs, MutationUpdateRewardArgs, RewardVoucherInput } from '@models';
+import { MutationResolvers, MutationClaimRewardArgs, MutationUpdateRewardArgs } from '@models';
 import { RewardVoucher } from 'models/RewardVoucher';
 import { UserReward } from 'models/UserReward';
 import InitialDataUtil from 'utils/InitialDataUtil';
 import RewardUtil from 'utils/RewardUtil';
-import { Types } from 'mongoose';
 
 export const Mutation: MutationResolvers = {
   async claimReward(root: any, args: MutationClaimRewardArgs, context: ModuleContext): Promise<any> {
@@ -20,11 +19,13 @@ export const Mutation: MutationResolvers = {
       let voucher: any = args.vouchers[v];
 
       if (voucher.id) {
-        // Do nothing foe now
+        // Do nothing for now
+        await RewardVoucher.updateOne({ _id: voucher.id }, { $set: voucher });
       } else {
         await RewardVoucher.create({
           rewardId: reward.id,
           userId: null,
+          deviceId: null,
           data: voucher.data,
         });
       }

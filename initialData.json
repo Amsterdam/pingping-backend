@@ -50,7 +50,7 @@
       "routeTaskId": "financieleBasis.digiD",
       "id": "onboarding.digiD",
       "type": "YesOrNo",
-      "title": "Heb je al DigiD?",
+      "title": "Heb je al een DigiD?",
       "choices": {
         "yes": "Ja ik heb een DigiD",
         "no": "Nee nog niet"
@@ -228,7 +228,7 @@
       ]
     },
     "fixJeWerk": {
-      "title": "Fix Je Werk",
+      "title": "Fiks Je Werk",
       "description": "",
       "mainColor": "#C5EAD3",
       "isSuggested": false,
@@ -238,7 +238,7 @@
       "tasks": []
     },
     "fixJeStudie": {
-      "title": "Fix Je Studie",
+      "title": "Fiks Je Studie",
       "description": "",
       "mainColor": "#C5CAEA",
       "isSuggested": false,
@@ -249,18 +249,18 @@
     }
   },
   "rewards": [
-    {
-      "id": "meelopen-met-jongeren",
-      "title": "Meelopen met jongeren- adviseur t.w.v. €50",
-      "description": "Deze reward kun je inwisselen bij een jongerenpunt bij jou in de buurt! Je maakt samen met een jongerenadviseur een afspraak om een dagje mee te lopen.",
-      "imageUrl": "/images/reward1.png",
-      "thumbnailUrl": "/images/reward1Thumb.jpg",
-      "price": 20,
-      "vendor": "unknown",
-      "type": "SelfIssued",
-      "available": 10,
-      "availablePerUser": 1
-    },
+    // {
+    //   "id": "meelopen-met-jongeren",
+    //   "title": "Meelopen met jongeren- adviseur t.w.v. €50",
+    //   "description": "Deze reward kun je inwisselen bij een jongerenpunt bij jou in de buurt! Je maakt samen met een jongerenadviseur een afspraak om een dagje mee te lopen.",
+    //   "imageUrl": "/images/reward1.png",
+    //   "thumbnailUrl": "/images/reward1Thumb.jpg",
+    //   "price": 20,
+    //   "vendor": "unknown",
+    //   "type": "SelfIssued",
+    //   "available": 10,
+    //   "availablePerUser": 1
+    // },
     {
       "id": "pathe-test",
       "title": "Pathe Thuis Film",

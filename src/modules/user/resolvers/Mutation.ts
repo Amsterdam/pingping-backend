@@ -16,6 +16,8 @@ import { User } from 'models/User';
 import { ContextType } from 'lib/Context';
 import { PushNotificationUtil } from 'utils/PushNotificationUtil';
 import SendGridMail from '@sendgrid/mail';
+import { RewardVoucher } from 'models/RewardVoucher';
+import UserUtil from 'utils/UserUtil';
 
 export const Mutation: MutationResolvers = {
   async contact(root: any, args: MutationContactArgs, context: ContextType): Promise<any> {
@@ -65,7 +67,7 @@ export const Mutation: MutationResolvers = {
 
   async deleteUser(root: any, args: MutationDeleteUserArgs, context: ModuleContext): Promise<MessageResponse> {
     if (args.confirm === 'delete') {
-      await User.deleteOne({ _id: context.user._id });
+      await UserUtil.deleteUser(context.user);
 
       return {
         message: 'deleted',

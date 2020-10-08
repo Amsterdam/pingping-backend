@@ -77,6 +77,7 @@ const userSchema = new Schema(
         rewardId: String,
         price: Number,
         status: String,
+        voucherId: String,
       },
     ],
 

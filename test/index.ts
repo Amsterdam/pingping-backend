@@ -3,6 +3,8 @@ import boot from '../src/boot';
 import chaiAsPromised from 'chai-as-promised';
 import chai from 'chai';
 import 'ts-mocha';
+import { RewardVoucher } from '../src/models/RewardVoucher';
+import { User } from '../src/models/User';
 
 chai.use(chaiAsPromised);
 
@@ -24,7 +26,13 @@ afterEach(function () {
   }
 });
 
+after(async () => {
+  User.deleteMany({}, (err: any) => console.log(err));
+  RewardVoucher.deleteMany({}, (err: any) => console.log(err));
+});
+
 process.env.TS_CONFIG_PATHS = './tsconfig.json';
+process.env.NODE_ENV = 'test';
 
 require('ts-mocha');
 const Mocha = require('mocha');

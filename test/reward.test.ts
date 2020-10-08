@@ -5,16 +5,41 @@ import { expect } from 'chai';
 import { describe } from 'mocha';
 import RewardUtil from '../src/utils/RewardUtil';
 import TransactionUtil from '../src/utils/TransactionUtil';
+import { RewardVoucher } from '../src/models/RewardVoucher';
 
 describe('reward', () => {
   let accessToken: any;
   let user: UserDocument;
+  let user3: UserDocument;
+  let deviceId: string = `randomdeviceid${_.random(true)}`;
 
   beforeEach(async () => {
     user = await UserUtil.createOrFindUser({
+      deviceId,
+    });
+    user3 = await UserUtil.createOrFindUser({
       deviceId: `randomdeviceid${_.random(true)}`,
     });
     accessToken = _.get(user, 'tokens.0.accessToken');
+
+    RewardVoucher.create({
+      rewardId: 'pathe-test',
+      data: { pin: '1234', code: 'test1' },
+      userId: null,
+      deviceId: null,
+    });
+    RewardVoucher.create({
+      rewardId: 'pathe-test',
+      data: { pin: '1234', code: 'test2' },
+      userId: null,
+      deviceId: null,
+    });
+    RewardVoucher.create({
+      rewardId: 'pathe-test',
+      data: { pin: '1234', code: 'test3' },
+      userId: null,
+      deviceId: null,
+    });
 
     return await setTimeout(() => {}, 1000);
   });
@@ -48,11 +73,26 @@ describe('reward', () => {
     await TransactionUtil.addTransaction(user, 'Test', 40, 'sdflj');
 
     await RewardUtil.claim(user, 'meelopen-met-jongeren');
-
     const res = RewardUtil.claim(user, 'meelopen-met-jongeren');
 
     await expect(res).to.be.rejectedWith(/reward_already_claimed/);
   });
 
-  it('claim voucher', async () => {});
+  it('claim reward again after delete, same voucher', async () => {
+    await TransactionUtil.addTransaction(user, 'Test', 140, 'sdflj');
+    await TransactionUtil.addTransaction(user3, 'Test', 140, 'sdflj');
+    const reward = await RewardUtil.claim(user, 'pathe-test');
+    await UserUtil.deleteUser(user);
+
+    const userTwoSameDevice = await UserUtil.createOrFindUser({
+      deviceId,
+    });
+    await TransactionUtil.addTransaction(userTwoSameDevice, 'Test', 140, 'sdflj');
+
+    const rewardTwo = await RewardUtil.claim(userTwoSameDevice, 'pathe-test');
+    const rewardThree = await RewardUtil.claim(user3, 'pathe-test');
+
+    expect(reward.voucherId).to.eq(rewardTwo.voucherId);
+    expect(reward.voucherId).to.not.eq(rewardThree.voucherId);
+  });
 });

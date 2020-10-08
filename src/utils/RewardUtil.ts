@@ -1,36 +1,61 @@
+import _ from 'lodash';
 import { UserDocument } from '../models/User';
 import InitialDataUtil from './InitialDataUtil';
 import { RewardDefinition } from '../types/global';
 import { UserReward } from '../models/UserReward';
 import { RewardStatus, RewardType } from '../generated-models';
 import TransactionUtil from './TransactionUtil';
-import { RewardVoucher } from 'models/RewardVoucher';
+import { RewardVoucher, RewardVoucherDocument } from 'models/RewardVoucher';
 
 class RewardUtil {
-  static async claim(user: UserDocument, id: string): Promise<UserReward> {
-    const reward: RewardDefinition = InitialDataUtil.getReward(id);
-
+  static assertBalance(reward: RewardDefinition, user: UserDocument) {
     if (user.balance < reward.price) {
       throw new Error(`reward_insufficient_balance ${user.balance} < ${reward.price}`);
     }
+  }
 
-    // Check if reward is already claimed
-    const numberClaimed = user.rewards.filter((i) => (i.rewardId = id)).length;
+  static assertNotAlreadyClaimedTooMany(reward: RewardDefinition, user: UserDocument) {
+    console.log('claimed', user.rewards);
+    const numberClaimed = user.rewards.filter((i) => (i.rewardId = reward.id)).length;
+
     if (numberClaimed >= reward.availablePerUser) {
       throw new Error(`reward_already_claimed`);
     }
+  }
+
+  static async assignVoucher(rewardId: string, user: UserDocument): Promise<RewardVoucherDocument> {
+    const deviceId = _.get(user, 'devices.0.id', null);
+
+    // Check if reward exist with the same device id.
+    let voucherFound = await RewardVoucher.findOne({ deviceId, rewardId, userId: null });
+
+    if (!voucherFound) {
+      // If not, find one from the pool
+      voucherFound = await RewardVoucher.findOne({ userId: null, deviceId: null, rewardId });
+    }
+
+    if (!voucherFound) {
+      throw new Error('reward_not_available');
+    }
+
+    voucherFound.userId = user._id;
+    voucherFound.deviceId = deviceId;
+    await voucherFound.save();
+
+    return voucherFound;
+  }
+
+  static async claim(user: UserDocument, id: string): Promise<UserReward> {
+    const reward: RewardDefinition = InitialDataUtil.getReward(id);
+    let voucher = null;
+
+    RewardUtil.assertBalance(reward, user);
+    RewardUtil.assertNotAlreadyClaimedTooMany(reward, user);
 
     if (reward.type === RewardType.Voucher) {
-      // Get voucher from the pool
-      const voucher = await RewardVoucher.findOne({ userId: null, rewardId: reward.id });
-
-      if (!voucher) {
-        throw new Error('reward_not_available');
-      }
-
-      voucher.userId = user._id;
-      voucher.save();
+      voucher = await RewardUtil.assignVoucher(id, user);
     } else if (reward.type === RewardType.SelfIssued) {
+      // @todo, Generate barcode
     } else {
       throw new Error('Invalid reward type');
     }
@@ -39,6 +64,7 @@ class RewardUtil {
       rewardId: id,
       status: RewardStatus.Claimed,
       price: reward.price,
+      voucherId: voucher ? voucher._id : null,
     } as UserReward;
 
     await TransactionUtil.addTransaction(user, `Beloning: ${reward.title}`, reward.price * -1, reward.id);

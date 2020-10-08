@@ -5,4 +5,5 @@ export type UserReward = Document & {
   rewardId: string;
   status: RewardStatus;
   price: number;
+  voucherId?: string;
 };

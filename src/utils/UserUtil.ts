@@ -4,6 +4,7 @@ import { User, Device, AuthToken, AuthTokenKind, UserDocument } from '../models/
 import InitialDataUtil from './InitialDataUtil';
 import auth from '../lib/auth';
 import { RegisterDeviceInput, NotificationStatus } from '@models';
+import { RewardVoucher } from 'models/RewardVoucher';
 
 class UserUtil {
   static async createOrFindUser(deviceInput: RegisterDeviceInput): Promise<UserDocument> {
@@ -43,6 +44,14 @@ class UserUtil {
     await user.save();
 
     return user;
+  }
+
+  static async deleteUser(user: UserDocument) {
+    const userId = user._id;
+    await User.deleteOne({ _id: userId });
+
+    // Abandon Vouchers, if the user signs up again with the same device ID, he will be assigned the same vouchers.
+    await RewardVoucher.updateMany({ userId }, { $set: { userId: null } });
   }
 }
 
