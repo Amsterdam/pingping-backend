@@ -1,6 +1,6 @@
 #!groovy
 
-String PROJECTNAME = "pingping"
+String PROJECTNAME = "pingping_backend"
 String CONTAINERNAME = "cto/pingping_backend:${env.BUILD_NUMBER}"
 String DOCKERFILE = "Dockerfile"
 String CONTAINERDIR = "."
