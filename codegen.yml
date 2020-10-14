@@ -1,0 +1,15 @@
+overwrite: true
+schema: ./src/schema.ts
+require:
+  - ts-node/register/transpile-only
+  - tsconfig-paths/register
+generates:
+  ./src/generated-models.ts:
+    plugins:
+      - add: /* tslint:ignore */
+      - typescript
+      # - typescript-mongodb
+      - typescript-operations
+      - typescript-resolvers
+    config:
+      contextType: '@graphql-modules/core#ModuleContext'

@@ -1,0 +1,20 @@
+type Mutation {
+  registerDevice(input: RegisterDeviceInput!): RegisterDeviceResponse!
+}
+
+# Response
+type RegisterDeviceResponse {
+  accessToken: String!
+  user: UserResponse!
+  currentTask: UserTaskResponse
+}
+
+# Input
+input RegisterDeviceInput {
+  deviceId: String!
+  deviceOs: String
+  deviceType: String
+  deviceToken: String
+  locale: Locale
+  location: LocactionInput
+}

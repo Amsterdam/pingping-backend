@@ -14,10 +14,8 @@ services:
       - web-root:/var/www/html
     links:
       - api
-      - app
     depends_on:
       - api
-      - app
   certbot:
     image: certbot/certbot
     volumes:
@@ -26,35 +24,41 @@ services:
       - web-root:/var/www/html
     depends_on:
       - nginx
-    command: certonly --webroot --webroot-path=/var/www/html --email m.gudvardarson@amsterdam.nl --agree-tos --no-eff-email -d app.pingping.amsterdam -d api.pingping.amsterdam
-  app:
-    image: pp-fe:production
-    restart: always
-    depends_on:
-      - api
+    command: certonly --webroot --webroot-path=/var/www/html --force-renewal --email mani@tji.li --agree-tos --no-eff-email -d domain.com
   api:
-    build: .
+    build:
+      context: .
+      args:
+        AWS_ACCESS_KEY_ID:
+        AWS_SECRET_ACCESS_KEY:
     restart: always
     environment:
-      DATABASE_URL: postgres://postgres:dbpassword@postgres/pingping
-      CLAIM_URI: https://api.pingping.amsterdam/api/reward/validate/?uuid=
+      MONGO_HOSTNAME: 'mongo'
+      MONGO_DBNAME: 'brickhub'
+      NUMBER_OF_PROCESSES: 4
     depends_on:
-      - postgres
+      - mongo
     ports:
-      - "8000:8000"
-  postgres:
-    image: postgres:latest
-    restart: always
+      - '8000:8000'
+      - '4000:4000'
+  app:
+    image:
+    container_name: app
     environment:
-      - POSTGRES_PASSWORD=dbpassword
-      - POSTGRES_DB=pingping
+      API: 'https://api.domain.com'
+      DEFAULT_LANGUAGE: 'nl'
     ports:
-      - "5432:5432"
+      - '3000:3000'
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - '27017:27017'
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mongo_data:/data/db
 
 volumes:
-  postgres_data: {}
+  mongo_data: {}
   certbot-etc:
   certbot-var:
   web-root:

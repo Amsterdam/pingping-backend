@@ -1,29 +1,31 @@
-FROM python:3
+FROM node:10
 
-
+# Create app directory
 WORKDIR /app
-COPY requirements.txt /app/
+RUN yarn global add @vue/cli -g
 
-# OS Packages installed becase of:
-## https://pypi.org/project/mysqlclient/
+ENV PORT=8000
+ENV NODE_ENV=production
 
-RUN apt-get update -y \
-    && apt-get install -y --no-install-recommends \
-        python3-dev \
-        gcc \
-    && pip install --no-cache-dir -r requirements.txt \
-    && apt-get purge -y \
-        python3-dev \
-        gcc \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
+COPY package.json /app/package.json
+COPY yarn.lock /app/yarn.lock
 
-COPY . /app/
+RUN yarn install
 
-ENV DEBUG=True
+# Bundle app source
+COPY src /app/src
+COPY public /app/public
+COPY admin /app/admin
+COPY tsconfig.json /app/tsconfig.json
+COPY initialData.json /app/initialData.json
+
+RUN yarn run build
+
+WORKDIR /app/admin
+RUN NODE_ENV=development yarn install
+RUN yarn run build
+WORKDIR /app
 
 EXPOSE 8000
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.1/wait /app/wait
-RUN chmod +x docker-entrypoint.sh wait
-ENTRYPOINT [ "/app/docker-entrypoint.sh" ]
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+
+CMD [ "npm", "run", "start:server" ]

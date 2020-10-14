@@ -4,38 +4,29 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 CMD_ARGUMENTS ?= $(cmd)
 
 target = latest
-cid = $(docker ps -aqf name=pingping-backend_api)
+docker_login_2 := $(shell aws2 ecr get-login --region eu-central-1 --no-include-email)
+docker_login := $(shell aws ecr get-login --region eu-central-1 --no-include-email)
 
-help:
-	@echo ''
-	@echo 'Usage: make [TARGET] [EXTRA_ARGUMENTS]'
-	@echo 'Targets:'
-	@echo '  build    	prepare for deployment'
-	@echo '  run    	run on production'
-	@echo '  run-dev	run in dev mode'
-	@echo '  down 		shut down docker compose'
-	@echo '  shell    	attach docker shell'
-	@echo '  pull    	pull from git'
-	@echo '  help    	this message'
+help:		## Show this help.
+	@echo "-------"
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+	@echo "-------"
 
-build:
-	@echo  'Prepare for deployment, make certificate etc'
+machine:	## Docker exec into api machine
+	docker exec -it api bash
 
-run:
-	@echo  'Running pingping'
-	docker-compose up -d
+machine-logs:	## View logs from api machine
+	docker logs api
 
-run-dev:
-	@echo  'Running pingping'
-	docker-compose -f docker-compose.dev.yml up -d
+mongo:		## Docker exec into mongo machine
+	docker exec -it mongo mongo
 
-down:
-	@echo  'Shutdown pingping'
-	docker-compose down
+mongo-logs:	## View logs from mongo machine
+	docker logs mongo
 
-shell:
-	@echo  "Attaching shell to $(cid)"
-	docker exec -it $(cid) bash
-
-pull:
+deploy: 	## Run deployment
+	@eval $$(docker_login)
 	git pull
+	docker-compose down
+	docker-compose build
+	docker-compose up -d --force-recreate

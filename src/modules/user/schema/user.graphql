@@ -1,0 +1,90 @@
+type Query {
+  getStatus: StatusResponse!
+  getAchievements: [AchievementResponse!]!
+  getUsers(token: String!): [AdminUserResponse]!
+}
+
+type Mutation {
+  createGoal(input: CreateGoalInput!): UserGoalResponse!
+  deleteUser(confirm: String): MessageResponse
+  registerNotifications(input: RegisterNotificationsInput!): DeviceResponse!
+  exportUser: ExportResponse!
+  importUser(exportToken: String!): MessageResponse
+  sendNotifications(title: String!, body: String!, deviceTokens: String!): JSON!
+  adminActions: String!
+  contact(input: ContactInput): String
+}
+
+# Response
+type MessageResponse {
+  message: String!
+}
+
+type ExportResponse {
+  token: String!
+}
+
+type StatusResponse {
+  user: UserResponse!
+  currentTask: UserTaskResponse
+  previousTask: UserTaskResponse
+  exportUrl: String
+  device: DeviceResponse!
+}
+
+type UserGoalResponse {
+  id: String!
+  title: String!
+  description: String
+  amount: Int!
+}
+
+type AchievementResponse {
+  achievementId: String!
+  title: String!
+  description: String
+  points: Int!
+  status: AchievementStatus!
+  icon: String
+  earnedDate: Date
+}
+
+type UserResponse {
+  id: String!
+  profile: UserProfileResponse!
+  balance: Int!
+  goals: [UserGoalResponse!]
+  rewards: [UserRewardResponse!]
+  devices: [DeviceResponse!]
+  createdAt: String!
+}
+
+type AdminUserResponse {
+  id: String!
+  data: JSON
+  devices: [DeviceResponse!]
+  createdAt: String!
+}
+
+type DeviceResponse {
+  id: String!
+  token: String
+  os: String
+  notificationStatus: NotificationStatus
+}
+
+type UserProfileResponse {
+  dateOfBirth: Date
+}
+
+# Input
+input CreateGoalInput {
+  title: String!
+  description: String
+  amount: Int!
+}
+
+input RegisterNotificationsInput {
+  notificationStatus: NotificationStatus!
+  deviceToken: String!
+}
