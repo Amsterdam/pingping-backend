@@ -4,7 +4,7 @@ String PROJECTNAME = "pingping_backend"
 String CONTAINERNAME = "cto/pingping_backend:${env.BUILD_NUMBER}"
 String DOCKERFILE = "Dockerfile"
 String CONTAINERDIR = "."
-
+String BRANCH = "${env.BRANCH_NAME}"
 
 def tryStep(String message, Closure block, Closure tearDown = null) {
     try {
@@ -22,8 +22,9 @@ def tryStep(String message, Closure block, Closure tearDown = null) {
     }
 }
 
-
+// Run all stages on a single node, as there are dependencies (tagged images) between stages
 node {
+
     stage("Checkout") {
         checkout scm
     }
@@ -35,7 +36,6 @@ node {
 //       }
 //    }
 
-
     stage("Build image") {
         tryStep "build", {
             docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
@@ -44,91 +44,76 @@ node {
             }
         }
     }
-}
-
-String BRANCH = "${env.BRANCH_NAME}"
 
 if (BRANCH != "master") {
     stage('Waiting for approval') {
         input "Deploy to Acceptance?"
     }
 
-    node {
-        stage('Push acceptance image') {
-            tryStep "image tagging", {
-                docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
-                    image.push("acceptance")
-                }
+    stage('Push acceptance image') {
+        tryStep "image tagging", {
+            docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
+                image.push("acceptance")
             }
         }
     }
 
-    node {
-        stage("Deploy to ACC") {
-            tryStep "deployment", {
-                build job: 'Subtask_Openstack_Playbook',
-                parameters: [
-                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy.yml'],
-                    [$class: 'StringParameterValue', name: 'PLAYBOOKPARAMS', value: "-e cmdb_id=app_${PROJECTNAME}"],
-                ]
-            }
+    stage("Deploy to ACC") {
+        tryStep "deployment", {
+            build job: 'Subtask_Openstack_Playbook',
+            parameters: [
+                [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
+                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy.yml'],
+                [$class: 'StringParameterValue', name: 'PLAYBOOKPARAMS', value: "-e cmdb_id=app_${PROJECTNAME}"],
+            ]
         }
     }
 }
 
 if (BRANCH == "master") {
-
-    node {
-        stage('Push acceptance image') {
-            tryStep "image tagging", {
-                docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
-                    image.push("acceptance")
-                }
+    stage('Push acceptance image') {
+        tryStep "image tagging", {
+            docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
+                image.push("acceptance")
             }
         }
     }
 
-    node {
-        stage("Deploy to ACC") {
-            tryStep "deployment", {
-                build job: 'Subtask_Openstack_Playbook',
-                parameters: [
-                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy.yml'],
-                    [$class: 'StringParameterValue', name: 'PLAYBOOKPARAMS', value: "-e cmdb_id=app_${PROJECTNAME}"],
-                ]
-            }
+    stage("Deploy to ACC") {
+        tryStep "deployment", {
+            build job: 'Subtask_Openstack_Playbook',
+            parameters: [
+                [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
+                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy.yml'],
+                [$class: 'StringParameterValue', name: 'PLAYBOOKPARAMS', value: "-e cmdb_id=app_${PROJECTNAME}"],
+            ]
         }
     }
-
 
     stage('Waiting for approval') {
         slackSend channel: '#ci-channel', color: 'warning', message: 'pingping_backend is waiting for Production Release - please confirm'
         input "Deploy to Production?"
     }
 
-    node {
-        stage('Push production image') {
-            tryStep "image tagging", {
-                docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
-                    image.push("production")
-                    image.push("latest")
-                }
+    stage('Push production image') {
+        tryStep "image tagging", {
+            docker.withRegistry("${DOCKER_REGISTRY_HOST}",'docker_registry_auth') {
+                image.push("production")
+                image.push("latest")
             }
         }
     }
 
-    node {
-        stage("Deploy") {
-            tryStep "deployment", {
-                build job: 'Subtask_Openstack_Playbook',
-                parameters: [
-                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
-                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy.yml'],
-                    [$class: 'StringParameterValue', name: 'PLAYBOOKPARAMS', value: "-e cmdb_id=app_${PROJECTNAME}"],
-                ]
-            }
+    stage("Deploy") {
+        tryStep "deployment", {
+            build job: 'Subtask_Openstack_Playbook',
+            parameters: [
+                [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
+                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy.yml'],
+                [$class: 'StringParameterValue', name: 'PLAYBOOKPARAMS', value: "-e cmdb_id=app_${PROJECTNAME}"],
+            ]
         }
     }
+}
+
 }
