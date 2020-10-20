@@ -117,7 +117,6 @@ export type Mutation = {
   deleteUser?: Maybe<MessageResponse>;
   registerNotifications: DeviceResponse;
   exportUser: ExportResponse;
-  importUser?: Maybe<MessageResponse>;
   sendNotifications: Scalars['JSON'];
   adminActions: Scalars['String'];
   contact?: Maybe<Scalars['String']>;
@@ -171,11 +170,6 @@ export type MutationRegisterNotificationsArgs = {
 };
 
 
-export type MutationImportUserArgs = {
-  exportToken: Scalars['String'];
-};
-
-
 export type MutationSendNotificationsArgs = {
   title: Scalars['String'];
   body: Scalars['String'];
@@ -220,6 +214,7 @@ export type QueryGetUsersArgs = {
 };
 
 export type RegisterDeviceInput = {
+  exportToken?: Maybe<Scalars['String']>;
   deviceId: Scalars['String'];
   deviceOs?: Maybe<Scalars['String']>;
   deviceType?: Maybe<Scalars['String']>;
@@ -320,7 +315,7 @@ export type StatusResponse = {
   user: UserResponse;
   currentTask?: Maybe<UserTaskResponse>;
   previousTask?: Maybe<UserTaskResponse>;
-  exportUrl?: Maybe<Scalars['String']>;
+  exportToken: Scalars['String'];
   device: DeviceResponse;
 };
 
@@ -653,7 +648,6 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   deleteUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, never>>,
   registerNotifications?: Resolver<ResolversTypes['DeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterNotificationsArgs, 'input'>>,
   exportUser?: Resolver<ResolversTypes['ExportResponse'], ParentType, ContextType>,
-  importUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationImportUserArgs, 'exportToken'>>,
   sendNotifications?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<MutationSendNotificationsArgs, 'title' | 'body' | 'deviceTokens'>>,
   adminActions?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   contact?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationContactArgs, never>>,
@@ -733,7 +727,7 @@ export type StatusResponseResolvers<ContextType = ModuleContext, ParentType exte
   user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
   currentTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
   previousTask?: Resolver<Maybe<ResolversTypes['UserTaskResponse']>, ParentType, ContextType>,
-  exportUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  exportToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   device?: Resolver<ResolversTypes['DeviceResponse'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };

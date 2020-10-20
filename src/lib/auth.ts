@@ -79,9 +79,14 @@ class auth {
       }
 
       const tokenItem: AuthToken = _.first(user.tokens.filter((t: AuthToken) => t.accessToken === tokenString));
-      const deviceItem: Device = _.first(user.devices.filter((d: Device) => d.id === tokenItem.deviceId));
 
-      return deviceItem;
+      if (tokenItem) {
+        const deviceItem: Device = _.first(user.devices.filter((d: Device) => d.id === tokenItem.deviceId));
+
+        return deviceItem;
+      }
+
+      return null;
     } catch (e) {
       console.error(e);
       return null;
@@ -90,6 +95,28 @@ class auth {
 
   static async userQuery(userId: string) {
     return await User.findOne({ _id: userId });
+  }
+
+  // Recovers a user from an export token and removes token and devices for that user.
+  static async recoverUserFromExportToken(exportToken: string): Promise<UserDocument> {
+    let token: any;
+    try {
+      token = jwt.verify(exportToken.trim(), process.env.SECRET);
+    } catch {
+      throw new Error('invalid_export_token');
+    }
+
+    let user = await auth.userQuery(token.userId);
+
+    if (!user) {
+      throw new Error('invalid_export_token');
+    } else {
+      user.tokens = [];
+      user.devices = [];
+      await user.save();
+
+      return user;
+    }
   }
 }
 

@@ -8,23 +8,29 @@ import { RewardVoucher } from 'models/RewardVoucher';
 
 class UserUtil {
   static async createOrFindUser(deviceInput: RegisterDeviceInput): Promise<UserDocument> {
-    const userFound = await User.findOne({
-      devices: { $elemMatch: { id: deviceInput.deviceId } },
-    });
+    let userFound: UserDocument;
 
-    if (userFound) {
-      // Update the device
+    if (deviceInput.exportToken) {
+      userFound = await auth.recoverUserFromExportToken(deviceInput.exportToken);
+    } else {
+      userFound = await User.findOne({
+        devices: { $elemMatch: { id: deviceInput.deviceId } },
+      });
 
-      return userFound;
+      if (userFound) {
+        // Update the device
+        return userFound;
+      }
+
+      const initialTasks = InitialDataUtil.getInitialUserOnboardingTasks();
+
+      userFound = await User.create({
+        tasks: initialTasks,
+        balance: 0,
+        profile: {},
+      });
     }
 
-    const initialTasks = InitialDataUtil.getInitialUserOnboardingTasks();
-
-    const user = await User.create({
-      tasks: initialTasks,
-      balance: 0,
-      profile: {},
-    });
     const device: Device = {
       id: deviceInput.deviceId,
       os: deviceInput.deviceOs,
@@ -36,14 +42,14 @@ class UserUtil {
       deviceId: deviceInput.deviceId,
       kind: AuthTokenKind.auth,
       validUntil: null,
-      accessToken: auth.signToken(user),
+      accessToken: auth.signToken(userFound),
     };
 
-    user.tokens.push(token);
-    user.devices.push(device);
-    await user.save();
+    userFound.tokens.push(token);
+    userFound.devices.push(device);
+    await userFound.save();
 
-    return user;
+    return userFound;
   }
 
   static async deleteUser(user: UserDocument) {

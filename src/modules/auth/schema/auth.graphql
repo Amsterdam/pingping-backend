@@ -11,6 +11,7 @@ type RegisterDeviceResponse {
 
 # Input
 input RegisterDeviceInput {
+  exportToken: String
   deviceId: String!
   deviceOs: String
   deviceType: String

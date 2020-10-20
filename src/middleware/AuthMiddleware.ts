@@ -1,3 +1,4 @@
+import NoPermissionError from 'errors/NoPermissionError';
 import UnauthorizedError from 'errors/UnauthorizedError';
 import { ContextType } from 'lib/Context';
 
@@ -6,7 +7,7 @@ export default class AuthMiddleware {
   static isAuthenticated() {
     return (next: Function) => {
       return async (root: any, args: any, context: ContextType, info: any) => {
-        if (!context.user) {
+        if (!context.user || !context.device) {
           throw new UnauthorizedError();
         }
 
@@ -19,7 +20,7 @@ export default class AuthMiddleware {
     return (next: Function) => {
       return async (root: any, args: any, context: ContextType, info: any) => {
         if (!context.user || !context.device || context.device.id !== process.env.SECRET.substr(0, 12)) {
-          throw new UnauthorizedError();
+          throw new NoPermissionError();
         }
 
         return next(root, args, context, info);

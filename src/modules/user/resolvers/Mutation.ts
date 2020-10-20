@@ -86,14 +86,6 @@ export const Mutation: MutationResolvers = {
     };
   },
 
-  async importUser(root: any, args: any, context: ContextType): Promise<any> {
-    // @todo Check the token
-
-    return {
-      message: 'error',
-    };
-  },
-
   async sendNotifications(root: any, args: MutationSendNotificationsArgs, context: ContextType): Promise<any> {
     const res = await PushNotificationUtil.send(args.deviceTokens.split(','), args.title, args.body);
 
