@@ -86,7 +86,7 @@ class TaskUtil {
   }
 
   static getPreviousUserTask(user: UserDocument): UserTask {
-    const tasks: Array<UserTask> = user.tasks.filter((t: UserTask) => t.status === TaskStatus.Completed);
+    const tasks: Array<UserTask> = user.tasks.filter((t: UserTask) => t.status !== TaskStatus.PendingUser);
     const task: UserTask = <UserTask>_.last(tasks);
 
     if (task) {
