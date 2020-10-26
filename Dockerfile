@@ -19,11 +19,11 @@ COPY admin /app/admin
 COPY tsconfig.json /app/tsconfig.json
 COPY initialData.json /app/initialData.json
 
-RUN npm run build
+RUN yarn run build
 
 WORKDIR /app/admin
-RUN NODE_ENV=development npm install
-RUN npm run build
+RUN NODE_ENV=development yarn install
+RUN yarn run build
 WORKDIR /app
 
 EXPOSE 8000
