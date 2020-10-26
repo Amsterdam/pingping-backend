@@ -24,14 +24,6 @@ export const Query: QueryResolvers = {
   },
 
   async getUsers(root: any, args: QueryGetUsersArgs, context: ContextType): Promise<Array<any>> {
-    // console.log('context', context);
-    // const user = await auth.getUser(args.token);
-    // const device = await auth.getDevice(args.token);
-
-    // if (!user || !device || device.id !== process.env.SECRET.substr(0, 12)) {
-    //   throw new UnauthorizedError();
-    // }
-
     return await User.find({});
   },
 };

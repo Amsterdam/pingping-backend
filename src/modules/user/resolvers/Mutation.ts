@@ -79,13 +79,6 @@ export const Mutation: MutationResolvers = {
     };
   },
 
-  // @todo Implement this
-  async exportUser(root: any, args: any, context: ContextType): Promise<any> {
-    return {
-      token: 'placeholder_token',
-    };
-  },
-
   async sendNotifications(root: any, args: MutationSendNotificationsArgs, context: ContextType): Promise<any> {
     const res = await PushNotificationUtil.send(args.deviceTokens.split(','), args.title, args.body);
 

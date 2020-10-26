@@ -49,6 +49,7 @@ enum TaskType {
   YesOrNo
   MultipleChoices
   Other
+  GoBack
 }
 
 enum AchievementStatus {

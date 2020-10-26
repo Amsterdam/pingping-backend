@@ -17,7 +17,7 @@
     },
     {
       "id": "onboarding.notAmsterdam",
-      "type": "GoBack",
+      "type": "goBack",
       "headerTitle": "",
       "title": "Excuses voor het ongemak",
       "description": "Deze route is nu nog alleen geschikt voor mensen die in Amsterdam wonen. Voor algemene info over 18 worden en wat je kunt regelen, <a href=\"https://www.rijksoverheid.nl/onderwerpen/achttien-jaar-worden/vraag-en-antwoord/checklist-bij-18-jaar-worden\">check deze site</a>",
@@ -259,8 +259,20 @@
   },
   "rewards": [
     {
+      "id": "meelopen-met-jongeren",
+      "title": "Meelopen met jongeren- adviseur t.w.v. €50",
+      "description": "Test",
+      "imageUrl": "/images/reward1.png",
+      "thumbnailUrl": "/images/reward1Thumb.jpg",
+      "price": 20,
+      "vendor": "unknown",
+      "type": "SelfIssued",
+      "available": null,
+      "availablePerUser": 1
+    },
+    {
       "id": "pathe-test",
-      "title": "Pathe Thuis Film",
+      "title": "Pathe Test",
       "description": "Test",
       "imageUrl": "/images/reward1.png",
       "thumbnailUrl": "/images/reward1Thumb.jpg",

@@ -106,7 +106,6 @@ export default {
           vouchers: JSON.parse(this.vouchers)
         }
       }).then(({ data }) => {
-        console.log(data)
         this.loading = false
         this.currentItem = data.updateReward
       }).catch((error) => {

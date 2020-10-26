@@ -1,7 +1,12 @@
 import _ from 'lodash';
 import { TaskDefinition, RouteDefinition, AchievementDefinition, RewardDefinition } from '../types/global';
 import { TaskStatus } from '../generated-models';
-const initialData: InitialData = require('../../initialData.json');
+
+let initialData: InitialData = require('../../initialData.json');
+
+if (process.env.NODE_ENV === 'test') {
+  initialData = require('../../initialData.test.json');
+}
 
 type InitialData = {
   onboardingTasks: [TaskDefinition];

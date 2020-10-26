@@ -23,7 +23,6 @@ export const UserModule = new GraphQLModule({
     'Mutation.createGoal': [AuthMiddleware.isAuthenticated()],
     'Mutation.deleteUser': [AuthMiddleware.isAuthenticated()],
     'Mutation.registerNotifications': [AuthMiddleware.isAuthenticated()],
-    'Mutation.exportUser': [AuthMiddleware.isAuthenticated()],
   },
   typeDefs,
   resolvers: mergeResolvers(resolvers),

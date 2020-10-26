@@ -63,8 +63,6 @@ export default {
     setItem (set) {
       let index = this.users.map(i => i.id).indexOf(set.id)
 
-      console.log('index', index, set)
-
       if (index !== -1) {
         this.users[index] = Object.assign(this.users[index], set)
       }
