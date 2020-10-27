@@ -116,7 +116,6 @@ export type Mutation = {
   createGoal: UserGoalResponse;
   deleteUser?: Maybe<MessageResponse>;
   registerNotifications: DeviceResponse;
-  exportUser: ExportResponse;
   sendNotifications: Scalars['JSON'];
   adminActions: Scalars['String'];
   contact?: Maybe<Scalars['String']>;
@@ -341,7 +340,8 @@ export enum TaskType {
   DateOfBirth = 'DateOfBirth',
   YesOrNo = 'YesOrNo',
   MultipleChoices = 'MultipleChoices',
-  Other = 'Other'
+  Other = 'Other',
+  GoBack = 'GoBack'
 }
 
 export type UpdateTaskInput = {
@@ -508,7 +508,6 @@ export type ResolversTypes = {
   CreateGoalInput: CreateGoalInput,
   MessageResponse: ResolverTypeWrapper<MessageResponse>,
   RegisterNotificationsInput: RegisterNotificationsInput,
-  ExportResponse: ResolverTypeWrapper<ExportResponse>,
   ContactInput: ContactInput,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
@@ -516,6 +515,7 @@ export type ResolversTypes = {
   RegisterDeviceResponse: ResolverTypeWrapper<RegisterDeviceResponse>,
   RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
   RewardType: RewardType,
+  ExportResponse: ResolverTypeWrapper<ExportResponse>,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -560,7 +560,6 @@ export type ResolversParentTypes = {
   CreateGoalInput: CreateGoalInput,
   MessageResponse: MessageResponse,
   RegisterNotificationsInput: RegisterNotificationsInput,
-  ExportResponse: ExportResponse,
   ContactInput: ContactInput,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
@@ -568,6 +567,7 @@ export type ResolversParentTypes = {
   RegisterDeviceResponse: RegisterDeviceResponse,
   RouteAnswer: Scalars['RouteAnswer'],
   RewardType: RewardType,
+  ExportResponse: ExportResponse,
 };
 
 export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AchievementResponse'] = ResolversParentTypes['AchievementResponse']> = {
@@ -647,7 +647,6 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
   deleteUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, never>>,
   registerNotifications?: Resolver<ResolversTypes['DeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterNotificationsArgs, 'input'>>,
-  exportUser?: Resolver<ResolversTypes['ExportResponse'], ParentType, ContextType>,
   sendNotifications?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<MutationSendNotificationsArgs, 'title' | 'body' | 'deviceTokens'>>,
   adminActions?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   contact?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationContactArgs, never>>,

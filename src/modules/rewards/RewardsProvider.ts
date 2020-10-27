@@ -5,10 +5,16 @@ import { REWARDS } from 'modules/common/index';
 
 @Injectable()
 export class RewardsProvider {
-  @Inject(REWARDS) private routes: RewardDefinition[];
+  @Inject(REWARDS) private rewards: RewardDefinition[];
 
   getAll(): RewardDefinition[] {
-    return this.routes;
+    return this.rewards;
+  }
+
+  getAvailable(): RewardDefinition[] {
+    return this.rewards.filter((r: RewardDefinition) => {
+      return true;
+    });
   }
 
   getById(id: string): RewardDefinition {

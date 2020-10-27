@@ -8,6 +8,7 @@ import BadRequestError from '../errors/BadRequestError';
 import RouteUtil from './RouteUtil';
 import { TaskStatus, TaskType } from '../generated-models';
 import TransactionUtil from './TransactionUtil';
+import { Types } from 'mongoose';
 
 class TaskUtil {
   static getProgress(taskId: string): number {
@@ -76,21 +77,21 @@ class TaskUtil {
 
   static getCurrentUserTask(user: UserDocument): UserTask {
     const tasks: Array<UserTask> = user.tasks.filter((t: UserTask) => t.status === TaskStatus.PendingUser);
-    const task: UserTask = <UserTask>_.first(tasks);
+    const task: UserTask = <UserTask>_.nth(tasks, 1) || <UserTask>_.first(tasks);
 
     if (task) {
-      return new UserTask(task.taskId, task.status, task.answer);
+      return new UserTask(task.taskId, task.status, task.answer, task._id);
     }
 
     return null;
   }
 
   static getPreviousUserTask(user: UserDocument): UserTask {
-    const tasks: Array<UserTask> = user.tasks.filter((t: UserTask) => t.status === TaskStatus.Completed);
+    const tasks: Array<UserTask> = user.tasks.filter((t: UserTask) => t.status !== TaskStatus.PendingUser);
     const task: UserTask = <UserTask>_.last(tasks);
 
     if (task) {
-      return new UserTask(task.taskId, task.status, task.answer);
+      return new UserTask(task.taskId, task.status, task.answer, task._id);
     }
 
     return null;
@@ -104,6 +105,12 @@ class TaskUtil {
     } else {
       user.tasks.push(userTask);
     }
+
+    return user;
+  }
+
+  static removeUserTask(user: UserDocument, userTask: UserTask): UserDocument {
+    user.tasks.pull({ _id: userTask._id });
 
     return user;
   }
@@ -143,6 +150,18 @@ class TaskUtil {
     }
 
     return _.get(nextTask, answer.toLowerCase(), _.first(Object.values(nextTask)));
+  }
+
+  static async revertTask(user: UserDocument, taskId: string) {
+    const currentUserTask = TaskUtil.getCurrentUserTask(user);
+
+    // Revert the task and delete the latest one
+    let userTask = TaskUtil.getUserTask(user, taskId);
+    userTask.status = TaskStatus.PendingUser;
+    user = TaskUtil.updateUserTask(user, userTask);
+
+    user = TaskUtil.removeUserTask(user, currentUserTask);
+    await user.save();
   }
 
   static async handleTask(user: UserDocument, taskDef: TaskDefinition, answer: string = null): Promise<UserTask> {

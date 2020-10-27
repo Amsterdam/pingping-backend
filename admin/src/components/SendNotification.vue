@@ -70,10 +70,10 @@ export default {
           deviceTokens: this.sendTokens
         }
       }).then((data) => {
-        console.log(data)
+        console.log('notificationSuccess', data)
         this.loading = false
       }).catch((error) => {
-        console.error(error)
+        console.error('notificationError', error)
         this.loading = false
       })
     }

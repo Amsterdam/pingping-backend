@@ -24,7 +24,6 @@ export default {
             }
           }`,
           update: (store, { data: { registerDevice } }) => {
-            console.log('registerDevice', registerDevice)
             window.localStorage.setItem('pp:token', registerDevice.accessToken)
             // this.$emit('login', registerDevice.accessToken)
             location.reload()

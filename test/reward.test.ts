@@ -6,6 +6,7 @@ import { describe } from 'mocha';
 import RewardUtil from '../src/utils/RewardUtil';
 import TransactionUtil from '../src/utils/TransactionUtil';
 import { RewardVoucher } from '../src/models/RewardVoucher';
+import InitialDataUtil from '../src/utils/InitialDataUtil';
 
 describe('reward', () => {
   let accessToken: any;
@@ -54,6 +55,12 @@ describe('reward', () => {
     await expect(res).to.be.rejectedWith(/reward_not_defined/);
   });
 
+  it('has 2 rewards in definition', async () => {
+    const res = InitialDataUtil.getRewards();
+
+    expect(res.length).to.eq(2);
+  });
+
   it('claim reward', async () => {
     await TransactionUtil.addTransaction(user, 'Test', 20, 'lkdfjg');
     const rew = await RewardUtil.claim(user, 'meelopen-met-jongeren');
@@ -63,7 +70,7 @@ describe('reward', () => {
   });
 
   it('claim reward insufficient balance', async () => {
-    const res = RewardUtil.claim(user, 'meelopen-met-jongeren');
+    const res = RewardUtil.claim(user, 'pathe-test');
 
     await expect(res).to.be.rejectedWith(/reward_insufficient_balance/);
   });
