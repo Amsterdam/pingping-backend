@@ -5,6 +5,7 @@ import UserUtil from '../src/utils/UserUtil';
 import { UserTask } from '../src/models/UserTask';
 import { TaskStatus } from '../src/generated-models';
 import { UserDocument } from '../src/models/User';
+import InitialDataUtil from '../src/utils/InitialDataUtil';
 
 describe('taskUtil', () => {
   let accessToken: any;
@@ -48,5 +49,25 @@ describe('taskUtil', () => {
     let userTask: UserTask = await TaskUtil.handleTask(user, def);
 
     expect(userTask.status).to.eq(TaskStatus.Completed);
+  });
+
+  it('revert and get correct task', async () => {
+    const task = TaskUtil.getCurrentUserTask(user);
+    const taskDef = InitialDataUtil.getTaskById(task.taskId);
+
+    expect(task.taskId).to.eq('onboarding.gemeente');
+
+    await TaskUtil.handleTask(user, taskDef, 'yes');
+    const nextTask = TaskUtil.getCurrentUserTask(user);
+    expect(nextTask.taskId).to.eq('onboarding.dateOfBirth');
+
+    await TaskUtil.revertTask(user, task.taskId);
+
+    const nextTaskTwo = TaskUtil.getCurrentUserTask(user);
+    expect(nextTaskTwo.taskId).to.eq('onboarding.gemeente');
+
+    await TaskUtil.handleTask(user, taskDef, 'no');
+    const nextTask3 = TaskUtil.getCurrentUserTask(user);
+    expect(nextTask3.taskId).to.eq('onboarding.notAmsterdam');
   });
 });

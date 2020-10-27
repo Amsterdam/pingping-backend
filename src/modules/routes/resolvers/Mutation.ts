@@ -41,10 +41,7 @@ export const Mutation: MutationResolvers = {
   },
 
   async revertTask(root: any, args: MutationRevertTaskArgs, context: ModuleContext): Promise<any> {
-    let userTask = TaskUtil.getUserTask(context.user, args.taskId);
-    userTask.status = TaskStatus.PendingUser;
-    const user = TaskUtil.updateUserTask(context.user, userTask);
-    await user.save();
+    await TaskUtil.revertTask(context.user, args.taskId);
 
     return 'sucess';
   },
