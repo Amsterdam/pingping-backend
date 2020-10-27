@@ -77,11 +77,6 @@ class TaskUtil {
 
   static getCurrentUserTask(user: UserDocument): UserTask {
     const tasks: Array<UserTask> = user.tasks.filter((t: UserTask) => t.status === TaskStatus.PendingUser);
-    console.log(
-      'notasks',
-      tasks.length,
-      tasks.map((i) => i.taskId)
-    );
     const task: UserTask = <UserTask>_.nth(tasks, 1) || <UserTask>_.first(tasks);
 
     if (task) {

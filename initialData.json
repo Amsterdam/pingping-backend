@@ -236,9 +236,9 @@
         }
       ]
     },
-    "fixJeWerk": {
-      "title": "Fiks Je Werk",
-      "description": "",
+    "fixJeBaan": {
+      "title": "Fiks Je Baan",
+      "description": "Kijk wat jij kunt doen om een baan te vinden.",
       "mainColor": "#C5EAD3",
       "isSuggested": false,
       "targetAudience": "Jongvolwassenen",
@@ -248,7 +248,7 @@
     },
     "fixJeStudie": {
       "title": "Fiks Je Studie",
-      "description": "",
+      "description": "Kijk welke stappen je kunt nemen als je gaat studeren.",
       "mainColor": "#C5CAEA",
       "isSuggested": false,
       "targetAudience": "Jongvolwassenen",
