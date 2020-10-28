@@ -8,10 +8,10 @@ export const Mutation: MutationResolvers = {
   async adminActions(root: any, args: MutationAdminActionsArgs, context: ContextType): Promise<any> {
     switch (args.type) {
       case AdminActionType.FixUsers:
-        AdminUtil.fixUsers();
+        await AdminUtil.fixUsers();
         break;
       case AdminActionType.DeleteAllUsers:
-        AdminUtil.deleteAllUsers();
+        await AdminUtil.deleteAllUsers();
         break;
       default:
         throw new Error('invalid_admin_action');
