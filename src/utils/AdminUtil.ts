@@ -16,9 +16,9 @@ export default class AdminUtil {
   }
 
   static async deleteAllUsers() {
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error('cannot delete users on production');
-    }
+    // if (process.env.NODE_ENV === 'production') {
+    // throw new Error('cannot delete users on production');
+    // }
 
     await User.deleteMany({});
   }
