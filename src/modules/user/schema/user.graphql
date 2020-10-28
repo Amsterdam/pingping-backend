@@ -8,8 +8,6 @@ type Mutation {
   createGoal(input: CreateGoalInput!): UserGoalResponse!
   deleteUser(confirm: String): MessageResponse
   registerNotifications(input: RegisterNotificationsInput!): DeviceResponse!
-  sendNotifications(title: String!, body: String!, deviceTokens: String!): JSON!
-  adminActions: String!
   contact(input: ContactInput): String
 }
 

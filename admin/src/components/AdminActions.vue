@@ -1,6 +1,7 @@
 <template>
   <div>
-    <button @click="fixUsers">Fix Users</button>
+    <button @click="callAction('FixUsers')">Fix Users</button>
+    <button @click="callAction('DeleteAllUsers')">Delete All Users</button>
   </div>
 </template>
 
@@ -11,14 +12,16 @@ export default {
   name: 'AdminActions',
 
   methods: {
-    fixUsers (e) {
-      e.preventDefault();
+    callAction (type) {
+      // console.log('type', type)
+      // e.preventDefault();
       this.loading = true
       this.$apollo.mutate({
-        mutation: gql`mutation {
-            adminActions
+        mutation: gql`mutation ($type:AdminActionType!) {
+            adminActions(type:$type)
           }`,
         variables: {
+          type
         }
       }).then((data) => {
         console.log(data)

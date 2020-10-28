@@ -32,6 +32,11 @@ export enum AchievementStatus {
   Earned = 'Earned'
 }
 
+export enum AdminActionType {
+  FixUsers = 'FixUsers',
+  DeleteAllUsers = 'DeleteAllUsers'
+}
+
 export type AdminUserResponse = {
    __typename?: 'AdminUserResponse';
   id: Scalars['String'];
@@ -113,11 +118,11 @@ export type Mutation = {
   createRouteFeedback: RouteFeedbackResponse;
   claimReward: UserRewardResponse;
   updateReward: RewardResponse;
+  adminActions: Scalars['String'];
+  sendNotifications: Scalars['JSON'];
   createGoal: UserGoalResponse;
   deleteUser?: Maybe<MessageResponse>;
   registerNotifications: DeviceResponse;
-  sendNotifications: Scalars['JSON'];
-  adminActions: Scalars['String'];
   contact?: Maybe<Scalars['String']>;
   registerDevice: RegisterDeviceResponse;
 };
@@ -154,6 +159,18 @@ export type MutationUpdateRewardArgs = {
 };
 
 
+export type MutationAdminActionsArgs = {
+  type: AdminActionType;
+};
+
+
+export type MutationSendNotificationsArgs = {
+  title: Scalars['String'];
+  body: Scalars['String'];
+  deviceTokens: Scalars['String'];
+};
+
+
 export type MutationCreateGoalArgs = {
   input: CreateGoalInput;
 };
@@ -166,13 +183,6 @@ export type MutationDeleteUserArgs = {
 
 export type MutationRegisterNotificationsArgs = {
   input: RegisterNotificationsInput;
-};
-
-
-export type MutationSendNotificationsArgs = {
-  title: Scalars['String'];
-  body: Scalars['String'];
-  deviceTokens: Scalars['String'];
 };
 
 
@@ -505,6 +515,7 @@ export type ResolversTypes = {
   RouteFeedbackInput: RouteFeedbackInput,
   RouteFeedbackResponse: ResolverTypeWrapper<RouteFeedbackResponse>,
   RewardVoucherInput: RewardVoucherInput,
+  AdminActionType: AdminActionType,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: ResolverTypeWrapper<MessageResponse>,
   RegisterNotificationsInput: RegisterNotificationsInput,
@@ -557,6 +568,7 @@ export type ResolversParentTypes = {
   RouteFeedbackInput: RouteFeedbackInput,
   RouteFeedbackResponse: RouteFeedbackResponse,
   RewardVoucherInput: RewardVoucherInput,
+  AdminActionType: AdminActionType,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: MessageResponse,
   RegisterNotificationsInput: RegisterNotificationsInput,
@@ -644,11 +656,11 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   createRouteFeedback?: Resolver<ResolversTypes['RouteFeedbackResponse'], ParentType, ContextType, RequireFields<MutationCreateRouteFeedbackArgs, 'input'>>,
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
   updateReward?: Resolver<ResolversTypes['RewardResponse'], ParentType, ContextType, RequireFields<MutationUpdateRewardArgs, never>>,
+  adminActions?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationAdminActionsArgs, 'type'>>,
+  sendNotifications?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<MutationSendNotificationsArgs, 'title' | 'body' | 'deviceTokens'>>,
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
   deleteUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, never>>,
   registerNotifications?: Resolver<ResolversTypes['DeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterNotificationsArgs, 'input'>>,
-  sendNotifications?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<MutationSendNotificationsArgs, 'title' | 'body' | 'deviceTokens'>>,
-  adminActions?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   contact?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationContactArgs, never>>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };

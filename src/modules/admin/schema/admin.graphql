@@ -1,0 +1,14 @@
+type Mutation {
+  adminActions(type: AdminActionType!): String!
+  sendNotifications(title: String!, body: String!, deviceTokens: String!): JSON!
+}
+
+# Response
+
+# Input
+
+# Enum
+enum AdminActionType {
+  FixUsers
+  DeleteAllUsers
+}

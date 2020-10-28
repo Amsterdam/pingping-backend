@@ -5,7 +5,6 @@ import {
   MutationDeleteUserArgs,
   MessageResponse,
   MutationRegisterNotificationsArgs,
-  MutationSendNotificationsArgs,
   MutationContactArgs,
 } from '@models';
 import _ from 'lodash';
@@ -14,9 +13,7 @@ import GoalUtil from 'utils/GoalUtil';
 import { UserGoal } from 'models/UserGoal';
 import { User } from 'models/User';
 import { ContextType } from 'lib/Context';
-import { PushNotificationUtil } from 'utils/PushNotificationUtil';
 import SendGridMail from '@sendgrid/mail';
-import { RewardVoucher } from 'models/RewardVoucher';
 import UserUtil from 'utils/UserUtil';
 
 export const Mutation: MutationResolvers = {
@@ -79,14 +76,6 @@ export const Mutation: MutationResolvers = {
     };
   },
 
-  async sendNotifications(root: any, args: MutationSendNotificationsArgs, context: ContextType): Promise<any> {
-    const res = await PushNotificationUtil.send(args.deviceTokens.split(','), args.title, args.body);
-
-    return {
-      result: res,
-    };
-  },
-
   async registerNotifications(root: any, args: MutationRegisterNotificationsArgs, context: ContextType): Promise<any> {
     context.device.token = args.input.deviceToken;
     context.device.notificationStatus = args.input.notificationStatus;
@@ -102,20 +91,5 @@ export const Mutation: MutationResolvers = {
     );
 
     return context.device;
-  },
-
-  async adminActions(root: any, args: any, context: ContextType): Promise<any> {
-    const users = await User.find({});
-
-    for (var u in users) {
-      let user = users[u];
-
-      user.tasks = _.uniqBy(user.tasks, (e) => {
-        return e.taskId;
-      }) as any;
-      await user.save();
-    }
-
-    return 'done';
   },
 };
