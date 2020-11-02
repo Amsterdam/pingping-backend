@@ -181,7 +181,7 @@
           },
           "points": 20,
           "headerTitle": "zorgverzekering",
-          "description": "<p>Iedereen moet&nbsp;verzekerd zijn voor ziekte. Dat heet een zorgverzekering. Een zorgverzekering regel je bij een zorgverzekeraar. &nbsp;Je kan zelf kiezen bij welke zorgverzekeraar.</p><p><strong>Goed om te weten:</strong></p><ul><li>Een zorgverzekering kost geld. Dat betaal je aan de zorgverzekeraar.</li><li>Een basisverzekering &nbsp;is verplicht voor iedereen. Daarmee ben je voor een paar belangrijke dingen verzekerd. Bijvoorbeeld als je in het ziekenhuis moet blijven, maar ook voor de huisarts en apotheek.&nbsp;</li><li>Als je niet zelf je verzekering afsluit, kom je automatisch bij die van je ouders. Maak met hun goede afspraken of zij dit voor jou willen betalen of dat je het zelf moet gaan betalen.</li><li>Met een basisverzekering &nbsp; heb je een eigen risico van minimaal 385 euro per jaar. Dat betekent dat je eerst je rekeningen zelf betaalt. Tot je in totaal 385 euro hebt betaald. Daarna betaalt de zorgverzekeraar. Dit geldt niet voor de huisarts.</li><li>Als je vaak zorg nodig hebt, kan een aanvullende verzekering handig zijn. Maar het is ook voor bijvoorbeeld tandartskosten of fysiotherapie.</li><li>Sommige zorgverzekeraars geven korting aan studenten.</li></ul>",
+          "description": "<p>Iedereen moet&nbsp;verzekerd zijn voor ziekte. Dat heet een zorgverzekering. Een zorgverzekering regel je bij een zorgverzekeraar. &nbsp;Je kan zelf kiezen bij welke zorgverzekeraar.</p>Op deze site kun je verzekeraars vergelijken: <a href=\"https://www.zorgwijzer.nl\">klik hier</a><p></p><p><strong>Goed om te weten:</strong></p><ul><li>Een zorgverzekering kost geld. Dat betaal je aan de zorgverzekeraar.</li><li>Een basisverzekering &nbsp;is verplicht voor iedereen. Daarmee ben je voor een paar belangrijke dingen verzekerd. Bijvoorbeeld als je in het ziekenhuis moet blijven, maar ook voor de huisarts en apotheek.&nbsp;</li><li>Als je niet zelf je verzekering afsluit, kom je automatisch bij die van je ouders. Maak met hun goede afspraken of zij dit voor jou willen betalen of dat je het zelf moet gaan betalen.</li><li>Met een basisverzekering &nbsp; heb je een eigen risico van minimaal 385 euro per jaar. Dat betekent dat je eerst je rekeningen zelf betaalt. Tot je in totaal 385 euro hebt betaald. Daarna betaalt de zorgverzekeraar. Dit geldt niet voor de huisarts.</li><li>Als je vaak zorg nodig hebt, kan een aanvullende verzekering handig zijn. Maar het is ook voor bijvoorbeeld tandartskosten of fysiotherapie.</li><li>Sommige zorgverzekeraars geven korting aan studenten.</li></ul>",
           "icon": ""
         },
         {
@@ -259,9 +259,9 @@
   },
   "rewards": [
     {
-      "id": "pathe-test",
+      "id": "pathe-thuis-film",
       "title": "Pathe Thuis Film",
-      "description": "Test",
+      "description": "Gefeliciteerd! Jij bent lekker bezig! Claim deze Pathé thuisbioscoopbon als welverdiende beloning!",
       "imageUrl": "/images/reward2.jpg",
       "thumbnailUrl": "/images/reward2Thumb.jpg",
       "price": 140,
