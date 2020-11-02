@@ -44,7 +44,7 @@ export const UserRewardResponse: any = {
     const def = InitialDataUtil.getReward(doc.rewardId);
     if (def.type === RewardType.SelfIssued) {
       // return `https://barcodes.com/${doc._id}`;
-      return ''
+      return '';
     } else {
       return null;
     }

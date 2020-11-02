@@ -32,6 +32,7 @@ export type RewardDefinition = {
   imageUrl: string;
   tumbnailUrl: string;
   vendor: string;
+  active: boolean;
   type: RewardType;
   price: number;
   availablePerUser: number;

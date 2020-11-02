@@ -11,7 +11,7 @@ export class RewardsProvider {
   @Inject(REWARDS) private rewards: RewardDefinition[];
 
   getAll(): RewardDefinition[] {
-    return this.rewards;
+    return this.rewards.filter((r: RewardDefinition) => r.active === true);
   }
 
   async getAvailable(): Promise<RewardDefinition[]> {
