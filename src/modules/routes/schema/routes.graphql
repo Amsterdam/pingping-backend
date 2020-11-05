@@ -39,6 +39,7 @@ type RouteResponse {
   title: String!
   description: String
   coverImageUrl: String
+  cover: Media
   mainColor: String
   thumbnailUrl: String
   isSuggested: Boolean!

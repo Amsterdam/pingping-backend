@@ -4,7 +4,7 @@ import { UserAchievement } from './UserAchievement';
 import { UserReward } from './UserReward';
 import { UserGoal } from './UserGoal';
 import { UserTransaction } from './UserTransaction';
-import { NotificationStatus } from '@models';
+import { NotificationStatus, UserRole } from '@models';
 
 export type UserDocument = Document & {
   email?: string;
@@ -20,6 +20,8 @@ export type UserDocument = Document & {
     fullName?: string;
     dateOfBirth?: Date;
   };
+
+  role: UserRole;
 
   balance: number;
 
@@ -55,6 +57,9 @@ const userSchema = new Schema(
     tokens: Array,
     devices: Array,
     exportToken: String,
+    email: String,
+    password: String,
+    role: String,
     tasks: [
       {
         routeId: String,

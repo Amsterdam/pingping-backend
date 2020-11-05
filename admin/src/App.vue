@@ -1,50 +1,62 @@
 <template>
   <div id="app">
-    <h2>PingPing Admin</h2>
-
     <div v-if="isLoggedIn">
-      <b-tabs content-class="mt-3">
-        <b-tab
-          title="Users"
-          active
-        >
-          <Users />
-        </b-tab>
-        <b-tab title="Rewards">
-          <Rewards />
-        </b-tab>
-        <b-tab title="Other">
-          <AdminActions />
-        </b-tab>
-      </b-tabs>
+      <AppNav />
+      <router-view></router-view>
     </div>
 
-    <Login
-      v-else
-      @login="update"
-    />
+    <Login v-else />
   </div>
 </template>
 
 <script>
-import Users from './components/Users'
-import Rewards from './components/Rewards'
+import _ from 'lodash'
 import Login from './components/Login'
-import AdminActions from './components/AdminActions'
+import AppNav from './components/AppNav'
+import { GetUsersQuery } from './queries/GetUsersQuery'
 
 export default {
   name: 'App',
 
   components: {
-    Users,
-    Rewards,
     Login,
-    AdminActions
+    AppNav
+  },
+
+  mounted () {
+    if (this.isLoggedIn) {
+      this.fetch()
+    }
   },
 
   methods: {
-    update () {
-      this.loggedIn = true
+    fetch () {
+      this.fetchUsers()
+    },
+
+    fetchUsers () {
+      this.$apollo.query({
+        query: GetUsersQuery,
+        update: (store, { data }) => {
+          store.writeData({ query: GetUsersQuery, data })
+        }
+      }).then(({ data }) => {
+        this.$store.commit('users/setItems', data.getUsers.map(i => {
+          return {
+            ...i,
+            selected: false,
+            device: _.first(i.devices.filter(d => d.notificationStatus === 'Approved'))
+          }
+        }))
+      }).catch((error) => {
+        if (error.message === 'GraphQL error: unauthorized') {
+          window.localStorage.removeItem('pp:token')
+          window.alert('unauthorized')
+          window.setTimeout(() => {
+            location.reload()
+          }, 1000)
+        }
+      })
     }
   },
 
@@ -54,9 +66,11 @@ export default {
     }
   },
 
-  data () {
-    return {
-      loggedIn: false
+  watch: {
+    isLoggedIn (val) {
+      if (val) {
+        this.fetch()
+      }
     }
   }
 }

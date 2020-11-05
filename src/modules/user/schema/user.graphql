@@ -1,7 +1,6 @@
 type Query {
   getStatus: StatusResponse!
   getAchievements: [AchievementResponse!]!
-  getUsers(token: String!): [AdminUserResponse]!
 }
 
 type Mutation {
@@ -55,13 +54,6 @@ type UserResponse {
   createdAt: String!
 }
 
-type AdminUserResponse {
-  id: String!
-  data: JSON
-  devices: [DeviceResponse!]
-  createdAt: String!
-}
-
 type DeviceResponse {
   id: String!
   token: String
@@ -71,6 +63,7 @@ type DeviceResponse {
 
 type UserProfileResponse {
   dateOfBirth: Date
+  fullName: String
 }
 
 # Input
@@ -83,4 +76,10 @@ input CreateGoalInput {
 input RegisterNotificationsInput {
   notificationStatus: NotificationStatus!
   deviceToken: String!
+}
+
+# Enum
+enum UserRole {
+  User
+  Admin
 }

@@ -18,9 +18,9 @@ export const RewardsModule = new GraphQLModule({
   resolvers: mergeResolvers(resolvers),
   resolversComposition: {
     'Query.getAvailableRewards': [AuthMiddleware.isAuthenticated()],
-    'Query.getRewards': [AuthMiddleware.isAuthenticated(), AuthMiddleware.isAdmin()],
+    'Query.getRewards': [AuthMiddleware.isAdmin()],
     'Mutation.claimReward': [AuthMiddleware.isAuthenticated()],
-    'Mutation.createRewards': [AuthMiddleware.isAuthenticated(), AuthMiddleware.isAdmin()],
+    'Mutation.createRewards': [AuthMiddleware.isAdmin()],
   },
   context,
 });

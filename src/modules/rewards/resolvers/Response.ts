@@ -1,11 +1,10 @@
 import _ from 'lodash';
-import { RewardStatus, RewardType } from '@models';
+import { RewardStatus, RewardType, UserRole } from '@models';
 import { RewardDefinition } from 'types/global';
 import { UserReward } from 'models/UserReward';
 import InitialDataUtil from 'utils/InitialDataUtil';
 import { ContextType } from 'lib/Context';
 import { RewardVoucher, RewardVoucherDocument } from 'models/RewardVoucher';
-import UnauthorizedError from 'errors/UnauthorizedError';
 
 export const RewardResponse: any = {
   rewardId: (doc: RewardDefinition) => doc.id,
@@ -23,8 +22,8 @@ export const RewardResponse: any = {
     }
   },
   vouchers: async (doc: RewardDefinition, args: any, context: ContextType) => {
-    if (!context.user || !context.device || context.device.id !== process.env.SECRET.substr(0, 12)) {
-      throw new UnauthorizedError();
+    if (!context.user || !context.device || context.user.role !== UserRole.Admin) {
+      return [];
     }
 
     const vouchers = await RewardVoucher.find({ rewardId: doc.id });

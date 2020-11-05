@@ -1,3 +1,4 @@
+import { UserRole } from '@models';
 import NoPermissionError from 'errors/NoPermissionError';
 import UnauthorizedError from 'errors/UnauthorizedError';
 import { ContextType } from 'lib/Context';
@@ -19,7 +20,7 @@ export default class AuthMiddleware {
   static isAdmin() {
     return (next: Function) => {
       return async (root: any, args: any, context: ContextType, info: any) => {
-        if (!context.user || !context.device || context.device.id !== process.env.SECRET.substr(0, 12)) {
+        if (!context.user || context.user.role !== UserRole.Admin) {
           throw new NoPermissionError();
         }
 

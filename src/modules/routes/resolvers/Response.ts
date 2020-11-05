@@ -2,11 +2,19 @@ import _ from 'lodash';
 import { UserTask } from 'models/UserTask';
 import TaskUtil from 'utils/TaskUtil';
 import { TaskDefinition, RouteDefinition } from 'types/global';
-import { TaskStatus, TaskType } from '@models';
+import { TaskStatus, TaskType, UserRole } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
+import { ContextType } from 'lib/Context';
 
 export const UserTaskResponse: any = {
   task: (doc: UserTask) => TaskUtil.getDefinition(doc.taskId),
+  answer: (doc: UserTask, args: any, context: ContextType) => {
+    if (context.user.role === UserRole.User) {
+      return doc.answer;
+    }
+
+    return '##redacted##';
+  },
 };
 
 export const TaskResponse: any = {

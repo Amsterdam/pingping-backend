@@ -13,7 +13,3 @@ export const StatusResponse: any = {
     return auth.signToken(context.user);
   },
 };
-
-export const AdminUserResponse: any = {
-  data: (doc: UserDocument) => doc,
-};

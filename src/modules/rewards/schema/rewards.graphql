@@ -22,6 +22,7 @@ type RewardResponse {
   description: String
   imageUrl: String
   thumbnailUrl: String
+  cover: Media
   price: Int!
   status: RewardStatus!
   vouchers: [RewardVoucherResponse]

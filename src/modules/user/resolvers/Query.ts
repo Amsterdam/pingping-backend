@@ -2,9 +2,6 @@ import { QueryResolvers } from '@models';
 import TaskUtil from 'utils/TaskUtil';
 import { ContextType } from 'lib/Context';
 import { User } from 'models/User';
-import { QueryGetUsersArgs } from 'generated-models';
-import auth from 'lib/auth';
-import UnauthorizedError from 'errors/UnauthorizedError';
 
 export const Query: QueryResolvers = {
   getStatus(root: any, args: any, context: ContextType): any {
@@ -21,9 +18,5 @@ export const Query: QueryResolvers = {
 
   getAchievements(root: any, args: any, context: ContextType): any {
     return [];
-  },
-
-  async getUsers(root: any, args: QueryGetUsersArgs, context: ContextType): Promise<Array<any>> {
-    return await User.find({});
   },
 };

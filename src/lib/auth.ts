@@ -1,9 +1,12 @@
 import _ from 'lodash';
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
+import bcrypt from 'bcrypt-nodejs';
 import { UserTask } from 'models/UserTask';
 
 import { UserDocument, User, AuthToken, AuthTokenKind, Device } from '../models/User';
+import { NotificationStatus, UserRole } from '@models';
+import AuthenticationError from 'errors/AuthenticationError';
 
 const TOKEN_VALIDITY_MINUTES = process.env.TOKEN_VALIDITY_MINUTES || 180;
 
@@ -20,10 +23,10 @@ class auth {
       .slice(len * -1);
   }
 
-  static async createToken(user: UserDocument): Promise<AuthToken> {
+  static async createToken(user: UserDocument, deviceId: string): Promise<AuthToken> {
     let tokenObj: AuthToken = {
       kind: AuthTokenKind.auth,
-      deviceId: null,
+      deviceId,
       accessToken: this.signToken(user),
       validUntil: moment().add(TOKEN_VALIDITY_MINUTES, 'minutes').toDate(),
     };
@@ -34,15 +37,70 @@ class auth {
     return tokenObj;
   }
 
-  static async createUser(fullName: string, email: string, password: string) {
-    try {
-      const user = await User.create({
-        profile: { fullName },
-        email,
-        password,
-        balance: 0,
-        tasks: [] as Array<UserTask>,
+  static async createAdminUser() {
+    await auth.createUser(UserRole.Admin, 'Admin', 'admin@pingping.amsterdam.nl', process.env.ADMIN_PASSWORD);
+  }
+
+  static async login(email: string, candidatePassword: string, deviceId: string) {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new AuthenticationError();
+    }
+
+    const res = await bcrypt.compareSync(candidatePassword, user.password);
+
+    if (!res) {
+      throw new AuthenticationError();
+    }
+
+    const token = await auth.createToken(user, deviceId);
+
+    return {
+      accessToken: token.accessToken,
+      user,
+    };
+  }
+
+  static async hashPassword(password: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      bcrypt.genSalt(10, (err: any, salt: any) => {
+        if (err) {
+          return reject(err);
+        }
+        bcrypt.hash(password, salt, undefined, (err: Error, hash: string) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(hash);
+        });
       });
+    });
+  }
+
+  static async createUser(role: UserRole, fullName: string, email: string, password: string) {
+    console.log('Creating superadmin');
+    try {
+      const user = await User.findOneAndUpdate(
+        {
+          email,
+        },
+        {
+          profile: { fullName },
+          role,
+          password: await auth.hashPassword(password),
+          balance: 0,
+          devices: [
+            {
+              id: 'admin',
+              type: 'Admin',
+              os: 'Admin',
+              notificationStatus: NotificationStatus.Declined,
+            },
+          ],
+        },
+        { upsert: true, new: true }
+      );
 
       return user;
     } catch (error) {

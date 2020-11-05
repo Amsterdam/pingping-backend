@@ -1,14 +1,53 @@
+type Query {
+  getUsers: [AdminUserResponse]!
+  getAuditLog: [AuditLogResponse!]
+}
+
 type Mutation {
   adminActions(type: AdminActionType!): String!
   sendNotifications(title: String!, body: String!, deviceTokens: String!): JSON!
+  adminCreateUser(input: CreateUserInput): UserResponse!
+  adminDeleteUser(id: String!): String!
+  login(email: String!, password: String!, deviceId: String!): LoginResponse!
 }
 
 # Response
+type LoginResponse {
+  accessToken: String!
+  user: UserResponse!
+}
+
+type AuditLogResponse {
+  user: UserResponse!
+  type: AuditLogType!
+  description: String!
+}
+
+type AdminUserResponse {
+  id: String!
+  devices: [DeviceResponse!]
+  userTasks: [UserTaskResponse!]
+  createdAt: String!
+  rewards: JSON
+  transactions: JSON
+}
 
 # Input
+input CreateUserInput {
+  email: String!
+  fullName: String!
+  password: String!
+  role: UserRole!
+}
 
 # Enum
 enum AdminActionType {
   FixUsers
   DeleteAllUsers
+}
+
+enum AuditLogType {
+  ViewUser
+  DeleteUser
+  CreateUser
 }

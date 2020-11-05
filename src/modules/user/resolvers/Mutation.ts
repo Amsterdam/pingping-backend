@@ -6,6 +6,7 @@ import {
   MessageResponse,
   MutationRegisterNotificationsArgs,
   MutationContactArgs,
+  AuditLogType,
 } from '@models';
 import _ from 'lodash';
 import { ModuleContext } from '@graphql-modules/core';
@@ -15,6 +16,8 @@ import { User } from 'models/User';
 import { ContextType } from 'lib/Context';
 import SendGridMail from '@sendgrid/mail';
 import UserUtil from 'utils/UserUtil';
+import { AuditLog } from 'models/AuditLog';
+import LogUtil from 'utils/LogUtil';
 
 export const Mutation: MutationResolvers = {
   async contact(root: any, args: MutationContactArgs, context: ContextType): Promise<any> {
@@ -64,6 +67,7 @@ export const Mutation: MutationResolvers = {
 
   async deleteUser(root: any, args: MutationDeleteUserArgs, context: ModuleContext): Promise<MessageResponse> {
     if (args.confirm === 'delete') {
+      await LogUtil.create(context.user, AuditLogType.DeleteUser, 'User deleted his own account', context.user._id);
       await UserUtil.deleteUser(context.user);
 
       return {

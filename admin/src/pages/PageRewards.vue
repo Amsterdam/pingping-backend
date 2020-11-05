@@ -40,7 +40,7 @@ import gql from 'graphql-tag'
 import VueJsonPretty from 'vue-json-pretty'
 
 export default {
-  name: 'Rewards',
+  name: 'PageRewards',
 
   components: {
     VueJsonPretty

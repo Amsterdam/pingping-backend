@@ -40,10 +40,25 @@ export enum AdminActionType {
 export type AdminUserResponse = {
    __typename?: 'AdminUserResponse';
   id: Scalars['String'];
-  data?: Maybe<Scalars['JSON']>;
   devices?: Maybe<Array<DeviceResponse>>;
+  userTasks?: Maybe<Array<UserTaskResponse>>;
   createdAt: Scalars['String'];
+  rewards?: Maybe<Scalars['JSON']>;
+  transactions?: Maybe<Scalars['JSON']>;
 };
+
+export type AuditLogResponse = {
+   __typename?: 'AuditLogResponse';
+  user: UserResponse;
+  type: AuditLogType;
+  description: Scalars['String'];
+};
+
+export enum AuditLogType {
+  ViewUser = 'ViewUser',
+  DeleteUser = 'DeleteUser',
+  CreateUser = 'CreateUser'
+}
 
 
 export type CompleteTaskResponse = {
@@ -61,6 +76,13 @@ export type CreateGoalInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   amount: Scalars['Int'];
+};
+
+export type CreateUserInput = {
+  email: Scalars['String'];
+  fullName: Scalars['String'];
+  password: Scalars['String'];
+  role: UserRole;
 };
 
 
@@ -94,10 +116,18 @@ export enum Locale {
   NlNl = 'nl_NL'
 }
 
+export type LoginResponse = {
+   __typename?: 'LoginResponse';
+  accessToken: Scalars['String'];
+  user: UserResponse;
+};
+
 export type Media = {
    __typename?: 'Media';
   type: MediaType;
   value: Scalars['String'];
+  thumbnail?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
 };
 
 export enum MediaType {
@@ -118,12 +148,15 @@ export type Mutation = {
   createRouteFeedback: RouteFeedbackResponse;
   claimReward: UserRewardResponse;
   updateReward: RewardResponse;
-  adminActions: Scalars['String'];
-  sendNotifications: Scalars['JSON'];
   createGoal: UserGoalResponse;
   deleteUser?: Maybe<MessageResponse>;
   registerNotifications: DeviceResponse;
   contact?: Maybe<Scalars['String']>;
+  adminActions: Scalars['String'];
+  sendNotifications: Scalars['JSON'];
+  adminCreateUser: UserResponse;
+  adminDeleteUser: Scalars['String'];
+  login: LoginResponse;
   registerDevice: RegisterDeviceResponse;
 };
 
@@ -159,18 +192,6 @@ export type MutationUpdateRewardArgs = {
 };
 
 
-export type MutationAdminActionsArgs = {
-  type: AdminActionType;
-};
-
-
-export type MutationSendNotificationsArgs = {
-  title: Scalars['String'];
-  body: Scalars['String'];
-  deviceTokens: Scalars['String'];
-};
-
-
 export type MutationCreateGoalArgs = {
   input: CreateGoalInput;
 };
@@ -188,6 +209,35 @@ export type MutationRegisterNotificationsArgs = {
 
 export type MutationContactArgs = {
   input?: Maybe<ContactInput>;
+};
+
+
+export type MutationAdminActionsArgs = {
+  type: AdminActionType;
+};
+
+
+export type MutationSendNotificationsArgs = {
+  title: Scalars['String'];
+  body: Scalars['String'];
+  deviceTokens: Scalars['String'];
+};
+
+
+export type MutationAdminCreateUserArgs = {
+  input?: Maybe<CreateUserInput>;
+};
+
+
+export type MutationAdminDeleteUserArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationLoginArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+  deviceId: Scalars['String'];
 };
 
 
@@ -210,16 +260,12 @@ export type Query = {
   getStatus: StatusResponse;
   getAchievements: Array<AchievementResponse>;
   getUsers: Array<Maybe<AdminUserResponse>>;
+  getAuditLog?: Maybe<Array<AuditLogResponse>>;
 };
 
 
 export type QueryGetRouteArgs = {
   routeId: Scalars['String'];
-};
-
-
-export type QueryGetUsersArgs = {
-  token: Scalars['String'];
 };
 
 export type RegisterDeviceInput = {
@@ -251,6 +297,7 @@ export type RewardResponse = {
   description?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
   thumbnailUrl?: Maybe<Scalars['String']>;
+  cover?: Maybe<Media>;
   price: Scalars['Int'];
   status: RewardStatus;
   vouchers?: Maybe<Array<Maybe<RewardVoucherResponse>>>;
@@ -302,6 +349,7 @@ export type RouteResponse = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   coverImageUrl?: Maybe<Scalars['String']>;
+  cover?: Maybe<Media>;
   mainColor?: Maybe<Scalars['String']>;
   thumbnailUrl?: Maybe<Scalars['String']>;
   isSuggested: Scalars['Boolean'];
@@ -376,6 +424,7 @@ export type UserGoalResponse = {
 export type UserProfileResponse = {
    __typename?: 'UserProfileResponse';
   dateOfBirth?: Maybe<Scalars['Date']>;
+  fullName?: Maybe<Scalars['String']>;
 };
 
 export type UserResponse = {
@@ -397,6 +446,11 @@ export type UserRewardResponse = {
   barcodeImageUrl?: Maybe<Scalars['String']>;
   data?: Maybe<Scalars['JSON']>;
 };
+
+export enum UserRole {
+  User = 'User',
+  Admin = 'Admin'
+}
 
 export type UserTaskResponse = {
    __typename?: 'UserTaskResponse';
@@ -482,6 +536,8 @@ export type ResolversTypes = {
   GetRoutesResponse: ResolverTypeWrapper<GetRoutesResponse>,
   RouteResponse: ResolverTypeWrapper<RouteResponse>,
   String: ResolverTypeWrapper<Scalars['String']>,
+  Media: ResolverTypeWrapper<Media>,
+  MediaType: MediaType,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   RouteTip: ResolverTypeWrapper<RouteTip>,
@@ -489,8 +545,6 @@ export type ResolversTypes = {
   UserTaskResponse: ResolverTypeWrapper<UserTaskResponse>,
   TaskStatus: TaskStatus,
   TaskResponse: ResolverTypeWrapper<TaskResponse>,
-  Media: ResolverTypeWrapper<Media>,
-  MediaType: MediaType,
   Choices: ResolverTypeWrapper<Scalars['Choices']>,
   TaskType: TaskType,
   RewardResponse: ResolverTypeWrapper<RewardResponse>,
@@ -508,6 +562,8 @@ export type ResolversTypes = {
   AchievementResponse: ResolverTypeWrapper<AchievementResponse>,
   AchievementStatus: AchievementStatus,
   AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
+  AuditLogResponse: ResolverTypeWrapper<AuditLogResponse>,
+  AuditLogType: AuditLogType,
   Mutation: ResolverTypeWrapper<{}>,
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
@@ -515,11 +571,14 @@ export type ResolversTypes = {
   RouteFeedbackInput: RouteFeedbackInput,
   RouteFeedbackResponse: ResolverTypeWrapper<RouteFeedbackResponse>,
   RewardVoucherInput: RewardVoucherInput,
-  AdminActionType: AdminActionType,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: ResolverTypeWrapper<MessageResponse>,
   RegisterNotificationsInput: RegisterNotificationsInput,
   ContactInput: ContactInput,
+  AdminActionType: AdminActionType,
+  CreateUserInput: CreateUserInput,
+  UserRole: UserRole,
+  LoginResponse: ResolverTypeWrapper<LoginResponse>,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
@@ -535,6 +594,8 @@ export type ResolversParentTypes = {
   GetRoutesResponse: GetRoutesResponse,
   RouteResponse: RouteResponse,
   String: Scalars['String'],
+  Media: Media,
+  MediaType: MediaType,
   Boolean: Scalars['Boolean'],
   Int: Scalars['Int'],
   RouteTip: RouteTip,
@@ -542,8 +603,6 @@ export type ResolversParentTypes = {
   UserTaskResponse: UserTaskResponse,
   TaskStatus: TaskStatus,
   TaskResponse: TaskResponse,
-  Media: Media,
-  MediaType: MediaType,
   Choices: Scalars['Choices'],
   TaskType: TaskType,
   RewardResponse: RewardResponse,
@@ -561,6 +620,8 @@ export type ResolversParentTypes = {
   AchievementResponse: AchievementResponse,
   AchievementStatus: AchievementStatus,
   AdminUserResponse: AdminUserResponse,
+  AuditLogResponse: AuditLogResponse,
+  AuditLogType: AuditLogType,
   Mutation: {},
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: UpdateTaskResponse,
@@ -568,11 +629,14 @@ export type ResolversParentTypes = {
   RouteFeedbackInput: RouteFeedbackInput,
   RouteFeedbackResponse: RouteFeedbackResponse,
   RewardVoucherInput: RewardVoucherInput,
-  AdminActionType: AdminActionType,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: MessageResponse,
   RegisterNotificationsInput: RegisterNotificationsInput,
   ContactInput: ContactInput,
+  AdminActionType: AdminActionType,
+  CreateUserInput: CreateUserInput,
+  UserRole: UserRole,
+  LoginResponse: LoginResponse,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
   LocactionInput: LocactionInput,
@@ -595,9 +659,18 @@ export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType
 
 export type AdminUserResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AdminUserResponse'] = ResolversParentTypes['AdminUserResponse']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  data?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
   devices?: Resolver<Maybe<Array<ResolversTypes['DeviceResponse']>>, ParentType, ContextType>,
+  userTasks?: Resolver<Maybe<Array<ResolversTypes['UserTaskResponse']>>, ParentType, ContextType>,
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  rewards?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
+  transactions?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
+export type AuditLogResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AuditLogResponse'] = ResolversParentTypes['AuditLogResponse']> = {
+  user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
+  type?: Resolver<ResolversTypes['AuditLogType'], ParentType, ContextType>,
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -638,9 +711,17 @@ export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'JSON'
 }
 
+export type LoginResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['LoginResponse'] = ResolversParentTypes['LoginResponse']> = {
+  accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export type MediaResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Media'] = ResolversParentTypes['Media']> = {
   type?: Resolver<ResolversTypes['MediaType'], ParentType, ContextType>,
   value?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  thumbnail?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  color?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -656,12 +737,15 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   createRouteFeedback?: Resolver<ResolversTypes['RouteFeedbackResponse'], ParentType, ContextType, RequireFields<MutationCreateRouteFeedbackArgs, 'input'>>,
   claimReward?: Resolver<ResolversTypes['UserRewardResponse'], ParentType, ContextType, RequireFields<MutationClaimRewardArgs, 'rewardId'>>,
   updateReward?: Resolver<ResolversTypes['RewardResponse'], ParentType, ContextType, RequireFields<MutationUpdateRewardArgs, never>>,
-  adminActions?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationAdminActionsArgs, 'type'>>,
-  sendNotifications?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<MutationSendNotificationsArgs, 'title' | 'body' | 'deviceTokens'>>,
   createGoal?: Resolver<ResolversTypes['UserGoalResponse'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'input'>>,
   deleteUser?: Resolver<Maybe<ResolversTypes['MessageResponse']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, never>>,
   registerNotifications?: Resolver<ResolversTypes['DeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterNotificationsArgs, 'input'>>,
   contact?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationContactArgs, never>>,
+  adminActions?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationAdminActionsArgs, 'type'>>,
+  sendNotifications?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<MutationSendNotificationsArgs, 'title' | 'body' | 'deviceTokens'>>,
+  adminCreateUser?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationAdminCreateUserArgs, never>>,
+  adminDeleteUser?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationAdminDeleteUserArgs, 'id'>>,
+  login?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password' | 'deviceId'>>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };
 
@@ -672,7 +756,8 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   getRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
   getAchievements?: Resolver<Array<ResolversTypes['AchievementResponse']>, ParentType, ContextType>,
-  getUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType, RequireFields<QueryGetUsersArgs, 'token'>>,
+  getUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType>,
+  getAuditLog?: Resolver<Maybe<Array<ResolversTypes['AuditLogResponse']>>, ParentType, ContextType>,
 };
 
 export type RegisterDeviceResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RegisterDeviceResponse'] = ResolversParentTypes['RegisterDeviceResponse']> = {
@@ -688,6 +773,7 @@ export type RewardResponseResolvers<ContextType = ModuleContext, ParentType exte
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   thumbnailUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  cover?: Resolver<Maybe<ResolversTypes['Media']>, ParentType, ContextType>,
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   status?: Resolver<ResolversTypes['RewardStatus'], ParentType, ContextType>,
   vouchers?: Resolver<Maybe<Array<Maybe<ResolversTypes['RewardVoucherResponse']>>>, ParentType, ContextType>,
@@ -716,6 +802,7 @@ export type RouteResponseResolvers<ContextType = ModuleContext, ParentType exten
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   coverImageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  cover?: Resolver<Maybe<ResolversTypes['Media']>, ParentType, ContextType>,
   mainColor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   thumbnailUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   isSuggested?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
@@ -771,6 +858,7 @@ export type UserGoalResponseResolvers<ContextType = ModuleContext, ParentType ex
 
 export type UserProfileResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['UserProfileResponse'] = ResolversParentTypes['UserProfileResponse']> = {
   dateOfBirth?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
+  fullName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -804,6 +892,7 @@ export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType ex
 export type Resolvers<ContextType = ModuleContext> = {
   AchievementResponse?: AchievementResponseResolvers<ContextType>,
   AdminUserResponse?: AdminUserResponseResolvers<ContextType>,
+  AuditLogResponse?: AuditLogResponseResolvers<ContextType>,
   Choices?: GraphQLScalarType,
   CompleteTaskResponse?: CompleteTaskResponseResolvers<ContextType>,
   Date?: GraphQLScalarType,
@@ -811,6 +900,7 @@ export type Resolvers<ContextType = ModuleContext> = {
   ExportResponse?: ExportResponseResolvers<ContextType>,
   GetRoutesResponse?: GetRoutesResponseResolvers<ContextType>,
   JSON?: GraphQLScalarType,
+  LoginResponse?: LoginResponseResolvers<ContextType>,
   Media?: MediaResolvers<ContextType>,
   MessageResponse?: MessageResponseResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,

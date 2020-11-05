@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { User, Device, AuthToken, AuthTokenKind, UserDocument } from '../models/User';
 import InitialDataUtil from './InitialDataUtil';
 import auth from '../lib/auth';
-import { RegisterDeviceInput, NotificationStatus } from '@models';
+import { RegisterDeviceInput, NotificationStatus, UserRole } from '@models';
 import { RewardVoucher } from 'models/RewardVoucher';
 
 class UserUtil {
@@ -27,6 +27,7 @@ class UserUtil {
       userFound = await User.create({
         tasks: initialTasks,
         balance: 0,
+        role: UserRole.User,
         profile: {},
       });
     }

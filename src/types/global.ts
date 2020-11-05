@@ -1,4 +1,4 @@
-import { RewardType, TaskType } from '@models';
+import { MediaType, RewardType, TaskType } from '@models';
 
 export type AchievementDefinition = {
   id: string;
@@ -18,7 +18,7 @@ export type TaskDefinition = {
   icon: string;
   points: number;
   progress: number;
-  media?: string;
+  media?: MediaType;
   choices?: object;
   initial?: boolean;
   nextTaskId?: string | object;
@@ -31,6 +31,7 @@ export type RewardDefinition = {
   description: string;
   imageUrl: string;
   tumbnailUrl: string;
+  cover: MediaType;
   vendor: string;
   active: boolean;
   type: RewardType;
@@ -45,6 +46,7 @@ export type RouteDefinition = {
   description?: string;
   isSuggested: boolean;
   imageUrl?: string;
+  cover: MediaType;
   thumbnailUrl?: string;
   tasks: Array<TaskDefinition>;
   tips: Array<RouteTipsDefinition>;

@@ -21,9 +21,22 @@
       size="xl"
       v-model="expanded"
       :title="id"
+      id="user-item"
     >
-      <vue-json-pretty :data="data">
-      </vue-json-pretty>
+      <h6>Devices</h6>
+      <vue-json-pretty :data="devices" />
+      <h6>Tasks</h6>
+      <vue-json-pretty :data="userTasks" />
+      <h6>Rewards</h6>
+      <vue-json-pretty :data="rewards" />
+      <h6>Transactions</h6>
+      <vue-json-pretty :data="transactions" />
+
+      <b-button
+        variant="danger"
+        @click="deleteUser"
+        class="mt-4"
+      >Delete User</b-button>
     </b-modal>
   </tr>
 </template>
@@ -31,6 +44,7 @@
 <script>
 import _ from 'lodash'
 import moment from 'moment'
+import { DeleteUserMutation } from '../mutations/DeleteUserMutation'
 import VueJsonPretty from 'vue-json-pretty'
 
 export default {
@@ -41,7 +55,9 @@ export default {
     id: String,
     createdAt: String,
     selected: Boolean,
-    data: Object
+    userTasks: Array,
+    rewards: Array,
+    transactions: Array
   },
 
   components: {
@@ -55,6 +71,20 @@ export default {
   methods: {
     toggleSelected () {
       this.$emit('set', { id: this.id, selected: !this.selected })
+    },
+
+    deleteUser () {
+      if (window.confirm('Are you sure?')) {
+        this.$apollo.mutate({
+          mutation: DeleteUserMutation,
+          variables: {
+            id: this.id
+          }
+        }).then(() => {
+          this.$store.commit('users/removeItem', this.id)
+          this.$root.$emit('bv::hide::modal', 'user-item')
+        })
+      }
     }
   },
 
@@ -99,5 +129,18 @@ export default {
 <style lang="css" scoped>
 .hover {
   cursor: pointer;
+}
+
+.modal-dialog {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.modal-content {
+  height: auto;
+  min-height: 100%;
+  border-radius: 0;
 }
 </style>

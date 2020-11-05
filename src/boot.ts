@@ -1,5 +1,6 @@
 import db from './lib/db';
 import dotenv from 'dotenv';
+import auth from './lib/auth';
 
 class boot {
   static async start() {
@@ -7,7 +8,8 @@ class boot {
     require('console-stamp')(console, '[HH:MM:ss.l]');
     dotenv.config();
 
-    const items = [await db.connect()];
+    // Create admin user
+    const items = [await db.connect(), await auth.createAdminUser()];
 
     return Promise.all(items);
   }

@@ -16,6 +16,7 @@ class RouteUtil {
         tasks: routeFound.tasks,
         isSuggested: routeFound.isSuggested,
         tips: routeFound.tips || [],
+        cover: routeFound.cover,
         targetAudience: routeFound.targetAudience,
       };
 

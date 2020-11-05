@@ -43,7 +43,7 @@ export const Mutation: MutationResolvers = {
   async revertTask(root: any, args: MutationRevertTaskArgs, context: ModuleContext): Promise<any> {
     await TaskUtil.revertTask(context.user, args.taskId);
 
-    return 'sucess';
+    return 'success';
   },
 
   async createRouteFeedback(root: any, args: MutationCreateRouteFeedbackArgs, context: ModuleContext): Promise<any> {

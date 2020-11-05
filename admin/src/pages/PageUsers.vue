@@ -1,10 +1,13 @@
 <template>
-  <div class="section container">
+  <div class="section">
     <SendNotification
       v-if="selected.length"
       :deviceTokens="selected"
     />
-    <div @click="isFilter = !isFilter">{{ isFilter ? 'Filter: \'NotificationStatus=Approved\'' : 'Filter: none' }}</div>
+    <div
+      class="p-2"
+      @click="isFilter = !isFilter"
+    >{{ isFilter ? 'Filter: \'NotificationStatus=Approved\'' : 'Filter: none' }}</div>
     <table class="table">
       <thead>
         <tr>
@@ -28,20 +31,25 @@
 </template>
 
 <script>
-import _ from 'lodash'
-import gql from 'graphql-tag'
-import UserListItem from './UserListItem'
-import SendNotification from './SendNotification'
+import { mapState } from 'vuex'
+import UserListItem from '../components/UserListItem'
+import SendNotification from '../components/SendNotification'
 
 export default {
-  name: 'Users',
+  name: 'PageUsers',
 
   components: {
     UserListItem,
     SendNotification
   },
 
+  mounted () {
+  },
+
   computed: {
+    ...mapState({
+      users: state => state.users.items
+    }),
     filteredUsers () {
       if (this.isFilter) {
         return this.users.filter((u => {
@@ -71,46 +79,8 @@ export default {
     }
   },
 
-  apollo: {
-    users: {
-      query: gql`query users($token:String!) { getUsers(token:$token) {
-        id
-        createdAt
-        data
-        devices {
-          id
-          token
-          os
-          notificationStatus
-        }
-      }}`,
-      variables: {
-        token: window.localStorage.getItem('pp:token')
-      },
-      update: data => {
-        return data.getUsers.map(i => {
-          return {
-            ...i,
-            selected: false,
-            device: _.first(i.devices.filter(d => d.notificationStatus === 'Approved'))
-          }
-        })
-      },
-      error: error => {
-        if (error.message === 'GraphQL error: unauthorized') {
-          window.localStorage.removeItem('pp:token')
-          window.alert('unauthorized')
-          window.setTimeout(() => {
-            location.reload()
-          }, 1000)
-        }
-      }
-    }
-  },
-
   data () {
     return {
-      users: [],
       isFilter: false,
       selected: ''
     }
