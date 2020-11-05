@@ -22,13 +22,11 @@ export const RewardResponse: any = {
     }
   },
   vouchers: async (doc: RewardDefinition, args: any, context: ContextType) => {
-    if (!context.user || !context.device || context.user.role !== UserRole.Admin) {
-      return [];
+    if (context.user && context.user.role === UserRole.Admin) {
+      return await RewardVoucher.find({ rewardId: doc.id });
     }
 
-    const vouchers = await RewardVoucher.find({ rewardId: doc.id });
-
-    return vouchers;
+    return [];
   },
 };
 

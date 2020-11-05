@@ -15,12 +15,10 @@
         class="sr-only"
         for="inline-form-input-username"
       >Password</label>
-      <b-input-group
-        prepend="@"
-        class="mb-2 mr-sm-2 mb-sm-0"
-      >
+      <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
         <b-input
           id="inline-form-input-username"
+          type="password"
           v-model="password"
         ></b-input>
       </b-input-group>

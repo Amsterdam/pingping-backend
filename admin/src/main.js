@@ -39,7 +39,6 @@ const routes = [
 const router = new VueRouter({
   routes,
   base: '/admin',
-  mode: 'history',
 });
 
 new Vue({
