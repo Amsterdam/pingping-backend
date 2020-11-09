@@ -21,6 +21,7 @@ import LogUtil from 'utils/LogUtil';
 
 export const Mutation: MutationResolvers = {
   async contact(root: any, args: MutationContactArgs, context: ContextType): Promise<any> {
+    console.log('ContactForm:', args);
     try {
       SendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
     } catch {
