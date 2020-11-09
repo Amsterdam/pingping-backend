@@ -9,6 +9,7 @@ export const GetAuditLogQuery = gql`
         }
       }
       type
+      createdAt
       description
     }
   }

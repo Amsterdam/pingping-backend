@@ -41,6 +41,8 @@ export type AdminUserResponse = {
    __typename?: 'AdminUserResponse';
   id: Scalars['String'];
   devices?: Maybe<Array<DeviceResponse>>;
+  role?: Maybe<UserRole>;
+  profile?: Maybe<UserProfileResponse>;
   userTasks?: Maybe<Array<UserTaskResponse>>;
   createdAt: Scalars['String'];
   rewards?: Maybe<Scalars['JSON']>;
@@ -49,6 +51,7 @@ export type AdminUserResponse = {
 
 export type AuditLogResponse = {
    __typename?: 'AuditLogResponse';
+  createdAt?: Maybe<Scalars['Date']>;
   user: UserResponse;
   type: AuditLogType;
   description: Scalars['String'];
@@ -295,7 +298,9 @@ export type RewardResponse = {
   rewardId: Scalars['String'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  /** @deprecated Use `cover`. */
   imageUrl?: Maybe<Scalars['String']>;
+  /** @deprecated Use `cover`. */
   thumbnailUrl?: Maybe<Scalars['String']>;
   cover?: Maybe<Media>;
   price: Scalars['Int'];
@@ -348,9 +353,12 @@ export type RouteResponse = {
   routeId: Scalars['String'];
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  /** @deprecated Use `cover`. */
   coverImageUrl?: Maybe<Scalars['String']>;
   cover?: Maybe<Media>;
+  /** @deprecated Use `cover`. */
   mainColor?: Maybe<Scalars['String']>;
+  /** @deprecated Use `cover`. */
   thumbnailUrl?: Maybe<Scalars['String']>;
   isSuggested: Scalars['Boolean'];
   numberOfSteps: Scalars['Int'];
@@ -562,6 +570,7 @@ export type ResolversTypes = {
   AchievementResponse: ResolverTypeWrapper<AchievementResponse>,
   AchievementStatus: AchievementStatus,
   AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
+  UserRole: UserRole,
   AuditLogResponse: ResolverTypeWrapper<AuditLogResponse>,
   AuditLogType: AuditLogType,
   Mutation: ResolverTypeWrapper<{}>,
@@ -577,7 +586,6 @@ export type ResolversTypes = {
   ContactInput: ContactInput,
   AdminActionType: AdminActionType,
   CreateUserInput: CreateUserInput,
-  UserRole: UserRole,
   LoginResponse: ResolverTypeWrapper<LoginResponse>,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
@@ -620,6 +628,7 @@ export type ResolversParentTypes = {
   AchievementResponse: AchievementResponse,
   AchievementStatus: AchievementStatus,
   AdminUserResponse: AdminUserResponse,
+  UserRole: UserRole,
   AuditLogResponse: AuditLogResponse,
   AuditLogType: AuditLogType,
   Mutation: {},
@@ -635,7 +644,6 @@ export type ResolversParentTypes = {
   ContactInput: ContactInput,
   AdminActionType: AdminActionType,
   CreateUserInput: CreateUserInput,
-  UserRole: UserRole,
   LoginResponse: LoginResponse,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
@@ -660,6 +668,8 @@ export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType
 export type AdminUserResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AdminUserResponse'] = ResolversParentTypes['AdminUserResponse']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   devices?: Resolver<Maybe<Array<ResolversTypes['DeviceResponse']>>, ParentType, ContextType>,
+  role?: Resolver<Maybe<ResolversTypes['UserRole']>, ParentType, ContextType>,
+  profile?: Resolver<Maybe<ResolversTypes['UserProfileResponse']>, ParentType, ContextType>,
   userTasks?: Resolver<Maybe<Array<ResolversTypes['UserTaskResponse']>>, ParentType, ContextType>,
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   rewards?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
@@ -668,6 +678,7 @@ export type AdminUserResponseResolvers<ContextType = ModuleContext, ParentType e
 };
 
 export type AuditLogResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AuditLogResponse'] = ResolversParentTypes['AuditLogResponse']> = {
+  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
   user?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
   type?: Resolver<ResolversTypes['AuditLogType'], ParentType, ContextType>,
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>,

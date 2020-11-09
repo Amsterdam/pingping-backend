@@ -20,8 +20,8 @@ type RewardResponse {
   rewardId: String!
   title: String!
   description: String
-  imageUrl: String
-  thumbnailUrl: String
+  imageUrl: String @deprecated(reason: "Use `cover`.")
+  thumbnailUrl: String @deprecated(reason: "Use `cover`.")
   cover: Media
   price: Int!
   status: RewardStatus!

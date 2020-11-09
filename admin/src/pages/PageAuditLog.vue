@@ -3,15 +3,19 @@
     <table class="table">
       <thead>
         <tr>
-          <th></th>
-          <th>id</th>
-          <th>created</th>
-          <th>device</th>
+          <th>Created</th>
+          <th>Type</th>
+          <th>User</th>
+          <th>Description</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        {{ items }}
+        <AuditLogItem
+          v-for="(item, index) in items"
+          :key="'item-' + index"
+          v-bind="item"
+        />
       </tbody>
     </table>
   </div>
@@ -19,16 +23,14 @@
 
 <script>
 import { GetAuditLogQuery } from '../queries/GetAuditLogQuery'
-// import { mapState } from 'vuex'
+import AuditLogItem from '../components/AuditLogItem'
 
 export default {
   name: 'PageAuditLog',
 
-  // computed: {
-  //   ...mapState({
-  //     items: state => state.logs.items
-  //   })
-  // },
+  components: {
+    AuditLogItem
+  },
 
   mounted () {
     this.$apollo.query({

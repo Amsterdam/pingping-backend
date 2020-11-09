@@ -5,6 +5,9 @@ export const GetUsersQuery = gql`
     getUsers {
       id
       createdAt
+      profile {
+        fullName
+      }
       devices {
         id
         token

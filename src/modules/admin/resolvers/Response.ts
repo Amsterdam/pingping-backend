@@ -7,6 +7,6 @@ export const AdminUserResponse: any = {
 
 export const AuditLogResponse: any = {
   user: async (doc: AuditLogDocument) => {
-    return await User.find({ _id: doc.user });
+    return await User.findOne({ _id: doc.user });
   },
 };

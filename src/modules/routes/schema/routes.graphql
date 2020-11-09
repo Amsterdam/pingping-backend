@@ -38,10 +38,10 @@ type RouteResponse {
   routeId: String!
   title: String!
   description: String
-  coverImageUrl: String
+  coverImageUrl: String @deprecated(reason: "Use `cover`.")
   cover: Media
-  mainColor: String
-  thumbnailUrl: String
+  mainColor: String @deprecated(reason: "Use `cover`.")
+  thumbnailUrl: String @deprecated(reason: "Use `cover`.")
   isSuggested: Boolean!
   numberOfSteps: Int!
   totalPoints: Int!

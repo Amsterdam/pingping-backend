@@ -18,6 +18,7 @@ type LoginResponse {
 }
 
 type AuditLogResponse {
+  createdAt: Date
   user: UserResponse!
   type: AuditLogType!
   description: String!
@@ -26,6 +27,8 @@ type AuditLogResponse {
 type AdminUserResponse {
   id: String!
   devices: [DeviceResponse!]
+  role: UserRole
+  profile: UserProfileResponse
   userTasks: [UserTaskResponse!]
   createdAt: String!
   rewards: JSON
