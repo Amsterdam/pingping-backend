@@ -2,7 +2,6 @@ import _ from 'lodash';
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
 import bcrypt from 'bcrypt-nodejs';
-import { UserTask } from 'models/UserTask';
 
 import { UserDocument, User, AuthToken, AuthTokenKind, Device } from '../models/User';
 import { NotificationStatus, UserRole } from '@models';

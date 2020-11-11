@@ -28,7 +28,11 @@
       @ok="updateReward"
       :title="currentItem && currentItem.title || '?'"
     >
+      <div class="text-h6">Vouchers</div>
       <textarea v-model="vouchers"></textarea>
+      <div class="text-h6">CSV Input</div>
+      <textarea v-model="csv"></textarea>
+      <b-button @click="importCsv">Import CSV</b-button>
       <vue-json-pretty :data="currentItem">
       </vue-json-pretty>
     </b-modal>
@@ -74,6 +78,30 @@ export default {
   },
 
   methods: {
+    importCsv () {
+      let res = []
+      let lines = this.csv.split('\n')
+
+      if (lines.length) {
+        let fields = lines[0].split(';')
+
+        for (var i = 1; i < lines.length; i++) {
+          let values = lines[i].split(';')
+          let item = {}
+
+          for (var f in fields) {
+            item[fields[f]] = values[f]
+          }
+
+          res.push({ data: item })
+        }
+
+        this.vouchers = JSON.stringify(JSON.parse(this.vouchers).concat(res))
+
+        // this.vouchers = this.vouchers.concat(res)
+      }
+    },
+
     setItem (item) {
       this.currentItem = item
       this.expanded = true
@@ -121,6 +149,7 @@ export default {
       selected: '',
       expanded: false,
       currentItem: null,
+      csv: '',
       vouchers: []
     }
   }
