@@ -54,4 +54,7 @@ enum AuditLogType {
   ViewUser
   DeleteUser
   CreateUser
+  AdminLogin
+  UpdateReward
+  SendNotifications
 }

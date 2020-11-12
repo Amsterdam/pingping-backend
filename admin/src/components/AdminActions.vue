@@ -12,8 +12,6 @@ export default {
 
   methods: {
     callAction (type) {
-      // console.log('type', type)
-      // e.preventDefault();
       this.loading = true
       this.$apollo.mutate({
         mutation: gql`mutation ($type:AdminActionType!) {

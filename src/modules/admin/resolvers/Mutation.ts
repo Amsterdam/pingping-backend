@@ -22,9 +22,6 @@ export const Mutation: MutationResolvers = {
       case AdminActionType.FixUsers:
         await AdminUtil.fixUsers();
         break;
-      case AdminActionType.DeleteAllUsers:
-        await AdminUtil.deleteAllUsers();
-        break;
       default:
         throw new Error('invalid_admin_action');
     }
@@ -38,6 +35,11 @@ export const Mutation: MutationResolvers = {
     context: ContextType
   ): Promise<any> {
     const res = await PushNotificationUtil.send(args.deviceTokens.split(','), args.title, args.body);
+    await LogUtil.create(
+      context.user,
+      AuditLogType.SendNotifications,
+      `Send ${args.deviceTokens.length} notifications: ${args.body}`
+    );
 
     return {
       result: res,
@@ -64,6 +66,7 @@ export const Mutation: MutationResolvers = {
 
   async adminLogin(root: any, args: MutationAdminLoginArgs, context: ContextType): Promise<any> {
     const res: any = await auth.login(args.email, args.password, args.deviceId);
+    await LogUtil.create(res.user, AuditLogType.AdminLogin, 'Admin login');
 
     return {
       accessToken: res.accessToken,

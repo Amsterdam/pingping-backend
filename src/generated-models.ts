@@ -60,7 +60,10 @@ export type AuditLogResponse = {
 export enum AuditLogType {
   ViewUser = 'ViewUser',
   DeleteUser = 'DeleteUser',
-  CreateUser = 'CreateUser'
+  CreateUser = 'CreateUser',
+  AdminLogin = 'AdminLogin',
+  UpdateReward = 'UpdateReward',
+  SendNotifications = 'SendNotifications'
 }
 
 
