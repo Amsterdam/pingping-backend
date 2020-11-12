@@ -36,7 +36,7 @@ export default {
     this.$apollo.query({
       query: GetAuditLogQuery
     }).then(({ data }) => {
-      this.items = data.getAuditLog
+      this.items = data.adminGetAuditLog
     })
   },
 

@@ -118,7 +118,7 @@ export default {
       this.loading = true
       this.$apollo.mutate({
         mutation: gql`mutation ($id: String!, $vouchers: [RewardVoucherInput]) {
-          updateReward(id: $id, vouchers: $vouchers) {
+          adminUpdateReward(id: $id, vouchers: $vouchers) {
             rewardId
             title
             description
@@ -135,7 +135,7 @@ export default {
         }
       }).then(({ data }) => {
         this.loading = false
-        this.currentItem = data.updateReward
+        this.currentItem = data.adminUpdateReward
       }).catch((error) => {
         console.error(error)
         this.loading = false

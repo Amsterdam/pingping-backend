@@ -1,14 +1,15 @@
 type Query {
-  getUsers: [AdminUserResponse]!
-  getAuditLog: [AuditLogResponse!]
+  adminGetUsers: [AdminUserResponse]!
+  adminGetAuditLog: [AuditLogResponse!]
 }
 
 type Mutation {
   adminActions(type: AdminActionType!): String!
-  sendNotifications(title: String!, body: String!, deviceTokens: String!): JSON!
+  adminSendNotifications(title: String!, body: String!, deviceTokens: String!): JSON!
   adminCreateUser(input: CreateUserInput): UserResponse!
   adminDeleteUser(id: String!): String!
-  login(email: String!, password: String!, deviceId: String!): LoginResponse!
+  "Admin: Login with email & password"
+  adminLogin(email: String!, password: String!, deviceId: String!): LoginResponse!
 }
 
 # Response
@@ -19,7 +20,7 @@ type LoginResponse {
 
 type AuditLogResponse {
   createdAt: Date
-  user: UserResponse!
+  user: UserResponse
   type: AuditLogType!
   description: String!
 }

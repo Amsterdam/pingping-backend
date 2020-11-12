@@ -41,7 +41,7 @@ export default {
           store.writeData({ query: GetUsersQuery, data })
         }
       }).then(({ data }) => {
-        this.$store.commit('users/setItems', data.getUsers.map(i => {
+        this.$store.commit('users/setItems', data.adminGetUsers.map(i => {
           return {
             ...i,
             selected: false,

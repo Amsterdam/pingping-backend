@@ -1,5 +1,5 @@
 import { ModuleContext } from '@graphql-modules/core';
-import { MutationResolvers, MutationClaimRewardArgs, MutationUpdateRewardArgs } from '@models';
+import { MutationResolvers, MutationClaimRewardArgs, MutationAdminUpdateRewardArgs } from '@models';
 import { RewardVoucher } from 'models/RewardVoucher';
 import { UserReward } from 'models/UserReward';
 import InitialDataUtil from 'utils/InitialDataUtil';
@@ -12,7 +12,7 @@ export const Mutation: MutationResolvers = {
     return userReward;
   },
 
-  async updateReward(root: any, args: MutationUpdateRewardArgs, context: ModuleContext): Promise<any> {
+  async adminUpdateReward(root: any, args: MutationAdminUpdateRewardArgs, context: ModuleContext): Promise<any> {
     const reward = InitialDataUtil.getReward(args.id);
 
     for (var v in args.vouchers) {

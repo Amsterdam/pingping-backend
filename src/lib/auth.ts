@@ -41,7 +41,7 @@ class auth {
   }
 
   static async login(email: string, candidatePassword: string, deviceId: string) {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email, role: UserRole.Admin });
 
     if (!user) {
       throw new AuthenticationError();

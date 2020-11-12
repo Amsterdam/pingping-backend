@@ -1,7 +1,6 @@
 <template>
   <div>
-    <button @click="callAction('FixUsers')">Fix Users</button>
-    <button @click="callAction('DeleteAllUsers')">Delete All Users</button>
+    No actions
   </div>
 </template>
 

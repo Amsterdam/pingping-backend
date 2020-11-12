@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const GetAuditLogQuery = gql`
   query {
-    getAuditLog {
+    adminGetAuditLog {
       user {
         profile {
           fullName

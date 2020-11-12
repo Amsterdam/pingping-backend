@@ -53,7 +53,7 @@ export default {
 
       this.$apollo.mutate({
         mutation: gql`mutation ($email: String!, $password: String! $deviceId: String!) {
-          login(email: $email, password: $password, deviceId: $deviceId) {
+          adminLogin(email: $email, password: $password, deviceId: $deviceId) {
             accessToken
             user {
               profile {
@@ -62,8 +62,8 @@ export default {
             }
           }
         }`,
-        update: (store, { data: { login } }) => {
-          window.localStorage.setItem('pp:token', login.accessToken)
+        update: (store, { data: { adminLogin } }) => {
+          window.localStorage.setItem('pp:token', adminLogin.accessToken)
           location.reload()
         },
         variables: {

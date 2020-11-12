@@ -1,19 +1,14 @@
 type Mutation {
-  claimReward(rewardId: String!): UserRewardResponse!
-  updateReward(id: String, vouchers: [RewardVoucherInput]): RewardResponse!
+  "Claim Rewards"
+  claimReward("ID of the reward to claim" rewardId: String!): UserRewardResponse!
+  "Admin: Update a single reward"
+  adminUpdateReward(id: String, vouchers: [RewardVoucherInput]): RewardResponse!
 }
 
 type Query {
   getAvailableRewards: [RewardResponse!]!
   getRewards: [RewardResponse!]!
 }
-
-# Models
-# type UserReward @entity {
-#   rewardId: String! @column
-#   status: RewardStatus! @column
-#   price: Int! @column
-# }
 
 # Response
 type RewardResponse {

@@ -3,11 +3,11 @@ import {
   MutationResolvers,
   MutationAdminActionsArgs,
   AdminActionType,
-  MutationSendNotificationsArgs,
   MutationAdminDeleteUserArgs,
   MutationAdminCreateUserArgs,
-  MutationLoginArgs,
+  MutationAdminLoginArgs,
   AuditLogType,
+  MutationAdminSendNotificationsArgs,
 } from '@models';
 import AdminUtil from 'utils/AdminUtil';
 import { ContextType } from 'lib/Context';
@@ -32,7 +32,11 @@ export const Mutation: MutationResolvers = {
     return 'done';
   },
 
-  async sendNotifications(root: any, args: MutationSendNotificationsArgs, context: ContextType): Promise<any> {
+  async adminSendNotifications(
+    root: any,
+    args: MutationAdminSendNotificationsArgs,
+    context: ContextType
+  ): Promise<any> {
     const res = await PushNotificationUtil.send(args.deviceTokens.split(','), args.title, args.body);
 
     return {
@@ -58,7 +62,7 @@ export const Mutation: MutationResolvers = {
     return 'success';
   },
 
-  async login(root: any, args: MutationLoginArgs, context: ContextType): Promise<any> {
+  async adminLogin(root: any, args: MutationAdminLoginArgs, context: ContextType): Promise<any> {
     const res: any = await auth.login(args.email, args.password, args.deviceId);
 
     return {

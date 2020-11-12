@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const GetUsersQuery = gql`
   query {
-    getUsers {
+    adminGetUsers {
       id
       createdAt
       profile {
