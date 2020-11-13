@@ -1,19 +1,27 @@
 type Mutation {
+  "Update a task with an answer and change the status of the task depending on the input."
   updateTask(input: UpdateTaskInput!): UpdateTaskResponse!
+  "Mark a task as completed without providing input."
   completeTask(taskId: String!): CompleteTaskResponse!
+  "Revert previous task to go back"
   revertTask(taskId: String!): String!
   createRouteFeedback(input: RouteFeedbackInput!): RouteFeedbackResponse!
 }
 
 type Query {
+  "Get all routes"
   getRoutes: GetRoutesResponse!
+  "Get a specific route"
   getRoute(routeId: String!): RouteResponse!
 }
 
 # Response
 type GetRoutesResponse {
+  "Routes currently assigned to the user"
   currentRoutes: [RouteResponse!]
+  "All available routes"
   availableRoutes: [RouteResponse!]
+  "Archived & completed routes"
   archivedRoutes: [RouteResponse!]
 }
 

@@ -107,8 +107,11 @@ export type ExportResponse = {
 
 export type GetRoutesResponse = {
    __typename?: 'GetRoutesResponse';
+  /** Routes currently assigned to the user */
   currentRoutes?: Maybe<Array<RouteResponse>>;
+  /** All available routes */
   availableRoutes?: Maybe<Array<RouteResponse>>;
+  /** Archived & completed routes */
   archivedRoutes?: Maybe<Array<RouteResponse>>;
 };
 
@@ -148,8 +151,11 @@ export type MessageResponse = {
 
 export type Mutation = {
    __typename?: 'Mutation';
+  /** Update a task with an answer and change the status of the task depending on the input. */
   updateTask: UpdateTaskResponse;
+  /** Mark a task as completed without providing input. */
   completeTask: CompleteTaskResponse;
+  /** Revert previous task to go back */
   revertTask: Scalars['String'];
   createRouteFeedback: RouteFeedbackResponse;
   /** Claim Rewards */
@@ -166,6 +172,7 @@ export type Mutation = {
   adminDeleteUser: Scalars['String'];
   /** Admin: Login with email & password */
   adminLogin: LoginResponse;
+  /** Register a device to get an access token */
   registerDevice: RegisterDeviceResponse;
 };
 
@@ -262,7 +269,9 @@ export enum NotificationStatus {
 
 export type Query = {
    __typename?: 'Query';
+  /** Get all routes */
   getRoutes: GetRoutesResponse;
+  /** Get a specific route */
   getRoute: RouteResponse;
   getAvailableRewards: Array<RewardResponse>;
   getRewards: Array<RewardResponse>;
@@ -278,6 +287,7 @@ export type QueryGetRouteArgs = {
 };
 
 export type RegisterDeviceInput = {
+  /** Include export token to transfer from another device */
   exportToken?: Maybe<Scalars['String']>;
   deviceId: Scalars['String'];
   deviceOs?: Maybe<Scalars['String']>;
@@ -296,6 +306,7 @@ export type RegisterDeviceResponse = {
 
 export type RegisterNotificationsInput = {
   notificationStatus: NotificationStatus;
+  /** Device token used to send out notifications */
   deviceToken: Scalars['String'];
 };
 
@@ -384,9 +395,13 @@ export type RouteTip = {
 export type StatusResponse = {
    __typename?: 'StatusResponse';
   user: UserResponse;
+  /** Current tasks to be completed */
   currentTask?: Maybe<UserTaskResponse>;
+  /** Previously completed task */
   previousTask?: Maybe<UserTaskResponse>;
+  /** Export token to transfer user to another device */
   exportToken: Scalars['String'];
+  /** Current device */
   device: DeviceResponse;
 };
 

@@ -14,29 +14,16 @@ import GoalUtil from 'utils/GoalUtil';
 import { UserGoal } from 'models/UserGoal';
 import { User } from 'models/User';
 import { ContextType } from 'lib/Context';
-import SendGridMail from '@sendgrid/mail';
 import UserUtil from 'utils/UserUtil';
-import { AuditLog } from 'models/AuditLog';
 import LogUtil from 'utils/LogUtil';
+import MailUtil from 'utils/MailUtil';
 
 export const Mutation: MutationResolvers = {
   async contact(root: any, args: MutationContactArgs, context: ContextType): Promise<any> {
-    console.log('ContactForm:', args);
-    try {
-      SendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
-    } catch {
-      return 'configuration error';
-    }
-
-    const msg = {
-      to: process.env.CONTACT_EMAIL,
-      from: process.env.CONTACT_EMAIL,
-      subject: 'Bericht van pingping.amsterdam.nl',
-      html: `<strong>Naam: </strong>${args.input.name}<br/><strong>Email: </strong>${args.input.email}<br/><strong>Bericht: </strong>${args.input.body}<br/>`,
-    };
+    const html = `<strong>Naam: </strong>${args.input.name}<br/><strong>Email: </strong>${args.input.email}<br/><strong>Bericht: </strong>${args.input.body}<br/>`;
 
     try {
-      await SendGridMail.send(msg);
+      await MailUtil.send(args.input.email, html);
       return 'success';
     } catch (error) {
       console.error(error);

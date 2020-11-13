@@ -21,9 +21,13 @@ type ExportResponse {
 
 type StatusResponse {
   user: UserResponse!
+  "Current tasks to be completed"
   currentTask: UserTaskResponse
+  "Previously completed task"
   previousTask: UserTaskResponse
+  "Export token to transfer user to another device"
   exportToken: String!
+  "Current device"
   device: DeviceResponse!
 }
 
@@ -75,6 +79,7 @@ input CreateGoalInput {
 
 input RegisterNotificationsInput {
   notificationStatus: NotificationStatus!
+  "Device token used to send out notifications"
   deviceToken: String!
 }
 
