@@ -6,49 +6,26 @@ services:
     restart: always
     ports:
       - 80:80
-      - 443:443
     volumes:
       - ./config/nginx.conf:/etc/nginx/nginx.conf
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
       - web-root:/var/www/html
     links:
       - api
     depends_on:
       - api
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - web-root:/var/www/html
-    depends_on:
-      - nginx
-    command: certonly --webroot --webroot-path=/var/www/html --force-renewal --email mani@tji.li --agree-tos --no-eff-email -d domain.com
   api:
     build:
       context: .
       args:
-        AWS_ACCESS_KEY_ID:
-        AWS_SECRET_ACCESS_KEY:
+        PORT: 8000
     restart: always
     environment:
-      MONGO_HOSTNAME: 'mongo'
-      MONGO_DBNAME: 'brickhub'
+      MONGO_STRING: mongodb://mongo:27017/pingping
       NUMBER_OF_PROCESSES: 4
     depends_on:
       - mongo
     ports:
       - '8000:8000'
-      - '4000:4000'
-  app:
-    image:
-    container_name: app
-    environment:
-      API: 'https://api.domain.com'
-      DEFAULT_LANGUAGE: 'nl'
-    ports:
-      - '3000:3000'
   mongo:
     image: mongo:latest
     restart: always
@@ -59,6 +36,4 @@ services:
 
 volumes:
   mongo_data: {}
-  certbot-etc:
-  certbot-var:
   web-root:
