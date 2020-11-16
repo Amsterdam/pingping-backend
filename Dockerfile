@@ -1,10 +1,5 @@
 FROM node:13.14.0-alpine
 
-RUN apk add ca-certificates
-COPY cert.crt /usr/local/share/ca-certificates/adp_rootca.crt
-RUN chmod 644 /usr/local/share/ca-certificates/adp_rootca.crt \
-  && update-ca-certificates --fresh
-
 # Create app directory
 WORKDIR /app
 RUN npm install -g @vue/cli
