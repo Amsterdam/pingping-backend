@@ -1,7 +1,8 @@
 FROM node:13.14.0-alpine
 
-RUN apt-get -y install openssh-client
-RUN ssh-keygen -q -t rsa -N '' -f /id_rsa
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+COPY ./cert.crt /usr/local/share/ca-certificates/cert.crt
+RUN update-ca-certificates
 
 # Create app directory
 WORKDIR /app
