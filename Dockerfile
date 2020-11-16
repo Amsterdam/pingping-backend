@@ -1,8 +1,12 @@
 FROM node:13.14.0-alpine
 
+RUN apt-get -y install openssh-client
+RUN ssh-keygen -q -t rsa -N '' -f /id_rsa
+
 # Create app directory
 WORKDIR /app
 RUN npm install -g @vue/cli
+
 
 ENV PORT=8000
 ENV NODE_ENV=production
