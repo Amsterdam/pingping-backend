@@ -1,8 +1,9 @@
 FROM node:13.14.0-alpine
 
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
-COPY ./cert.crt /usr/local/share/ca-certificates/cert.crt
-RUN update-ca-certificates
+RUN apk add ca-certificates
+COPY cert.crt /usr/local/share/ca-certificates/adp_rootca.crt
+RUN chmod 644 /usr/local/share/ca-certificates/adp_rootca.crt \
+  && update-ca-certificates --fresh
 
 # Create app directory
 WORKDIR /app
