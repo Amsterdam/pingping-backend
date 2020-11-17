@@ -6,6 +6,7 @@ export default class MailUtil {
     var toEmail = new helper.Email(process.env.CONTACT_EMAIL);
     var content = new helper.Content('text/html', html);
     var mail = new helper.Mail(fromEmail, 'Bericht van pingping.amsterdam.nl', toEmail, content);
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
     var request = sg.emptyRequest({
       method: 'POST',
@@ -20,6 +21,8 @@ export default class MailUtil {
       console.log(response.statusCode);
       console.log(response.body);
       console.log(response.headers);
+
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
     });
 
     var helper = require('sendgrid').mail;
