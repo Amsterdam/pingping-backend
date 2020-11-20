@@ -222,12 +222,14 @@
           "id": "financieleBasis.ingeschrevenVoorWoning",
           "title": "Inschrijving Woningnet",
           "media": {
-            "type": "YouTube",
-            "value": "NvqfRJFJlpQ"
+            "type": "Image",
+            "value": "/images/taskWoning.jpg",
+            "thumbnail": "/images/taskWoningThumb.jpg",
+            "color": "#d8d8d5"
           },
           "points": 20,
           "headerTitle": "woning",
-          "description": "<p>Schrijf je in bij Woningnet als je 18 bent of ouder. Je komt dan op een wachtlijst voor een woning.&nbsp;</p><p>Inschrijven kost 50 euro. En je betaalt elk jaar 8 euro. Kijk op:<a href=\"http://www.woningnet.nl\"> www.woningnet.nl</a></p><p>Ben je 16 en ga je (voltijd) studeren, dan kan je je hier inschrijven: <a href=\"https://www.studentenwoningweb.nl/Inschrijven\">https://www.studentenwoningweb.nl/Inschrijven</a><br />&nbsp;</p>",
+          "description": "<p>Schrijf je in bij Woningnet als je 18 bent of ouder. Je komt dan op een wachtlijst voor een woning. Bekijk de video <a href=\"https://vimeo.com/449839838\">hier.</a></p><p>Inschrijven kost 50 euro. En je betaalt elk jaar 8 euro. Kijk op:<a href=\"http://www.woningnet.nl\"> www.woningnet.nl</a></p><p>Ben je 16 en ga je (voltijd) studeren, dan kan je je hier inschrijven: <a href=\"https://www.studentenwoningweb.nl/Inschrijven\">https://www.studentenwoningweb.nl/Inschrijven</a><br />&nbsp;</p>",
           "icon": ""
         }
       ],
