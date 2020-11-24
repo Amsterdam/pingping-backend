@@ -46,9 +46,17 @@ enum TaskStatus {
   PendingUser
 }
 
+enum UserRouteStatus {
+  Active
+  Completed
+  Archived
+}
+
 enum TaskType {
+  # One input, for date of birth, returned in the format: YYYY-MM-DD
   DateOfBirth
   YesOrNo
+  Confirm
   MultipleChoices
   Other
   GoBack

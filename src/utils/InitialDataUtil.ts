@@ -18,8 +18,8 @@ type InitialData = {
 };
 
 type OnboardingTaskDefinition = TaskDefinition & {
-  nextTaskId?: string;
-  nextRotueId?: string;
+  nextTaskId?: string | object;
+  nextRotueId?: string | object;
   progress: number;
 };
 

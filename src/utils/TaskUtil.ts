@@ -1,14 +1,14 @@
 import _ from 'lodash';
 import { UserDocument, User } from '../models/User';
 import { UserTask } from '../models/UserTask';
-import { TaskDefinition } from '../types/global';
+import { RouteDefinition, TaskDefinition } from '../types/global';
 import InitialDataUtil from './InitialDataUtil';
 import moment from 'moment';
 import BadRequestError from '../errors/BadRequestError';
 import RouteUtil from './RouteUtil';
-import { TaskStatus, TaskType } from '../generated-models';
+import { TaskStatus, TaskType, UserRouteStatus } from '../generated-models';
 import TransactionUtil from './TransactionUtil';
-import { Types } from 'mongoose';
+import { UserRoute } from 'models/UserRoute';
 
 class TaskUtil {
   static getProgress(taskId: string): number {
@@ -41,6 +41,7 @@ class TaskUtil {
       routeTaskId: taskFound.routeTaskId,
       nextTaskId: taskFound.nextTaskId,
       nextRouteId: taskFound.nextRouteId,
+      defaultValue: taskFound.defaultValue,
       media: taskFound.media,
       icon: taskFound.icon,
       type: taskFound.type,
@@ -124,11 +125,30 @@ class TaskUtil {
     }
   }
 
+  static addRouteToUser(user: UserDocument, routeId: string): UserDocument {
+    let index = (_.get(user, 'routes', []) as Array<UserRoute>).map((i: UserRoute) => i.routeId).indexOf(routeId);
+
+    // Only add it if it doesn already exist
+    if (!routeId || index !== -1) {
+      return user;
+    }
+
+    const routeDef: RouteDefinition = InitialDataUtil.getRouteById(routeId);
+    const userRoute: UserRoute = new UserRoute(routeDef.id, UserRouteStatus.Active);
+    if (!user.routes) {
+      user.routes = [] as any;
+    }
+
+    user.routes.push(userRoute);
+
+    return user;
+  }
+
   static addNextTaskToUser(user: UserDocument, taskId: string): UserDocument {
     let index = user.tasks.map((i: UserTask) => i.taskId).indexOf(taskId);
 
     // Only add it if it doesn already exist
-    if (index !== -1) {
+    if (!taskId || index !== -1) {
       return user;
     }
 
@@ -142,14 +162,15 @@ class TaskUtil {
     return user;
   }
 
-  static getNextTaskId(answer: string, nextTask: string | object): string {
+  static getNextTaskOrRouteId(answer: string, next: string | object): string {
     answer = typeof answer === 'boolean' ? (answer ? 'yes' : 'no') : answer;
 
-    if (typeof nextTask === 'string') {
-      return nextTask;
+    if (typeof next === 'string') {
+      return next;
     }
 
-    return _.get(nextTask, answer.toLowerCase(), _.first(Object.values(nextTask)));
+    // return _.get(next, answer.toLowerCase(), _.first(Object.values(next)));
+    return _.get(next, answer.toLowerCase());
   }
 
   static async revertTask(user: UserDocument, taskId: string) {
@@ -173,7 +194,9 @@ class TaskUtil {
 
     if (answer) {
       userTask.status =
-        taskDef.type === TaskType.YesOrNo && answer === 'no' ? TaskStatus.Dismissed : TaskStatus.Completed;
+        (taskDef.type === TaskType.YesOrNo || taskDef.type === TaskType.Confirm) && answer === 'no'
+          ? TaskStatus.Dismissed
+          : TaskStatus.Completed;
       userTask.answer = answer;
 
       switch (taskDef.type) {
@@ -196,7 +219,11 @@ class TaskUtil {
     }
 
     if (taskDef.nextTaskId) {
-      user = this.addNextTaskToUser(user, this.getNextTaskId(answer, taskDef.nextTaskId));
+      user = this.addNextTaskToUser(user, this.getNextTaskOrRouteId(answer, taskDef.nextTaskId));
+    }
+
+    if (taskDef.nextRouteId) {
+      user = this.addRouteToUser(user, this.getNextTaskOrRouteId(answer, taskDef.nextRouteId));
     }
 
     user = this.updateUserTask(user, userTask);

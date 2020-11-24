@@ -19,10 +19,11 @@ export type TaskDefinition = {
   points: number;
   progress: number;
   media?: MediaType;
+  defaultValue: string;
   choices?: object;
   initial?: boolean;
   nextTaskId?: string | object;
-  nextRouteId?: string;
+  nextRouteId?: string | object;
 };
 
 export type RewardDefinition = {

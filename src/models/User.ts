@@ -5,6 +5,7 @@ import { UserReward } from './UserReward';
 import { UserGoal } from './UserGoal';
 import { UserTransaction } from './UserTransaction';
 import { NotificationStatus, UserRole } from '@models';
+import { UserRoute } from './UserRoute';
 
 export type UserDocument = Document & {
   email?: string;
@@ -30,6 +31,7 @@ export type UserDocument = Document & {
   goals?: Types.Array<UserGoal>;
   rewards?: Types.Array<UserReward>;
   tasks?: Types.Array<UserTask>;
+  routes?: Types.Array<UserRoute>;
   // createdAt: any;
 };
 
@@ -65,6 +67,22 @@ const userSchema = new Schema(
         routeId: String,
         routeTaskId: String,
         taskId: String,
+        answer: String,
+        status: String,
+      },
+    ],
+
+    routes: [
+      {
+        routeId: String,
+        answer: String,
+        status: String,
+      },
+    ],
+
+    routeId: [
+      {
+        routeId: String,
         answer: String,
         status: String,
       },

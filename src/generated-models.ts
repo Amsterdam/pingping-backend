@@ -428,7 +428,8 @@ export enum TaskType {
   YesOrNo = 'YesOrNo',
   MultipleChoices = 'MultipleChoices',
   Other = 'Other',
-  GoBack = 'GoBack'
+  GoBack = 'GoBack',
+  Confirm = 'Confirm'
 }
 
 export type UpdateTaskInput = {
@@ -479,6 +480,12 @@ export type UserRewardResponse = {
 export enum UserRole {
   User = 'User',
   Admin = 'Admin'
+}
+
+export enum UserRouteStatus {
+  Active = 'Active',
+  Completed = 'Completed',
+  Archived = 'Archived'
 }
 
 export type UserTaskResponse = {
@@ -613,6 +620,7 @@ export type ResolversTypes = {
   LocactionInput: LocactionInput,
   RegisterDeviceResponse: ResolverTypeWrapper<RegisterDeviceResponse>,
   RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
+  UserRouteStatus: UserRouteStatus,
   RewardType: RewardType,
   ExportResponse: ResolverTypeWrapper<ExportResponse>,
 };
@@ -671,6 +679,7 @@ export type ResolversParentTypes = {
   LocactionInput: LocactionInput,
   RegisterDeviceResponse: RegisterDeviceResponse,
   RouteAnswer: Scalars['RouteAnswer'],
+  UserRouteStatus: UserRouteStatus,
   RewardType: RewardType,
   ExportResponse: ExportResponse,
 };
