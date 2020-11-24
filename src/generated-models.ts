@@ -172,6 +172,7 @@ export type Mutation = {
   adminDeleteUser: Scalars['String'];
   /** Admin: Login with email & password */
   adminLogin: LoginResponse;
+  adminDeleteRewardVoucher: MessageResponse;
   /** Register a device to get an access token */
   registerDevice: RegisterDeviceResponse;
 };
@@ -254,6 +255,11 @@ export type MutationAdminLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
   deviceId: Scalars['String'];
+};
+
+
+export type MutationAdminDeleteRewardVoucherArgs = {
+  id?: Maybe<Scalars['String']>;
 };
 
 
@@ -778,6 +784,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   adminCreateUser?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationAdminCreateUserArgs, never>>,
   adminDeleteUser?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationAdminDeleteUserArgs, 'id'>>,
   adminLogin?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationAdminLoginArgs, 'email' | 'password' | 'deviceId'>>,
+  adminDeleteRewardVoucher?: Resolver<ResolversTypes['MessageResponse'], ParentType, ContextType, RequireFields<MutationAdminDeleteRewardVoucherArgs, never>>,
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };
 

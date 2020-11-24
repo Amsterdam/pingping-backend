@@ -1,6 +1,5 @@
 <template>
   <div class="section container">
-    <!-- <div @click="isFilter = !isFilter">{{ isFilter ? 'Filter: \'NotificationStatus=Approved\'' : 'Filter: none' }}</div> -->
     <table class="table">
       <thead>
         <tr>
@@ -33,21 +32,44 @@
       <div class="text-h6">CSV Input</div>
       <textarea v-model="csv"></textarea>
       <b-button @click="importCsv">Import CSV</b-button>
-      <vue-json-pretty :data="currentItem">
-      </vue-json-pretty>
+      <!-- <vue-json-pretty :data="currentItem" /> -->
+      <table
+        class="table"
+        v-if="currentItem"
+      >
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Used</th>
+            <th>data</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(voucher,i) in currentItem.vouchers"
+            :key="i"
+          >
+            <td
+              class="clickable"
+              @click="deleteVoucher(voucher.id)"
+            >Delete</td>
+            <td>{{ voucher.userId !== null }}</td>
+            <td>{{ voucher.data }}</td>
+          </tr>
+        </tbody>
+      </table>
     </b-modal>
   </div>
 </template>
 
 <script>
 import gql from 'graphql-tag'
-import VueJsonPretty from 'vue-json-pretty'
 
 export default {
   name: 'PageRewards',
 
   components: {
-    VueJsonPretty
   },
 
   apollo: {
@@ -78,6 +100,27 @@ export default {
   },
 
   methods: {
+    deleteVoucher (id) {
+      let confirm = window.confirm('Are you sure you want to delete the voucher?')
+
+      if (confirm) {
+        this.$apollo.mutate({
+          mutation: gql`mutation ($id: String!) {
+          adminDeleteRewardVoucher(id: $id) {
+            message
+          }
+        }`,
+          variables: {
+            id
+          }
+        }).then(() => {
+          this.currentItem.vouchers = this.currentItem.vouchers.filter((i) => i.id !== id);
+        }).catch((error) => {
+          console.error(error)
+        })
+      }
+    },
+
     importCsv () {
       let res = []
       let lines = this.csv.split('\n')
@@ -164,6 +207,11 @@ export default {
 
 .section {
   text-align: left;
+}
+
+.clickable:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 textarea {

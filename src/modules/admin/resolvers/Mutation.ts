@@ -8,6 +8,8 @@ import {
   MutationAdminLoginArgs,
   AuditLogType,
   MutationAdminSendNotificationsArgs,
+  MutationAdminDeleteRewardVoucherArgs,
+  MessageResponse,
 } from '@models';
 import AdminUtil from 'utils/AdminUtil';
 import { ContextType } from 'lib/Context';
@@ -15,6 +17,7 @@ import { PushNotificationUtil } from 'utils/PushNotificationUtil';
 import auth from 'lib/auth';
 import { User } from 'models/User';
 import LogUtil from 'utils/LogUtil';
+import { RewardVoucher } from 'models/RewardVoucher';
 
 export const Mutation: MutationResolvers = {
   async adminActions(root: any, args: MutationAdminActionsArgs, context: ContextType): Promise<any> {
@@ -62,6 +65,20 @@ export const Mutation: MutationResolvers = {
     await LogUtil.create(context.user, AuditLogType.DeleteUser, 'User deleted by admin', args.id);
 
     return 'success';
+  },
+
+  async adminDeleteRewardVoucher(
+    root: any,
+    args: MutationAdminDeleteRewardVoucherArgs,
+    context: ContextType
+  ): Promise<MessageResponse> {
+    await RewardVoucher.deleteOne({
+      _id: args.id,
+    });
+
+    return {
+      message: 'sucess',
+    };
   },
 
   async adminLogin(root: any, args: MutationAdminLoginArgs, context: ContextType): Promise<any> {

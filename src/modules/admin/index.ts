@@ -20,6 +20,7 @@ export const AdminModule = new GraphQLModule({
     'Mutation.adminSendNotifications': [AuthMiddleware.isAdmin()],
     'Mutation.adminCreateUser': [AuthMiddleware.isAdmin()],
     'Mutation.adminDeleteUser': [AuthMiddleware.isAdmin()],
+    'Mutation.adminDeleteRewardVoucher': [AuthMiddleware.isAdmin()],
     'Query.adminGetUsers': [AuthMiddleware.isAdmin()],
     'Query.adminGetAuditLog': [AuthMiddleware.isAdmin()],
   },
