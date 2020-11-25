@@ -68,14 +68,10 @@ type CompleteTaskResponse {
   previousTask: UserTaskResponse
 }
 
-# type RevertTaskResponse {
-#   currentTask: UserTaskResponse
-#   previousTask: UserTaskResponse
-# }
-
 type RouteFeedbackResponse {
-  taskName: String!
-  feedback: String!
+  rating: Int
+  feedback: String
+  createdAt: Date!
 }
 
 type RouteTip {
@@ -91,7 +87,6 @@ input UpdateTaskInput {
 
 input RouteFeedbackInput {
   routeId: String
-  taskName: String
-  routeName: String
-  feedback: String!
+  rating: Int
+  feedback: String
 }

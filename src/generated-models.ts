@@ -285,6 +285,7 @@ export type Query = {
   getAchievements: Array<AchievementResponse>;
   adminGetUsers: Array<Maybe<AdminUserResponse>>;
   adminGetAuditLog?: Maybe<Array<AuditLogResponse>>;
+  adminGetFeedback?: Maybe<Array<RouteFeedbackResponse>>;
 };
 
 
@@ -360,15 +361,15 @@ export type RewardVoucherResponse = {
 
 export type RouteFeedbackInput = {
   routeId?: Maybe<Scalars['String']>;
-  taskName?: Maybe<Scalars['String']>;
-  routeName?: Maybe<Scalars['String']>;
-  feedback: Scalars['String'];
+  rating?: Maybe<Scalars['Int']>;
+  feedback?: Maybe<Scalars['String']>;
 };
 
 export type RouteFeedbackResponse = {
    __typename?: 'RouteFeedbackResponse';
-  taskName: Scalars['String'];
-  feedback: Scalars['String'];
+  rating?: Maybe<Scalars['Int']>;
+  feedback?: Maybe<Scalars['String']>;
+  createdAt: Scalars['Date'];
 };
 
 export type RouteResponse = {
@@ -432,6 +433,7 @@ export enum TaskStatus {
 export enum TaskType {
   DateOfBirth = 'DateOfBirth',
   YesOrNo = 'YesOrNo',
+  Confirm = 'Confirm',
   MultipleChoices = 'MultipleChoices',
   Other = 'Other',
   GoBack = 'GoBack'
@@ -600,12 +602,12 @@ export type ResolversTypes = {
   UserRole: UserRole,
   AuditLogResponse: ResolverTypeWrapper<AuditLogResponse>,
   AuditLogType: AuditLogType,
+  RouteFeedbackResponse: ResolverTypeWrapper<RouteFeedbackResponse>,
   Mutation: ResolverTypeWrapper<{}>,
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
   CompleteTaskResponse: ResolverTypeWrapper<CompleteTaskResponse>,
   RouteFeedbackInput: RouteFeedbackInput,
-  RouteFeedbackResponse: ResolverTypeWrapper<RouteFeedbackResponse>,
   RewardVoucherInput: RewardVoucherInput,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: ResolverTypeWrapper<MessageResponse>,
@@ -658,12 +660,12 @@ export type ResolversParentTypes = {
   UserRole: UserRole,
   AuditLogResponse: AuditLogResponse,
   AuditLogType: AuditLogType,
+  RouteFeedbackResponse: RouteFeedbackResponse,
   Mutation: {},
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: UpdateTaskResponse,
   CompleteTaskResponse: CompleteTaskResponse,
   RouteFeedbackInput: RouteFeedbackInput,
-  RouteFeedbackResponse: RouteFeedbackResponse,
   RewardVoucherInput: RewardVoucherInput,
   CreateGoalInput: CreateGoalInput,
   MessageResponse: MessageResponse,
@@ -797,6 +799,7 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   getAchievements?: Resolver<Array<ResolversTypes['AchievementResponse']>, ParentType, ContextType>,
   adminGetUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType>,
   adminGetAuditLog?: Resolver<Maybe<Array<ResolversTypes['AuditLogResponse']>>, ParentType, ContextType>,
+  adminGetFeedback?: Resolver<Maybe<Array<ResolversTypes['RouteFeedbackResponse']>>, ParentType, ContextType>,
 };
 
 export type RegisterDeviceResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RegisterDeviceResponse'] = ResolversParentTypes['RegisterDeviceResponse']> = {
@@ -831,8 +834,9 @@ export interface RouteAnswerScalarConfig extends GraphQLScalarTypeConfig<Resolve
 }
 
 export type RouteFeedbackResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RouteFeedbackResponse'] = ResolversParentTypes['RouteFeedbackResponse']> = {
-  taskName?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  feedback?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  rating?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  feedback?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 

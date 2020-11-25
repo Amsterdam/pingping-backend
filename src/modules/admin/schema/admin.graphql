@@ -1,6 +1,7 @@
 type Query {
   adminGetUsers: [AdminUserResponse]!
   adminGetAuditLog: [AuditLogResponse!]
+  adminGetFeedback: [RouteFeedbackResponse!]
 }
 
 type Mutation {

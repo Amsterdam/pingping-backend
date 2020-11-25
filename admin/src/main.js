@@ -10,6 +10,7 @@ import PageUsers from './pages/PageUsers';
 import PageUser from './pages/PageUser';
 import PageRewards from './pages/PageRewards';
 import PageAuditLog from './pages/PageAuditLog';
+import PageFeedback from './pages/PageFeedback';
 import PageSettings from './pages/PageSettings';
 import store from './store';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -33,6 +34,7 @@ const routes = [
   { path: '/users/:id', component: PageUser },
   { path: '/rewards', component: PageRewards },
   { path: '/audit-log', component: PageAuditLog },
+  { path: '/feedback', component: PageFeedback },
   { path: '/settings', component: PageSettings },
 ];
 

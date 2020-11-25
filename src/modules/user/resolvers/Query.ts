@@ -1,7 +1,6 @@
 import { QueryResolvers } from '@models';
 import TaskUtil from 'utils/TaskUtil';
 import { ContextType } from 'lib/Context';
-import { User } from 'models/User';
 
 export const Query: QueryResolvers = {
   getStatus(root: any, args: any, context: ContextType): any {

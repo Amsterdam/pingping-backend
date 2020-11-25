@@ -1,9 +1,8 @@
-import { Document, Schema, model, Types } from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
 
 export type RouteFeedbackDocument = Document & {
   routeId?: string;
-  routeName?: string;
-  taskName?: string;
+  rating: number;
   feedback: string;
   userId: string;
 };
@@ -11,8 +10,7 @@ export type RouteFeedbackDocument = Document & {
 const schema = new Schema(
   {
     routeId: String,
-    taskName: String,
-    routeName: String,
+    rating: Number,
     feedback: String,
     userId: String,
   },
