@@ -75,6 +75,7 @@ export const Mutation: MutationResolvers = {
     await RewardVoucher.deleteOne({
       _id: args.id,
     });
+    await User.update({}, { $pull: { 'rewards.$.sessions': { voucherId: args.id } } });
 
     return {
       message: 'sucess',

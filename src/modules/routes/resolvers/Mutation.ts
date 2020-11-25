@@ -48,15 +48,11 @@ export const Mutation: MutationResolvers = {
 
   async createRouteFeedback(root: any, args: MutationCreateRouteFeedbackArgs, context: ModuleContext): Promise<any> {
     const inst = await RouteFeedback.create({
-      routeId: args.input.routeId,
-      taskName: args.input.taskName,
+      rating: args.input.rating,
       feedback: args.input.feedback,
       userId: context.user.id,
     });
 
-    return {
-      taskName: inst.taskName,
-      feedback: inst.feedback,
-    };
+    return inst;
   },
 };
