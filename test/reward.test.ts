@@ -12,6 +12,8 @@ describe('reward', () => {
   let accessToken: any;
   let user: UserDocument;
   let user3: UserDocument;
+  let user4: UserDocument;
+  let voucher: any;
   let deviceId: string = `randomdeviceid${_.random(true)}`;
 
   beforeEach(async () => {
@@ -21,9 +23,12 @@ describe('reward', () => {
     user3 = await UserUtil.createOrFindUser({
       deviceId: `randomdeviceid${_.random(true)}`,
     });
+    user4 = await UserUtil.createOrFindUser({
+      deviceId: `randomdeviceid${_.random(true)}`,
+    });
     accessToken = _.get(user, 'tokens.0.accessToken');
 
-    RewardVoucher.create({
+    voucher = RewardVoucher.create({
       rewardId: 'pathe-test',
       data: { pin: '1234', code: 'test1' },
       userId: null,
@@ -101,5 +106,13 @@ describe('reward', () => {
 
     expect(reward.voucherId).to.eq(rewardTwo.voucherId);
     expect(reward.voucherId).to.not.eq(rewardThree.voucherId);
+  });
+
+  it('delete voucher', async () => {
+    let reward = _.first(user.rewards);
+    await RewardUtil.deleteVoucher(reward.voucherId);
+
+    let userItem: any = await User.findOne({ _id: user._id });
+    expect(userItem.rewards.length).to.eq(0);
   });
 });

@@ -18,6 +18,7 @@ import auth from 'lib/auth';
 import { User } from 'models/User';
 import LogUtil from 'utils/LogUtil';
 import { RewardVoucher } from 'models/RewardVoucher';
+import RewardUtil from 'utils/RewardUtil';
 
 export const Mutation: MutationResolvers = {
   async adminActions(root: any, args: MutationAdminActionsArgs, context: ContextType): Promise<any> {
@@ -72,10 +73,7 @@ export const Mutation: MutationResolvers = {
     args: MutationAdminDeleteRewardVoucherArgs,
     context: ContextType
   ): Promise<MessageResponse> {
-    await RewardVoucher.deleteOne({
-      _id: args.id,
-    });
-    await User.update({}, { $pull: { 'rewards.$.sessions': { voucherId: args.id } } });
+    await RewardUtil.deleteVoucher(args.id);
 
     return {
       message: 'sucess',

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { UserDocument } from '../models/User';
+import { User, UserDocument } from '../models/User';
 import InitialDataUtil from './InitialDataUtil';
 import { RewardDefinition } from '../types/global';
 import { UserReward } from '../models/UserReward';
@@ -42,6 +42,13 @@ class RewardUtil {
     await voucherFound.save();
 
     return voucherFound;
+  }
+
+  static async deleteVoucher(id: string) {
+    await RewardVoucher.deleteOne({
+      _id: id,
+    });
+    await User.update({}, { $pull: { rewards: { voucherId: id } } }, { multi: true });
   }
 
   static async claim(user: UserDocument, id: string): Promise<UserReward> {
