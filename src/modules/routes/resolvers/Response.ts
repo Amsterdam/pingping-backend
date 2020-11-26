@@ -27,6 +27,7 @@ export const RouteResponse: any = {
   coverImageUrl: (doc: RouteDefinition) => `${doc.imageUrl}`,
   totalPoints: (doc: RouteDefinition) => doc.tasks.reduce((sum: number, val: TaskDefinition) => sum + val.points, 0),
   numberOfSteps: (doc: RouteDefinition) => doc.tasks.length,
+  hasSubmittedFeedback: (doc: RouteDefinition) => false,
   progress: (doc: RouteDefinition, args: any, context: ModuleContext) => {
     const tasks = context.user.tasks
       .filter((ut: UserTask) => ut.status === TaskStatus.Completed)

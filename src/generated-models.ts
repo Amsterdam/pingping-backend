@@ -390,6 +390,7 @@ export type RouteResponse = {
   targetAudience: Scalars['String'];
   tips?: Maybe<Array<RouteTip>>;
   progress?: Maybe<Scalars['Float']>;
+  hasSubmittedFeedback: Scalars['Boolean'];
   tasks?: Maybe<Array<Maybe<UserTaskResponse>>>;
 };
 
@@ -433,7 +434,6 @@ export enum TaskStatus {
 export enum TaskType {
   DateOfBirth = 'DateOfBirth',
   YesOrNo = 'YesOrNo',
-  Confirm = 'Confirm',
   MultipleChoices = 'MultipleChoices',
   Other = 'Other',
   GoBack = 'GoBack'
@@ -854,6 +854,7 @@ export type RouteResponseResolvers<ContextType = ModuleContext, ParentType exten
   targetAudience?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   tips?: Resolver<Maybe<Array<ResolversTypes['RouteTip']>>, ParentType, ContextType>,
   progress?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
+  hasSubmittedFeedback?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   tasks?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserTaskResponse']>>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
