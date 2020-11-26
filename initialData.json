@@ -129,7 +129,7 @@
   "routes": {
     "financieleBasis": {
       "title": "Fiks je basis",
-      "description": "We gaan er samen voor zorgen dat jij je basis op orde hebt. Dan hoe jij je daar geen zorgen meer over te maken en heb je meer tijd voor leuke dingen.",
+      "description": "We gaan er samen voor zorgen dat jij je basis op orde hebt. Dan hoef jij je daar geen zorgen meer over te maken en heb je meer tijd voor leuke dingen.",
       "targetAudience": "Jongvolwassenen",
       "imageUrl": "/images/route1.png",
       "cover": {
