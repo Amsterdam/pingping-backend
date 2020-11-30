@@ -2,17 +2,49 @@
   "onboardingTasks": [
     {
       "id": "onboarding.gemeente",
-      "type": "YesOrNo",
+      "type": "Confirm",
       "title": "Woon je in Amsterdam?",
       "headerTitle": "gemeente",
       "initial": true,
+      "defaultValue": "yes",
+      "description": "Ping Ping is alleen geschikt voor jongeren die in Amsterdam wonen. Woon jij in Amsterdam?",
+      "media": {
+        "type": "Image",
+        "value": "/images/amsterdam.jpg",
+        "thumbnail": "/images/amsterdamThumb.jpg",
+        "color": "#d8d8d5"
+      },
       "choices": {
         "yes": "Ja",
         "no": "Nee"
       },
       "nextTaskId": {
-        "yes": "onboarding.dateOfBirth",
+        "yes": "onboarding.welcome",
         "no": "onboarding.notAmsterdam"
+      }
+    },
+    {
+      "id": "onboarding.welcome",
+      "type": "Confirm",
+      "title": "Welkom op PingPing",
+      "description": "Ping Ping is alleen geschikt voor jongeren die in Amsterdam wonen. Woon jij in Amsterdam?",
+      "headerTitle": "Welkom!",
+      "defaultValue": "yes",
+      "media": {
+        "type": "Image",
+        "value": "/images/welcome.jpg",
+        "thumbnail": "/images/welcomeThumb.jpg",
+        "color": "#d8d8d5"
+      },
+      "choices": {
+        "yes": "Start",
+        "no": "Vragen overslaan"
+      },
+      "nextTaskId": {
+        "yes": "onboarding.dateOfBirth"
+      },
+      "nextRouteId": {
+        "no": "financieleBasis"
       }
     },
     {
