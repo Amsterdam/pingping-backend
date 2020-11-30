@@ -27,7 +27,7 @@
       "id": "onboarding.welcome",
       "type": "Confirm",
       "title": "Welkom op PingPing",
-      "description": "Ping Ping is alleen geschikt voor jongeren die in Amsterdam wonen. Woon jij in Amsterdam?",
+      "description": "Voor je aan de slag kan, stellen we je wat vragen, zodat jij de info krijgt die jij nodig hebt...",
       "headerTitle": "Welkom!",
       "defaultValue": "yes",
       "media": {
