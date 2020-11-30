@@ -5,6 +5,7 @@ import { TaskDefinition, RouteDefinition } from 'types/global';
 import { TaskStatus, TaskType, UserRole } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 import { ContextType } from 'lib/Context';
+import { RouteFeedback } from 'models/RouteFeedback';
 
 export const UserTaskResponse: any = {
   task: (doc: UserTask) => TaskUtil.getDefinition(doc.taskId),
@@ -27,8 +28,10 @@ export const RouteResponse: any = {
   coverImageUrl: (doc: RouteDefinition) => `${doc.imageUrl}`,
   totalPoints: (doc: RouteDefinition) => doc.tasks.reduce((sum: number, val: TaskDefinition) => sum + val.points, 0),
   numberOfSteps: (doc: RouteDefinition) => doc.tasks.length,
-  hasSubmittedFeedback: (doc: RouteDefinition, args: any, context: ModuleContext) => {
-    return false;
+  hasSubmittedFeedback: async (doc: RouteDefinition, args: any, context: ModuleContext) => {
+    let numberOfFeedbacks = await RouteFeedback.countDocuments({ routeId: doc.id, userId: context.user._id });
+
+    return numberOfFeedbacks >= 1;
   },
   progress: (doc: RouteDefinition, args: any, context: ModuleContext) => {
     const tasks = context.user.tasks

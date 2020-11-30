@@ -81,7 +81,9 @@ export const Mutation: MutationResolvers = {
   },
 
   async adminLogin(root: any, args: MutationAdminLoginArgs, context: ContextType): Promise<any> {
-    const res: any = await auth.login(args.email, args.password, args.deviceId);
+    const req: any = context.req;
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const res: any = await auth.login(ip, args.email, args.password, args.deviceId);
     await LogUtil.create(res.user, AuditLogType.AdminLogin, 'Admin login');
 
     return {

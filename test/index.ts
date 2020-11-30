@@ -51,3 +51,4 @@ require('./onboarding.test.ts');
 require('./achievement.test.ts');
 require('./goal.test.ts');
 require('./reward.test.ts');
+require('./ttl.test.ts');

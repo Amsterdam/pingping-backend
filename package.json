@@ -44,6 +44,7 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.8.7",
+    "node-cache": "^5.1.2",
     "node-filter-async": "^2.0.0",
     "node-pushnotifications": "^1.4.1",
     "reflect-metadata": "^0.1.13",

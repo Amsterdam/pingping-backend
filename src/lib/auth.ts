@@ -2,6 +2,7 @@ import _ from 'lodash';
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
 import bcrypt from 'bcrypt-nodejs';
+import cache from './cache';
 
 import { UserDocument, User, AuthToken, AuthTokenKind, Device } from '../models/User';
 import { NotificationStatus, UserRole } from '@models';
@@ -14,12 +15,6 @@ class auth {
     const token = jwt.sign({ userId: user._id }, process.env.SECRET);
 
     return token;
-  }
-
-  static getRandomPassword(len = 8) {
-    return Math.random()
-      .toString(36)
-      .slice(len * -1);
   }
 
   static async createToken(user: UserDocument, deviceId: string): Promise<AuthToken> {
@@ -40,16 +35,23 @@ class auth {
     await auth.createUser(UserRole.Admin, 'Admin', 'admin@pingping.amsterdam.nl', process.env.ADMIN_PASSWORD);
   }
 
-  static async login(email: string, candidatePassword: string, deviceId: string) {
+  static async login(ip: string, email: string, candidatePassword: string, deviceId: string) {
+    if (cache.getIp(ip) > 3 || cache.getUsername(email) > 3) {
+      throw new Error('too_many_attempts');
+    }
+
     const user = await User.findOne({ email, role: UserRole.Admin });
 
     if (!user) {
+      cache.registerIp(ip);
       throw new AuthenticationError();
     }
 
     const res = await bcrypt.compareSync(candidatePassword, user.password);
 
     if (!res) {
+      cache.registerUsername(email);
+
       throw new AuthenticationError();
     }
 
