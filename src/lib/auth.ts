@@ -36,7 +36,7 @@ class auth {
   }
 
   static async login(ip: string, email: string, candidatePassword: string, deviceId: string) {
-    if (cache.getIp(ip) > 3 || cache.getUsername(email) > 3) {
+    if (cache.getIp(ip) > 7 || cache.getUsername(email) > 3) {
       throw new Error('too_many_attempts');
     }
 
