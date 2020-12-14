@@ -88,7 +88,7 @@ input UpdateTaskInput {
 }
 
 input RouteFeedbackInput {
-  routeId: String!
+  routeId: String
   rating: Int
   feedback: String
 }
