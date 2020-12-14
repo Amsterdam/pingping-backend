@@ -434,10 +434,10 @@ export enum TaskStatus {
 export enum TaskType {
   DateOfBirth = 'DateOfBirth',
   YesOrNo = 'YesOrNo',
+  Confirm = 'Confirm',
   MultipleChoices = 'MultipleChoices',
   Other = 'Other',
-  GoBack = 'GoBack',
-  Confirm = 'Confirm'
+  GoBack = 'GoBack'
 }
 
 export type UpdateTaskInput = {

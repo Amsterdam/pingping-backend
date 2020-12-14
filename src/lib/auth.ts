@@ -12,7 +12,7 @@ const TOKEN_VALIDITY_MINUTES = process.env.TOKEN_VALIDITY_MINUTES || 180;
 
 class auth {
   static signToken(user: UserDocument): string {
-    const token = jwt.sign({ userId: user._id }, process.env.SECRET);
+    const token = jwt.sign({ userId: user.id }, process.env.SECRET);
 
     return token;
   }

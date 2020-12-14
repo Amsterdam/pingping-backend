@@ -1,5 +1,4 @@
 import createServer from './server';
-import express from 'express';
 import boot from './boot';
 
 boot.start();

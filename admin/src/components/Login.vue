@@ -8,6 +8,7 @@
       <b-input
         id="inline-form-input-name"
         class="mb-2 mr-sm-2 mb-sm-0"
+        placeholder="email"
         v-model="email"
       ></b-input>
 
@@ -19,6 +20,7 @@
         <b-input
           id="inline-form-input-username"
           type="password"
+          placeholder="password"
           v-model="password"
         ></b-input>
       </b-input-group>
