@@ -71,6 +71,7 @@ type CompleteTaskResponse {
 
 type RouteFeedbackResponse {
   rating: Int
+  routeId: String
   feedback: String
   createdAt: Date!
 }
@@ -87,7 +88,7 @@ input UpdateTaskInput {
 }
 
 input RouteFeedbackInput {
-  routeId: String
+  routeId: String!
   rating: Int
   feedback: String
 }

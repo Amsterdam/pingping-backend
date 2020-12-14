@@ -4,6 +4,7 @@
       <thead>
         <tr>
           <th>Created</th>
+          <th>Route</th>
           <th>Rating</th>
           <th>Feedback</th>
           <th></th>
@@ -15,6 +16,7 @@
           :key="i"
         >
           <td>{{ formatDate(item.createdAt) }}</td>
+          <td>{{ item.routeId }}</td>
           <td>{{ item.rating }}</td>
           <td>{{ item.feedback }}</td>
         </tr>

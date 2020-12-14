@@ -360,7 +360,7 @@ export type RewardVoucherResponse = {
 
 
 export type RouteFeedbackInput = {
-  routeId?: Maybe<Scalars['String']>;
+  routeId: Scalars['String'];
   rating?: Maybe<Scalars['Int']>;
   feedback?: Maybe<Scalars['String']>;
 };
@@ -368,6 +368,7 @@ export type RouteFeedbackInput = {
 export type RouteFeedbackResponse = {
    __typename?: 'RouteFeedbackResponse';
   rating?: Maybe<Scalars['Int']>;
+  routeId?: Maybe<Scalars['String']>;
   feedback?: Maybe<Scalars['String']>;
   createdAt: Scalars['Date'];
 };
@@ -844,6 +845,7 @@ export interface RouteAnswerScalarConfig extends GraphQLScalarTypeConfig<Resolve
 
 export type RouteFeedbackResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RouteFeedbackResponse'] = ResolversParentTypes['RouteFeedbackResponse']> = {
   rating?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  routeId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   feedback?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,

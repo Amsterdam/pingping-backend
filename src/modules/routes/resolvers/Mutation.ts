@@ -50,6 +50,7 @@ export const Mutation: MutationResolvers = {
     const inst = await RouteFeedback.create({
       rating: args.input.rating,
       feedback: args.input.feedback,
+      routeId: args.input.routeId,
       userId: context.user.id,
     });
 

@@ -4,6 +4,7 @@ export const GetFeedbackQuery = gql`
   query {
     adminGetFeedback {
       rating
+      routeId
       feedback
       createdAt
     }
