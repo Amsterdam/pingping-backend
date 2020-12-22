@@ -334,20 +334,20 @@
       "availablePerUser": 1
     },
     {
-      "id": "pathe-test",
-      "title": "Pathe Thuis Film",
-      "description": "Gefeliciteerd! Jij bent lekker bezig! Claim deze Pathé thuisbioscoopbon als welverdiende beloning!",
-      "imageUrl": "/images/reward2.jpg",
-      "thumbnailUrl": "/images/reward2Thumb.jpg",
+      "id": "dutch-dream-foundation",
+      "title": "Dare to Dream coachingsgesprek",
+      "description": "Durf jij te gaan voor wat je écht wilt? Kansen te grijpen? Nieuwe dingen te proberen? Wij weten uit eigen ervaring dat het soms angstaanjagend kan zijn om jouw dromen te volgen. Je hebt vast vaker tegen jezelf gezegd: “Ik kan het niet!” of “Het lukt mij niet”.<br /><br />Samen met jou kijken wij graag wat er nodig is voor jou om die stap wel te durven zetten. Ga jij de uitdaging aan? Claim dan snel deze beloning en meld je <a href=\"#\">hier</a> aan.",
+      "imageUrl": "/images/reward3.jpg",
+      "thumbnailUrl": "/images/reward3Thumb.jpg",
       "cover": {
         "type": "Image",
-        "value": "/images/reward2.jpg",
-        "thumbnail": "/images/reward2Thumb.jpg",
+        "value": "/images/reward3.jpg",
+        "thumbnail": "/images/reward3Thumb.jpg",
         "color": "#F5C74D"
       },
       "price": 140,
-      "active": false,
-      "vendor": "Pathe",
+      "active": true,
+      "vendor": "Dutch Dream Foundation",
       "type": "Voucher",
       "available": null,
       "availablePerUser": 1
