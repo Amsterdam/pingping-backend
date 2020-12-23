@@ -27,6 +27,7 @@ export default {
   name: 'RewardListItem',
 
   props: {
+    rewardId: VueTypes.string,
     vouchers: VueTypes.array,
     title: VueTypes.string,
     description: VueTypes.description
