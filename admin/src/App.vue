@@ -85,4 +85,9 @@ export default {
   color: #2c3e50;
   margin-top: 30px;
 }
+
+.clickable:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
 </style>

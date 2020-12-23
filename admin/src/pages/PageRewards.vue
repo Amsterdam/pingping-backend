@@ -12,6 +12,7 @@
         <RewardListItem
           v-for="(item,i) in items"
           :key="i"
+          @setItem="setItem"
           v-bind="item"
         />
       </tbody>
