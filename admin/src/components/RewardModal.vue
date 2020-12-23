@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import VueTypes from 'vue-types'
+import { AdminDeleteRewardVoucherMutation } from '../mutations/AdminDeleteRewardVoucherMutation'
 
 export default {
   props: {
@@ -91,16 +91,12 @@ export default {
 
       if (confirm) {
         this.$apollo.mutate({
-          mutation: gql`mutation ($id: String!) {
-          adminDeleteRewardVoucher(id: $id) {
-            message
-          }
-        }`,
+          mutation: AdminDeleteRewardVoucherMutation,
           variables: {
             id
           }
         }).then(() => {
-          this.$emit('updateVouchers', JSON.parse(this.vouchers.filter((i) => i.id !== id)))
+          this.$emit('updateVouchers', this.voucherItems.filter((i) => i.id !== id))
         }).catch((error) => {
           console.error(error)
         })

@@ -32,9 +32,10 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import RewardModal from '../components/RewardModal'
 import RewardListItem from '../components/RewardListItem'
+import { GetRewardsQuery } from '../queries/GetRewardsQuery'
+import { AdminUpdateRewardMutation } from '../mutations/AdminUpdateRewardMutation'
 
 export default {
   name: 'PageRewards',
@@ -46,16 +47,7 @@ export default {
 
   apollo: {
     items: {
-      query: gql`query rewards { getRewards {
-        rewardId
-        title
-        description
-        vouchers {
-          id
-          userId
-          data
-        }
-      }}`,
+      query: GetRewardsQuery,
       update: data => {
         return data.getRewards
       },
@@ -91,18 +83,7 @@ export default {
       e.preventDefault();
       this.loading = true
       this.$apollo.mutate({
-        mutation: gql`mutation ($id: String!, $vouchers: [RewardVoucherInput]) {
-          adminUpdateReward(id: $id, vouchers: $vouchers) {
-            rewardId
-            title
-            description
-            vouchers {
-              id
-              userId
-              data
-            }
-          }
-        }`,
+        mutation: AdminUpdateRewardMutation,
         variables: {
           id: this.currentItem.rewardId,
           vouchers: JSON.parse(this.vouchers)

@@ -1,5 +1,15 @@
 # PingPing Backend
 
+## Admin Development
+
+To run the admin development you have to do the following:
+
+```
+cd admin
+yarn install
+VUE_APP_GRAPHQL_HTTP=http://localhost:4010/api yarn serve
+```
+
 ## Development
 
 ```
