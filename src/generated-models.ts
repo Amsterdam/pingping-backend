@@ -360,7 +360,7 @@ export type RewardVoucherResponse = {
 
 
 export type RouteFeedbackInput = {
-  routeId: Scalars['String'];
+  routeId?: Maybe<Scalars['String']>;
   rating?: Maybe<Scalars['Int']>;
   feedback?: Maybe<Scalars['String']>;
 };

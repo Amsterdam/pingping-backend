@@ -5,20 +5,15 @@
         <tr>
           <th>title</th>
           <th>description</th>
-          <th></th>
+          <th>used</th>
         </tr>
       </thead>
       <tbody>
-        <tr
+        <RewardListItem
           v-for="(item,i) in items"
           :key="i"
-        >
-          <td
-            class="clickable"
-            @click="setItem(item)"
-          >{{ item.title }}</td>
-          <td>{{ item.description }}</td>
-        </tr>
+          v-bind="item"
+        />
       </tbody>
     </table>
     <b-modal
@@ -65,11 +60,13 @@
 
 <script>
 import gql from 'graphql-tag'
+import RewardListItem from '../components/RewardListItem'
 
 export default {
   name: 'PageRewards',
 
   components: {
+    RewardListItem
   },
 
   apollo: {
