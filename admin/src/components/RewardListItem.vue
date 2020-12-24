@@ -11,7 +11,7 @@
         :variant="statusVariant"
       >{{ status }}</b-badge>
     </td>
-    <td width="20%">
+    <td width="15%">
       <b-progress
         :max="total"
         show-value
