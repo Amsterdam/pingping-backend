@@ -4,7 +4,7 @@ import { QueryResolvers, UserRole } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 import { RewardsProvider } from '../RewardsProvider';
 
-const MOCK_DATE = '2019-02-29';
+const MOCK_DATE = '2019-02-02';
 
 export const Query: QueryResolvers = {
   getAvailableRewards(root: any, args: any, context: ModuleContext): Array<any> {
