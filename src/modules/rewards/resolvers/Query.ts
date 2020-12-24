@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import { QueryResolvers, UserRole } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 import { RewardsProvider } from '../RewardsProvider';
@@ -10,7 +11,7 @@ export const Query: QueryResolvers = {
     // Since mobile app certification needs to be done on production there is a custom
     // birthdate that only provides access to mocked rewards. These rewards will be claimed by
     // apple / google testers.
-    if (_.get(context, 'user.profile.dateOfBirth') === MOCK_DATE) {
+    if (moment(_.get(context, 'user.profile.dateOfBirth', new Date())).format('YYYY-MM-DD') === MOCK_DATE) {
       return context.injector.get(RewardsProvider).getInactive();
     }
 
