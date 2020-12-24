@@ -6,6 +6,8 @@ export const GetRewardsQuery = gql`
       rewardId
       title
       description
+      active
+      status
       vouchers {
         id
         userId

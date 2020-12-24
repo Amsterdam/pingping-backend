@@ -5,6 +5,7 @@
         <tr>
           <th>title</th>
           <th>description</th>
+          <th>status</th>
           <th>used</th>
         </tr>
       </thead>
@@ -34,6 +35,7 @@
 <script>
 import RewardModal from '../components/RewardModal'
 import RewardListItem from '../components/RewardListItem'
+import RequestUtil from '../utils/RequestUtil'
 import { GetRewardsQuery } from '../queries/GetRewardsQuery'
 import { AdminUpdateRewardMutation } from '../mutations/AdminUpdateRewardMutation'
 
@@ -48,18 +50,8 @@ export default {
   apollo: {
     items: {
       query: GetRewardsQuery,
-      update: data => {
-        return data.getRewards
-      },
-      error: error => {
-        if (error.message === 'GraphQL error: unauthorized') {
-          window.localStorage.removeItem('pp:token')
-          window.alert('unauthorized')
-          window.setTimeout(() => {
-            location.reload()
-          }, 1000)
-        }
-      }
+      update: res => res.getRewards,
+      error: RequestUtil.errorHook
     }
   },
 

@@ -11,6 +11,14 @@ export class RewardsProvider {
   @Inject(REWARDS) private rewards: RewardDefinition[];
 
   getAll(): RewardDefinition[] {
+    return this.rewards;
+  }
+
+  getInactive(): RewardDefinition[] {
+    return this.rewards.filter((r: RewardDefinition) => r.active === false);
+  }
+
+  getActive(): RewardDefinition[] {
     return this.rewards.filter((r: RewardDefinition) => r.active === true);
   }
 

@@ -32,12 +32,11 @@ export default {
     AuditLogItem
   },
 
-  mounted () {
-    this.$apollo.query({
-      query: GetAuditLogQuery
-    }).then(({ data }) => {
-      this.items = data.adminGetAuditLog
-    })
+  apollo: {
+    items: {
+      query: GetAuditLogQuery,
+      update: res => res.adminGetAuditLog
+    }
   },
 
   data () {

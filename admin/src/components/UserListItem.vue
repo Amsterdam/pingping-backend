@@ -46,12 +46,13 @@ import _ from 'lodash'
 import moment from 'moment'
 import { DeleteUserMutation } from '../mutations/DeleteUserMutation'
 import VueJsonPretty from 'vue-json-pretty'
+import VueTypes from 'vue-types'
 
 export default {
   name: 'UserListItem',
 
   props: {
-    devices: Array,
+    devices: VueTypes.array.def([]),
     id: String,
     createdAt: String,
     selected: Boolean,
@@ -103,8 +104,11 @@ export default {
       return moment(this.createdAt / 1).format('DD.MM.Y HH:mm')
     },
     device () {
-      // return _.first(this.devices.filter(d => d.notificationStatus === 'Approved'))
       let device = _.first(this.devices)
+
+      if (!device) {
+        return ''
+      }
 
       return [
         device.os,

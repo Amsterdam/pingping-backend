@@ -329,6 +329,7 @@ export type RewardResponse = {
   cover?: Maybe<Media>;
   price: Scalars['Int'];
   status: RewardStatus;
+  active: Scalars['Boolean'];
   vouchers?: Maybe<Array<Maybe<RewardVoucherResponse>>>;
 };
 
@@ -828,6 +829,7 @@ export type RewardResponseResolvers<ContextType = ModuleContext, ParentType exte
   cover?: Resolver<Maybe<ResolversTypes['Media']>, ParentType, ContextType>,
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   status?: Resolver<ResolversTypes['RewardStatus'], ParentType, ContextType>,
+  active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   vouchers?: Resolver<Maybe<Array<Maybe<ResolversTypes['RewardVoucherResponse']>>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };

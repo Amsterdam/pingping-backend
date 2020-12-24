@@ -351,6 +351,25 @@
       "type": "Voucher",
       "available": null,
       "availablePerUser": 1
+    },
+    {
+      "id": "pathe-thuis-film-test",
+      "title": "Pathe Thuis Film (T)",
+      "description": "Gefeliciteerd! Jij bent lekker bezig! Claim deze Pathé thuisbioscoopbon als welverdiende beloning!",
+      "imageUrl": "/images/reward2.jpg",
+      "thumbnailUrl": "/images/reward2Thumb.jpg",
+      "cover": {
+        "type": "Image",
+        "value": "/images/reward2.jpg",
+        "thumbnail": "/images/reward2Thumb.jpg",
+        "color": "#F5C74D"
+      },
+      "price": 140,
+      "active": false,
+      "vendor": "Pathe",
+      "type": "Voucher",
+      "available": null,
+      "availablePerUser": 1
     }
   ],
   "achievements": [

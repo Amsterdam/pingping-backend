@@ -38,39 +38,7 @@
       id="create-user"
       :hide-footer="true"
     >
-      <b-form
-        @submit="onSubmitCreateUser"
-        v-if="!loading"
-      >
-        <b-form-input
-          v-model="newUser.fullName"
-          placeholder="Full Name"
-          autofocus
-          required
-          class="mb-2"
-        ></b-form-input>
-        <b-form-input
-          v-model="newUser.email"
-          placeholder="Email"
-          required
-          class="mb-2"
-        ></b-form-input>
-        <div>Role: {{ newUser.role }}</div>
-        <b-form-input
-          v-model="newUser.password"
-          placeholder="Password"
-          type="password"
-          required
-          class="mb-2"
-        ></b-form-input>
-        <b-button
-          type="submit"
-          variant="primary"
-        >Send</b-button>
-      </b-form>
-      <div v-else>
-        Loading...
-      </div>
+      <UserCreateModal />
     </b-modal>
   </div>
 </template>
@@ -79,14 +47,15 @@
 import { mapState } from 'vuex'
 import UserListItem from '../components/UserListItem'
 import SendNotification from '../components/SendNotification'
-import { CreateUserMutation } from '../mutations/CreateUserMutation'
+import UserCreateModal from '../components/UserCreateModal'
 
 export default {
   name: 'PageUsers',
 
   components: {
     UserListItem,
-    SendNotification
+    SendNotification,
+    UserCreateModal
   },
 
   mounted () {
@@ -114,22 +83,6 @@ export default {
   },
 
   methods: {
-    onSubmitCreateUser (e) {
-      e.preventDefault();
-      this.loading = true
-
-      this.$apollo.mutate({
-        mutation: CreateUserMutation,
-        variables: {
-          input: this.newUser
-        }
-      }).then(({ data }) => {
-        this.$store.commit('users/addItem', data.adminCreateUser)
-        this.loading = false
-        this.$root.$emit('bv::hide::modal', 'create-user')
-      })
-    },
-
     setItem (set) {
       let index = this.users.map(i => i.id).indexOf(set.id)
 
@@ -146,12 +99,6 @@ export default {
       isFilter: false,
       createUser: false,
       loading: false,
-      newUser: {
-        fullName: '',
-        email: '',
-        password: '',
-        role: 'Admin'
-      },
       selected: ''
     }
   }

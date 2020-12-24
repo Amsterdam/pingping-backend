@@ -27,6 +27,7 @@
 
 <script>
 import moment from 'moment'
+import RequestUtil from '../utils/RequestUtil'
 import { GetFeedbackQuery } from '../queries/GetFeedbackQuery'
 
 export default {
@@ -35,23 +36,17 @@ export default {
   components: {
   },
 
-  mounted () {
-    this.$apollo.query({
-      query: GetFeedbackQuery
-    }).then(({ data }) => {
-      this.items = data.adminGetFeedback
-    })
+  apollo: {
+    items: {
+      query: GetFeedbackQuery,
+      update: res => res.adminGetFeedback,
+      error: RequestUtil.errorHook
+    }
   },
 
   methods: {
     formatDate (date) {
       return moment(date).format('LLL')
-    }
-  },
-
-  data () {
-    return {
-      items: []
     }
   }
 }

@@ -203,6 +203,7 @@ class TaskUtil {
         case TaskType.DateOfBirth:
           // Check date
           const date = moment(answer, 'YYYY-MM-DD');
+          user.profile.dateOfBirth = date.toDate();
 
           if (!date.isValid()) {
             throw new BadRequestError('invalid date input, expecting YYYY-MM-DD');
