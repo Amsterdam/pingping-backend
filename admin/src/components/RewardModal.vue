@@ -43,7 +43,7 @@ export default {
 
   computed: {
     importText () {
-      return `Going to import ${this.csvLines.length - 1} items with columns ${this.csvFields.join(',')}`
+      return `Going to import ${this.csvLines.length - 1} items with columns ${this.csvFields.join(',')} with separator ${this.separator}`
     },
 
     csvLines () {
@@ -69,10 +69,10 @@ export default {
       let lines = this.csv.split('\n')
 
       if (lines.length) {
-        let fields = lines[0].split(';')
+        let fields = lines[0].split(this.separator)
 
         for (var i = 1; i < lines.length; i++) {
-          let values = lines[i].split(';')
+          let values = lines[i].split(this.separator)
           let item = {}
 
           for (var f in fields) {
@@ -104,9 +104,22 @@ export default {
     },
   },
 
+  watch: {
+    csv (val) {
+      let lines = val.split('\n')
+
+      if (lines[0].indexOf(';') !== -1) {
+        this.separator = ';'
+      } else {
+        this.separator = ','
+      }
+    }
+  },
+
   data () {
     return {
-      csv: ''
+      csv: '',
+      separator: ';'
     }
   }
 }
