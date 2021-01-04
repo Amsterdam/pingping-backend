@@ -21,7 +21,6 @@
           :variant="variant"
         ></b-progress-bar>
       </b-progress>
-
     </td>
   </tr>
 </template>
@@ -56,8 +55,12 @@ export default {
       return this.vouchers.filter(i => i.userId).length
     },
 
+    percentageDone () {
+      return this.available / this.total
+    },
+
     variant () {
-      return this.available < this.total ? this.available / this.total < 0.2 ? 'danger' : 'success' : 'danger'
+      return this.available < this.total ? (this.percentageDone > 0.8 ? 'danger' : 'success') : 'danger'
     },
 
     statusVariant () {
