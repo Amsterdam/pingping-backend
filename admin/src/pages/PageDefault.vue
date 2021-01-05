@@ -1,17 +1,17 @@
 <template>
   <div>
-    <PageUsers />
+    <PageDashboard />
   </div>
 </template>
 
 <script>
-import PageUsers from './PageUsers'
+import PageDashboard from './PageDashboard'
 
 export default {
   name: 'PageDefault',
 
   components: {
-    PageUsers,
+    PageDashboard,
   },
 };
 </script>

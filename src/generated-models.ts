@@ -37,6 +37,11 @@ export enum AdminActionType {
   DeleteAllUsers = 'DeleteAllUsers'
 }
 
+export type AdminStatisticsResponse = {
+   __typename?: 'AdminStatisticsResponse';
+  usersPerDay: Scalars['JSON'];
+};
+
 export type AdminUserResponse = {
    __typename?: 'AdminUserResponse';
   id: Scalars['String'];
@@ -283,6 +288,7 @@ export type Query = {
   getRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
   getAchievements: Array<AchievementResponse>;
+  adminStatistics: AdminStatisticsResponse;
   adminGetUsers: Array<Maybe<AdminUserResponse>>;
   adminGetAuditLog?: Maybe<Array<AuditLogResponse>>;
   adminGetFeedback?: Maybe<Array<RouteFeedbackResponse>>;
@@ -607,6 +613,7 @@ export type ResolversTypes = {
   NotificationStatus: NotificationStatus,
   AchievementResponse: ResolverTypeWrapper<AchievementResponse>,
   AchievementStatus: AchievementStatus,
+  AdminStatisticsResponse: ResolverTypeWrapper<AdminStatisticsResponse>,
   AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
   UserRole: UserRole,
   AuditLogResponse: ResolverTypeWrapper<AuditLogResponse>,
@@ -666,6 +673,7 @@ export type ResolversParentTypes = {
   NotificationStatus: NotificationStatus,
   AchievementResponse: AchievementResponse,
   AchievementStatus: AchievementStatus,
+  AdminStatisticsResponse: AdminStatisticsResponse,
   AdminUserResponse: AdminUserResponse,
   UserRole: UserRole,
   AuditLogResponse: AuditLogResponse,
@@ -702,6 +710,11 @@ export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType
   status?: Resolver<ResolversTypes['AchievementStatus'], ParentType, ContextType>,
   icon?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   earnedDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
+export type AdminStatisticsResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AdminStatisticsResponse'] = ResolversParentTypes['AdminStatisticsResponse']> = {
+  usersPerDay?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -808,6 +821,7 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   getRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
   getAchievements?: Resolver<Array<ResolversTypes['AchievementResponse']>, ParentType, ContextType>,
+  adminStatistics?: Resolver<ResolversTypes['AdminStatisticsResponse'], ParentType, ContextType>,
   adminGetUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType>,
   adminGetAuditLog?: Resolver<Maybe<Array<ResolversTypes['AuditLogResponse']>>, ParentType, ContextType>,
   adminGetFeedback?: Resolver<Maybe<Array<ResolversTypes['RouteFeedbackResponse']>>, ParentType, ContextType>,
@@ -948,6 +962,7 @@ export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType ex
 
 export type Resolvers<ContextType = ModuleContext> = {
   AchievementResponse?: AchievementResponseResolvers<ContextType>,
+  AdminStatisticsResponse?: AdminStatisticsResponseResolvers<ContextType>,
   AdminUserResponse?: AdminUserResponseResolvers<ContextType>,
   AuditLogResponse?: AuditLogResponseResolvers<ContextType>,
   Choices?: GraphQLScalarType,
