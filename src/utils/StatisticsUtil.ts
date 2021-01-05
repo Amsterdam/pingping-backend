@@ -1,11 +1,14 @@
 import { User } from 'models/User';
 import moment from 'moment';
+import { UserRole } from '@models';
 
 class StatisticsUtil {
   static async getUsersPerDay() {
     const res = await User.aggregate([
       {
-        $match: {},
+        $match: {
+          role: UserRole.User,
+        },
       },
       {
         $project: {
