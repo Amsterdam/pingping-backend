@@ -80,7 +80,6 @@ class auth {
   }
 
   static async createUser(role: UserRole, fullName: string, email: string, password: string) {
-    console.log('Creating superadmin');
     try {
       const user = await User.findOneAndUpdate(
         {

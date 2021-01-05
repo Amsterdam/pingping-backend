@@ -73,7 +73,7 @@ export const Mutation: MutationResolvers = {
     context.device.token = args.input.deviceToken;
     context.device.notificationStatus = args.input.notificationStatus;
 
-    await User.update(
+    await User.updateOne(
       { 'devices.id': context.device.id },
       {
         $set: {

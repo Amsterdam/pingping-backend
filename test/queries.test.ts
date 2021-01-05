@@ -6,12 +6,20 @@ import request from 'supertest';
 import { UserDocument } from '../src/models/User';
 import index from '../src/index';
 import UserUtil from '../src/utils/UserUtil';
-import { RewardResponse, AchievementResponse } from '../src/generated-models';
+import auth from '../src/lib/auth';
+import { RewardResponse, AchievementResponse, UserRole } from '../src/generated-models';
 
 describe('queries', () => {
   let server: any;
   let user: UserDocument;
+  let admin: UserDocument;
   let accessToken: string;
+  let adminAccessToken: any;
+
+  before(async () => {
+    admin = await auth.createUser(UserRole.Admin, 'Admin', 'admin@test.com', 'password');
+    adminAccessToken = await auth.createToken(admin, 'testhellotests');
+  });
 
   beforeEach(async () => {
     server = index;
@@ -79,33 +87,4 @@ describe('queries', () => {
         done();
       });
   });
-
-  // it('get achievements', (done) => {
-  //   request(server)
-  //     .post('/')
-  //     .send({
-  //       query: `query getAchievements {
-  //         getAchievements {
-  //           title
-  //           description
-  //           icon
-  //           achievementId
-  //           status
-  //           points
-  //         }
-  //       }`,
-  //       operationName: 'getAchievements',
-  //     })
-  //     .set({ Authorization: `Bearer ${accessToken}`, Accept: 'application/json' })
-  //     .expect('Content-Type', /json/)
-  //     .expect(200)
-  //     .end((err: any, res: any) => {
-  //       const body = res.body.data.getAchievements;
-  //       const first: AchievementResponse = _.first(body);
-  //       expect(first.title).to.equal('Zorgtoeslag');
-  //       expect(first.description).to.equal('Zorgtoeslag');
-  //       expect(first.points).to.equal(20);
-  //       done();
-  //     });
-  // });
 });

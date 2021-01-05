@@ -48,7 +48,7 @@ class RewardUtil {
     await RewardVoucher.deleteOne({
       _id: id,
     });
-    await User.update({}, { $pull: { rewards: { voucherId: id } } }, { multi: true });
+    await User.updateMany({}, { $pull: { rewards: { voucherId: id } } }, { multi: true });
   }
 
   static async claim(user: UserDocument, id: string): Promise<UserReward> {
