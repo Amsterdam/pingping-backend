@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-gutter-md q-mt-md">
+  <div class="row">
     <Chart
       v-if="statistics"
       class="col-12"
