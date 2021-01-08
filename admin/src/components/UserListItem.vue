@@ -3,11 +3,13 @@
     :class="['hover', selected && 'selected']"
     @click="toggleSelected"
   >
-    <td><input
+    <td>
+      <input
         type="checkbox"
         v-if="canSendNotifications"
-        v-model="selected"
+        v-model="isSelected"
       />
+    </td>
     <td>{{ id }}</td>
     <td>{{ date }}</td>
     <td>

@@ -28,6 +28,7 @@
           :key="i"
           @set="setItem"
           v-bind="item"
+          v-model:selected="item.selected"
         />
       </tbody>
     </table>

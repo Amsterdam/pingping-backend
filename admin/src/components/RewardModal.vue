@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-h6">Vouchers</div>
-    <textarea v-model="vouchers"></textarea>
+    <!-- <textarea v-model="vouchers"></textarea> -->
     <div class="text-h6">CSV Input</div>
     <textarea v-model="csv"></textarea>
     <div v-if="csv">{{ importText }}</div>
