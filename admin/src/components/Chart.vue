@@ -4,6 +4,12 @@
 
     <BarChart
       :values="values"
+      v-if="type === 'bar'"
+      :keys="keys"
+    />
+    <LineChart
+      :values="values"
+      v-else-if="type === 'line'"
       :keys="keys"
     />
   </div>
@@ -11,14 +17,17 @@
 
 <script>
 import BarChart from './BarChart'
+import LineChart from './LineChart'
 import VueTypes from 'vue-types';
 
 export default {
   components: {
-    BarChart
+    BarChart,
+    LineChart
   },
   props: {
     title: VueTypes.string,
+    type: VueTypes.string.def('bar'),
     values: VueTypes.array,
     keys: VueTypes.array
   },
@@ -50,11 +59,13 @@ export default {
   margin-top: 1rem;
   border-radius: 5px;
   background-color: #fff;
-  padding: 1rem;
 }
 
-.custom-chart.inner-title {
-  font-size: 1.1rem;
+.custom-chart .inner-title {
+  /* margin-left: 1.5rem; */
+  font-size: 1.4rem;
+  font-weight: bold;
   margin-bottom: 0.5rem;
+  text-align: left;
 }
 </style>

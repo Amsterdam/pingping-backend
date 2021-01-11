@@ -26,7 +26,8 @@ class StatisticsUtil {
 
     return {
       values: res.map((i) => i.count),
-      keys: res.map((i) => moment(i._id.label, 'YYYY-MM-DD').format('DD.MM.YY')),
+      // keys: res.map((i) => moment(i._id.label, 'YYYY-MM-DD').format('DD.MM.YY')),
+      keys: res.map((i) => moment(i._id.label, 'YYYY-MM-DD').format('MM.DD.YYYY')),
     };
   }
 
