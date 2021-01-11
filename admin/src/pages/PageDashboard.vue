@@ -6,6 +6,18 @@
       title="New Users Per Day"
       v-bind="statistics.usersPerDay"
     />
+    <Chart
+      v-if="statistics"
+      class="col-9"
+      title="Completed Tasks"
+      v-bind="statistics.completedTasks"
+    />
+    <div
+      v-if="false"
+      class="col-3"
+    >
+      {{ statistics.activeUsers30Days }}
+    </div>
   </div>
 </template>
 

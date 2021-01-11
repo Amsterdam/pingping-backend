@@ -5,6 +5,7 @@ const USERNAME_TTL = 30 * 60;
 
 const IP_PRE = 'ip-';
 const USERNAME_PRE = 'u-';
+const LAST_ACTIVE_PRE = 'la-';
 
 export class Cache {
   private cache: any;
@@ -27,6 +28,12 @@ export class Cache {
     this.cache.set(key, val, IP_TTL);
 
     return val;
+  }
+
+  registerLastActive(userId: string) {
+    let key = `${LAST_ACTIVE_PRE}${userId}`;
+
+    this.cache.set(key, new Date().toString());
   }
 
   registerUsername(username: string) {

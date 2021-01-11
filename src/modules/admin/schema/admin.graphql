@@ -18,6 +18,8 @@ type Mutation {
 # Response
 type AdminStatisticsResponse {
   usersPerDay: JSON!
+  completedTasks: JSON!
+  activeUsers30Days: Int!
 }
 
 type LoginResponse {

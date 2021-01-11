@@ -40,6 +40,8 @@ export enum AdminActionType {
 export type AdminStatisticsResponse = {
    __typename?: 'AdminStatisticsResponse';
   usersPerDay: Scalars['JSON'];
+  completedTasks: Scalars['JSON'];
+  activeUsers30Days: Scalars['Int'];
 };
 
 export type AdminUserResponse = {
@@ -715,6 +717,8 @@ export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType
 
 export type AdminStatisticsResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AdminStatisticsResponse'] = ResolversParentTypes['AdminStatisticsResponse']> = {
   usersPerDay?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>,
+  completedTasks?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>,
+  activeUsers30Days?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 

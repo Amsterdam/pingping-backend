@@ -1,6 +1,7 @@
 import { UserRole } from '@models';
 import NoPermissionError from 'errors/NoPermissionError';
 import UnauthorizedError from 'errors/UnauthorizedError';
+import cache from 'lib/cache';
 import { ContextType } from 'lib/Context';
 
 export default class AuthMiddleware {
@@ -11,6 +12,8 @@ export default class AuthMiddleware {
         if (!context.user || !context.device) {
           throw new UnauthorizedError();
         }
+
+        cache.registerLastActive(context.user._id.toString());
 
         return next(root, args, context, info);
       };
