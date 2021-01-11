@@ -46,15 +46,16 @@ class StatisticsUtil {
       {
         $match: {
           'tasks.status': TaskStatus.Completed,
+          'tasks.routeTaskId': { $exists: true },
         },
       },
       {
         $group: {
-          _id: { label: '$tasks.taskId' },
+          _id: { label: '$tasks.routeTaskId' },
           count: { $sum: 1 },
         },
       },
-      { $sort: { count: 1 } },
+      { $sort: { count: -1 } },
     ]);
 
     return {
