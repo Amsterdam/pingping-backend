@@ -2,15 +2,14 @@
   <div class="page-dashboard">
     <Chart
       v-if="statistics"
-      class="col-7"
+      class="col-12"
       type="line"
       title="New Users Per Day"
       v-bind="statistics.usersPerDay"
     />
-    <!-- <div class="col-4"></div> -->
     <Chart
       v-if="statistics"
-      class="col-5"
+      class="col-6"
       title="Completed Tasks"
       v-bind="statistics.completedTasks"
     />
@@ -45,8 +44,5 @@ export default {
 
 <style scoped>
 .page-dashboard {
-  background-color: #dfe8e7;
-  max-width: 100%;
-  padding: 1rem;
 }
 </style>

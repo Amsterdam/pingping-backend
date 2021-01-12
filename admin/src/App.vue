@@ -2,7 +2,9 @@
   <div id="app">
     <div v-if="isLoggedIn">
       <AppNav />
-      <router-view></router-view>
+      <div class="page">
+        <router-view></router-view>
+      </div>
     </div>
 
     <Login v-else />
@@ -77,13 +79,29 @@ export default {
 </script>
 
 <style>
+body,
+html {
+  background-color: #dfe8e7;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 30px;
+}
+
+.page {
+  max-width: 100%;
+  padding: 0.5rem;
+  background-color: #dfe8e7;
+}
+
+.section {
+  border-radius: 5px;
+  background-color: #fff;
+  /* margin: 1rem; */
 }
 
 .clickable:hover {

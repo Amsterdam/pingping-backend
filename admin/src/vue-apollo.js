@@ -47,6 +47,11 @@ export function createProvider (options = {}) {
       },
     },
     errorHandler (error) {
+      if (error.message.indexOf('no_permission') !== -1) {
+        window.localStorage.removeItem('pp:token')
+        location.reload()
+      }
+
       // eslint-disable-next-line no-console
       console.log(
         '%cError',

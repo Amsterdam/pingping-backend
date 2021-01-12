@@ -5,11 +5,14 @@
     <BarChart
       :values="values"
       v-if="type === 'bar'"
+      class="bar-chart"
       :keys="keys"
     />
     <LineChart
       :values="values"
       v-else-if="type === 'line'"
+      class="line-chart"
+      style="height: 30vh;"
       :keys="keys"
     />
   </div>
@@ -67,5 +70,10 @@ export default {
   font-weight: bold;
   margin-bottom: 0.5rem;
   text-align: left;
+}
+
+.bar-chart {
+  height: '35vh';
+  width: '100%';
 }
 </style>

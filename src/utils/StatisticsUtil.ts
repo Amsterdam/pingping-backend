@@ -1,6 +1,8 @@
 import { User } from 'models/User';
 import moment from 'moment';
 import { UserRole, TaskStatus } from '@models';
+import InitialDataUtil from 'utils/InitialDataUtil';
+import { TaskDefinition } from 'types/global';
 
 class StatisticsUtil {
   static async getUsersPerDay() {
@@ -26,7 +28,6 @@ class StatisticsUtil {
 
     return {
       values: res.map((i) => i.count),
-      // keys: res.map((i) => moment(i._id.label, 'YYYY-MM-DD').format('DD.MM.YY')),
       keys: res.map((i) => moment(i._id.label, 'YYYY-MM-DD').format('MM.DD.YYYY')),
     };
   }
@@ -52,7 +53,7 @@ class StatisticsUtil {
       },
       {
         $group: {
-          _id: { label: '$tasks.routeTaskId' },
+          _id: { task: '$tasks.routeTaskId' },
           count: { $sum: 1 },
         },
       },
@@ -61,7 +62,11 @@ class StatisticsUtil {
 
     return {
       values: res.map((i) => i.count),
-      keys: res.map((i) => i._id.label),
+      keys: res.map((i) => {
+        const task: TaskDefinition = InitialDataUtil.getTaskById(i._id.task);
+
+        return task.title;
+      }),
     };
   }
 }

@@ -15,7 +15,8 @@ export default {
       res.labels = this.keys
       res.datasets = [
         {
-          // backgroundColor: '#96C3BA',
+          backgroundColor: '#fff',
+          borderColor: '#FB9F4B',
           data: this.values
         }
       ]
