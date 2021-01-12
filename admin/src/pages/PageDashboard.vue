@@ -43,7 +43,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .page-dashboard {
   background-color: #dfe8e7;
   max-width: 100%;
