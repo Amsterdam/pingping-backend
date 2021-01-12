@@ -6,6 +6,20 @@ import { TaskDefinition } from 'types/global';
 import { RouteDefinition } from 'types/global';
 
 class StatisticsUtil {
+  static async getTotalUsers() {
+    return {
+      current: await User.count({ role: UserRole.User }),
+      change: 0,
+    };
+  }
+
+  static async getActiveUsers() {
+    return {
+      current: 0,
+      change: 0,
+    };
+  }
+
   static async getUsersPerDay() {
     const res = await User.aggregate([
       {

@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-chart">
+  <div class="custom-chart block">
     <div class="custom-chart-inner">
       <div class="inner-title">{{ title }}</div>
 
@@ -7,13 +7,14 @@
         :values="values"
         v-if="type === 'bar'"
         class="is-chart bar-chart"
+        style="height: 30vh;"
         :keys="keys"
       />
       <LineChart
         :values="values"
         v-else-if="type === 'line'"
         class="is-chart line-chart"
-        style="height: 30vh;"
+        style="height: 25vh;"
         :keys="keys"
       />
       <PieChart
@@ -69,10 +70,6 @@ export default {
 </script>
 
 <style>
-.custom-chart {
-  padding: 1rem;
-}
-
 .is-chart {
   margin-left: -1rem;
 }

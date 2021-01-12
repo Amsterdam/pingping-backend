@@ -19,13 +19,19 @@ type Mutation {
 type AdminStatisticsResponse {
   usersPerDay: JSON!
   completedTasks: JSON!
-  activeUsers30Days: Int!
   routes: [RouteStatistics!]
+  activeUsers: StatisticNumberChange
+  totalUsers: StatisticNumberChange
 }
 
 type RouteStatistics {
   title: String!
   data: Statistics!
+}
+
+type StatisticNumberChange {
+  current: Int!
+  change: Float
 }
 
 type Statistics {

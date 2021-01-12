@@ -10,13 +10,15 @@ export const Query: QueryResolvers = {
     const usersPerDay = await StatisticsUtil.getUsersPerDay();
     const completedTasks = await StatisticsUtil.getCompletedTasks();
     const routes = await StatisticsUtil.getRoutes();
-    const activeUsers30Days = 100;
+    const totalUsers = await StatisticsUtil.getTotalUsers();
+    const activeUsers = await StatisticsUtil.getActiveUsers();
 
     return {
       usersPerDay,
       completedTasks,
-      activeUsers30Days,
       routes,
+      totalUsers,
+      activeUsers,
     };
   },
 

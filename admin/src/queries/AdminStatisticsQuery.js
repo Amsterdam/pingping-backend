@@ -5,7 +5,14 @@ export const AdminStatisticsQuery = gql`
     adminStatistics {
       usersPerDay
       completedTasks
-      activeUsers30Days
+      activeUsers {
+        current
+        change
+      }
+      totalUsers {
+        current
+        change
+      }
       routes {
         title
         data {

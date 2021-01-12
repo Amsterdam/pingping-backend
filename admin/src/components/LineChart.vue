@@ -15,7 +15,7 @@ export default {
       res.labels = this.keys
       res.datasets = [
         {
-          backgroundColor: '#fff',
+          fill: false,
           borderColor: '#FB9F4B',
           data: this.values
         }
@@ -33,7 +33,11 @@ export default {
         yAxes: [
           {
             gridLines: {
-              display: false
+              borderDash: [8, 4],
+            },
+            ticks: {
+              autoSkip: true,
+              maxTicksLimit: 10
             },
           }
         ],

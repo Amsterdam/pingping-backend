@@ -41,8 +41,9 @@ export type AdminStatisticsResponse = {
    __typename?: 'AdminStatisticsResponse';
   usersPerDay: Scalars['JSON'];
   completedTasks: Scalars['JSON'];
-  activeUsers30Days: Scalars['Int'];
   routes?: Maybe<Array<RouteStatistics>>;
+  activeUsers?: Maybe<StatisticNumberChange>;
+  totalUsers?: Maybe<StatisticNumberChange>;
 };
 
 export type AdminUserResponse = {
@@ -417,6 +418,12 @@ export type RouteTip = {
   description: Scalars['String'];
 };
 
+export type StatisticNumberChange = {
+   __typename?: 'StatisticNumberChange';
+  current: Scalars['Int'];
+  change?: Maybe<Scalars['Float']>;
+};
+
 export type Statistics = {
    __typename?: 'Statistics';
   values?: Maybe<Array<Scalars['Int']>>;
@@ -631,6 +638,7 @@ export type ResolversTypes = {
   AdminStatisticsResponse: ResolverTypeWrapper<AdminStatisticsResponse>,
   RouteStatistics: ResolverTypeWrapper<RouteStatistics>,
   Statistics: ResolverTypeWrapper<Statistics>,
+  StatisticNumberChange: ResolverTypeWrapper<StatisticNumberChange>,
   AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
   UserRole: UserRole,
   AuditLogResponse: ResolverTypeWrapper<AuditLogResponse>,
@@ -693,6 +701,7 @@ export type ResolversParentTypes = {
   AdminStatisticsResponse: AdminStatisticsResponse,
   RouteStatistics: RouteStatistics,
   Statistics: Statistics,
+  StatisticNumberChange: StatisticNumberChange,
   AdminUserResponse: AdminUserResponse,
   UserRole: UserRole,
   AuditLogResponse: AuditLogResponse,
@@ -735,8 +744,9 @@ export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType
 export type AdminStatisticsResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AdminStatisticsResponse'] = ResolversParentTypes['AdminStatisticsResponse']> = {
   usersPerDay?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>,
   completedTasks?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>,
-  activeUsers30Days?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   routes?: Resolver<Maybe<Array<ResolversTypes['RouteStatistics']>>, ParentType, ContextType>,
+  activeUsers?: Resolver<Maybe<ResolversTypes['StatisticNumberChange']>, ParentType, ContextType>,
+  totalUsers?: Resolver<Maybe<ResolversTypes['StatisticNumberChange']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -920,6 +930,12 @@ export type RouteTipResolvers<ContextType = ModuleContext, ParentType extends Re
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
+export type StatisticNumberChangeResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['StatisticNumberChange'] = ResolversParentTypes['StatisticNumberChange']> = {
+  current?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  change?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export type StatisticsResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Statistics'] = ResolversParentTypes['Statistics']> = {
   values?: Resolver<Maybe<Array<ResolversTypes['Int']>>, ParentType, ContextType>,
   keys?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>,
@@ -1019,6 +1035,7 @@ export type Resolvers<ContextType = ModuleContext> = {
   RouteResponse?: RouteResponseResolvers<ContextType>,
   RouteStatistics?: RouteStatisticsResolvers<ContextType>,
   RouteTip?: RouteTipResolvers<ContextType>,
+  StatisticNumberChange?: StatisticNumberChangeResolvers<ContextType>,
   Statistics?: StatisticsResolvers<ContextType>,
   StatusResponse?: StatusResponseResolvers<ContextType>,
   TaskResponse?: TaskResponseResolvers<ContextType>,

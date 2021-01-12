@@ -1,5 +1,15 @@
 <template>
   <div class="page-dashboard container-flow">
+    <div class="row">
+      <NumberBlock
+        title="Total users"
+        v-bind="statistics.totalUsers"
+      />
+      <!-- <NumberBlock
+        title="Active users"
+        v-bind="statistics.activeUsers"
+      /> -->
+    </div>
     <div class="row gx-2">
       <Chart
         v-if="statistics"
@@ -35,13 +45,15 @@
 
 <script>
 import { AdminStatisticsQuery } from '../queries/AdminStatisticsQuery'
+import NumberBlock from '../components/NumberBlock'
 import Chart from '../components/Chart'
 
 export default {
   name: 'PageDashboard',
 
   components: {
-    Chart
+    Chart,
+    NumberBlock
   },
 
   apollo: {

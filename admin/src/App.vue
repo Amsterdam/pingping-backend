@@ -108,4 +108,14 @@ html {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.block {
+  padding: 0.5rem !important;
+}
+
+.block-inner {
+  padding: 1rem;
+  border-radius: 5px;
+  background-color: #fff;
+}
 </style>

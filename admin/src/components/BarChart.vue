@@ -32,7 +32,12 @@ export default {
         yAxes: [
           {
             gridLines: {
-              display: false
+              borderDash: [8, 4],
+            },
+            ticks: {
+              beginAtZero: true,
+              autoSkip: true,
+              maxTicksLimit: 10
             }
           }
         ],
@@ -40,7 +45,7 @@ export default {
           {
             gridLines: {
               display: false
-            }
+            },
           }
         ]
       },
