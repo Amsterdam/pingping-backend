@@ -20,6 +20,17 @@ type AdminStatisticsResponse {
   usersPerDay: JSON!
   completedTasks: JSON!
   activeUsers30Days: Int!
+  routes: [RouteStatistics!]
+}
+
+type RouteStatistics {
+  title: String!
+  data: Statistics!
+}
+
+type Statistics {
+  values: [Int!]
+  keys: [String!]
 }
 
 type LoginResponse {

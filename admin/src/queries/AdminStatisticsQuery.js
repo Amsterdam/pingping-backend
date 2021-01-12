@@ -6,6 +6,13 @@ export const AdminStatisticsQuery = gql`
       usersPerDay
       completedTasks
       activeUsers30Days
+      routes {
+        title
+        data {
+          values
+          keys
+        }
+      }
     }
   }
 `;

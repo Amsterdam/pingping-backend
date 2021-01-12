@@ -1,32 +1,43 @@
 <template>
   <div class="custom-chart">
-    <div class="inner-title">{{ title }}</div>
+    <div class="custom-chart-inner">
+      <div class="inner-title">{{ title }}</div>
 
-    <BarChart
-      :values="values"
-      v-if="type === 'bar'"
-      class="bar-chart"
-      :keys="keys"
-    />
-    <LineChart
-      :values="values"
-      v-else-if="type === 'line'"
-      class="line-chart"
-      style="height: 30vh;"
-      :keys="keys"
-    />
+      <BarChart
+        :values="values"
+        v-if="type === 'bar'"
+        class="is-chart bar-chart"
+        :keys="keys"
+      />
+      <LineChart
+        :values="values"
+        v-else-if="type === 'line'"
+        class="is-chart line-chart"
+        style="height: 30vh;"
+        :keys="keys"
+      />
+      <PieChart
+        :values="values"
+        v-else-if="type === 'pie'"
+        class="is-chart pie-chart"
+        style="height: 20vh;"
+        :keys="keys"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import BarChart from './BarChart'
 import LineChart from './LineChart'
+import PieChart from './PieChart'
 import VueTypes from 'vue-types';
 
 export default {
   components: {
     BarChart,
-    LineChart
+    LineChart,
+    PieChart
   },
   props: {
     title: VueTypes.string,
@@ -59,13 +70,20 @@ export default {
 
 <style>
 .custom-chart {
-  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.is-chart {
+  margin-left: -1rem;
+}
+
+.custom-chart-inner {
+  padding: 1rem;
   border-radius: 5px;
   background-color: #fff;
 }
 
 .custom-chart .inner-title {
-  /* margin-left: 1.5rem; */
   font-size: 1.4rem;
   font-weight: bold;
   margin-bottom: 0.5rem;

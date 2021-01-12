@@ -1,8 +1,9 @@
 import { User } from 'models/User';
 import moment from 'moment';
-import { UserRole, TaskStatus } from '@models';
+import { UserRole, TaskStatus, UserRouteStatus } from '@models';
 import InitialDataUtil from 'utils/InitialDataUtil';
 import { TaskDefinition } from 'types/global';
+import { RouteDefinition } from 'types/global';
 
 class StatisticsUtil {
   static async getUsersPerDay() {
@@ -30,6 +31,46 @@ class StatisticsUtil {
       values: res.map((i) => i.count),
       keys: res.map((i) => moment(i._id.label, 'YYYY-MM-DD').format('MM.DD.YYYY')),
     };
+  }
+
+  static async getRoutes(): Promise<Array<any>> {
+    const res = await User.aggregate([
+      {
+        $match: {
+          role: UserRole.User,
+        },
+      },
+      {
+        $unwind: {
+          path: '$routes',
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            route: '$routes.routeId',
+            status: '$routes.status',
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
+    ]);
+
+    return InitialDataUtil.getRoutes()
+      .map((r: RouteDefinition) => {
+        const set = res.filter((v) => v._id.route === r.id);
+
+        return {
+          title: r.title,
+          data: {
+            values: set.map((v) => v.count),
+            keys: set.map((v) => v._id.status),
+          },
+        };
+      })
+      .filter((r) => r.data.values.length);
   }
 
   static async getCompletedTasks() {

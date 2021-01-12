@@ -9,12 +9,14 @@ export const Query: QueryResolvers = {
   async adminStatistics(root: any, args: any, context: ContextType): Promise<any> {
     const usersPerDay = await StatisticsUtil.getUsersPerDay();
     const completedTasks = await StatisticsUtil.getCompletedTasks();
+    const routes = await StatisticsUtil.getRoutes();
     const activeUsers30Days = 100;
 
     return {
       usersPerDay,
       completedTasks,
       activeUsers30Days,
+      routes,
     };
   },
 

@@ -42,6 +42,7 @@ export type AdminStatisticsResponse = {
   usersPerDay: Scalars['JSON'];
   completedTasks: Scalars['JSON'];
   activeUsers30Days: Scalars['Int'];
+  routes?: Maybe<Array<RouteStatistics>>;
 };
 
 export type AdminUserResponse = {
@@ -404,10 +405,22 @@ export type RouteResponse = {
   tasks?: Maybe<Array<Maybe<UserTaskResponse>>>;
 };
 
+export type RouteStatistics = {
+   __typename?: 'RouteStatistics';
+  title: Scalars['String'];
+  data: Statistics;
+};
+
 export type RouteTip = {
    __typename?: 'RouteTip';
   title: Scalars['String'];
   description: Scalars['String'];
+};
+
+export type Statistics = {
+   __typename?: 'Statistics';
+  values?: Maybe<Array<Scalars['Int']>>;
+  keys?: Maybe<Array<Scalars['String']>>;
 };
 
 export type StatusResponse = {
@@ -616,6 +629,8 @@ export type ResolversTypes = {
   AchievementResponse: ResolverTypeWrapper<AchievementResponse>,
   AchievementStatus: AchievementStatus,
   AdminStatisticsResponse: ResolverTypeWrapper<AdminStatisticsResponse>,
+  RouteStatistics: ResolverTypeWrapper<RouteStatistics>,
+  Statistics: ResolverTypeWrapper<Statistics>,
   AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
   UserRole: UserRole,
   AuditLogResponse: ResolverTypeWrapper<AuditLogResponse>,
@@ -676,6 +691,8 @@ export type ResolversParentTypes = {
   AchievementResponse: AchievementResponse,
   AchievementStatus: AchievementStatus,
   AdminStatisticsResponse: AdminStatisticsResponse,
+  RouteStatistics: RouteStatistics,
+  Statistics: Statistics,
   AdminUserResponse: AdminUserResponse,
   UserRole: UserRole,
   AuditLogResponse: AuditLogResponse,
@@ -719,6 +736,7 @@ export type AdminStatisticsResponseResolvers<ContextType = ModuleContext, Parent
   usersPerDay?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>,
   completedTasks?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>,
   activeUsers30Days?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  routes?: Resolver<Maybe<Array<ResolversTypes['RouteStatistics']>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -890,9 +908,21 @@ export type RouteResponseResolvers<ContextType = ModuleContext, ParentType exten
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
+export type RouteStatisticsResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RouteStatistics'] = ResolversParentTypes['RouteStatistics']> = {
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  data?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export type RouteTipResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RouteTip'] = ResolversParentTypes['RouteTip']> = {
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
+export type StatisticsResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Statistics'] = ResolversParentTypes['Statistics']> = {
+  values?: Resolver<Maybe<Array<ResolversTypes['Int']>>, ParentType, ContextType>,
+  keys?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -987,7 +1017,9 @@ export type Resolvers<ContextType = ModuleContext> = {
   RouteAnswer?: GraphQLScalarType,
   RouteFeedbackResponse?: RouteFeedbackResponseResolvers<ContextType>,
   RouteResponse?: RouteResponseResolvers<ContextType>,
+  RouteStatistics?: RouteStatisticsResolvers<ContextType>,
   RouteTip?: RouteTipResolvers<ContextType>,
+  Statistics?: StatisticsResolvers<ContextType>,
   StatusResponse?: StatusResponseResolvers<ContextType>,
   TaskResponse?: TaskResponseResolvers<ContextType>,
   UpdateTaskResponse?: UpdateTaskResponseResolvers<ContextType>,
