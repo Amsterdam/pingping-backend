@@ -10,12 +10,17 @@ class boot {
     console.log('booting...', process.env.NODE_ENV);
     require('console-stamp')(console, '[HH:MM:ss.l]');
     dotenv.config();
-    MigrationUtil.checkRouteProgress();
     StatisticsUtil.registerStatistics();
+    MigrationUtil.checkRouteProgress();
 
     NodeCron.schedule('0 12 * * *', async () => {
       console.log('Running statistics cron');
       await StatisticsUtil.registerStatistics();
+    });
+
+    NodeCron.schedule('0 5 * * *', async () => {
+      console.log('Running route progress cron');
+      MigrationUtil.checkRouteProgress();
     });
 
     // Create admin user
