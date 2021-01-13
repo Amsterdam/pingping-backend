@@ -3,8 +3,14 @@ import gql from 'graphql-tag';
 export const AdminStatisticsQuery = gql`
   query {
     adminStatistics {
-      usersPerDay
-      completedTasks
+      usersPerDay {
+        values
+        keys
+      }
+      completedTasks {
+        values
+        keys
+      }
       activeUsers {
         current
         change

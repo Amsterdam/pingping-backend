@@ -10,9 +10,13 @@
       <div
         v-b-tooltip.hover
         title="Change since 7 days ago"
-        :class="['change', change && change > 0 ? 'positive' : 'negative']"
+        :class="['change', changeClass]"
         v-if="change"
-      >{{ change * 100 + '%' }}</div>
+      >
+        <b-icon-arrow-up v-if="positive" />
+        <b-icon-arrow-down v-else />
+        <span>{{ change * 100 + '%' }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +31,16 @@ export default {
     description: VueTypes.string,
     current: VueTypes.number,
     change: VueTypes.number
+  },
+
+  computed: {
+    positive () {
+      return this.change && this.change > 0 ? true : false
+    },
+
+    changeClass () {
+      return this.change && this.change > 0 ? 'positive' : 'negative'
+    }
   }
 }
 </script>
@@ -34,8 +48,6 @@ export default {
 <style scoped>
 .number-block {
   position: relative;
-  max-width: 200px;
-  width: 200px;
   text-align: left;
 }
 
@@ -60,10 +72,10 @@ export default {
 }
 
 .number-block .change.negative {
-  color: red;
+  color: #ff4136;
 }
 
 .number-block .change {
-  color: green;
+  color: #2ecc40;
 }
 </style>

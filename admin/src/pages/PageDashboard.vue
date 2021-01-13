@@ -6,10 +6,12 @@
     >
       <NumberBlock
         title="Total users"
+        class="col-2"
         v-bind="statistics.totalUsers"
       />
       <NumberBlock
         title="Active users"
+        class="col-2"
         description="Active users past 7 days"
         v-bind="statistics.activeUsers"
       />

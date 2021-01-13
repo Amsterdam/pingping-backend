@@ -6,6 +6,7 @@ import { TaskStatus, TaskType, UserRole } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 import { ContextType } from 'lib/Context';
 import { RouteFeedback } from 'models/RouteFeedback';
+import RouteUtil from 'utils/RouteUtil';
 
 export const UserTaskResponse: any = {
   task: (doc: UserTask) => TaskUtil.getDefinition(doc.taskId),
@@ -39,11 +40,7 @@ export const RouteResponse: any = {
     return numberOfFeedbacks >= 1;
   },
   progress: (doc: RouteDefinition, args: any, context: ModuleContext) => {
-    const tasks = context.user.tasks
-      .filter((ut: UserTask) => ut.status === TaskStatus.Completed)
-      .filter((ut: UserTask) => ut.routeId === doc.id);
-
-    return _.round(tasks.length / doc.tasks.length, 2);
+    return RouteUtil.getProgress(context.user, doc);
   },
   tasks: (doc: RouteDefinition, args: any, context: ModuleContext) => {
     return doc.tasks.map((t: TaskDefinition) => {

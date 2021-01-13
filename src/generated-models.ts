@@ -39,8 +39,8 @@ export enum AdminActionType {
 
 export type AdminStatisticsResponse = {
    __typename?: 'AdminStatisticsResponse';
-  usersPerDay: Scalars['JSON'];
-  completedTasks: Scalars['JSON'];
+  usersPerDay: Statistics;
+  completedTasks: Statistics;
   routes?: Maybe<Array<RouteStatistics>>;
   activeUsers?: Maybe<StatisticNumberChange>;
   totalUsers?: Maybe<StatisticNumberChange>;
@@ -636,8 +636,8 @@ export type ResolversTypes = {
   AchievementResponse: ResolverTypeWrapper<AchievementResponse>,
   AchievementStatus: AchievementStatus,
   AdminStatisticsResponse: ResolverTypeWrapper<AdminStatisticsResponse>,
-  RouteStatistics: ResolverTypeWrapper<RouteStatistics>,
   Statistics: ResolverTypeWrapper<Statistics>,
+  RouteStatistics: ResolverTypeWrapper<RouteStatistics>,
   StatisticNumberChange: ResolverTypeWrapper<StatisticNumberChange>,
   AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
   UserRole: UserRole,
@@ -699,8 +699,8 @@ export type ResolversParentTypes = {
   AchievementResponse: AchievementResponse,
   AchievementStatus: AchievementStatus,
   AdminStatisticsResponse: AdminStatisticsResponse,
-  RouteStatistics: RouteStatistics,
   Statistics: Statistics,
+  RouteStatistics: RouteStatistics,
   StatisticNumberChange: StatisticNumberChange,
   AdminUserResponse: AdminUserResponse,
   UserRole: UserRole,
@@ -742,8 +742,8 @@ export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType
 };
 
 export type AdminStatisticsResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AdminStatisticsResponse'] = ResolversParentTypes['AdminStatisticsResponse']> = {
-  usersPerDay?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>,
-  completedTasks?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>,
+  usersPerDay?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
+  completedTasks?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
   routes?: Resolver<Maybe<Array<ResolversTypes['RouteStatistics']>>, ParentType, ContextType>,
   activeUsers?: Resolver<Maybe<ResolversTypes['StatisticNumberChange']>, ParentType, ContextType>,
   totalUsers?: Resolver<Maybe<ResolversTypes['StatisticNumberChange']>, ParentType, ContextType>,

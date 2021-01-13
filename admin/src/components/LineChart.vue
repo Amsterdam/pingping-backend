@@ -50,7 +50,7 @@ export default {
             },
             time: {
               unit: 'month',
-              tooltipFormat: 'DD.MM.YYYY'
+              tooltipFormat: 'dddd LL'
             },
             gridLines: {
               display: false

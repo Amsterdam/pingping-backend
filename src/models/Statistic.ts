@@ -1,5 +1,6 @@
 import { Document, Schema, model } from 'mongoose';
 
+// Model used to write down statistics values per day for a specific key.
 export type Statistic = Document & {
   type: string;
   key: string;

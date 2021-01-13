@@ -1,6 +1,6 @@
 import { User } from 'models/User';
 import moment from 'moment';
-import { UserRole, TaskStatus } from '@models';
+import { UserRole, TaskStatus, StatisticNumberChange, Statistics, RouteStatistics } from '@models';
 import InitialDataUtil from 'utils/InitialDataUtil';
 import { TaskDefinition } from 'types/global';
 import { RouteDefinition } from 'types/global';
@@ -11,7 +11,7 @@ const ACTIVE_USERS_WEEK = 'active-users-week';
 const DATE_FORMAT = 'YYYY-MM-DD';
 
 class StatisticsUtil {
-  static async getLastWeekStatistics(type: string): Promise<number> {
+  static async getChangeFromLastWeek(type: string, current: number): Promise<number> {
     const key = moment().subtract(1, 'week').format(DATE_FORMAT);
 
     const res = await StatisticModel.findOne({
@@ -20,13 +20,15 @@ class StatisticsUtil {
     });
 
     if (res) {
-      return parseFloat(res.value);
+      const lastWeek: number = parseFloat(res.value);
+
+      return (current - lastWeek) / lastWeek;
     }
 
     return null;
   }
 
-  static async registerStatistics() {
+  static async registerStatistics(): Promise<void> {
     const key = moment().format(DATE_FORMAT);
     const activeUsers = await User.countDocuments({
       activeAt: { $gte: moment().subtract('24', 'hour').toDate() },
@@ -38,9 +40,7 @@ class StatisticsUtil {
         type: ACTIVE_USERS_WEEK,
         key,
       },
-      {
-        value: activeUsers.toString(),
-      },
+      { value: activeUsers.toString() },
       {
         new: true,
         upsert: true,
@@ -56,42 +56,38 @@ class StatisticsUtil {
         type: TOTAL_USERS_WEEK,
         key,
       },
-      {
-        value: totalUsers.toString(),
-      },
+      { value: totalUsers.toString() },
       {
         new: true,
         upsert: true,
       }
     );
-
-    return Promise.resolve();
   }
 
-  static async getTotalUsers() {
-    const current = await User.count({ role: UserRole.User });
-    const lastWeek: number = await StatisticsUtil.getLastWeekStatistics(TOTAL_USERS_WEEK);
+  static async getTotalUsers(): Promise<StatisticNumberChange> {
+    const current: number = await User.countDocuments({ role: UserRole.User });
+    const change: number = await StatisticsUtil.getChangeFromLastWeek(TOTAL_USERS_WEEK, current);
 
     return {
       current,
-      change: lastWeek ? (current - lastWeek) / lastWeek : null,
+      change,
     };
   }
 
-  static async getActiveUsers() {
-    const current = await User.countDocuments({
+  static async getActiveUsers(): Promise<StatisticNumberChange> {
+    const current: number = await User.countDocuments({
       activeAt: { $gte: moment().subtract('24', 'hour').toDate() },
       role: UserRole.User,
     });
-    const lastWeek: number = await StatisticsUtil.getLastWeekStatistics(ACTIVE_USERS_WEEK);
+    const change: number = await StatisticsUtil.getChangeFromLastWeek(ACTIVE_USERS_WEEK, current);
 
     return {
       current,
-      change: lastWeek ? (current - lastWeek) / lastWeek : null,
+      change,
     };
   }
 
-  static async getUsersPerDay() {
+  static async getUsersPerDay(): Promise<Statistics> {
     const res = await User.aggregate([
       {
         $match: {
@@ -118,7 +114,7 @@ class StatisticsUtil {
     };
   }
 
-  static async getRoutes(): Promise<Array<any>> {
+  static async getRoutes(): Promise<Array<RouteStatistics>> {
     const res = await User.aggregate([
       {
         $match: {
@@ -158,7 +154,7 @@ class StatisticsUtil {
       .filter((r) => r.data.values.length);
   }
 
-  static async getCompletedTasks() {
+  static async getCompletedTasks(): Promise<Statistics> {
     const res = await User.aggregate([
       {
         $match: {

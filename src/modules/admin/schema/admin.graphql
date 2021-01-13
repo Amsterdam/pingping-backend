@@ -17,8 +17,8 @@ type Mutation {
 
 # Response
 type AdminStatisticsResponse {
-  usersPerDay: JSON!
-  completedTasks: JSON!
+  usersPerDay: Statistics!
+  completedTasks: Statistics!
   routes: [RouteStatistics!]
   activeUsers: StatisticNumberChange
   totalUsers: StatisticNumberChange
