@@ -213,6 +213,7 @@ class TaskUtil {
       }
     } else {
       userTask.status = TaskStatus.Completed;
+      userTask.completedAt = new Date();
     }
 
     if (taskDef.points && oldStatus !== TaskStatus.Completed && userTask.status === TaskStatus.Completed) {

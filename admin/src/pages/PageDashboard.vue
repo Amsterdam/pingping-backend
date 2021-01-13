@@ -6,12 +6,12 @@
     >
       <NumberBlock
         title="Total users"
-        class="col-2"
+        class="col-xs-6 col-sm-3 col-md-2"
         v-bind="statistics.totalUsers"
       />
       <NumberBlock
         title="Active users"
-        class="col-2"
+        class="col-xs-6 col-sm-3 col-md-2"
         description="Active users past 7 days"
         v-bind="statistics.activeUsers"
       />
@@ -19,32 +19,26 @@
     <div class="row gx-2">
       <Chart
         v-if="statistics"
-        class="col-12"
+        class="col-sm-12 col-lg-8"
         type="line"
         title="New Users Per Day"
         v-bind="statistics.usersPerDay"
       />
       <Chart
         v-if="statistics"
-        class="col-6"
+        class="col-sm-7 col-lg-6"
         title="Completed Tasks"
         v-bind="statistics.completedTasks"
       />
       <!-- <div class="col-6"></div> -->
       <Chart
-        class="col col-3"
+        class="col-sm-5 col-lg-3"
         type="pie"
         v-for="(route, index) in statistics ? statistics.routes : []"
         :key="'pie-' + index"
         :title="route.title"
         v-bind="route.data"
       />
-    </div>
-    <div
-      v-if="false"
-      class="col-3"
-    >
-      {{ statistics.activeUsers30Days }}
     </div>
   </div>
 </template>

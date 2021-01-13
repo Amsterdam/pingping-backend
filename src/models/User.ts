@@ -33,7 +33,6 @@ export type UserDocument = Document & {
   tasks?: Types.Array<UserTask>;
   routes?: Types.Array<UserRoute>;
   activeAt?: Date;
-  // createdAt: any;
 };
 
 export enum AuthTokenKind {
@@ -65,11 +64,17 @@ const userSchema = new Schema(
     role: String,
     tasks: [
       {
-        routeId: String,
-        routeTaskId: String,
-        taskId: String,
-        answer: String,
-        status: String,
+        type: new Schema(
+          {
+            routeId: String,
+            routeTaskId: String,
+            taskId: String,
+            answer: String,
+            status: String,
+            completedAt: Date,
+          },
+          { timestamps: true }
+        ),
       },
     ],
 

@@ -10,6 +10,7 @@ export class UserTask {
   answer: string;
   status: TaskStatus;
   task: TaskDefinition;
+  completedAt?: Date;
   progress: number = null;
 
   constructor(taskId: string, status: TaskStatus, answer: string = null, _id: Types.ObjectId = undefined) {
