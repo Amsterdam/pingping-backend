@@ -32,6 +32,7 @@ export type UserDocument = Document & {
   rewards?: Types.Array<UserReward>;
   tasks?: Types.Array<UserTask>;
   routes?: Types.Array<UserRoute>;
+  activeAt?: Date;
   // createdAt: any;
 };
 
@@ -129,6 +130,7 @@ const userSchema = new Schema(
       fullName: String,
       dateOfBirth: Date,
     },
+    activeAt: Date,
   },
   { timestamps: true }
 );

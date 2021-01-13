@@ -1,14 +1,18 @@
 <template>
   <div class="page-dashboard container-flow">
-    <div class="row">
+    <div
+      class="row"
+      v-if="statistics"
+    >
       <NumberBlock
         title="Total users"
         v-bind="statistics.totalUsers"
       />
-      <!-- <NumberBlock
+      <NumberBlock
         title="Active users"
+        description="Active users past 7 days"
         v-bind="statistics.activeUsers"
-      /> -->
+      />
     </div>
     <div class="row gx-2">
       <Chart
@@ -28,7 +32,7 @@
       <Chart
         class="col col-3"
         type="pie"
-        v-for="(route, index) in statistics.routes"
+        v-for="(route, index) in statistics ? statistics.routes : []"
         :key="'pie-' + index"
         :title="route.title"
         v-bind="route.data"

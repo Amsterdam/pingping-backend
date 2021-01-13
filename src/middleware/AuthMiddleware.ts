@@ -3,6 +3,8 @@ import NoPermissionError from 'errors/NoPermissionError';
 import UnauthorizedError from 'errors/UnauthorizedError';
 import cache from 'lib/cache';
 import { ContextType } from 'lib/Context';
+import { userInfo } from 'os';
+import UserUtil from 'utils/UserUtil';
 
 export default class AuthMiddleware {
   // This function is called with resolversComposition from the graphql-modules library.
@@ -13,7 +15,7 @@ export default class AuthMiddleware {
           throw new UnauthorizedError();
         }
 
-        cache.registerLastActive(context.user._id.toString());
+        UserUtil.updateActiveAt(context.user);
 
         return next(root, args, context, info);
       };

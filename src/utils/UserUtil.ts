@@ -5,6 +5,7 @@ import InitialDataUtil from './InitialDataUtil';
 import auth from '../lib/auth';
 import { RegisterDeviceInput, NotificationStatus, UserRole } from '@models';
 import { RewardVoucher } from 'models/RewardVoucher';
+import moment from 'moment';
 
 class UserUtil {
   static async createOrFindUser(deviceInput: RegisterDeviceInput): Promise<UserDocument> {
@@ -52,6 +53,12 @@ class UserUtil {
     await userFound.save();
 
     return userFound;
+  }
+
+  static async updateActiveAt(user: UserDocument) {
+    if (!user.activeAt || moment().diff(moment(user.activeAt), 'hour') >= 12) {
+      await User.updateOne({ _id: user._id }, { activeAt: new Date() });
+    }
   }
 
   static async deleteUser(user: UserDocument) {
