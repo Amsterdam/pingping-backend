@@ -21,7 +21,6 @@
     "@graphql-modules/core": "^0.7.17",
     "@graphql-tools/load-files": "^6.0.18",
     "@graphql-tools/merge": "^6.0.18",
-    "@sendgrid/mail": "^7.2.6",
     "@typegoose/typegoose": "^7.3.3",
     "@types/bcrypt-nodejs": "^0.0.31",
     "@types/dotenv": "^8.2.0",
