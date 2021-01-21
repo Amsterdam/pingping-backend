@@ -23,7 +23,7 @@ class StatisticsUtil {
       const lastWeek: number = parseFloat(res.value);
       let val = (current - lastWeek) / lastWeek;
 
-      return Math.round(val * 1000) / 1000;
+      return val;
     }
 
     return null;

@@ -15,14 +15,16 @@
       >
         <b-icon-arrow-up v-if="positive" />
         <b-icon-arrow-down v-else />
-        <span>{{ change * 100 + '%' }}</span>
+        <span>{{ displayChange }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
 import VueTypes from 'vue-types'
+
 export default {
   name: 'NumberBlock',
 
@@ -40,6 +42,10 @@ export default {
 
     changeClass () {
       return this.change && this.change > 0 ? 'positive' : 'negative'
+    },
+
+    displayChange () {
+      return _.round(this.change * 100, 2) + '%'
     }
   }
 }
