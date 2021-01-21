@@ -23,7 +23,7 @@ class StatisticsUtil {
     if (res) {
       const lastWeek: number = parseFloat(res.value);
 
-      return _.round((current - lastWeek) / lastWeek, 1);
+      return _.round((current - lastWeek) / lastWeek, 5);
     }
 
     return null;
