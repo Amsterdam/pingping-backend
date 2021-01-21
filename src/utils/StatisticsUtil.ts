@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { User } from 'models/User';
 import moment from 'moment';
 import { UserRole, TaskStatus, StatisticNumberChange, Statistics, RouteStatistics } from '@models';
@@ -22,7 +23,7 @@ class StatisticsUtil {
     if (res) {
       const lastWeek: number = parseFloat(res.value);
 
-      return (current - lastWeek) / lastWeek;
+      return _.round((current - lastWeek) / lastWeek, 1);
     }
 
     return null;
