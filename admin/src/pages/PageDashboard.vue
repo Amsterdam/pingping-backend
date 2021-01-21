@@ -6,7 +6,7 @@
     >
       <NumberBlock
         title="Total users"
-        class="col-xs-6 col-sm-3 col-md-2"
+        class="col-xs-6 col-sm-4 col-md-3 col-lg-2"
         v-bind="statistics.totalUsers"
       />
       <NumberBlock
