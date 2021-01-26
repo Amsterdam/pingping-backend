@@ -11,7 +11,7 @@
         <span
           class="smaller"
           v-if="percentile"
-        >({{ percentile * 100 }}%)</span>
+        >({{ displayPercentile }})</span>
       </div>
       <div
         v-b-tooltip.hover
@@ -53,6 +53,10 @@ export default {
 
     displayChange () {
       return _.round(this.change * 100, 2) + '%'
+    },
+
+    displayPercentile () {
+      return _.round(this.percentile * 100, 2) + '%'
     }
   }
 }
