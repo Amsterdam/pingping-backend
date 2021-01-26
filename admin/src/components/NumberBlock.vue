@@ -6,7 +6,13 @@
         :title="description"
         v-b-tooltip.hover
       >{{ title }}</div>
-      <div class="number">{{ current }}</div>
+      <div class="number">
+        <span>{{ current }}</span>
+        <span
+          class="smaller"
+          v-if="percentile"
+        >({{ percentile * 100 }}%)</span>
+      </div>
       <div
         v-b-tooltip.hover
         title="Change since 7 days ago"
@@ -32,7 +38,8 @@ export default {
     title: VueTypes.string,
     description: VueTypes.string,
     current: VueTypes.number,
-    change: VueTypes.number
+    change: VueTypes.number,
+    percentile: VueTypes.number
   },
 
   computed: {
@@ -83,5 +90,10 @@ export default {
 
 .number-block .change {
   color: #2ecc40;
+}
+
+.smaller {
+  font-size: 75%;
+  margin-left: 10px;
 }
 </style>

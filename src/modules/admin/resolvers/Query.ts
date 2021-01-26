@@ -12,6 +12,7 @@ export const Query: QueryResolvers = {
     const routes = await StatisticsUtil.getRoutes();
     const totalUsers = await StatisticsUtil.getTotalUsers();
     const activeUsers = await StatisticsUtil.getActiveUsers();
+    const skippedOnboarding = await StatisticsUtil.getSkippedOnboarding();
 
     return {
       usersPerDay,
@@ -19,6 +20,7 @@ export const Query: QueryResolvers = {
       routes,
       totalUsers,
       activeUsers,
+      skippedOnboarding,
     };
   },
 

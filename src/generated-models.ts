@@ -42,8 +42,9 @@ export type AdminStatisticsResponse = {
   usersPerDay: Statistics;
   completedTasks: Statistics;
   routes?: Maybe<Array<RouteStatistics>>;
-  activeUsers?: Maybe<StatisticNumberChange>;
-  totalUsers?: Maybe<StatisticNumberChange>;
+  activeUsers: StatisticNumberChange;
+  totalUsers: StatisticNumberChange;
+  skippedOnboarding: StatisticNumberChange;
 };
 
 export type AdminUserResponse = {
@@ -421,6 +422,7 @@ export type RouteTip = {
 export type StatisticNumberChange = {
    __typename?: 'StatisticNumberChange';
   current: Scalars['Int'];
+  percentile?: Maybe<Scalars['Float']>;
   change?: Maybe<Scalars['Float']>;
 };
 
@@ -745,8 +747,9 @@ export type AdminStatisticsResponseResolvers<ContextType = ModuleContext, Parent
   usersPerDay?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
   completedTasks?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
   routes?: Resolver<Maybe<Array<ResolversTypes['RouteStatistics']>>, ParentType, ContextType>,
-  activeUsers?: Resolver<Maybe<ResolversTypes['StatisticNumberChange']>, ParentType, ContextType>,
-  totalUsers?: Resolver<Maybe<ResolversTypes['StatisticNumberChange']>, ParentType, ContextType>,
+  activeUsers?: Resolver<ResolversTypes['StatisticNumberChange'], ParentType, ContextType>,
+  totalUsers?: Resolver<ResolversTypes['StatisticNumberChange'], ParentType, ContextType>,
+  skippedOnboarding?: Resolver<ResolversTypes['StatisticNumberChange'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -932,6 +935,7 @@ export type RouteTipResolvers<ContextType = ModuleContext, ParentType extends Re
 
 export type StatisticNumberChangeResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['StatisticNumberChange'] = ResolversParentTypes['StatisticNumberChange']> = {
   current?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  percentile?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   change?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };

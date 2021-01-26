@@ -20,8 +20,9 @@ type AdminStatisticsResponse {
   usersPerDay: Statistics!
   completedTasks: Statistics!
   routes: [RouteStatistics!]
-  activeUsers: StatisticNumberChange
-  totalUsers: StatisticNumberChange
+  activeUsers: StatisticNumberChange!
+  totalUsers: StatisticNumberChange!
+  skippedOnboarding: StatisticNumberChange!
 }
 
 type RouteStatistics {
@@ -31,6 +32,7 @@ type RouteStatistics {
 
 type StatisticNumberChange {
   current: Int!
+  percentile: Float
   change: Float
 }
 

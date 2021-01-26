@@ -15,6 +15,12 @@
         description="Active users past 7 days"
         v-bind="statistics.activeUsers"
       />
+      <NumberBlock
+        title="Skipped onboarding"
+        class="col-xs-6 col-sm-4 col-md-3"
+        description="Pressed 'Vragen overslaan'"
+        v-bind="statistics.skippedOnboarding"
+      />
     </div>
     <div class="row gx-2">
       <Chart

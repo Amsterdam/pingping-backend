@@ -19,6 +19,11 @@ export const AdminStatisticsQuery = gql`
         current
         change
       }
+      skippedOnboarding {
+        current
+        change
+        percentile
+      }
       routes {
         title
         data {
