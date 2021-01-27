@@ -67,7 +67,7 @@ export default {
       query: AdminStatisticsQuery,
       update: res => res.adminStatistics
     }
-  },
+  }
 }
 </script>
 

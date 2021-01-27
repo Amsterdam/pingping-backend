@@ -179,7 +179,7 @@ class StatisticsUtil {
 
     return {
       values: res.map((i) => i.count),
-      keys: res.map((i) => moment(i._id.label, 'YYYY-MM-DD').format('MM.DD.YYYY')),
+      keys: res.map((i) => i._id.label),
     };
   }
 
