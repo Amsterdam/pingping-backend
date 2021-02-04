@@ -68,6 +68,59 @@ class StatisticsUtil {
     return null;
   }
 
+  static async getUsersPerYearOfBirth(): Promise<Statistics> {
+    const res = await User.aggregate([
+      {
+        $match: {
+          role: UserRole.User,
+        },
+      },
+      {
+        $unwind: {
+          path: '$tasks',
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $match: {
+          'tasks.taskId': 'onboarding.dateOfBirth',
+        },
+      },
+      {
+        $project: {
+          dateOfBirth: { $dateFromString: { dateString: '$tasks.answer' } },
+        },
+      },
+      {
+        $project: {
+          ageInMillis: { $subtract: [new Date(), '$dateOfBirth'] },
+        },
+      },
+      {
+        $project: {
+          age: { $divide: ['$ageInMillis', 31558464000] },
+        },
+      },
+      {
+        $project: {
+          age: { $subtract: ['$age', { $mod: ['$age', 1] }] },
+        },
+      },
+      {
+        $group: {
+          _id: { label: '$age' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { '_id.age': 1 } },
+    ]);
+
+    return {
+      values: res.map((i) => i.count),
+      keys: res.map((i) => i._id.label),
+    };
+  }
+
   static async registerStatistics(): Promise<void> {
     const key = moment().format(DATE_FORMAT);
 

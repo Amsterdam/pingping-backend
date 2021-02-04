@@ -36,6 +36,12 @@
         title="Completed Tasks"
         v-bind="statistics.completedTasks"
       />
+      <Chart
+        v-if="statistics"
+        class="col-sm-7 col-lg-6"
+        title="Users by age"
+        v-bind="statistics.usersPerYearOfBirth"
+      />
       <!-- <div class="col-6"></div> -->
       <Chart
         class="col-sm-5 col-lg-3"

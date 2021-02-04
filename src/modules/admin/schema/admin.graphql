@@ -22,6 +22,7 @@ type AdminStatisticsResponse {
   routes: [RouteStatistics!]
   activeUsers: StatisticNumberChange!
   totalUsers: StatisticNumberChange!
+  usersPerYearOfBirth: Statistics!
   skippedOnboarding: StatisticNumberChange!
 }
 
