@@ -293,7 +293,7 @@ class StatisticsUtil {
     let dateQuery: any = {};
 
     if (week) {
-      dateQuery['tasks.completedAt'] = {
+      dateQuery['tasks.updatedAt'] = {
         $gt: moment(week, 'WW.YYYY').startOf('week').toDate(),
         $lt: moment(week, 'WW.YYYY').endOf('week').toDate(),
       };

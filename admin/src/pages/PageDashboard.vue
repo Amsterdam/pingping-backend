@@ -38,13 +38,13 @@
         v-if="statistics"
         class="col-sm-6 col-lg-5"
         title="Users by age"
-        v-bind="statistics.usersPerYearOfBirth"
+        v-bind="statisticsWeekly.usersPerYearOfBirth"
       />
       <Chart
         v-if="statistics"
         class="col-sm-7 col-lg-6"
         title="Completed Tasks"
-        v-bind="statistics.completedTasks"
+        v-bind="statisticsWeekly.completedTasks"
       />
       <hr />
       <Chart
@@ -69,6 +69,7 @@
 <script>
 import moment from 'moment'
 import { AdminStatisticsQuery } from '../queries/AdminStatisticsQuery'
+import { AdminStatisticsWeeklyQuery } from '../queries/AdminStatisticsWeeklyQuery'
 import NumberBlock from '../components/NumberBlock'
 import Chart from '../components/Chart'
 
@@ -84,15 +85,22 @@ export default {
     this.fetch()
   },
 
+  apollo: {
+    statistics: {
+      query: AdminStatisticsQuery,
+      update: res => res.adminStatistics,
+    }
+  },
+
   methods: {
     fetch () {
       this.$apollo.query({
-        query: AdminStatisticsQuery,
+        query: AdminStatisticsWeeklyQuery,
         variables: {
           week: this.week
         }
       }).then(({ data }) => {
-        this.statistics = data.adminStatistics
+        this.statisticsWeekly = data.adminStatistics
       })
     }
   },
@@ -105,7 +113,7 @@ export default {
       while (moment('04.01.2021', 'DD.MM.YYYY').diff(current, 'weeks') < 0) {
         weeks.push({
           value: current.format('WW.YYYY'),
-          text: current.format('WW.YYYY')
+          text: current.format('W - YYYY')
         })
         current = current.subtract(1, 'week')
       }
@@ -123,7 +131,7 @@ export default {
   data () {
     return {
       week: null,
-      statistics: null
+      statisticsWeekly: null
     }
   }
 }
