@@ -68,7 +68,16 @@ class StatisticsUtil {
     return null;
   }
 
-  static async getUsersPerYearOfBirth(): Promise<Statistics> {
+  static async getUsersPerYearOfBirth(week: string): Promise<Statistics> {
+    let dateQuery: any = {};
+
+    if (week) {
+      dateQuery['tasks.createdAt'] = {
+        $gt: moment(week, 'WW.YYYY').startOf('week').toDate(),
+        $lt: moment(week, 'WW.YYYY').endOf('week').toDate(),
+      };
+    }
+
     let res = await User.aggregate([
       {
         $match: {
@@ -84,6 +93,7 @@ class StatisticsUtil {
       {
         $match: {
           'tasks.taskId': 'onboarding.dateOfBirth',
+          ...dateQuery,
         },
       },
       {
@@ -280,6 +290,15 @@ class StatisticsUtil {
   }
 
   static async getCompletedTasks(week: string): Promise<Statistics> {
+    let dateQuery: any = {};
+
+    if (week) {
+      dateQuery['tasks.completedAt'] = {
+        $gt: moment(week, 'WW.YYYY').startOf('week').toDate(),
+        $lt: moment(week, 'WW.YYYY').endOf('week').toDate(),
+      };
+    }
+
     const res = await User.aggregate([
       {
         $match: {
@@ -296,6 +315,7 @@ class StatisticsUtil {
         $match: {
           'tasks.status': TaskStatus.Completed,
           'tasks.routeTaskId': { $exists: true },
+          ...dateQuery,
         },
       },
       {

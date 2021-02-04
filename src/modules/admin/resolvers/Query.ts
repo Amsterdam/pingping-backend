@@ -13,7 +13,7 @@ export const Query: QueryResolvers = {
     const totalUsers = await StatisticsUtil.getTotalUsers();
     const activeUsers = await StatisticsUtil.getActiveUsers();
     const skippedOnboarding = await StatisticsUtil.getSkippedOnboarding();
-    const usersPerYearOfBirth = await StatisticsUtil.getUsersPerYearOfBirth();
+    const usersPerYearOfBirth = await StatisticsUtil.getUsersPerYearOfBirth(args.week);
 
     return {
       usersPerDay,

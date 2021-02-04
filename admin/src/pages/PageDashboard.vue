@@ -22,6 +22,17 @@
         v-bind="statistics.skippedOnboarding"
       />
     </div>
+    <hr />
+    <b-form inline>
+      <label
+        class="mr-sm-2"
+        for="inline-form-custom-select-pref"
+      >Filter by week</label>
+      <b-form-select
+        v-model="week"
+        :options="weeks"
+      ></b-form-select>
+    </b-form>
     <div class="row gx-2">
       <Chart
         v-if="statistics"
@@ -69,21 +80,19 @@ export default {
     NumberBlock
   },
 
-  apollo: {
-    statistics: {
-      query: AdminStatisticsQuery,
-      update: res => res.adminStatistics,
-    }
+  mounted () {
+    this.fetch()
   },
 
   methods: {
     fetch () {
       this.$apollo.query({
         query: AdminStatisticsQuery,
-        update: res => res.adminStatistics,
         variables: {
           week: this.week
         }
+      }).then(({ data }) => {
+        this.statistics = data.adminStatistics
       })
     }
   },
@@ -101,7 +110,7 @@ export default {
         current = current.subtract(1, 'week')
       }
 
-      return [{ text: 'Current', value: null }, ...weeks]
+      return [{ text: 'Total', value: null }, ...weeks]
     }
   },
 
@@ -113,7 +122,8 @@ export default {
 
   data () {
     return {
-      week: null
+      week: null,
+      statistics: null
     }
   }
 }
