@@ -305,6 +305,11 @@ export type QueryGetRouteArgs = {
   routeId: Scalars['String'];
 };
 
+
+export type QueryAdminStatisticsArgs = {
+  week?: Maybe<Scalars['String']>;
+};
+
 export type RegisterDeviceInput = {
   /** Include export token to transfer from another device */
   exportToken?: Maybe<Scalars['String']>;
@@ -429,6 +434,7 @@ export type StatisticNumberChange = {
 
 export type Statistics = {
    __typename?: 'Statistics';
+  dump?: Maybe<Scalars['JSON']>;
   values?: Maybe<Array<Scalars['Int']>>;
   keys?: Maybe<Array<Scalars['String']>>;
 };
@@ -858,7 +864,7 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   getRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
   getAchievements?: Resolver<Array<ResolversTypes['AchievementResponse']>, ParentType, ContextType>,
-  adminStatistics?: Resolver<ResolversTypes['AdminStatisticsResponse'], ParentType, ContextType>,
+  adminStatistics?: Resolver<ResolversTypes['AdminStatisticsResponse'], ParentType, ContextType, RequireFields<QueryAdminStatisticsArgs, never>>,
   adminGetUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType>,
   adminGetAuditLog?: Resolver<Maybe<Array<ResolversTypes['AuditLogResponse']>>, ParentType, ContextType>,
   adminGetFeedback?: Resolver<Maybe<Array<ResolversTypes['RouteFeedbackResponse']>>, ParentType, ContextType>,
@@ -943,6 +949,7 @@ export type StatisticNumberChangeResolvers<ContextType = ModuleContext, ParentTy
 };
 
 export type StatisticsResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Statistics'] = ResolversParentTypes['Statistics']> = {
+  dump?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
   values?: Resolver<Maybe<Array<ResolversTypes['Int']>>, ParentType, ContextType>,
   keys?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,

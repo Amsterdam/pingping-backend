@@ -1,5 +1,5 @@
 type Query {
-  adminStatistics: AdminStatisticsResponse!
+  adminStatistics(week: String): AdminStatisticsResponse!
   adminGetUsers: [AdminUserResponse]!
   adminGetAuditLog: [AuditLogResponse!]
   adminGetFeedback: [RouteFeedbackResponse!]
@@ -38,6 +38,7 @@ type StatisticNumberChange {
 }
 
 type Statistics {
+  dump: JSON
   values: [Int!]
   keys: [String!]
 }

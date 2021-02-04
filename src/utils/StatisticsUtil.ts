@@ -116,6 +116,7 @@ class StatisticsUtil {
     ]);
 
     return {
+      dump: res,
       values: res.map((i) => i.count),
       keys: res.map((i) => i._id.label),
     };

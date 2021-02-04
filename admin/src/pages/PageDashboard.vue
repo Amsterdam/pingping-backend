@@ -25,10 +25,9 @@
     <div class="row gx-2">
       <Chart
         v-if="statistics"
-        class="col-sm-12 col-lg-8"
-        type="line"
-        title="New Users Per Day"
-        v-bind="statistics.usersPerDay"
+        class="col-sm-6 col-lg-5"
+        title="Users by age"
+        v-bind="statistics.usersPerYearOfBirth"
       />
       <Chart
         v-if="statistics"
@@ -36,13 +35,14 @@
         title="Completed Tasks"
         v-bind="statistics.completedTasks"
       />
+      <hr />
       <Chart
         v-if="statistics"
-        class="col-sm-7 col-lg-6"
-        title="Users by age"
-        v-bind="statistics.usersPerYearOfBirth"
+        class="col-sm-12 col-lg-8"
+        type="line"
+        title="New Users Per Day"
+        v-bind="statistics.usersPerDay"
       />
-      <!-- <div class="col-6"></div> -->
       <Chart
         class="col-sm-5 col-lg-3"
         type="pie"
@@ -71,7 +71,39 @@ export default {
   apollo: {
     statistics: {
       query: AdminStatisticsQuery,
-      update: res => res.adminStatistics
+      update: res => res.adminStatistics,
+    }
+  },
+
+  methods: {
+    fetch () {
+      this.$apollo.query({
+        query: AdminStatisticsQuery,
+        update: res => res.adminStatistics,
+        variables: {
+          week: this.week
+        }
+      })
+    }
+  },
+
+  computed: {
+    weeks () {
+      let weeks = []
+
+      return [{ text: 'Current', value: null }, ...weeks]
+    }
+  },
+
+  watch: {
+    week () {
+      this.fetch()
+    }
+  },
+
+  data () {
+    return {
+      week: null
     }
   }
 }
@@ -80,5 +112,13 @@ export default {
 <style scoped>
 .page-dashboard {
   padding: 0 1rem;
+}
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 4px solid rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 </style>

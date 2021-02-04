@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const AdminStatisticsQuery = gql`
-  query {
-    adminStatistics {
+  query($week:String) {
+    adminStatistics(week:$week) {
       usersPerDay {
         values
         keys
@@ -12,6 +12,7 @@ export const AdminStatisticsQuery = gql`
         keys
       }
       usersPerYearOfBirth {
+        dump
         values
         keys
       }
