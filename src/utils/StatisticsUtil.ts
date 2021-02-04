@@ -69,7 +69,7 @@ class StatisticsUtil {
   }
 
   static async getUsersPerYearOfBirth(): Promise<Statistics> {
-    const res = await User.aggregate([
+    let res = await User.aggregate([
       {
         $match: {
           role: UserRole.User,
@@ -114,6 +114,8 @@ class StatisticsUtil {
       },
       { $sort: { '_id.age': 1 } },
     ]);
+
+    res = res.filter((i) => i._id.label !== null);
 
     return {
       dump: res,

@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { AdminStatisticsQuery } from '../queries/AdminStatisticsQuery'
 import NumberBlock from '../components/NumberBlock'
 import Chart from '../components/Chart'
@@ -89,7 +90,16 @@ export default {
 
   computed: {
     weeks () {
+      let current = moment()
       let weeks = []
+
+      while (moment('04.01.2021', 'DD.MM.YYYY').diff(current, 'weeks') < 0) {
+        weeks.push({
+          value: current.format('WW.YYYY'),
+          text: current.format('WW.YYYY')
+        })
+        current = current.subtract(1, 'week')
+      }
 
       return [{ text: 'Current', value: null }, ...weeks]
     }
