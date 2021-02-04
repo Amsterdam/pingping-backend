@@ -112,7 +112,7 @@ class StatisticsUtil {
           count: { $sum: 1 },
         },
       },
-      { $sort: { '_id.age': 1 } },
+      { $sort: { '_id.label': 1 } },
     ]);
 
     res = res.filter((i) => i._id.label !== null);
@@ -279,7 +279,7 @@ class StatisticsUtil {
       .filter((r) => r.data.values.length);
   }
 
-  static async getCompletedTasks(): Promise<Statistics> {
+  static async getCompletedTasks(week: string): Promise<Statistics> {
     const res = await User.aggregate([
       {
         $match: {
