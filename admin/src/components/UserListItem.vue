@@ -16,6 +16,9 @@
       <span>{{ balance }}</span>
     </td>
     <td v-if="role === 'User'">
+      <span v-if="routes">{{ routesProgress }}</span>
+    </td>
+    <td v-if="role === 'User'">
       <span v-if="device">{{ device }}</span>
     </td>
     <td v-if="role === 'Admin'">
@@ -73,6 +76,7 @@ export default {
     balance: VueTypes.integer,
     selected: VueTypes.bool,
     userTasks: VueTypes.array,
+    routes: VueTypes.array,
     rewards: VueTypes.array,
     role: VueTypes.string,
     profile: VueTypes.object,
@@ -124,6 +128,10 @@ export default {
       }
 
       return null
+    },
+
+    routesProgress () {
+      return this.routes.map(r => `${r.progress * 100}%`).join(',')
     },
 
     date () {

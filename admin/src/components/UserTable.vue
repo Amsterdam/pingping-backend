@@ -21,6 +21,7 @@
           <th>id</th>
           <th>created</th>
           <th v-if="role === 'user'">balance</th>
+          <th v-if="role === 'user'">progress</th>
           <th v-if="role === 'user'">device</th>
           <th v-if="role === 'admin'">name</th>
           <th v-if="role === 'admin'">email</th>
