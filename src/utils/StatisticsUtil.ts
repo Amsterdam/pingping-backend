@@ -188,7 +188,7 @@ class StatisticsUtil {
       },
       {
         $project: {
-          age: { $round: ['$age', 0] },
+          age: { $subtract: ['$age', { $mod: ['$age', 1] }] },
         },
       },
       {
