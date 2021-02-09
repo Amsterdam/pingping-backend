@@ -8,7 +8,7 @@ import { RouteDefinition } from 'types/global';
 import { StatisticModel } from 'models/Statistic';
 
 const TOTAL_USERS_WEEK = 'total-users-week';
-const ACTIVE_USERS_WEEK = 'active-users-week';
+const ACTIVE_USERS_WEEK = 'active-users-7-days';
 const SKIPPED_ONBOARDING_WEEK = 'skipped-onboarding-week';
 const DATE_FORMAT = 'YYYY-MM-DD';
 
@@ -139,7 +139,7 @@ class StatisticsUtil {
 
     // Active Users
     const activeUsers = await User.countDocuments({
-      activeAt: { $gte: moment().subtract('24', 'hour').toDate() },
+      activeAt: { $gte: moment().subtract('7', 'days').toDate() },
       role: UserRole.User,
     });
 
@@ -211,7 +211,7 @@ class StatisticsUtil {
 
   static async getActiveUsers(): Promise<StatisticNumberChange> {
     const current: number = await User.countDocuments({
-      activeAt: { $gte: moment().subtract('24', 'hour').toDate() },
+      activeAt: { $gte: moment().subtract('7', 'days').toDate() },
       role: UserRole.User,
     });
     const change: number = await StatisticsUtil.getChangeFromLastWeek(ACTIVE_USERS_WEEK, current);
@@ -314,13 +314,13 @@ class StatisticsUtil {
       {
         $match: {
           'tasks.status': TaskStatus.Completed,
-          'tasks.routeTaskId': { $exists: true },
+          'tasks.routeId': { $exists: true, $ne: 'onboarding' },
           ...dateQuery,
         },
       },
       {
         $group: {
-          _id: { task: '$tasks.routeTaskId' },
+          _id: { task: '$tasks.taskId', route: '$tasks.routeId' },
           count: { $sum: 1 },
         },
       },
@@ -330,9 +330,10 @@ class StatisticsUtil {
     return {
       values: res.map((i) => i.count),
       keys: res.map((i) => {
-        const task: TaskDefinition = InitialDataUtil.getTaskById(i._id.task);
+        const id = i._id.task.replace('onboarding', i._id.route);
+        const task: TaskDefinition = InitialDataUtil.getTaskById(id);
 
-        return task.title;
+        return `${i._id.task.split('.')[0]}:${task.title}`;
       }),
     };
   }

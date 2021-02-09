@@ -2,12 +2,20 @@
   <div class="custom-chart block">
     <div class="custom-chart-inner">
       <div class="inner-title">{{ title }}</div>
-
       <BarChart
         :values="values"
         v-if="type === 'bar'"
         class="is-chart bar-chart"
         style="height: 30vh;"
+        :datasets="datasets"
+        :keys="keys"
+      />
+      <StackedBarChart
+        :values="values"
+        v-if="type === 'stacked-bar'"
+        class="is-chart bar-chart"
+        style="height: 30vh;"
+        :datasets="datasets"
         :keys="keys"
       />
       <LineChart
@@ -30,12 +38,14 @@
 
 <script>
 import BarChart from './BarChart'
+import StackedBarChart from './StackedBarChart'
 import LineChart from './LineChart'
 import PieChart from './PieChart'
 import VueTypes from 'vue-types';
 
 export default {
   components: {
+    StackedBarChart,
     BarChart,
     LineChart,
     PieChart
@@ -44,7 +54,8 @@ export default {
     title: VueTypes.string,
     type: VueTypes.string.def('bar'),
     values: VueTypes.array,
-    keys: VueTypes.array
+    keys: VueTypes.array,
+    datasets: VueTypes.array.def(undefined)
   },
 
   data () {
@@ -71,11 +82,11 @@ export default {
 
 <style>
 .is-chart {
-  margin-left: -1rem;
+  margin-left: -0.5rem;
 }
 
 .custom-chart-inner {
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 5px;
   background-color: #fff;
 }

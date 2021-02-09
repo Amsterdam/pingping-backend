@@ -35,16 +35,18 @@
     </b-form>
     <div class="row gx-2">
       <Chart
-        v-if="statistics"
+        v-if="statisticsWeekly"
         class="col-sm-6 col-lg-5"
         title="Users by age"
         v-bind="statisticsWeekly.usersPerYearOfBirth"
       />
       <Chart
-        v-if="statistics"
+        v-if="statisticsWeekly"
         class="col-sm-7 col-lg-6"
         title="Completed Tasks"
-        v-bind="statisticsWeekly.completedTasks"
+        type="stacked-bar"
+        :keys="taskLabels"
+        :datasets="completedTasks"
       />
       <hr />
       <Chart
@@ -67,6 +69,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import moment from 'moment'
 import { AdminStatisticsQuery } from '../queries/AdminStatisticsQuery'
 import { AdminStatisticsWeeklyQuery } from '../queries/AdminStatisticsWeeklyQuery'
@@ -106,6 +109,55 @@ export default {
   },
 
   computed: {
+    taskLabels () {
+      if (this.statisticsWeekly && this.statisticsWeekly.completedTasks) {
+        return this.statisticsWeekly?.completedTasks.keys.reduce((val, item) => {
+          let key = _.last(item.split(':'))
+          let index = val.indexOf(key)
+
+          if (index === -1) {
+            val.push(key)
+          }
+
+          return val
+        }, [])
+      }
+
+      return []
+    },
+    completedTasks () {
+      if (this.statisticsWeekly && this.statisticsWeekly.completedTasks) {
+        const getDataForLabel = (label) => {
+          return this.taskLabels.map(t => {
+            let valIndex = this.statisticsWeekly.completedTasks.keys.indexOf(`${label}:${t}`)
+
+            if (valIndex !== -1) {
+              return this.statisticsWeekly.completedTasks.values[valIndex]
+            }
+
+            return 0
+          })
+        }
+
+        return this.statisticsWeekly?.completedTasks.keys.reduce((val, item) => {
+          let group = _.first(item.split(':'))
+          let index = val.map(s => s.label).indexOf(group)
+
+          if (index === -1) {
+            val.push({
+              label: group,
+              data: getDataForLabel(group),
+              backgroundColor: this.colors[val.length],
+            })
+          }
+
+          return val
+        }, [])
+      }
+
+      return []
+    },
+
     weeks () {
       let current = moment()
       let weeks = []
@@ -131,7 +183,8 @@ export default {
   data () {
     return {
       week: null,
-      statisticsWeekly: null
+      statisticsWeekly: null,
+      colors: ['#FB9F4B', '#ff6361', '#003f5c', '#58508d', '#bc5090']
     }
   }
 }
