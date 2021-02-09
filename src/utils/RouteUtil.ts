@@ -8,9 +8,10 @@ import TaskUtil from './TaskUtil';
 
 class RouteUtil {
   static getProgress(user: UserDocument, route: RouteDefinition): number {
-    const tasks = user.tasks
-      .filter((ut: UserTask) => ut.status === TaskStatus.Completed)
-      .filter((ut: UserTask) => ut.routeId === route.id);
+    const tasks =
+      user.tasks
+        .filter((ut: UserTask) => ut.status === TaskStatus.Completed)
+        .filter((ut: UserTask) => ut.routeId === route.id) || [];
 
     return _.round(tasks.length / route.tasks.length, 2);
   }

@@ -6,6 +6,8 @@ export const GetUsersQuery = gql`
       id
       createdAt
       activeAt
+      role
+      email
       profile {
         fullName
       }
@@ -14,6 +16,10 @@ export const GetUsersQuery = gql`
         token
         os
         notificationStatus
+      }
+      balance
+      routes {
+        progress
       }
       userTasks {
         status

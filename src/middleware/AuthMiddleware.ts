@@ -1,9 +1,7 @@
 import { UserRole } from '@models';
 import NoPermissionError from 'errors/NoPermissionError';
 import UnauthorizedError from 'errors/UnauthorizedError';
-import cache from 'lib/cache';
 import { ContextType } from 'lib/Context';
-import { userInfo } from 'os';
 import UserUtil from 'utils/UserUtil';
 
 export default class AuthMiddleware {

@@ -12,9 +12,17 @@
     </td>
     <td>{{ id }}</td>
     <td>{{ date }}</td>
-    <td>
+    <td v-if="role === 'User'">
+      <span>{{ balance }}</span>
+    </td>
+    <td v-if="role === 'User'">
       <span v-if="device">{{ device }}</span>
-
+    </td>
+    <td v-if="role === 'Admin'">
+      <span>{{ profile.fullName }}</span>
+    </td>
+    <td v-if="role === 'Admin'">
+      <span>{{ email }}</span>
     </td>
     <td>
       <div @click.stop="expanded = true">More...</div>
@@ -58,13 +66,17 @@ export default {
 
   props: {
     devices: VueTypes.array.def([]),
-    id: String,
-    createdAt: String,
-    activeAt: String,
-    selected: Boolean,
-    userTasks: Array,
-    rewards: Array,
-    transactions: Array
+    id: VueTypes.string,
+    email: VueTypes.string,
+    createdAt: VueTypes.string,
+    activeAt: VueTypes.string,
+    balance: VueTypes.integer,
+    selected: VueTypes.bool,
+    userTasks: VueTypes.array,
+    rewards: VueTypes.array,
+    role: VueTypes.string,
+    profile: VueTypes.object,
+    transactions: VueTypes.array
   },
 
   components: {

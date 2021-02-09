@@ -59,6 +59,9 @@ type AdminUserResponse {
   id: String!
   devices: [DeviceResponse!]
   role: UserRole
+  balance: Int!
+  email: String
+  routes: [RouteResponse!]
   profile: UserProfileResponse
   userTasks: [UserTaskResponse!]
   createdAt: String!

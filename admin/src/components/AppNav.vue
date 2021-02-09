@@ -17,9 +17,7 @@
         <b-nav-item to="/rewards">Rewards</b-nav-item>
         <b-nav-item to="/audit-log">Audit Log</b-nav-item>
         <b-nav-item to="/feedback">Feedback</b-nav-item>
-        <!-- <b-nav-item to="/settings">Settings</b-nav-item> -->
       </b-navbar-nav>
-      <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-item @click="logout">Logout</b-nav-item>
       </b-navbar-nav>

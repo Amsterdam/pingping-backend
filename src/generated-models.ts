@@ -53,6 +53,9 @@ export type AdminUserResponse = {
   id: Scalars['String'];
   devices?: Maybe<Array<DeviceResponse>>;
   role?: Maybe<UserRole>;
+  balance: Scalars['Int'];
+  email?: Maybe<Scalars['String']>;
+  routes?: Maybe<Array<RouteResponse>>;
   profile?: Maybe<UserProfileResponse>;
   userTasks?: Maybe<Array<UserTaskResponse>>;
   createdAt: Scalars['String'];
@@ -772,6 +775,9 @@ export type AdminUserResponseResolvers<ContextType = ModuleContext, ParentType e
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   devices?: Resolver<Maybe<Array<ResolversTypes['DeviceResponse']>>, ParentType, ContextType>,
   role?: Resolver<Maybe<ResolversTypes['UserRole']>, ParentType, ContextType>,
+  balance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  routes?: Resolver<Maybe<Array<ResolversTypes['RouteResponse']>>, ParentType, ContextType>,
   profile?: Resolver<Maybe<ResolversTypes['UserProfileResponse']>, ParentType, ContextType>,
   userTasks?: Resolver<Maybe<Array<ResolversTypes['UserTaskResponse']>>, ParentType, ContextType>,
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>,

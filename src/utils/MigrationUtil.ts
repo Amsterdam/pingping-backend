@@ -35,8 +35,6 @@ class MigrationUtil {
             user.routes[r].status = UserRouteStatus.Completed;
 
             await User.updateOne({ _id: user._id }, user);
-
-            // await user.save();
           }
         }
       }
