@@ -131,7 +131,7 @@ export default {
     },
 
     routesProgress () {
-      return this.routes.map(r => `${r.progress * 100}%`).join(',')
+      return this.routes.map(r => r.status).join(',')
     },
 
     date () {

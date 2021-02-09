@@ -61,13 +61,17 @@ type AdminUserResponse {
   role: UserRole
   balance: Int!
   email: String
-  routes: [RouteResponse!]
+  routes: [AdminUserRouteResponse!]
   profile: UserProfileResponse
   userTasks: [UserTaskResponse!]
   createdAt: String!
   activeAt: String
   rewards: JSON
   transactions: JSON
+}
+
+type AdminUserRouteResponse {
+  status: UserRouteStatus!
 }
 
 # Input

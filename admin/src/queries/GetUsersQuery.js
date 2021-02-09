@@ -19,7 +19,7 @@ export const GetUsersQuery = gql`
       }
       balance
       routes {
-        progress
+        status
       }
       userTasks {
         status
