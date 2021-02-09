@@ -32,6 +32,7 @@
         style="height: 20vh;"
         :keys="keys"
       />
+      <slot name="bottom"></slot>
     </div>
   </div>
 </template>

@@ -129,4 +129,17 @@ html {
   border-radius: 5px;
   background-color: #fff;
 }
+
+.addition {
+  font-size: 75%;
+}
+
+.text-link {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-link:hover {
+  text-decoration: none;
+}
 </style>

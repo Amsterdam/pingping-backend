@@ -36,19 +36,27 @@
     <div class="row gx-2">
       <Chart
         v-if="statisticsWeekly"
-        class="col-sm-6 col-lg-4"
+        class="col-sm-6 col-lg-5"
+        title="Users 15 - 22"
+        v-bind="statisticsWeekly.userPerMonthOfBirth"
+      >
+        <div
+          slot="bottom"
+          class="addition"
+        >Only users aged 15-22. <span
+            class="text-link"
+            @click="showAll = true"
+          >Chart for all users</span></div>
+      </Chart>
+      <Chart
+        v-if="statisticsWeekly && showAll"
+        class="col-sm-6 col-lg-5"
         title="Users by age"
         v-bind="statisticsWeekly.usersPerYearOfBirth"
       />
       <Chart
         v-if="statisticsWeekly"
-        class="col-sm-6 col-lg-3"
-        title="Users 16-18"
-        v-bind="statisticsWeekly.userPerMonthOfBirthFocus"
-      />
-      <Chart
-        v-if="statisticsWeekly"
-        class="col-sm-7 col-lg-5"
+        class="col-sm-7 col-lg-6"
         title="Completed Tasks"
         type="stacked-bar"
         :keys="taskLabels"
@@ -191,6 +199,7 @@ export default {
   data () {
     return {
       week: null,
+      showAll: false,
       statisticsWeekly: null,
       routeKeys: {
         onboarding: 'Onboarding',

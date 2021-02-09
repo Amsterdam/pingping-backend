@@ -23,7 +23,7 @@ type AdminStatisticsResponse {
   activeUsers: StatisticNumberChange!
   totalUsers: StatisticNumberChange!
   usersPerYearOfBirth: Statistics!
-  userPerMonthOfBirthFocus: Statistics!
+  userPerMonthOfBirth: Statistics!
   skippedOnboarding: StatisticNumberChange!
 }
 
