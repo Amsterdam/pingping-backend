@@ -16,6 +16,7 @@ import _ from 'lodash'
 import Login from './components/Login'
 import AppNav from './components/AppNav'
 import { GetUsersQuery } from './queries/GetUsersQuery'
+import RequestUtil from './utils/RequestUtil'
 
 export default {
   name: 'App',
@@ -34,11 +35,15 @@ export default {
   methods: {
     fetch () {
       this.fetchUsers()
+      this.fetchAdmins()
     },
 
     fetchUsers () {
       this.$apollo.query({
         query: GetUsersQuery,
+        variables: {
+          role: 'User'
+        },
         update: (store, { data }) => {
           store.writeData({ query: GetUsersQuery, data })
         }
@@ -50,15 +55,21 @@ export default {
             device: _.first(i.devices.filter(d => d.notificationStatus === 'Approved'))
           }
         }))
-      }).catch((error) => {
-        if (error.message === 'GraphQL error: unauthorized') {
-          window.localStorage.removeItem('pp:token')
-          window.alert('unauthorized')
-          window.setTimeout(() => {
-            location.reload()
-          }, 1000)
+      }).catch(RequestUtil.errorHook)
+    },
+
+    fetchAdmins () {
+      this.$apollo.query({
+        query: GetUsersQuery,
+        variables: {
+          role: 'Admin'
+        },
+        update: (store, { data }) => {
+          store.writeData({ query: GetUsersQuery, data })
         }
-      })
+      }).then(({ data }) => {
+        this.$store.commit('admins/setItems', data.adminGetUsers)
+      }).catch(RequestUtil.errorHook)
     }
   },
 

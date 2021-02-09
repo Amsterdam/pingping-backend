@@ -56,7 +56,7 @@ class UserUtil {
   }
 
   static async updateActiveAt(user: UserDocument) {
-    if (!user.activeAt || moment().diff(moment(user.activeAt), 'hour') >= 12) {
+    if (!user.activeAt || moment().diff(moment(user.activeAt), 'hour') >= 6) {
       await User.updateOne({ _id: user._id }, { activeAt: new Date() });
     }
   }

@@ -25,6 +25,9 @@
       :title="id"
       id="user-item"
     >
+      <div v-if="activeAt">
+        <span class="text-bold">Last Active Date:</span> {{ activeAtFormatted }}
+      </div>
       <h6>Devices</h6>
       <vue-json-pretty :data="devices" />
       <h6>Tasks</h6>
@@ -57,6 +60,7 @@ export default {
     devices: VueTypes.array.def([]),
     id: String,
     createdAt: String,
+    activeAt: String,
     selected: Boolean,
     userTasks: Array,
     rewards: Array,
@@ -102,6 +106,14 @@ export default {
   },
 
   computed: {
+    activeAtFormatted () {
+      if (this.activeAt) {
+        return moment(this.activeAt / 1).format('DD.MM.Y HH:mm')
+      }
+
+      return null
+    },
+
     date () {
       return moment(this.createdAt / 1).format('DD.MM.Y HH:mm')
     },
@@ -148,5 +160,9 @@ export default {
   height: auto;
   min-height: 100%;
   border-radius: 0;
+}
+
+.text-bold {
+  font-weight: bold;
 }
 </style>

@@ -38,12 +38,13 @@
 
 <script>
 import gql from 'graphql-tag'
+import VueTypes from 'vue-types'
 
 export default {
   name: 'SendNotification',
 
   props: {
-    deviceTokens: String
+    deviceTokens: VueTypes.string
   },
 
   computed: {

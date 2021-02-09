@@ -1,6 +1,6 @@
 type Query {
   adminStatistics(week: String): AdminStatisticsResponse!
-  adminGetUsers: [AdminUserResponse]!
+  adminGetUsers(role: UserRole!): [AdminUserResponse]!
   adminGetAuditLog: [AuditLogResponse!]
   adminGetFeedback: [RouteFeedbackResponse!]
 }
@@ -62,6 +62,7 @@ type AdminUserResponse {
   profile: UserProfileResponse
   userTasks: [UserTaskResponse!]
   createdAt: String!
+  activeAt: String
   rewards: JSON
   transactions: JSON
 }

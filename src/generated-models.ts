@@ -56,6 +56,7 @@ export type AdminUserResponse = {
   profile?: Maybe<UserProfileResponse>;
   userTasks?: Maybe<Array<UserTaskResponse>>;
   createdAt: Scalars['String'];
+  activeAt?: Maybe<Scalars['String']>;
   rewards?: Maybe<Scalars['JSON']>;
   transactions?: Maybe<Scalars['JSON']>;
 };
@@ -310,6 +311,11 @@ export type QueryAdminStatisticsArgs = {
   week?: Maybe<Scalars['String']>;
 };
 
+
+export type QueryAdminGetUsersArgs = {
+  role: UserRole;
+};
+
 export type RegisterDeviceInput = {
   /** Include export token to transfer from another device */
   exportToken?: Maybe<Scalars['String']>;
@@ -513,6 +519,7 @@ export type UserResponse = {
   rewards?: Maybe<Array<UserRewardResponse>>;
   devices?: Maybe<Array<DeviceResponse>>;
   createdAt: Scalars['String'];
+  activeAt?: Maybe<Scalars['String']>;
 };
 
 export type UserRewardResponse = {
@@ -648,8 +655,8 @@ export type ResolversTypes = {
   Statistics: ResolverTypeWrapper<Statistics>,
   RouteStatistics: ResolverTypeWrapper<RouteStatistics>,
   StatisticNumberChange: ResolverTypeWrapper<StatisticNumberChange>,
-  AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
   UserRole: UserRole,
+  AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
   AuditLogResponse: ResolverTypeWrapper<AuditLogResponse>,
   AuditLogType: AuditLogType,
   RouteFeedbackResponse: ResolverTypeWrapper<RouteFeedbackResponse>,
@@ -711,8 +718,8 @@ export type ResolversParentTypes = {
   Statistics: Statistics,
   RouteStatistics: RouteStatistics,
   StatisticNumberChange: StatisticNumberChange,
-  AdminUserResponse: AdminUserResponse,
   UserRole: UserRole,
+  AdminUserResponse: AdminUserResponse,
   AuditLogResponse: AuditLogResponse,
   AuditLogType: AuditLogType,
   RouteFeedbackResponse: RouteFeedbackResponse,
@@ -768,6 +775,7 @@ export type AdminUserResponseResolvers<ContextType = ModuleContext, ParentType e
   profile?: Resolver<Maybe<ResolversTypes['UserProfileResponse']>, ParentType, ContextType>,
   userTasks?: Resolver<Maybe<Array<ResolversTypes['UserTaskResponse']>>, ParentType, ContextType>,
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  activeAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   rewards?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
   transactions?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
@@ -865,7 +873,7 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
   getAchievements?: Resolver<Array<ResolversTypes['AchievementResponse']>, ParentType, ContextType>,
   adminStatistics?: Resolver<ResolversTypes['AdminStatisticsResponse'], ParentType, ContextType, RequireFields<QueryAdminStatisticsArgs, never>>,
-  adminGetUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType>,
+  adminGetUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType, RequireFields<QueryAdminGetUsersArgs, 'role'>>,
   adminGetAuditLog?: Resolver<Maybe<Array<ResolversTypes['AuditLogResponse']>>, ParentType, ContextType>,
   adminGetFeedback?: Resolver<Maybe<Array<ResolversTypes['RouteFeedbackResponse']>>, ParentType, ContextType>,
 };
@@ -1004,6 +1012,7 @@ export type UserResponseResolvers<ContextType = ModuleContext, ParentType extend
   rewards?: Resolver<Maybe<Array<ResolversTypes['UserRewardResponse']>>, ParentType, ContextType>,
   devices?: Resolver<Maybe<Array<ResolversTypes['DeviceResponse']>>, ParentType, ContextType>,
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  activeAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
