@@ -11,6 +11,7 @@ const TOTAL_USERS_WEEK = 'total-users-week';
 const ACTIVE_USERS_WEEK = 'active-users-7-days';
 const SKIPPED_ONBOARDING_WEEK = 'skipped-onboarding-week';
 const DATE_FORMAT = 'YYYY-MM-DD';
+const START_DATE = '04.01.2021';
 
 class StatisticsUtil {
   static async getTotalUsersCurrent(): Promise<number> {
@@ -134,6 +135,83 @@ class StatisticsUtil {
     };
   }
 
+  static async getUsersPerMonthOfBirth(week: string, minAge: number, maxAge: number): Promise<Statistics> {
+    let dateQuery: any = {};
+
+    if (week) {
+      dateQuery['tasks.createdAt'] = {
+        $gt: moment(week, 'WW.YYYY').startOf('week').toDate(),
+        $lt: moment(week, 'WW.YYYY').endOf('week').toDate(),
+      };
+    }
+
+    let res = await User.aggregate([
+      {
+        $match: {
+          role: UserRole.User,
+        },
+      },
+      {
+        $unwind: {
+          path: '$tasks',
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $match: {
+          'tasks.taskId': 'onboarding.dateOfBirth',
+          ...dateQuery,
+        },
+      },
+      {
+        $project: {
+          dateOfBirth: { $dateFromString: { dateString: '$tasks.answer' } },
+        },
+      },
+      {
+        $match: {
+          dateOfBirth: {
+            $gt: moment().subtract(maxAge, 'years').toDate(),
+            $lt: moment().subtract(minAge, 'years').toDate(),
+          },
+        },
+      },
+      {
+        $project: {
+          ageInMillis: { $subtract: [new Date(), '$dateOfBirth'] },
+        },
+      },
+      {
+        $project: {
+          age: { $divide: ['$ageInMillis', 31558464000 / 12] },
+        },
+      },
+      {
+        $project: {
+          age: { $round: ['$age', 0] },
+        },
+      },
+      {
+        $group: {
+          _id: { label: '$age' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { '_id.label': 1 } },
+    ]);
+
+    res = res.filter((i) => i._id.label !== null);
+
+    return {
+      values: res.map((i) => i.count),
+      keys: res.map((i) => {
+        let mod = i._id.label % 12;
+
+        return `${(i._id.label - mod) / 12}.${mod}`;
+      }),
+    };
+  }
+
   static async registerStatistics(): Promise<void> {
     const key = moment().format(DATE_FORMAT);
 
@@ -227,6 +305,9 @@ class StatisticsUtil {
       {
         $match: {
           role: UserRole.User,
+          createdAt: {
+            $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+          },
         },
       },
       {

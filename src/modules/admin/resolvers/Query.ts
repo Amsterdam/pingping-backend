@@ -14,6 +14,7 @@ export const Query: QueryResolvers = {
     const activeUsers = await StatisticsUtil.getActiveUsers();
     const skippedOnboarding = await StatisticsUtil.getSkippedOnboarding();
     const usersPerYearOfBirth = await StatisticsUtil.getUsersPerYearOfBirth(args.week);
+    const userPerMonthOfBirthFocus = await StatisticsUtil.getUsersPerMonthOfBirth(args.week, 16, 19);
 
     return {
       usersPerDay,
@@ -23,6 +24,7 @@ export const Query: QueryResolvers = {
       activeUsers,
       skippedOnboarding,
       usersPerYearOfBirth,
+      userPerMonthOfBirthFocus,
     };
   },
 

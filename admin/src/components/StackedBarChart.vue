@@ -14,20 +14,6 @@ export default {
       let res = {}
 
       res.labels = this.keys
-
-      // res.datasets = [
-      //   {
-      //     label: 'Warning',
-      //     data: [40, 47, 44, 38, 27, 31, 25],
-      //     backgroundColor: "#FFA000",
-      //   },
-      //   {
-      //     label: 'Error',
-      //     data: [40, 47, 44, 38, 27, 31, 25],
-      //     backgroundColor: "#D32F2F",
-      //   },
-      // ]
-
       res.datasets = this.datasets ? this.datasets : [
         {
           backgroundColor: '#C5EAD3',
@@ -41,7 +27,7 @@ export default {
   data: () => ({
     options: {
       legend: {
-        display: false
+        display: true
       },
       scales: {
         yAxes: [

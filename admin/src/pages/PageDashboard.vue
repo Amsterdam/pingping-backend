@@ -36,13 +36,19 @@
     <div class="row gx-2">
       <Chart
         v-if="statisticsWeekly"
-        class="col-sm-6 col-lg-5"
+        class="col-sm-6 col-lg-4"
         title="Users by age"
         v-bind="statisticsWeekly.usersPerYearOfBirth"
       />
       <Chart
         v-if="statisticsWeekly"
-        class="col-sm-7 col-lg-6"
+        class="col-sm-6 col-lg-3"
+        title="Users 16-18"
+        v-bind="statisticsWeekly.userPerMonthOfBirthFocus"
+      />
+      <Chart
+        v-if="statisticsWeekly"
+        class="col-sm-7 col-lg-5"
         title="Completed Tasks"
         type="stacked-bar"
         :keys="taskLabels"
@@ -141,11 +147,13 @@ export default {
 
         return this.statisticsWeekly?.completedTasks.keys.reduce((val, item) => {
           let group = _.first(item.split(':'))
-          let index = val.map(s => s.label).indexOf(group)
+          let groupLabel = _.get(this.routeKeys, _.first(item.split(':')), 'other')
+          let index = val.map(s => s.key).indexOf(group)
 
           if (index === -1) {
             val.push({
-              label: group,
+              key: group,
+              label: groupLabel,
               data: getDataForLabel(group),
               backgroundColor: this.colors[val.length],
             })
@@ -184,6 +192,10 @@ export default {
     return {
       week: null,
       statisticsWeekly: null,
+      routeKeys: {
+        onboarding: 'Onboarding',
+        financieleBasis: 'Fix je basis'
+      },
       colors: ['#FB9F4B', '#ff6361', '#003f5c', '#58508d', '#bc5090']
     }
   }

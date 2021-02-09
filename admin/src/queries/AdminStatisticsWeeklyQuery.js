@@ -11,6 +11,10 @@ export const AdminStatisticsWeeklyQuery = gql`
         values
         keys
       }
+      userPerMonthOfBirthFocus {
+        values
+        keys
+      }
     }
   }
 `;

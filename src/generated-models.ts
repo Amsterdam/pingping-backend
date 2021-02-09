@@ -45,6 +45,7 @@ export type AdminStatisticsResponse = {
   activeUsers: StatisticNumberChange;
   totalUsers: StatisticNumberChange;
   usersPerYearOfBirth: Statistics;
+  userPerMonthOfBirthFocus: Statistics;
   skippedOnboarding: StatisticNumberChange;
 };
 
@@ -774,6 +775,7 @@ export type AdminStatisticsResponseResolvers<ContextType = ModuleContext, Parent
   activeUsers?: Resolver<ResolversTypes['StatisticNumberChange'], ParentType, ContextType>,
   totalUsers?: Resolver<ResolversTypes['StatisticNumberChange'], ParentType, ContextType>,
   usersPerYearOfBirth?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
+  userPerMonthOfBirthFocus?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
   skippedOnboarding?: Resolver<ResolversTypes['StatisticNumberChange'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
