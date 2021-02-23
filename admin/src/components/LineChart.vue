@@ -49,9 +49,13 @@ export default {
               autoSkip: true,
               maxTicksLimit: 10
             },
+            unitStepSize: 1,
             time: {
-              unit: 'month',
-              tooltipFormat: 'dddd LL'
+              unit: 'week',
+              tooltipFormat: 'dddd LL',
+              displayFormats: {
+                'week': 'MMM DD'
+              },
             },
             gridLines: {
               display: false

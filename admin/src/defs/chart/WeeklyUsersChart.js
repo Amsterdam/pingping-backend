@@ -7,7 +7,7 @@ class WeeklyUsersChart {
         xAxes: [
           {
             type: 'time',
-            distribution: 'series',
+            distribution: 'linear',
             ticks: {
               autoSkip: true,
               maxTicksLimit: 10
@@ -15,6 +15,9 @@ class WeeklyUsersChart {
             time: {
               unit: 'month',
               tooltipFormat: '[Week:] W (MMM YYYY)',
+              displayFormats: {
+                month: 'MMM YYYY'
+              }
             },
             gridLines: {
               display: false

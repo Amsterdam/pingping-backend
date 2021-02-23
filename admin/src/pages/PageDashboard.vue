@@ -64,8 +64,8 @@
       />
       <hr />
       <Chart
-        v-if="false"
         class="col-sm-12 col-lg-8"
+        v-if="false"
         type="line"
         title="New Users Per Day"
         v-bind="statistics.usersPerDay"
