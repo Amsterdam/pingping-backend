@@ -75,7 +75,7 @@
         class="col-sm-12 col-lg-8"
         type="line"
         title="New users weekly"
-        v-bind="statistics.usersPerWeek"
+        v-bind="weeklyUsers"
       />
       <Chart
         class="col-sm-5 col-lg-3"
@@ -97,6 +97,7 @@ import { AdminStatisticsWeeklyQuery } from '../queries/AdminStatisticsWeeklyQuer
 import NumberBlock from '../components/NumberBlock'
 import Chart from '../components/Chart'
 import { getProps as getTaskChartProps } from '../defs/chart/TaskChart'
+import { getProps as getWeeklyUsersProps } from '../defs/chart/WeeklyUsersChart'
 
 const WEEK_FORMAT = 'YYYY-WW'
 
@@ -135,6 +136,9 @@ export default {
   computed: {
     completedTasks () {
       return getTaskChartProps(_.get(this.statisticsWeekly, 'completedTasks'))
+    },
+    weeklyUsers () {
+      return getWeeklyUsersProps(_.get(this.statistics, 'usersPerWeek'))
     },
     ageKeys () {
       if (this.statisticsWeekly && this.statisticsWeekly.userPerMonthOfBirth) {

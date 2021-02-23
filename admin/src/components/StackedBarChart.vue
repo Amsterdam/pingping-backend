@@ -45,8 +45,6 @@ export default {
         ],
         xAxes: [
           {
-            categoryPercentage: 1,
-            barPercentage: 0.80,
             stacked: true,
             gridLines: {
               display: false

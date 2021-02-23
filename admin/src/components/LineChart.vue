@@ -6,7 +6,8 @@ export default {
   extends: Line,
   props: {
     values: VueTypes.array,
-    keys: VueTypes.array
+    keys: VueTypes.array,
+    options: VueTypes.object
   },
   computed: {
     chartdata () {
@@ -25,7 +26,7 @@ export default {
     }
   },
   data: () => ({
-    options: {
+    optionsDef: {
       legend: {
         display: false
       },
@@ -37,7 +38,7 @@ export default {
             },
             ticks: {
               autoSkip: true,
-              maxTicksLimit: 10
+              maxTicksLimit: 20
             },
           }
         ],
@@ -59,21 +60,21 @@ export default {
         ]
       },
       responsive: true,
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
     }
   }),
 
   watch: {
     values () {
-      this.renderChart(this.chartdata, this.options)
+      this.renderChart(this.chartdata, { ...this.optionsDef, ...this.options })
     },
     keys () {
-      this.renderChart(this.chartdata, this.options)
+      this.renderChart(this.chartdata, { ...this.optionsDef, ...this.options })
     }
   },
 
   mounted () {
-    this.renderChart(this.chartdata, this.options)
+    this.renderChart(this.chartdata, { ...this.optionsDef, ...this.options })
   }
 }
 </script>

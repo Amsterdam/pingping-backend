@@ -44,8 +44,6 @@ export default {
         ],
         xAxes: [
           {
-            categoryPercentage: 0.9,
-            barPercentage: 0.99,
             ticks: {
               autoSkip: true,
             },

@@ -357,7 +357,9 @@ class StatisticsUtil {
 
     return {
       values: res.map((i) => i.count),
-      keys: res.map((i) => i._id.label),
+      keys: res.map((i) => {
+        return moment(i._id.label, WEEK_FORMAT).format(DATE_FORMAT);
+      }),
     };
   }
 

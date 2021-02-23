@@ -23,6 +23,7 @@
         v-else-if="type === 'line'"
         class="is-chart line-chart"
         style="height: 25vh;"
+        :options="options"
         :keys="keys"
       />
       <PieChart
@@ -56,7 +57,8 @@ export default {
     type: VueTypes.string.def('bar'),
     values: VueTypes.array,
     keys: VueTypes.array,
-    datasets: VueTypes.array.def(undefined)
+    datasets: VueTypes.array.def(undefined),
+    options: VueTypes.object
   },
 
   data () {
