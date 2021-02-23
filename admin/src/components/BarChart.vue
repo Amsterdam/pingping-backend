@@ -14,7 +14,6 @@ export default {
       let res = {}
 
       res.labels = this.keys
-
       res.datasets = this.datasets ? this.datasets : [
         {
           backgroundColor: '#C5EAD3',
@@ -45,6 +44,11 @@ export default {
         ],
         xAxes: [
           {
+            categoryPercentage: 0.9,
+            barPercentage: 0.99,
+            ticks: {
+              autoSkip: true,
+            },
             gridLines: {
               display: false
             },

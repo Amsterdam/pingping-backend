@@ -7,6 +7,10 @@ export const AdminStatisticsQuery = gql`
         values
         keys
       }
+      usersPerWeek {
+        values
+        keys
+      }
       activeUsers {
         current
         change

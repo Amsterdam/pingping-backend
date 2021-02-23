@@ -18,6 +18,7 @@ type Mutation {
 # Response
 type AdminStatisticsResponse {
   usersPerDay: Statistics!
+  usersPerWeek: Statistics!
   completedTasks: Statistics!
   routes: [RouteStatistics!]
   activeUsers: StatisticNumberChange!

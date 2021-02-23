@@ -39,6 +39,7 @@
         class="col-sm-6 col-lg-5"
         title="Users 15 - 22"
         v-bind="statisticsWeekly.userPerMonthOfBirth"
+        :keys="ageKeys"
       >
         <div
           slot="bottom"
@@ -59,16 +60,22 @@
         class="col-sm-7 col-lg-6"
         title="Completed Tasks"
         type="stacked-bar"
-        :keys="taskLabels"
-        :datasets="completedTasks"
+        v-bind="completedTasks"
       />
       <hr />
       <Chart
-        v-if="statistics"
+        v-if="false"
         class="col-sm-12 col-lg-8"
         type="line"
         title="New Users Per Day"
         v-bind="statistics.usersPerDay"
+      />
+      <Chart
+        v-if="statistics"
+        class="col-sm-12 col-lg-8"
+        type="line"
+        title="New users weekly"
+        v-bind="statistics.usersPerWeek"
       />
       <Chart
         class="col-sm-5 col-lg-3"
@@ -89,13 +96,16 @@ import { AdminStatisticsQuery } from '../queries/AdminStatisticsQuery'
 import { AdminStatisticsWeeklyQuery } from '../queries/AdminStatisticsWeeklyQuery'
 import NumberBlock from '../components/NumberBlock'
 import Chart from '../components/Chart'
+import { getProps as getTaskChartProps } from '../defs/chart/TaskChart'
+
+const WEEK_FORMAT = 'YYYY-WW'
 
 export default {
   name: 'PageDashboard',
 
   components: {
     Chart,
-    NumberBlock
+    NumberBlock,
   },
 
   mounted () {
@@ -123,52 +133,12 @@ export default {
   },
 
   computed: {
-    taskLabels () {
-      if (this.statisticsWeekly && this.statisticsWeekly.completedTasks) {
-        return this.statisticsWeekly?.completedTasks.keys.reduce((val, item) => {
-          let key = _.last(item.split(':'))
-          let index = val.indexOf(key)
-
-          if (index === -1) {
-            val.push(key)
-          }
-
-          return val
-        }, [])
-      }
-
-      return []
-    },
     completedTasks () {
-      if (this.statisticsWeekly && this.statisticsWeekly.completedTasks) {
-        const getDataForLabel = (label) => {
-          return this.taskLabels.map(t => {
-            let valIndex = this.statisticsWeekly.completedTasks.keys.indexOf(`${label}:${t}`)
-
-            if (valIndex !== -1) {
-              return this.statisticsWeekly.completedTasks.values[valIndex]
-            }
-
-            return 0
-          })
-        }
-
-        return this.statisticsWeekly?.completedTasks.keys.reduce((val, item) => {
-          let group = _.first(item.split(':'))
-          let groupLabel = _.get(this.routeKeys, _.first(item.split(':')), 'other')
-          let index = val.map(s => s.key).indexOf(group)
-
-          if (index === -1) {
-            val.push({
-              key: group,
-              label: groupLabel,
-              data: getDataForLabel(group),
-              backgroundColor: this.colors[val.length],
-            })
-          }
-
-          return val
-        }, [])
+      return getTaskChartProps(_.get(this.statisticsWeekly, 'completedTasks'))
+    },
+    ageKeys () {
+      if (this.statisticsWeekly && this.statisticsWeekly.userPerMonthOfBirth) {
+        return this.statisticsWeekly.userPerMonthOfBirth.keys
       }
 
       return []
@@ -180,8 +150,8 @@ export default {
 
       while (moment('04.01.2021', 'DD.MM.YYYY').diff(current, 'weeks') < 0) {
         weeks.push({
-          value: current.format('WW.YYYY'),
-          text: moment().format('WW.YYYY') === current.format('WW.YYYY') ? `Current week` : current.format('W - YYYY')
+          value: current.format(WEEK_FORMAT),
+          text: moment().format(WEEK_FORMAT) === current.format(WEEK_FORMAT) ? `Current week` : current.format('W - YYYY')
         })
         current = current.subtract(1, 'week')
       }
@@ -201,11 +171,6 @@ export default {
       week: null,
       showAll: false,
       statisticsWeekly: null,
-      routeKeys: {
-        onboarding: 'Onboarding',
-        financieleBasis: 'Fix je basis'
-      },
-      colors: ['#FB9F4B', '#ff6361', '#003f5c', '#58508d', '#bc5090']
     }
   }
 }

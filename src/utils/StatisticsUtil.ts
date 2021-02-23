@@ -11,6 +11,7 @@ const TOTAL_USERS_WEEK = 'total-users-week';
 const ACTIVE_USERS_WEEK = 'active-users-7-days';
 const SKIPPED_ONBOARDING_WEEK = 'skipped-onboarding-week';
 const DATE_FORMAT = 'YYYY-MM-DD';
+const WEEK_FORMAT = 'YYYY-WW';
 const START_DATE = '04.01.2021';
 
 class StatisticsUtil {
@@ -74,8 +75,8 @@ class StatisticsUtil {
 
     if (week) {
       dateQuery['tasks.createdAt'] = {
-        $gt: moment(week, 'WW.YYYY').startOf('week').toDate(),
-        $lt: moment(week, 'WW.YYYY').endOf('week').toDate(),
+        $gt: moment(week, WEEK_FORMAT).startOf('week').toDate(),
+        $lt: moment(week, WEEK_FORMAT).endOf('week').toDate(),
       };
     }
 
@@ -140,8 +141,8 @@ class StatisticsUtil {
 
     if (week) {
       dateQuery['tasks.createdAt'] = {
-        $gt: moment(week, 'WW.YYYY').startOf('week').toDate(),
-        $lt: moment(week, 'WW.YYYY').endOf('week').toDate(),
+        $gt: moment(week, WEEK_FORMAT).startOf('week').toDate(),
+        $lt: moment(week, WEEK_FORMAT).endOf('week').toDate(),
       };
     }
 
@@ -330,6 +331,36 @@ class StatisticsUtil {
     };
   }
 
+  static async getUsersPerWeek(): Promise<Statistics> {
+    const res = await User.aggregate([
+      {
+        $match: {
+          role: UserRole.User,
+          createdAt: {
+            $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+          },
+        },
+      },
+      {
+        $project: {
+          label: { $dateToString: { format: '%Y-%V', date: '$createdAt' } },
+        },
+      },
+      {
+        $group: {
+          _id: { label: '$label' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { '_id.label': 1 } },
+    ]);
+
+    return {
+      values: res.map((i) => i.count),
+      keys: res.map((i) => i._id.label),
+    };
+  }
+
   static async getRoutes(): Promise<Array<RouteStatistics>> {
     const res = await User.aggregate([
       {
@@ -375,8 +406,8 @@ class StatisticsUtil {
 
     if (week) {
       dateQuery['tasks.updatedAt'] = {
-        $gt: moment(week, 'WW.YYYY').startOf('week').toDate(),
-        $lt: moment(week, 'WW.YYYY').endOf('week').toDate(),
+        $gt: moment(week, WEEK_FORMAT).startOf('week').toDate(),
+        $lt: moment(week, WEEK_FORMAT).endOf('week').toDate(),
       };
     }
 

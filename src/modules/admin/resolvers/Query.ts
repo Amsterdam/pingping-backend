@@ -8,6 +8,7 @@ import StatisticsUtil from 'utils/StatisticsUtil';
 export const Query: QueryResolvers = {
   async adminStatistics(root: any, args: QueryAdminStatisticsArgs, context: ContextType): Promise<any> {
     const usersPerDay = await StatisticsUtil.getUsersPerDay();
+    const usersPerWeek = await StatisticsUtil.getUsersPerWeek();
     const completedTasks = await StatisticsUtil.getCompletedTasks(args.week);
     const routes = await StatisticsUtil.getRoutes();
     const totalUsers = await StatisticsUtil.getTotalUsers();
@@ -18,6 +19,7 @@ export const Query: QueryResolvers = {
 
     return {
       usersPerDay,
+      usersPerWeek,
       completedTasks,
       routes,
       totalUsers,
