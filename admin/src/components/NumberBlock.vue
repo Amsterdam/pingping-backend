@@ -69,7 +69,7 @@ export default {
 }
 
 .number-block .block-inner {
-  padding: 0.5rem;
+  padding-right: 4rem;
 }
 
 .number-block .title {
@@ -77,15 +77,15 @@ export default {
 }
 
 .number-block .number {
-  font-weight: bold;
-  font-size: 2rem;
+  font-weight: 800;
+  font-size: 1.6em;
 }
 
 .number-block .change {
   position: absolute;
   font-weight: bold;
   top: 1rem;
-  right: 1.5rem;
+  right: 1.2rem;
 }
 
 .number-block .change.negative {

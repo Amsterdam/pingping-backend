@@ -6,13 +6,14 @@ import InitialDataUtil from 'utils/InitialDataUtil';
 import { TaskDefinition } from 'types/global';
 import { RouteDefinition } from 'types/global';
 import { StatisticModel } from 'models/Statistic';
+import { stat } from 'fs';
 
 const TOTAL_USERS_WEEK = 'total-users-week';
 const ACTIVE_USERS_WEEK = 'active-users-7-days';
 const SKIPPED_ONBOARDING_WEEK = 'skipped-onboarding-week';
 const DATE_FORMAT = 'YYYY-MM-DD';
 const WEEK_FORMAT = 'YYYY-WW';
-const START_DATE = '04.01.2021';
+export const START_DATE = '04.01.2021';
 
 class StatisticsUtil {
   static async getTotalUsersCurrent(): Promise<number> {
@@ -49,7 +50,7 @@ class StatisticsUtil {
       { $sort: { count: -1 } },
     ]);
 
-    return _.get(_.first(res), 'count');
+    return _.get(_.first(res), 'count', 0);
   }
 
   static async getChangeFromLastWeek(type: string, current: number): Promise<number> {
@@ -68,6 +69,46 @@ class StatisticsUtil {
     }
 
     return null;
+  }
+
+  static async getUsersAccumulative(): Promise<Statistics> {
+    const res = await User.aggregate([
+      {
+        $match: {
+          role: UserRole.User,
+          createdAt: {
+            $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+          },
+        },
+      },
+      {
+        $project: {
+          label: { $dateToString: { format: '%Y-%V', date: '$createdAt' } },
+        },
+      },
+      {
+        $group: {
+          _id: '$label',
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    return {
+      values: res.reduce((acc, v) => {
+        if (acc.length) {
+          acc.push(acc[acc.length - 1] + v.count);
+        } else {
+          acc.push(v.count);
+        }
+
+        return acc;
+      }, []),
+      keys: res.map((i) => {
+        return moment(i._id, WEEK_FORMAT).format(DATE_FORMAT);
+      }),
+    };
   }
 
   static async getUsersPerYearOfBirth(week: string): Promise<Statistics> {
@@ -136,7 +177,7 @@ class StatisticsUtil {
     };
   }
 
-  static async getUsersPerMonthOfBirth(week: string, minAge: number, maxAge: number): Promise<Statistics> {
+  static async getUsersPerMonthOfBirth(week: string, minAge: number = 0, maxAge: number = 100): Promise<Statistics> {
     let dateQuery: any = {};
 
     if (week) {

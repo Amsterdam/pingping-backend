@@ -89,7 +89,17 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+$theme-colors: (
+  'primary': #003f5c,
+  'secondary': #fb9f4b,
+  'danger': #ff6361,
+);
+
+@import 'css/custom.scss';
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
+
 body,
 html {
   background-color: #dfe8e7;
@@ -126,12 +136,13 @@ html {
 
 .block-inner {
   padding: 1rem;
-  border-radius: 5px;
+  border-radius: 3px;
   background-color: #fff;
 }
 
 .addition {
   font-size: 75%;
+  margin-bottom: -1rem;
 }
 
 .text-link {

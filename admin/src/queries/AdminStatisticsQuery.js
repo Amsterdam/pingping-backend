@@ -11,6 +11,10 @@ export const AdminStatisticsQuery = gql`
         values
         keys
       }
+      usersAccumulative {
+        values
+        keys
+      }
       activeUsers {
         current
         change

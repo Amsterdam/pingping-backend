@@ -1,48 +1,23 @@
-class WeeklyUsersChart {
-  constructor(keys, weekly, acc) {
+class UsersAccumulativeChart {
+  constructor(keys, acc) {
     this.keys = keys
-    this.weekly = weekly
-    this.acc = acc
     this.datasets = [
       {
-        label: 'Weekly',
-        yAxisId: 'y1',
-        data: this.weekly,
-        fill: false,
-        borderColor: '#003f5c',
-      },
-      // {
-      //   label: 'Accumulative',
-      //   data: this.acc,
-      //   borderColor: '#fb9f4b',
-      //   backgroundColor: '#fb9f4b',
-      //   fillColor: "yellow",
-      //   pointRadius: 0
-      // }
+        label: 'Accumulative',
+        data: acc,
+        borderColor: '#fb9f4b',
+        backgroundColor: '#fb9f4b',
+        fillColor: "yellow",
+        pointRadius: 0
+      }
     ]
     this.options = {
-      interaction: {
-        mode: 'index'
-      },
       legend: {
         display: false,
       },
       scales: {
         yAxis: [
           {
-            id: 'y1',
-            position: 'left',
-            gridLines: {
-              borderDash: [8, 4],
-            },
-            ticks: {
-              autoSkip: true,
-              maxTicksLimit: 20
-            },
-          },
-          {
-            id: 'y2',
-            position: 'right',
             gridLines: {
               borderDash: [8, 4],
             },
@@ -87,10 +62,10 @@ class WeeklyUsersChart {
   }
 }
 
-export const getProps = ({ keys, values }, acc) => {
-  const instance = new WeeklyUsersChart(keys, values, acc.values)
+export const getProps = ({ keys, values }) => {
+  const instance = new UsersAccumulativeChart(keys, values)
 
   return instance.getProps()
 }
 
-export default WeeklyUsersChart
+export default UsersAccumulativeChart

@@ -6,6 +6,7 @@ export default {
   extends: Line,
   props: {
     values: VueTypes.array,
+    datasets: VueTypes.array,
     keys: VueTypes.array,
     options: VueTypes.object
   },
@@ -14,13 +15,7 @@ export default {
       let res = {}
 
       res.labels = this.keys
-      res.datasets = [
-        {
-          fill: false,
-          borderColor: '#FB9F4B',
-          data: this.values
-        }
-      ]
+      res.datasets = this.datasets
 
       return res
     }
@@ -28,47 +23,18 @@ export default {
   data: () => ({
     optionsDef: {
       legend: {
-        display: false
+        display: true
       },
-      scales: {
-        yAxes: [
-          {
-            gridLines: {
-              borderDash: [8, 4],
-            },
-            ticks: {
-              autoSkip: true,
-              maxTicksLimit: 20
-            },
-          }
-        ],
-        xAxes: [
-          {
-            type: 'time',
-            ticks: {
-              autoSkip: true,
-              maxTicksLimit: 10
-            },
-            unitStepSize: 1,
-            time: {
-              unit: 'week',
-              tooltipFormat: 'dddd LL',
-              displayFormats: {
-                'week': 'MMM DD'
-              },
-            },
-            gridLines: {
-              display: false
-            }
-          }
-        ]
-      },
+      scales: [],
       responsive: true,
       maintainAspectRatio: false,
     }
   }),
 
   watch: {
+    datasets () {
+      this.renderChart(this.chartdata, { ...this.optionsDef, ...this.options })
+    },
     values () {
       this.renderChart(this.chartdata, { ...this.optionsDef, ...this.options })
     },

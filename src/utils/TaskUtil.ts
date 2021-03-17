@@ -229,6 +229,7 @@ class TaskUtil {
     }
 
     user = this.updateUserTask(user, userTask);
+    user.activeAt = new Date();
     await User.findOneAndUpdate({ _id: user._id }, user);
 
     return userTask;

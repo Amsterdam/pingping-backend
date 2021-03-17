@@ -13,9 +13,6 @@ import PageAuditLog from './pages/PageAuditLog';
 import PageFeedback from './pages/PageFeedback';
 import PageSettings from './pages/PageSettings';
 import store from './store';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-import 'vue-json-pretty/lib/styles.css';
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);

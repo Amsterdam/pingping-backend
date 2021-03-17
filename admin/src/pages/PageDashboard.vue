@@ -6,63 +6,35 @@
     >
       <NumberBlock
         title="Total users"
-        class="col-xs-6 col-sm-4 col-md-3 col-lg-2"
         v-bind="statistics.totalUsers"
       />
       <NumberBlock
         title="Active users"
-        class="col-xs-6 col-sm-3 col-md-2"
         description="Active users past 7 days"
         v-bind="statistics.activeUsers"
       />
       <NumberBlock
         title="Skipped onboarding"
-        class="col-xs-6 col-sm-4 col-md-3"
         description="Pressed 'Vragen overslaan'"
         v-bind="statistics.skippedOnboarding"
       />
     </div>
-    <hr />
-    <b-form inline>
-      <label
-        class="mr-sm-2"
-        for="inline-form-custom-select-pref"
-      >Filter by week</label>
-      <b-form-select
-        v-model="week"
-        :options="weeks"
-      ></b-form-select>
-    </b-form>
     <div class="row gx-2">
       <Chart
-        v-if="statisticsWeekly"
-        class="col-sm-6 col-lg-5"
-        title="Users 15 - 22"
-        v-bind="statisticsWeekly.userPerMonthOfBirth"
-        :keys="ageKeys"
-      >
-        <div
-          slot="bottom"
-          class="addition"
-        >Only users aged 15-22. <span
-            class="text-link"
-            @click="showAll = true"
-          >Chart for all users</span></div>
-      </Chart>
-      <Chart
-        v-if="statisticsWeekly && showAll"
-        class="col-sm-6 col-lg-5"
-        title="Users by age"
-        v-bind="statisticsWeekly.usersPerYearOfBirth"
+        class="col-sm-6 col-lg-6"
+        title="Age distribution"
+        :weekFilter="true"
+        :ageFilter="true"
+        queryName="userPerMonthOfBirth"
       />
       <Chart
-        v-if="statisticsWeekly"
         class="col-sm-7 col-lg-6"
         title="Completed Tasks"
         type="stacked-bar"
-        v-bind="completedTasks"
+        queryName="completedTasks"
+        completedTasks="completedTasks"
+        :weekFilter="true"
       />
-      <hr />
       <Chart
         class="col-sm-12 col-lg-8"
         v-if="false"
@@ -72,10 +44,17 @@
       />
       <Chart
         v-if="statistics"
-        class="col-sm-12 col-lg-8"
+        class="col-sm-12 col-lg-6"
         type="line"
         title="New users weekly"
         v-bind="weeklyUsers"
+      />
+      <Chart
+        v-if="statistics"
+        class="col-sm-12 col-lg-6"
+        type="line"
+        title="Accumulative"
+        v-bind="accumulativeUsers"
       />
       <Chart
         class="col-sm-5 col-lg-3"
@@ -91,15 +70,11 @@
 
 <script>
 import _ from 'lodash'
-import moment from 'moment'
 import { AdminStatisticsQuery } from '../queries/AdminStatisticsQuery'
-import { AdminStatisticsWeeklyQuery } from '../queries/AdminStatisticsWeeklyQuery'
 import NumberBlock from '../components/NumberBlock'
 import Chart from '../components/Chart'
-import { getProps as getTaskChartProps } from '../defs/chart/TaskChart'
 import { getProps as getWeeklyUsersProps } from '../defs/chart/WeeklyUsersChart'
-
-const WEEK_FORMAT = 'YYYY-WW'
+import { getProps as getAccumulativeUsersProps } from '../defs/chart/UsersAccumulativeChart'
 
 export default {
   name: 'PageDashboard',
@@ -109,10 +84,6 @@ export default {
     NumberBlock,
   },
 
-  mounted () {
-    this.fetch()
-  },
-
   apollo: {
     statistics: {
       query: AdminStatisticsQuery,
@@ -120,59 +91,17 @@ export default {
     }
   },
 
-  methods: {
-    fetch () {
-      this.$apollo.query({
-        query: AdminStatisticsWeeklyQuery,
-        variables: {
-          week: this.week
-        }
-      }).then(({ data }) => {
-        this.statisticsWeekly = data.adminStatistics
-      })
-    }
-  },
-
   computed: {
-    completedTasks () {
-      return getTaskChartProps(_.get(this.statisticsWeekly, 'completedTasks'))
-    },
     weeklyUsers () {
-      return getWeeklyUsersProps(_.get(this.statistics, 'usersPerWeek'))
+      return getWeeklyUsersProps(_.get(this.statistics, 'usersPerWeek'), _.get(this.statistics, 'usersAccumulative'))
     },
-    ageKeys () {
-      if (this.statisticsWeekly && this.statisticsWeekly.userPerMonthOfBirth) {
-        return this.statisticsWeekly.userPerMonthOfBirth.keys
-      }
-
-      return []
-    },
-
-    weeks () {
-      let current = moment()
-      let weeks = []
-
-      while (moment('04.01.2021', 'DD.MM.YYYY').diff(current, 'weeks') < 0) {
-        weeks.push({
-          value: current.format(WEEK_FORMAT),
-          text: moment().format(WEEK_FORMAT) === current.format(WEEK_FORMAT) ? `Current week` : current.format('W - YYYY')
-        })
-        current = current.subtract(1, 'week')
-      }
-
-      return [{ text: 'Total', value: null }, ...weeks]
-    }
-  },
-
-  watch: {
-    week () {
-      this.fetch()
+    accumulativeUsers () {
+      return getAccumulativeUsersProps(_.get(this.statistics, 'usersAccumulative'))
     }
   },
 
   data () {
     return {
-      week: null,
       showAll: false,
       statisticsWeekly: null,
     }

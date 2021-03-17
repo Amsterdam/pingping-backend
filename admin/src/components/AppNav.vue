@@ -2,7 +2,7 @@
   <b-navbar
     toggleable="lg"
     type="dark"
-    variant="info"
+    variant="primary"
   >
     <b-navbar-brand to="/">PingPing Admin</b-navbar-brand>
 

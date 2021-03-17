@@ -19,12 +19,13 @@ type Mutation {
 type AdminStatisticsResponse {
   usersPerDay: Statistics!
   usersPerWeek: Statistics!
-  completedTasks: Statistics!
+  usersAccumulative: Statistics!
+  completedTasks(week: String): Statistics!
   routes: [RouteStatistics!]
   activeUsers: StatisticNumberChange!
   totalUsers: StatisticNumberChange!
-  usersPerYearOfBirth: Statistics!
-  userPerMonthOfBirth: Statistics!
+  usersPerYearOfBirth(week: String): Statistics!
+  userPerMonthOfBirth(week: String, minAge: Int = 15, maxAge: Int = 22): Statistics!
   skippedOnboarding: StatisticNumberChange!
 }
 

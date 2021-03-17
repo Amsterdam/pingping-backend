@@ -41,6 +41,7 @@ export type AdminStatisticsResponse = {
    __typename?: 'AdminStatisticsResponse';
   usersPerDay: Statistics;
   usersPerWeek: Statistics;
+  usersAccumulative: Statistics;
   completedTasks: Statistics;
   routes?: Maybe<Array<RouteStatistics>>;
   activeUsers: StatisticNumberChange;
@@ -48,6 +49,23 @@ export type AdminStatisticsResponse = {
   usersPerYearOfBirth: Statistics;
   userPerMonthOfBirth: Statistics;
   skippedOnboarding: StatisticNumberChange;
+};
+
+
+export type AdminStatisticsResponseCompletedTasksArgs = {
+  week?: Maybe<Scalars['String']>;
+};
+
+
+export type AdminStatisticsResponseUsersPerYearOfBirthArgs = {
+  week?: Maybe<Scalars['String']>;
+};
+
+
+export type AdminStatisticsResponseUserPerMonthOfBirthArgs = {
+  week?: Maybe<Scalars['String']>;
+  minAge?: Maybe<Scalars['Int']>;
+  maxAge?: Maybe<Scalars['Int']>;
 };
 
 export type AdminUserResponse = {
@@ -772,12 +790,13 @@ export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType
 export type AdminStatisticsResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AdminStatisticsResponse'] = ResolversParentTypes['AdminStatisticsResponse']> = {
   usersPerDay?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
   usersPerWeek?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
-  completedTasks?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
+  usersAccumulative?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
+  completedTasks?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType, RequireFields<AdminStatisticsResponseCompletedTasksArgs, never>>,
   routes?: Resolver<Maybe<Array<ResolversTypes['RouteStatistics']>>, ParentType, ContextType>,
   activeUsers?: Resolver<ResolversTypes['StatisticNumberChange'], ParentType, ContextType>,
   totalUsers?: Resolver<ResolversTypes['StatisticNumberChange'], ParentType, ContextType>,
-  usersPerYearOfBirth?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
-  userPerMonthOfBirth?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
+  usersPerYearOfBirth?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType, RequireFields<AdminStatisticsResponseUsersPerYearOfBirthArgs, never>>,
+  userPerMonthOfBirth?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType, RequireFields<AdminStatisticsResponseUserPerMonthOfBirthArgs, 'minAge' | 'maxAge'>>,
   skippedOnboarding?: Resolver<ResolversTypes['StatisticNumberChange'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
