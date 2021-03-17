@@ -8,7 +8,6 @@ import MigrationUtil from 'utils/MigrationUtil';
 class boot {
   static async start() {
     console.log('booting...', process.env.NODE_ENV);
-    require('console-stamp')(console, '[HH:MM:ss.l]');
     dotenv.config();
     StatisticsUtil.registerStatistics();
     MigrationUtil.checkRouteProgress();
