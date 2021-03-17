@@ -2,18 +2,6 @@
   <div class="block number-block">
     <div class="block-inner">
       <div
-        class="title"
-        :title="description"
-        v-b-tooltip.hover
-      >{{ title }}</div>
-      <div class="number">
-        <span>{{ current }}</span>
-        <span
-          class="smaller"
-          v-if="percentile"
-        >({{ displayPercentile }})</span>
-      </div>
-      <div
         v-b-tooltip.hover
         title="Change since 7 days ago"
         :class="['change', changeClass]"
@@ -22,6 +10,20 @@
         <b-icon-arrow-up v-if="positive" />
         <b-icon-arrow-down v-else />
         <span>{{ displayChange }}</span>
+      </div>
+      <div
+        class="title"
+        :title="description"
+        v-b-tooltip.hover
+      >{{ title }}</div>
+      <div class="number">
+        <span class="val">
+          {{ current }}
+        </span>
+        <span
+          class="smaller"
+          v-if="percentile"
+        >({{ displayPercentile }})</span>
       </div>
     </div>
   </div>
@@ -69,7 +71,7 @@ export default {
 }
 
 .number-block .block-inner {
-  padding-right: 4rem;
+  padding-right: 5rem;
 }
 
 .number-block .title {
@@ -79,6 +81,7 @@ export default {
 .number-block .number {
   font-weight: 800;
   font-size: 1.6em;
+  position: relative;
 }
 
 .number-block .change {
@@ -94,6 +97,7 @@ export default {
 
 .number-block .change {
   color: #2ecc40;
+  font-size: 0.8rem;
 }
 
 .smaller {

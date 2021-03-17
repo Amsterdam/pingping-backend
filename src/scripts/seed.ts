@@ -9,6 +9,7 @@ import { User } from 'models/User';
 import { UserTask } from 'models/UserTask';
 import TaskUtil from 'utils/TaskUtil';
 import { TaskStatus } from '@models';
+import StatisticsUtil from 'utils/StatisticsUtil';
 
 const START_DATE = '2021-01-04';
 const NUMBER_OF_DAYS = 72;
@@ -76,6 +77,8 @@ const seed = async () => {
               await TaskUtil.handleTask(user, nextTaskDef, Boolean(Math.round(Math.random())) ? 'yes' : 'no');
             }
           }
+
+          await StatisticsUtil.registerStatistics();
         }
 
         // For the users that exists, complete random tasks

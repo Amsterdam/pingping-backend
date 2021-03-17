@@ -28,7 +28,7 @@
         queryName="userPerMonthOfBirth"
       />
       <Chart
-        class="col-sm-7 col-lg-6"
+        class="col-sm-6 col-lg-6"
         title="Completed Tasks"
         type="stacked-bar"
         queryName="completedTasks"
@@ -36,28 +36,21 @@
         :weekFilter="true"
       />
       <Chart
-        class="col-sm-12 col-lg-8"
-        v-if="false"
-        type="line"
-        title="New Users Per Day"
-        v-bind="statistics.usersPerDay"
-      />
-      <Chart
         v-if="statistics"
-        class="col-sm-12 col-lg-6"
+        class="col-sm-6 col-lg-5"
         type="line"
         title="New users weekly"
         v-bind="weeklyUsers"
       />
       <Chart
         v-if="statistics"
-        class="col-sm-12 col-lg-6"
+        class="col-sm-6 col-lg-4"
         type="line"
         title="Accumulative"
         v-bind="accumulativeUsers"
       />
       <Chart
-        class="col-sm-5 col-lg-3"
+        class="col-sm-4 col-lg-3"
         type="pie"
         v-for="(route, index) in statistics ? statistics.routes : []"
         :key="'pie-' + index"
