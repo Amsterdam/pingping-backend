@@ -11,6 +11,7 @@ ENV NODE_ENV=production
 COPY package.json /app/package.json
 # COPY yarn.lock /app/yarn.lock
 
+RUN npm cache clean
 RUN npm install
 
 # Bundle app source
