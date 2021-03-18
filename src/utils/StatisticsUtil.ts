@@ -83,7 +83,7 @@ class StatisticsUtil {
       },
       {
         $project: {
-          label: { $dateToString: { format: '%Y-%V', date: '$createdAt' } },
+          label: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
         },
       },
       {
@@ -105,9 +105,7 @@ class StatisticsUtil {
 
         return acc;
       }, []),
-      keys: res.map((i) => {
-        return moment(i._id, WEEK_FORMAT).format(DATE_FORMAT);
-      }),
+      keys: res.map((i) => i._id),
     };
   }
 

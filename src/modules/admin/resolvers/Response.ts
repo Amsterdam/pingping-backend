@@ -27,9 +27,6 @@ export const AdminStatisticsResponse: any = {
   usersAccumulative: async (doc: any) => {
     return await StatisticsUtil.getUsersAccumulative();
   },
-  usersPerDay: async (doc: any) => {
-    return await StatisticsUtil.getUsersPerDay();
-  },
   usersPerWeek: async (doc: any) => {
     return await StatisticsUtil.getUsersPerWeek();
   },
