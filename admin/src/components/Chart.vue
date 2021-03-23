@@ -12,6 +12,7 @@
             variant="outline-primary"
             :text="age ? age[0] + '-' + age[1] : '15-22'"
             v-if="ageFilter"
+            right
             size="sm"
           >
             <b-dropdown-item @click="age = [0, 100]">All</b-dropdown-item>
@@ -19,7 +20,8 @@
           </b-dropdown>
           <b-dropdown
             variant="outline-primary"
-            :text="week ? week.text : 'Current'"
+            right
+            :text="week ? week.text : 'Total'"
             v-if="weekFilter"
             size="sm"
           >
