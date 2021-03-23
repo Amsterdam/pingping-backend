@@ -8,7 +8,7 @@ class UsersAccumulativeChart {
         borderColor: '#fb9f4b',
         backgroundColor: '#fb9f4b',
         fillColor: "yellow",
-        pointRadius: 0
+        pointRadius: 1
       }
     ]
     this.options = {
