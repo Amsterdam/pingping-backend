@@ -24,8 +24,8 @@ export const AdminStatisticsResponse: any = {
   userPerMonthOfBirth: async (doc: any, args: AdminStatisticsResponseUserPerMonthOfBirthArgs) => {
     return await StatisticsUtil.getUsersPerMonthOfBirth(args.week, args.minAge, args.maxAge);
   },
-  usersAccumulative: async (doc: any) => {
-    return await StatisticsUtil.getUsersAccumulative();
+  usersCumulative: async (doc: any) => {
+    return await StatisticsUtil.getUsersCumulative();
   },
   usersPerWeek: async (doc: any) => {
     return await StatisticsUtil.getUsersPerWeek();

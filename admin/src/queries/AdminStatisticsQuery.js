@@ -7,7 +7,7 @@ export const AdminStatisticsQuery = gql`
         values
         keys
       }
-      usersAccumulative {
+      usersCumulative {
         values
         keys
       }

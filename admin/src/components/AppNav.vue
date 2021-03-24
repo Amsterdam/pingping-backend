@@ -3,6 +3,7 @@
     toggleable="lg"
     type="dark"
     variant="primary"
+    :class="navBarClass"
   >
     <b-navbar-brand to="/">PingPing Admin</b-navbar-brand>
 
@@ -37,8 +38,17 @@ export default {
       }
     }
   },
+
+  computed: {
+    navBarClass () {
+      return `env-${process.env.NODE_ENV}`
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+.navbar.env-development {
+  background: repeating-linear-gradient(45deg, #003f5c, #003f5c 10px, #448a86 10px, #448a86 20px);
+}
 </style>

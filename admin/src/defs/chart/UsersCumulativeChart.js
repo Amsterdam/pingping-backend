@@ -1,9 +1,9 @@
-class UsersAccumulativeChart {
+class UsersCumulativeChart {
   constructor(keys, acc) {
     this.keys = keys
     this.datasets = [
       {
-        label: 'Accumulative',
+        label: 'Cumulative Users',
         data: acc,
         borderColor: '#fb9f4b',
         backgroundColor: '#fb9f4b',
@@ -63,9 +63,9 @@ class UsersAccumulativeChart {
 }
 
 export const getProps = ({ keys, values }) => {
-  const instance = new UsersAccumulativeChart(keys, values)
+  const instance = new UsersCumulativeChart(keys, values)
 
   return instance.getProps()
 }
 
-export default UsersAccumulativeChart
+export default UsersCumulativeChart

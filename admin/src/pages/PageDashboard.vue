@@ -46,8 +46,8 @@
         v-if="statistics"
         class="col-sm-6 col-lg-4"
         type="line"
-        title="Accumulative"
-        v-bind="accumulativeUsers"
+        title="Cumulative Users"
+        v-bind="cumulativeUsers"
       />
       <Chart
         class="col-sm-4 col-lg-3"
@@ -67,7 +67,7 @@ import { AdminStatisticsQuery } from '../queries/AdminStatisticsQuery'
 import NumberBlock from '../components/NumberBlock'
 import Chart from '../components/Chart'
 import { getProps as getWeeklyUsersProps } from '../defs/chart/WeeklyUsersChart'
-import { getProps as getAccumulativeUsersProps } from '../defs/chart/UsersAccumulativeChart'
+import { getProps as getCumulativeUsersProps } from '../defs/chart/UsersCumulativeChart'
 
 export default {
   name: 'PageDashboard',
@@ -86,10 +86,10 @@ export default {
 
   computed: {
     weeklyUsers () {
-      return getWeeklyUsersProps(_.get(this.statistics, 'usersPerWeek'), _.get(this.statistics, 'usersAccumulative'))
+      return getWeeklyUsersProps(_.get(this.statistics, 'usersPerWeek'), _.get(this.statistics, 'usersCumulative'))
     },
-    accumulativeUsers () {
-      return getAccumulativeUsersProps(_.get(this.statistics, 'usersAccumulative'))
+    cumulativeUsers () {
+      return getCumulativeUsersProps(_.get(this.statistics, 'usersCumulative'))
     }
   },
 

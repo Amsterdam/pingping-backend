@@ -7,6 +7,7 @@ export default {
   props: {
     values: VueTypes.array,
     keys: VueTypes.array,
+    options: VueTypes.object,
     datasets: VueTypes.array.def(undefined)
   },
   computed: {
@@ -25,7 +26,7 @@ export default {
     }
   },
   data: () => ({
-    options: {
+    optionsDef: {
       legend: {
         display: true
       },
@@ -58,11 +59,14 @@ export default {
   }),
 
   watch: {
+    datasets () {
+      this.renderChart(this.chartdata, { ...this.optionsDef, ...this.options })
+    },
     values () {
-      this.renderChart(this.chartdata, this.options)
+      this.renderChart(this.chartdata, { ...this.optionsDef, ...this.options })
     },
     keys () {
-      this.renderChart(this.chartdata, this.options)
+      this.renderChart(this.chartdata, { ...this.optionsDef, ...this.options })
     }
   },
 

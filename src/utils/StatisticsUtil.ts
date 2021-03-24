@@ -71,7 +71,7 @@ class StatisticsUtil {
     return null;
   }
 
-  static async getUsersAccumulative(): Promise<Statistics> {
+  static async getUsersCumulative(): Promise<Statistics> {
     const res = await User.aggregate([
       {
         $match: {
@@ -427,19 +427,24 @@ class StatisticsUtil {
       { $sort: { count: -1 } },
     ]);
 
-    return InitialDataUtil.getRoutes()
-      .map((r: RouteDefinition) => {
-        const set = res.filter((v) => v._id.route === r.id);
+    const routes = InitialDataUtil.getRoutes();
+    let finalRes = [];
 
-        return {
-          title: r.title,
-          data: {
-            values: set.map((v) => v.count),
-            keys: set.map((v) => v._id.status),
-          },
-        };
-      })
-      .filter((r) => r.data.values.length);
+    for (var r in routes) {
+      let route = routes[r];
+      const set = res.filter((v) => v._id.route === route.id);
+      const notStarted = await User.countDocuments({ routes: { $not: { $elemMatch: { routeId: route.id } } } });
+
+      finalRes.push({
+        title: route.title,
+        data: {
+          values: [notStarted, ...set.map((v) => v.count)],
+          keys: ['Not Started', ...set.map((v) => v._id.status)],
+        },
+      });
+    }
+
+    return finalRes.filter(({ data }) => data.values.length);
   }
 
   static async getCompletedTasks(week: string): Promise<Statistics> {

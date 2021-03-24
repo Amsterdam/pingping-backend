@@ -11,14 +11,6 @@ class WeeklyUsersChart {
         fill: false,
         borderColor: '#003f5c',
       },
-      // {
-      //   label: 'Accumulative',
-      //   data: this.acc,
-      //   borderColor: '#fb9f4b',
-      //   backgroundColor: '#fb9f4b',
-      //   fillColor: "yellow",
-      //   pointRadius: 0
-      // }
     ]
     this.options = {
       interaction: {
