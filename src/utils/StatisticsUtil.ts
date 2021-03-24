@@ -427,7 +427,7 @@ class StatisticsUtil {
       { $sort: { count: -1 } },
     ]);
 
-    const routes = InitialDataUtil.getRoutes();
+    const routes = InitialDataUtil.getRoutes().filter((r: RouteDefinition) => r.isSuggested);
     let finalRes = [];
 
     for (var r in routes) {
