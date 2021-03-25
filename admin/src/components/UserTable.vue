@@ -23,8 +23,9 @@
           <th v-if="role === 'user'">balance</th>
           <th v-if="role === 'user'">progress</th>
           <th v-if="role === 'user'">device</th>
-          <th v-if="role === 'admin'">name</th>
-          <th v-if="role === 'admin'">email</th>
+          <th v-if="role !== 'user'">name</th>
+          <th v-if="role !== 'user'">email</th>
+          <th v-if="role !== 'user'">role</th>
           <th></th>
         </tr>
       </thead>

@@ -24,7 +24,7 @@ export const AdminModule = new GraphQLModule({
     'Query.adminGetUsers': [AuthMiddleware.isAdmin()],
     'Query.adminGetAuditLog': [AuthMiddleware.isAdmin()],
     'Query.adminGetFeedback': [AuthMiddleware.isAdmin()],
-    'Query.adminStatistics': [AuthMiddleware.isAdmin()],
+    'Query.adminStatistics': [AuthMiddleware.isAdminOrReporer()],
   },
   typeDefs,
   resolvers: mergeResolvers(resolvers),

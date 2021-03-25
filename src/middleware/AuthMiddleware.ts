@@ -20,6 +20,18 @@ export default class AuthMiddleware {
     };
   }
 
+  static isAdminOrReporer() {
+    return (next: Function) => {
+      return async (root: any, args: any, context: ContextType, info: any) => {
+        if (!context.user || context.user.role === UserRole.User) {
+          throw new NoPermissionError();
+        }
+
+        return next(root, args, context, info);
+      };
+    };
+  }
+
   static isAdmin() {
     return (next: Function) => {
       return async (root: any, args: any, context: ContextType, info: any) => {

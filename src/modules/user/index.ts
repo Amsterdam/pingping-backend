@@ -16,6 +16,7 @@ export const UserModule = new GraphQLModule({
   providers: [],
   resolversComposition: {
     'Query.getStatus': [AuthMiddleware.isAuthenticated()],
+    'Query.whoAmI': [AuthMiddleware.isAdminOrReporer()],
     'Query.getAchievements': [AuthMiddleware.isAuthenticated()],
     'Mutation.sendPushNotifications': [AuthMiddleware.isAdmin()],
     'Mutation.adminAction': [AuthMiddleware.isAdmin()],

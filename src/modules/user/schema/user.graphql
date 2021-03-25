@@ -1,5 +1,6 @@
 type Query {
   getStatus: StatusResponse!
+  whoAmI: UserResponse!
   getAchievements: [AchievementResponse!]!
 }
 
@@ -52,6 +53,7 @@ type UserResponse {
   id: String!
   profile: UserProfileResponse!
   balance: Int!
+  role: UserRole
   goals: [UserGoalResponse!]
   rewards: [UserRewardResponse!]
   devices: [DeviceResponse!]
@@ -88,4 +90,5 @@ input RegisterNotificationsInput {
 enum UserRole {
   User
   Admin
+  Reporter
 }

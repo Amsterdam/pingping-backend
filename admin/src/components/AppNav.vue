@@ -13,7 +13,7 @@
       id="nav-collapse"
       is-nav
     >
-      <b-navbar-nav>
+      <b-navbar-nav v-if="user && user.role === 'Admin'">
         <b-nav-item to="/users">Users</b-nav-item>
         <b-nav-item to="/rewards">Rewards</b-nav-item>
         <b-nav-item to="/audit-log">Audit Log</b-nav-item>
@@ -27,8 +27,18 @@
 </template>
 
 <script>
+import { WhoAmIQuery } from '../queries/WhoAmIQuery'
 export default {
   name: 'AppNav',
+
+  apollo: {
+    user: {
+      query: WhoAmIQuery,
+      update (res) {
+        return res.whoAmI
+      }
+    }
+  },
 
   methods: {
     logout () {

@@ -47,6 +47,7 @@
         v-if="type === 'stacked-bar'"
         class="is-chart bar-chart"
         style="height: 25vh;"
+        :options="options"
         :datasets="datasetsActual"
         :keys="keysActual"
       />

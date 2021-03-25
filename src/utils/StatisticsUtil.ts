@@ -438,8 +438,8 @@ class StatisticsUtil {
       finalRes.push({
         title: route.title,
         data: {
-          values: [notStarted, ...set.map((v) => v.count)],
-          keys: ['Not Started', ...set.map((v) => v._id.status)],
+          values: [...set.map((v) => v.count), notStarted],
+          keys: [...set.map((v) => v._id.status), 'Not Started'],
         },
       });
     }

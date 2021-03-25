@@ -15,6 +15,10 @@ export const Query: QueryResolvers = {
     };
   },
 
+  whoAmI(root: any, args: any, context: ContextType): any {
+    return context.user;
+  },
+
   getAchievements(root: any, args: any, context: ContextType): any {
     return [];
   },

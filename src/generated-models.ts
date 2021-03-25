@@ -321,6 +321,7 @@ export type Query = {
   getAvailableRewards: Array<RewardResponse>;
   getRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
+  whoAmI: UserResponse;
   getAchievements: Array<AchievementResponse>;
   adminStatistics: AdminStatisticsResponse;
   adminGetUsers: Array<Maybe<AdminUserResponse>>;
@@ -340,7 +341,7 @@ export type QueryAdminStatisticsArgs = {
 
 
 export type QueryAdminGetUsersArgs = {
-  role: UserRole;
+  roles?: Maybe<Array<UserRole>>;
 };
 
 export type RegisterDeviceInput = {
@@ -542,6 +543,7 @@ export type UserResponse = {
   id: Scalars['String'];
   profile: UserProfileResponse;
   balance: Scalars['Int'];
+  role?: Maybe<UserRole>;
   goals?: Maybe<Array<UserGoalResponse>>;
   rewards?: Maybe<Array<UserRewardResponse>>;
   devices?: Maybe<Array<DeviceResponse>>;
@@ -560,7 +562,8 @@ export type UserRewardResponse = {
 
 export enum UserRole {
   User = 'User',
-  Admin = 'Admin'
+  Admin = 'Admin',
+  Reporter = 'Reporter'
 }
 
 export enum UserRouteStatus {
@@ -672,6 +675,7 @@ export type ResolversTypes = {
   UserResponse: ResolverTypeWrapper<UserResponse>,
   UserProfileResponse: ResolverTypeWrapper<UserProfileResponse>,
   Date: ResolverTypeWrapper<Scalars['Date']>,
+  UserRole: UserRole,
   UserGoalResponse: ResolverTypeWrapper<UserGoalResponse>,
   UserRewardResponse: ResolverTypeWrapper<UserRewardResponse>,
   DeviceResponse: ResolverTypeWrapper<DeviceResponse>,
@@ -682,7 +686,6 @@ export type ResolversTypes = {
   Statistics: ResolverTypeWrapper<Statistics>,
   RouteStatistics: ResolverTypeWrapper<RouteStatistics>,
   StatisticNumberChange: ResolverTypeWrapper<StatisticNumberChange>,
-  UserRole: UserRole,
   AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
   AdminUserRouteResponse: ResolverTypeWrapper<AdminUserRouteResponse>,
   UserRouteStatus: UserRouteStatus,
@@ -736,6 +739,7 @@ export type ResolversParentTypes = {
   UserResponse: UserResponse,
   UserProfileResponse: UserProfileResponse,
   Date: Scalars['Date'],
+  UserRole: UserRole,
   UserGoalResponse: UserGoalResponse,
   UserRewardResponse: UserRewardResponse,
   DeviceResponse: DeviceResponse,
@@ -746,7 +750,6 @@ export type ResolversParentTypes = {
   Statistics: Statistics,
   RouteStatistics: RouteStatistics,
   StatisticNumberChange: StatisticNumberChange,
-  UserRole: UserRole,
   AdminUserResponse: AdminUserResponse,
   AdminUserRouteResponse: AdminUserRouteResponse,
   UserRouteStatus: UserRouteStatus,
@@ -910,9 +913,10 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
+  whoAmI?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType>,
   getAchievements?: Resolver<Array<ResolversTypes['AchievementResponse']>, ParentType, ContextType>,
   adminStatistics?: Resolver<ResolversTypes['AdminStatisticsResponse'], ParentType, ContextType, RequireFields<QueryAdminStatisticsArgs, never>>,
-  adminGetUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType, RequireFields<QueryAdminGetUsersArgs, 'role'>>,
+  adminGetUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType, RequireFields<QueryAdminGetUsersArgs, never>>,
   adminGetAuditLog?: Resolver<Maybe<Array<ResolversTypes['AuditLogResponse']>>, ParentType, ContextType>,
   adminGetFeedback?: Resolver<Maybe<Array<ResolversTypes['RouteFeedbackResponse']>>, ParentType, ContextType>,
 };
@@ -1047,6 +1051,7 @@ export type UserResponseResolvers<ContextType = ModuleContext, ParentType extend
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   profile?: Resolver<ResolversTypes['UserProfileResponse'], ParentType, ContextType>,
   balance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  role?: Resolver<Maybe<ResolversTypes['UserRole']>, ParentType, ContextType>,
   goals?: Resolver<Maybe<Array<ResolversTypes['UserGoalResponse']>>, ParentType, ContextType>,
   rewards?: Resolver<Maybe<Array<ResolversTypes['UserRewardResponse']>>, ParentType, ContextType>,
   devices?: Resolver<Maybe<Array<ResolversTypes['DeviceResponse']>>, ParentType, ContextType>,

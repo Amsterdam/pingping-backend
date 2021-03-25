@@ -1,6 +1,6 @@
 type Query {
   adminStatistics(week: String): AdminStatisticsResponse!
-  adminGetUsers(role: UserRole!): [AdminUserResponse]!
+  adminGetUsers(roles: [UserRole!]): [AdminUserResponse]!
   adminGetAuditLog: [AuditLogResponse!]
   adminGetFeedback: [RouteFeedbackResponse!]
 }

@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const GetUsersQuery = gql`
-  query($role: UserRole!) {
-    adminGetUsers(role:$role) {
+  query($roles: [UserRole!]) {
+    adminGetUsers(roles:$roles) {
       id
       createdAt
       activeAt

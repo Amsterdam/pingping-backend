@@ -10,7 +10,7 @@ export const Query: QueryResolvers = {
   },
 
   async adminGetUsers(root: any, args: QueryAdminGetUsersArgs, context: ContextType): Promise<Array<any>> {
-    return await User.find({ role: args.role });
+    return await User.find({ role: { $in: args.roles } });
   },
 
   async adminGetAuditLog(root: any, args: any, context: ContextType): Promise<Array<any>> {

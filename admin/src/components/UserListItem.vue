@@ -21,14 +21,20 @@
     <td v-if="role === 'User'">
       <span v-if="device">{{ device }}</span>
     </td>
-    <td v-if="role === 'Admin'">
+    <td v-if="role !== 'User'">
       <span>{{ profile.fullName }}</span>
     </td>
-    <td v-if="role === 'Admin'">
+    <td v-if="role !== 'User'">
       <span>{{ email }}</span>
     </td>
-    <td>
-      <div @click.stop="expanded = true">More...</div>
+    <td v-if="role !== 'User'">
+      <span>{{ role }}</span>
+    </td>
+    <td v-if="role === 'User'">
+      <div @click.stop="expanded = true">View</div>
+    </td>
+    <td v-if="role !== 'User'">
+      <div @click.stop="expanded = true">Edit</div>
     </td>
     <b-modal
       size="xl"

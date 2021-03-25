@@ -40,7 +40,7 @@ class auth {
       throw new Error('too_many_attempts');
     }
 
-    const user = await User.findOne({ email, role: UserRole.Admin });
+    const user = await User.findOne({ email, role: { $ne: UserRole.User } });
 
     if (!user) {
       cache.registerIp(ip);
