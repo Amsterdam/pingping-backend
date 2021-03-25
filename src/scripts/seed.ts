@@ -8,7 +8,7 @@ import UserUtil from 'utils/UserUtil';
 import { User } from 'models/User';
 import { UserTask } from 'models/UserTask';
 import TaskUtil from 'utils/TaskUtil';
-import { TaskStatus } from '@models';
+import { NotificationStatus, TaskStatus } from '@models';
 import StatisticsUtil from 'utils/StatisticsUtil';
 
 const START_DATE = '2021-01-04';
@@ -50,7 +50,13 @@ const seed = async () => {
           // Create [n-(n+r) number of users
           const user = await UserUtil.createOrFindUser({
             deviceId: Math.random().toString(36).slice(2),
+            deviceOs: Boolean(Math.round(Math.random())) ? 'Android' : 'iOS',
           });
+          user.devices[0].notificationStatus = Boolean(Math.round(Math.random()))
+            ? NotificationStatus.Approved
+            : NotificationStatus.Declined;
+          user.devices[0].token = Math.random().toString(36).slice(2);
+          await user.save();
 
           let gemeenteDef = TaskUtil.getDefinition('onboarding.gemeente');
           await TaskUtil.handleTask(user, gemeenteDef, 'yes');

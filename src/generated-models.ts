@@ -276,7 +276,7 @@ export type MutationAdminActionsArgs = {
 export type MutationAdminSendNotificationsArgs = {
   title: Scalars['String'];
   body: Scalars['String'];
-  deviceTokens: Scalars['String'];
+  recipients: Array<NotificationRecipient>;
 };
 
 
@@ -306,10 +306,35 @@ export type MutationRegisterDeviceArgs = {
   input: RegisterDeviceInput;
 };
 
+export enum NotificationDeliveryStatus {
+  Initial = 'Initial',
+  Delivered = 'Delivered',
+  Viewed = 'Viewed',
+  FailedToDeliver = 'FailedToDeliver'
+}
+
+export type NotificationRecipient = {
+  userId: Scalars['String'];
+  token: Scalars['String'];
+};
+
+export type NotificationResponse = {
+   __typename?: 'NotificationResponse';
+  id: Scalars['String'];
+  createdAt: Scalars['Date'];
+  type: NotificationType;
+  status: NotificationDeliveryStatus;
+};
+
 export enum NotificationStatus {
   Initial = 'Initial',
   Declined = 'Declined',
   Approved = 'Approved'
+}
+
+export enum NotificationType {
+  RemindUserToCompleteRoute = 'RemindUserToCompleteRoute',
+  Manual = 'Manual'
 }
 
 export type Query = {
@@ -318,6 +343,8 @@ export type Query = {
   getRoutes: GetRoutesResponse;
   /** Get a specific route */
   getRoute: RouteResponse;
+  /** Get a single user task */
+  getUserTask: UserTaskResponse;
   getAvailableRewards: Array<RewardResponse>;
   getRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
@@ -327,11 +354,18 @@ export type Query = {
   adminGetUsers: Array<Maybe<AdminUserResponse>>;
   adminGetAuditLog?: Maybe<Array<AuditLogResponse>>;
   adminGetFeedback?: Maybe<Array<RouteFeedbackResponse>>;
+  getNotifications: Array<NotificationResponse>;
 };
 
 
 export type QueryGetRouteArgs = {
   routeId: Scalars['String'];
+};
+
+
+export type QueryGetUserTaskArgs = {
+  routeId: Scalars['String'];
+  taskId: Scalars['String'];
 };
 
 
@@ -692,6 +726,9 @@ export type ResolversTypes = {
   AuditLogResponse: ResolverTypeWrapper<AuditLogResponse>,
   AuditLogType: AuditLogType,
   RouteFeedbackResponse: ResolverTypeWrapper<RouteFeedbackResponse>,
+  NotificationResponse: ResolverTypeWrapper<NotificationResponse>,
+  NotificationType: NotificationType,
+  NotificationDeliveryStatus: NotificationDeliveryStatus,
   Mutation: ResolverTypeWrapper<{}>,
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: ResolverTypeWrapper<UpdateTaskResponse>,
@@ -703,6 +740,7 @@ export type ResolversTypes = {
   RegisterNotificationsInput: RegisterNotificationsInput,
   ContactInput: ContactInput,
   AdminActionType: AdminActionType,
+  NotificationRecipient: NotificationRecipient,
   CreateUserInput: CreateUserInput,
   LoginResponse: ResolverTypeWrapper<LoginResponse>,
   RegisterDeviceInput: RegisterDeviceInput,
@@ -756,6 +794,9 @@ export type ResolversParentTypes = {
   AuditLogResponse: AuditLogResponse,
   AuditLogType: AuditLogType,
   RouteFeedbackResponse: RouteFeedbackResponse,
+  NotificationResponse: NotificationResponse,
+  NotificationType: NotificationType,
+  NotificationDeliveryStatus: NotificationDeliveryStatus,
   Mutation: {},
   UpdateTaskInput: UpdateTaskInput,
   UpdateTaskResponse: UpdateTaskResponse,
@@ -767,6 +808,7 @@ export type ResolversParentTypes = {
   RegisterNotificationsInput: RegisterNotificationsInput,
   ContactInput: ContactInput,
   AdminActionType: AdminActionType,
+  NotificationRecipient: NotificationRecipient,
   CreateUserInput: CreateUserInput,
   LoginResponse: LoginResponse,
   RegisterDeviceInput: RegisterDeviceInput,
@@ -899,7 +941,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   registerNotifications?: Resolver<ResolversTypes['DeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterNotificationsArgs, 'input'>>,
   contact?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationContactArgs, never>>,
   adminActions?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationAdminActionsArgs, 'type'>>,
-  adminSendNotifications?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<MutationAdminSendNotificationsArgs, 'title' | 'body' | 'deviceTokens'>>,
+  adminSendNotifications?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<MutationAdminSendNotificationsArgs, 'title' | 'body' | 'recipients'>>,
   adminCreateUser?: Resolver<ResolversTypes['UserResponse'], ParentType, ContextType, RequireFields<MutationAdminCreateUserArgs, never>>,
   adminDeleteUser?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationAdminDeleteUserArgs, 'id'>>,
   adminLogin?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationAdminLoginArgs, 'email' | 'password' | 'deviceId'>>,
@@ -907,9 +949,18 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
   registerDevice?: Resolver<ResolversTypes['RegisterDeviceResponse'], ParentType, ContextType, RequireFields<MutationRegisterDeviceArgs, 'input'>>,
 };
 
+export type NotificationResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['NotificationResponse'] = ResolversParentTypes['NotificationResponse']> = {
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
+  type?: Resolver<ResolversTypes['NotificationType'], ParentType, ContextType>,
+  status?: Resolver<ResolversTypes['NotificationDeliveryStatus'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export type QueryResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getRoutes?: Resolver<ResolversTypes['GetRoutesResponse'], ParentType, ContextType>,
   getRoute?: Resolver<ResolversTypes['RouteResponse'], ParentType, ContextType, RequireFields<QueryGetRouteArgs, 'routeId'>>,
+  getUserTask?: Resolver<ResolversTypes['UserTaskResponse'], ParentType, ContextType, RequireFields<QueryGetUserTaskArgs, 'routeId' | 'taskId'>>,
   getAvailableRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getRewards?: Resolver<Array<ResolversTypes['RewardResponse']>, ParentType, ContextType>,
   getStatus?: Resolver<ResolversTypes['StatusResponse'], ParentType, ContextType>,
@@ -919,6 +970,7 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   adminGetUsers?: Resolver<Array<Maybe<ResolversTypes['AdminUserResponse']>>, ParentType, ContextType, RequireFields<QueryAdminGetUsersArgs, never>>,
   adminGetAuditLog?: Resolver<Maybe<Array<ResolversTypes['AuditLogResponse']>>, ParentType, ContextType>,
   adminGetFeedback?: Resolver<Maybe<Array<ResolversTypes['RouteFeedbackResponse']>>, ParentType, ContextType>,
+  getNotifications?: Resolver<Array<ResolversTypes['NotificationResponse']>, ParentType, ContextType>,
 };
 
 export type RegisterDeviceResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['RegisterDeviceResponse'] = ResolversParentTypes['RegisterDeviceResponse']> = {
@@ -1093,6 +1145,7 @@ export type Resolvers<ContextType = ModuleContext> = {
   Media?: MediaResolvers<ContextType>,
   MessageResponse?: MessageResponseResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
+  NotificationResponse?: NotificationResponseResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   RegisterDeviceResponse?: RegisterDeviceResponseResolvers<ContextType>,
   RewardResponse?: RewardResponseResolvers<ContextType>,

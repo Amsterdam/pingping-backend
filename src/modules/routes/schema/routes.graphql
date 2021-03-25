@@ -13,6 +13,8 @@ type Query {
   getRoutes: GetRoutesResponse!
   "Get a specific route"
   getRoute(routeId: String!): RouteResponse!
+  "Get a single user task"
+  getUserTask(routeId: String!, taskId: String!): UserTaskResponse!
 }
 
 # Response

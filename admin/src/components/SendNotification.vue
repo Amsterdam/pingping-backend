@@ -1,30 +1,34 @@
 <template>
   <div class="jumbotron">
-    <p class="lead">Send notifications to {{ items.length }} devices.</p>
+    <p class="lead">Send notifications to {{ recipients.length }} devices.</p>
     <hr class="my-4">
     <b-form
       @submit="onSubmit"
       v-if="!loading"
     >
-      <b-form-input
-        v-model="sendTokens"
-        placeholder="Device Tokens"
-        autofocus
-        required
-        class="mb-2"
-      ></b-form-input>
-      <b-form-input
-        v-model="title"
-        placeholder="Title"
-        autofocus
-        required
-        class="mb-2"
-      ></b-form-input>
-      <b-form-input
-        v-model="body"
-        placeholder="Body"
-        class="mb-2"
-      ></b-form-input>
+      <b-form-group label="Recipients">
+        <b-form-tags
+          input-id="tags-basic"
+          disabled
+          v-model="recipientsCurrent"
+        ></b-form-tags>
+      </b-form-group>
+      <b-form-group label="Title">
+        <b-form-input
+          v-model="title"
+          placeholder="Title"
+          autofocus
+          required
+          class="mb-2"
+        ></b-form-input>
+      </b-form-group>
+      <b-form-group label="Body">
+        <b-form-input
+          v-model="body"
+          placeholder="Body"
+          class="mb-2"
+        ></b-form-input>
+      </b-form-group>
       <b-button
         type="submit"
         variant="primary"
@@ -44,17 +48,11 @@ export default {
   name: 'SendNotification',
 
   props: {
-    deviceTokens: VueTypes.string
-  },
-
-  computed: {
-    items () {
-      return this.sendTokens.split(',')
-    }
+    recipients: VueTypes.array
   },
 
   mounted () {
-    this.sendTokens = this.deviceTokens
+    this.recipientsCurrent = [...this.recipients]
   },
 
   methods: {
@@ -62,13 +60,13 @@ export default {
       e.preventDefault();
       this.loading = true
       this.$apollo.mutate({
-        mutation: gql`mutation ($title: String!, $body: String!, $deviceTokens: String!) {
-          adminSendNotifications(title: $title, body: $body, deviceTokens: $deviceTokens)
+        mutation: gql`mutation ($title: String!, $body: String!, $recipients: [NotificationRecipient!]!) {
+          adminSendNotifications(title: $title, body: $body, recipients: $recipients)
         }`,
         variables: {
           title: this.title,
           body: this.body,
-          deviceTokens: this.sendTokens
+          recipients: this.recipients
         }
       }).then((data) => {
         console.log('notificationSuccess', data)
@@ -81,8 +79,8 @@ export default {
   },
 
   watch: {
-    deviceTokens (val) {
-      this.sendTokens = val
+    recipientsCurrent (val) {
+      this.$emit('update:recipients', val)
     }
   },
 
@@ -91,7 +89,7 @@ export default {
       title: '',
       body: '',
       loading: false,
-      sendTokens: ''
+      recipientsCurrent: [],
     }
   }
 }

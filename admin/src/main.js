@@ -12,6 +12,7 @@ import PageRewards from './pages/PageRewards';
 import PageAuditLog from './pages/PageAuditLog';
 import PageFeedback from './pages/PageFeedback';
 import PageSettings from './pages/PageSettings';
+import PageNotifications from './pages/PageNotifications'
 import store from './store';
 
 Vue.use(BootstrapVue);
@@ -30,6 +31,7 @@ const routes = [
   { path: '/users', component: PageUsers },
   { path: '/users/:id', component: PageUser },
   { path: '/rewards', component: PageRewards },
+  { path: '/notifications', component: PageNotifications },
   { path: '/audit-log', component: PageAuditLog },
   { path: '/feedback', component: PageFeedback },
   { path: '/settings', component: PageSettings },

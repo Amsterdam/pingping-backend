@@ -3,8 +3,12 @@ import { ContextType } from 'lib/Context';
 import { AuditLog } from 'models/AuditLog';
 import { User } from 'models/User';
 import { RouteFeedback } from 'models/RouteFeedback';
+import { NotificationModel } from 'models/Notification';
 
 export const Query: QueryResolvers = {
+  async getNotifications(root: any, args: any, context: ContextType): Promise<Array<any>> {
+    return await NotificationModel.find({});
+  },
   adminStatistics(root: any, args: QueryAdminStatisticsArgs, context: ContextType): any {
     return true;
   },

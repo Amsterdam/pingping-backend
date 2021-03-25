@@ -1,8 +1,8 @@
 <template>
   <div>
     <SendNotification
-      v-if="selected.length"
-      :deviceTokens="selected"
+      v-if="recipients.length"
+      :recipients.sync="recipients"
     />
     <div
       class="p-2"
@@ -35,7 +35,7 @@
           :key="i"
           @set="setItem"
           v-bind="item"
-          :selected="item.selected"
+          :selected.sync="item.selected"
         />
       </tbody>
     </table>
@@ -78,12 +78,19 @@ export default {
       if (index !== -1) {
         this.items[index] = Object.assign(this.items[index], set)
       }
-
-      this.selected = this.items.filter(i => i.selected === true).map(u => u.device.token).join(',')
     }
   },
 
   computed: {
+    recipients: {
+      get () {
+        return this.items.filter(i => i.selected === true).map(u => {
+          return { token: u.device?.token, userId: u.id }
+        })
+      },
+      set () {
+      }
+    },
     filteredItems () {
       if (this.isFilter) {
         return this.items.filter((u => {
@@ -106,7 +113,6 @@ export default {
       isFilter: false,
       createUser: false,
       loading: false,
-      selected: ''
     }
   }
 }

@@ -3,11 +3,12 @@ type Query {
   adminGetUsers(roles: [UserRole!]): [AdminUserResponse]!
   adminGetAuditLog: [AuditLogResponse!]
   adminGetFeedback: [RouteFeedbackResponse!]
+  getNotifications: [NotificationResponse!]!
 }
 
 type Mutation {
   adminActions(type: AdminActionType!): String!
-  adminSendNotifications(title: String!, body: String!, deviceTokens: String!): JSON!
+  adminSendNotifications(title: String!, body: String!, recipients: [NotificationRecipient!]!): JSON!
   adminCreateUser(input: CreateUserInput): UserResponse!
   adminDeleteUser(id: String!): String!
   "Admin: Login with email & password"
@@ -26,6 +27,13 @@ type AdminStatisticsResponse {
   usersPerYearOfBirth(week: String): Statistics!
   userPerMonthOfBirth(week: String, minAge: Int = 15, maxAge: Int = 22): Statistics!
   skippedOnboarding: StatisticNumberChange!
+}
+
+type NotificationResponse {
+  id: String!
+  createdAt: Date!
+  type: NotificationType!
+  status: NotificationDeliveryStatus!
 }
 
 type RouteStatistics {
@@ -77,6 +85,11 @@ type AdminUserRouteResponse {
 }
 
 # Input
+input NotificationRecipient {
+  userId: String!
+  token: String!
+}
+
 input CreateUserInput {
   email: String!
   fullName: String!

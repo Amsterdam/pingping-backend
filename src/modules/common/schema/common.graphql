@@ -72,3 +72,15 @@ enum NotificationStatus {
   Declined
   Approved
 }
+
+enum NotificationType {
+  RemindUserToCompleteRoute
+  Manual
+}
+
+enum NotificationDeliveryStatus {
+  Initial
+  Delivered
+  Viewed
+  FailedToDeliver
+}

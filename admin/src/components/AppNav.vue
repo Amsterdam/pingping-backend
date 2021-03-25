@@ -15,6 +15,7 @@
     >
       <b-navbar-nav v-if="user && user.role === 'Admin'">
         <b-nav-item to="/users">Users</b-nav-item>
+        <b-nav-item to="/notifications">Notifications</b-nav-item>
         <b-nav-item to="/rewards">Rewards</b-nav-item>
         <b-nav-item to="/audit-log">Audit Log</b-nav-item>
         <b-nav-item to="/feedback">Feedback</b-nav-item>
@@ -60,5 +61,12 @@ export default {
 <style lang="scss" scoped>
 .navbar.env-development {
   background: repeating-linear-gradient(45deg, #003f5c, #003f5c 10px, #448a86 10px, #448a86 20px);
+}
+
+.nav-link {
+  &.router-link-active {
+    font-weight: bold;
+    color: #fff;
+  }
 }
 </style>

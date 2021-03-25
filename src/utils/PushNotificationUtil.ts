@@ -1,7 +1,28 @@
 import PushNotifications from 'node-pushnotifications';
 
 export class PushNotificationUtil {
-  static async send(tokens: Array<string>, title: string, body: string) {
+  static getPayload(title: string, body: string, custom: any = {}): PushNotifications.Data | any {
+    return {
+      title,
+      topic: 'org.reactjs.native.gemeente.pingpingNative',
+      body,
+      sound: 'default',
+      custom,
+      priority: 'high',
+      contentAvailable: true, // gcm, apn. node-apn will translate true to 1 as required by apn.
+      delayWhileIdle: true, // gcm for android
+      dryRun: false, // gcm for android
+      badge: 0,
+      alert: {
+        title,
+        body,
+      },
+      silent: false, // apn, will override badge, sound, alert and priority if set to true
+      truncateAtWordEnd: true, // apn and gcm for ios
+      pushType: 'alert',
+    };
+  }
+  static async send(tokens: Array<string>, payload: PushNotifications.Data) {
     const APNS_P8 = process.env.APNS_P8 || '';
 
     const settings = {
@@ -21,31 +42,8 @@ export class PushNotificationUtil {
 
     const push = new PushNotifications(settings);
 
-    const custom = {
-      type: 'SHOW_TEAM',
-    };
-    const data = {
-      title,
-      topic: 'org.reactjs.native.gemeente.pingpingNative',
-      body,
-      sound: 'default',
-      custom: custom,
-      priority: 'high',
-      contentAvailable: true, // gcm, apn. node-apn will translate true to 1 as required by apn.
-      delayWhileIdle: true, // gcm for android
-      dryRun: false, // gcm for android
-      badge: 0,
-      alert: {
-        title,
-        body,
-      },
-      silent: false, // apn, will override badge, sound, alert and priority if set to true
-      truncateAtWordEnd: true, // apn and gcm for ios
-      pushType: 'alert',
-    };
-
     try {
-      await push.send(tokens, data);
+      await push.send(tokens, payload);
     } catch (e) {
       console.error(e);
     }

@@ -10,6 +10,9 @@ import {
   MutationAdminSendNotificationsArgs,
   MutationAdminDeleteRewardVoucherArgs,
   MessageResponse,
+  NotificationRecipient,
+  NotificationDeliveryStatus,
+  NotificationType,
 } from '@models';
 import AdminUtil from 'utils/AdminUtil';
 import { ContextType } from 'lib/Context';
@@ -17,8 +20,8 @@ import { PushNotificationUtil } from 'utils/PushNotificationUtil';
 import auth from 'lib/auth';
 import { User } from 'models/User';
 import LogUtil from 'utils/LogUtil';
-import { RewardVoucher } from 'models/RewardVoucher';
 import RewardUtil from 'utils/RewardUtil';
+import { NotificationModel } from 'models/Notification';
 
 export const Mutation: MutationResolvers = {
   async adminActions(root: any, args: MutationAdminActionsArgs, context: ContextType): Promise<any> {
@@ -38,12 +41,26 @@ export const Mutation: MutationResolvers = {
     args: MutationAdminSendNotificationsArgs,
     context: ContextType
   ): Promise<any> {
-    const res = await PushNotificationUtil.send(args.deviceTokens.split(','), args.title, args.body);
+    let payload = PushNotificationUtil.getPayload(args.title, args.body, {});
+    const res = await PushNotificationUtil.send(
+      args.recipients.map((r: NotificationRecipient) => r.token),
+      payload
+    );
     await LogUtil.create(
       context.user,
       AuditLogType.SendNotifications,
-      `Send ${args.deviceTokens.length} notifications: ${args.body}`
+      `Send ${args.recipients.length} notifications: ${args.body}`
     );
+
+    for (var r = 0; r < args.recipients.length; r++) {
+      let recipient: NotificationRecipient = args.recipients[r];
+      await NotificationModel.create({
+        user: recipient.userId,
+        status: NotificationDeliveryStatus.Initial,
+        type: NotificationType.Manual,
+        payload,
+      });
+    }
 
     return {
       result: res,

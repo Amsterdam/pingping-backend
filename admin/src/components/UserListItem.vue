@@ -119,7 +119,7 @@ export default {
 
   watch: {
     isSelected (val) {
-      this.$emit('changeSelected', { id: this.id, selected: val })
+      this.$emit('update:selected', val)
     },
 
     selected (val) {
