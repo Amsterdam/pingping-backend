@@ -20,6 +20,7 @@ export class PushNotificationUtil {
       silent: false, // apn, will override badge, sound, alert and priority if set to true
       truncateAtWordEnd: true, // apn and gcm for ios
       pushType: 'alert',
+      ...payload,
     };
   }
   static async send(tokens: Array<string>, payload: PushNotifications.Data) {
