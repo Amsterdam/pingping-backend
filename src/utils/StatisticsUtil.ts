@@ -433,7 +433,14 @@ class StatisticsUtil {
     for (var r in routes) {
       let route = routes[r];
       const set = res.filter((v) => v._id.route === route.id);
-      const notStarted = await User.countDocuments({ routes: { $not: { $elemMatch: { routeId: route.id } } } });
+      const notStarted = await User.countDocuments({
+        routes: { $not: { $elemMatch: { routeId: route.id } } },
+        tasks: {
+          $elemMatch: {
+            status: TaskStatus.PendingUser,
+          },
+        },
+      });
 
       finalRes.push({
         title: route.title,
