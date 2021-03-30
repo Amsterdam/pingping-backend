@@ -68,7 +68,7 @@ class StatisticsUtil {
       return val;
     }
 
-    return null;
+    return 0;
   }
 
   static async getUsersCumulative(): Promise<Statistics> {
