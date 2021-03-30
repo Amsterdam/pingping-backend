@@ -1,13 +1,12 @@
 import PushNotifications from 'node-pushnotifications';
 
 export class PushNotificationUtil {
-  static getPayload(title: string, body: string, custom: object = {}): PushNotifications.Data | any {
+  static getPayload(title: string, body: string, payload: object = {}): PushNotifications.Data | any {
     return {
       title,
       topic: 'org.reactjs.native.gemeente.pingpingNative',
       body,
       sound: 'default',
-      custom,
       priority: 'high',
       contentAvailable: true, // gcm, apn. node-apn will translate true to 1 as required by apn.
       delayWhileIdle: true, // gcm for android
