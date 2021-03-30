@@ -61,7 +61,7 @@ class StatisticsUtil {
       key,
     });
 
-    if (res) {
+    if (res && res.value) {
       const lastWeek: number = parseFloat(res.value);
       let val = (current - lastWeek) / lastWeek;
 
