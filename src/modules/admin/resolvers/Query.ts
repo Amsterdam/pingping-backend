@@ -8,6 +8,7 @@ import {
   TaskStatus,
   NotificationStatus,
   UserFilter,
+  UserRouteStatus,
 } from '@models';
 import { ContextType } from 'lib/Context';
 import { AuditLog } from 'models/AuditLog';
@@ -69,12 +70,7 @@ export const Query: QueryResolvers = {
               routes: {
                 $elemMatch: {
                   routeId: args.routeId,
-                },
-              },
-              tasks: {
-                $elemMatch: {
-                  routeId: args.routeId,
-                  status: TaskStatus.PendingUser,
+                  status: UserRouteStatus.Active,
                 },
               },
             })
@@ -153,14 +149,7 @@ export const Query: QueryResolvers = {
               routes: {
                 $elemMatch: {
                   routeId: 'financieleBasis',
-                },
-              },
-              tasks: {
-                $elemMatch: {
-                  taskId: { $regex: /^financieleBasis./ },
-                  status: {
-                    $in: [TaskStatus.PendingUser, TaskStatus.Dismissed],
-                  },
+                  status: UserRouteStatus.Active,
                 },
               },
             },
