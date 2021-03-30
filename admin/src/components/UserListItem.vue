@@ -38,23 +38,7 @@
       :title="id"
       id="user-item"
     >
-      <div v-if="activeAt">
-        <span class="text-bold">Last Active Date:</span> {{ activeAtFormatted }}
-      </div>
-      <h6>Devices</h6>
-      <vue-json-pretty :data="devices" />
-      <h6>Tasks</h6>
-      <vue-json-pretty :data="userTasks" />
-      <h6>Rewards</h6>
-      <vue-json-pretty :data="rewards" />
-      <h6>Transactions</h6>
-      <vue-json-pretty :data="transactions" />
-
-      <b-button
-        variant="danger"
-        @click="deleteUser"
-        class="mt-4"
-      >Delete User</b-button>
+      <UserModal v-bind="$props" />
     </b-modal>
   </tr>
 </template>
@@ -62,9 +46,8 @@
 <script>
 import _ from 'lodash'
 import moment from 'moment'
-import { DeleteUserMutation } from '../mutations/DeleteUserMutation'
-import VueJsonPretty from 'vue-json-pretty'
 import VueTypes from 'vue-types'
+import UserModal from './UserModal'
 
 export default {
   name: 'UserListItem',
@@ -86,7 +69,7 @@ export default {
   },
 
   components: {
-    VueJsonPretty
+    UserModal
   },
 
   mounted () {
@@ -96,20 +79,6 @@ export default {
   methods: {
     toggleSelected () {
       this.$emit('set', { id: this.id, selected: !this.selected })
-    },
-
-    deleteUser () {
-      if (window.confirm('Are you sure?')) {
-        this.$apollo.mutate({
-          mutation: DeleteUserMutation,
-          variables: {
-            id: this.id
-          }
-        }).then(() => {
-          this.$store.commit('users/removeItem', this.id)
-          this.$root.$emit('bv::hide::modal', 'user-item')
-        })
-      }
     }
   },
 

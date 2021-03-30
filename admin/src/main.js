@@ -13,7 +13,6 @@ import PageAuditLog from './pages/PageAuditLog';
 import PageFeedback from './pages/PageFeedback';
 import PageSettings from './pages/PageSettings';
 import PageNotifications from './pages/PageNotifications'
-import store from './store';
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
@@ -46,5 +45,4 @@ new Vue({
   apolloProvider: createProvider(),
   render: (h) => h(App),
   router,
-  store,
 }).$mount('#app');
