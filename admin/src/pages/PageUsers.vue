@@ -8,27 +8,17 @@
         title="Users"
         active
       >
-        <UserTable
-          :items="users"
-          role="user"
-        />
+        <UserTable role="user" />
       </b-tab>
       <b-tab title="Admins">
-        <UserTable
-          :items="admins"
-          role="admin"
-        />
+        <UserTable role="admin" />
       </b-tab>
     </b-tabs>
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
-import { mapState } from 'vuex'
 import UserTable from '../components/UserTable'
-import { GetUsersQuery } from '../queries/GetUsersQuery'
-import RequestUtil from '../utils/RequestUtil'
 
 export default {
   name: 'PageUsers',
@@ -36,58 +26,6 @@ export default {
   components: {
     UserTable
   },
-
-  computed: {
-    ...mapState({
-      users: state => state.users.items,
-      admins: state => state.admins.items
-    }),
-  },
-
-  mounted () {
-    this.fetch()
-  },
-
-  methods: {
-    fetch () {
-      this.fetchUsers()
-      this.fetchAdmins()
-    },
-
-    fetchUsers () {
-      this.$apollo.query({
-        query: GetUsersQuery,
-        variables: {
-          roles: ['User']
-        },
-        update: (store, { data }) => {
-          store.writeData({ query: GetUsersQuery, data })
-        }
-      }).then(({ data }) => {
-        this.$store.commit('users/setItems', data.adminGetUsers.map(i => {
-          return {
-            ...i,
-            selected: false,
-            device: _.first(i.devices.filter(d => d.notificationStatus === 'Approved'))
-          }
-        }))
-      }).catch(RequestUtil.errorHook)
-    },
-
-    fetchAdmins () {
-      this.$apollo.query({
-        query: GetUsersQuery,
-        variables: {
-          roles: ['Admin', 'Reporter']
-        },
-        update: (store, { data }) => {
-          store.writeData({ query: GetUsersQuery, data })
-        }
-      }).then(({ data }) => {
-        this.$store.commit('admins/setItems', data.adminGetUsers)
-      }).catch(RequestUtil.errorHook)
-    }
-  }
 }
 </script>
 

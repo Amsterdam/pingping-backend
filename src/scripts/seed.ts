@@ -12,7 +12,7 @@ import { NotificationStatus, TaskStatus } from '@models';
 import StatisticsUtil from 'utils/StatisticsUtil';
 
 const START_DATE = '2021-01-04';
-const NUMBER_OF_DAYS = 72;
+const NUMBER_OF_DAYS = 83;
 const MIN_USERS_PER_DAY = 2;
 const MAX_USERS_PER_DAY = 8;
 
@@ -58,8 +58,15 @@ const seed = async () => {
           user.devices[0].token = Math.random().toString(36).slice(2);
           await user.save();
 
+          let isAmsterdam = getRandomNumber(0, 10) < 2 ? false : true;
+
           let gemeenteDef = TaskUtil.getDefinition('onboarding.gemeente');
-          await TaskUtil.handleTask(user, gemeenteDef, 'yes');
+          await TaskUtil.handleTask(user, gemeenteDef, isAmsterdam ? 'yes' : 'no');
+
+          if (!isAmsterdam) {
+            continue;
+          }
+
           let welcomeDef = TaskUtil.getDefinition('onboarding.welcome');
           await TaskUtil.handleTask(user, welcomeDef, getRandomNumber(0, 10) < 1 ? 'no' : 'yes');
           let dobDef = TaskUtil.getDefinition('onboarding.dateOfBirth');

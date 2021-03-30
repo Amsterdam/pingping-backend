@@ -1,5 +1,21 @@
 <template>
   <div>
+    <div class="row">
+      <b-form
+        inline
+        class="m-2"
+      >
+        <div class="form-group">
+          <label class="col-sm-2 col-form-label">Filter</label>
+          <b-form-select
+            v-model="filter"
+            :options="filters"
+            class="col-md-6 text-left"
+          ></b-form-select>
+        </div>
+      </b-form>
+      <div class="m-2">Found <strong>{{ items.length }}</strong> items</div>
+    </div>
     <table class="table">
       <thead>
         <b-button
@@ -8,9 +24,9 @@
           @click="createUser = true"
         >Create</b-button>
         <tr>
-          <th></th>
           <th>id</th>
           <th>created</th>
+          <th v-if="role === 'user'">active</th>
           <th v-if="role === 'user'">balance</th>
           <th v-if="role === 'user'">progress</th>
           <th v-if="role === 'user'">device</th>
@@ -51,6 +67,8 @@
 <script>
 import UserListItem from '../components/UserListItem'
 import UserCreateModal from '../components/UserCreateModal'
+import { GetUsersQuery } from '../queries/GetUsersQuery'
+import RequestUtil from '../utils/RequestUtil'
 import VueTypes from 'vue-types'
 
 export default {
@@ -62,11 +80,29 @@ export default {
   },
 
   props: {
-    items: VueTypes.array,
+    // items: VueTypes.array,
     role: VueTypes.string
   },
 
+  mounted () {
+    this.fetch()
+  },
+
   methods: {
+    fetch () {
+      this.$apollo.query({
+        query: GetUsersQuery,
+        variables: {
+          roles: this.roles,
+          filter: this.filter
+        },
+        update: (store, { data }) => {
+          store.writeData({ query: GetUsersQuery, data })
+        }
+      }).then(({ data: { adminGetUsers } }) => {
+        this.items = adminGetUsers
+      }).catch(RequestUtil.errorHook)
+    },
     setItem (set) {
       let index = this.items.map(i => i.id).indexOf(set.id)
 
@@ -77,6 +113,13 @@ export default {
   },
 
   computed: {
+    roles () {
+      if (this.role === 'user') {
+        return ['User']
+      }
+
+      return ['Admin', 'Reporter']
+    },
     recipients: {
       get () {
         return this.items.filter(i => i.selected === true).map(u => {
@@ -91,10 +134,19 @@ export default {
     }
   },
 
+  watch: {
+    filter () {
+      this.fetch()
+    }
+  },
+
   data () {
     return {
       perPage: 20,
       currentPage: 1,
+      items: [],
+      filter: 'None',
+      filters: ['None', 'NotAmsterdam', 'SkippedOnboarding', 'OnboardingIncomplete', 'InactiveInFixJeBasis'],
       isFilter: false,
       createUser: false,
       loading: false,

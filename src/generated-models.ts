@@ -378,6 +378,7 @@ export type QueryAdminStatisticsArgs = {
 
 export type QueryAdminGetUsersArgs = {
   roles?: Maybe<Array<UserRole>>;
+  filter?: Maybe<UserFilter>;
 };
 
 
@@ -573,6 +574,14 @@ export type UpdateTaskResponse = {
   nextTask?: Maybe<UserTaskResponse>;
 };
 
+export enum UserFilter {
+  None = 'None',
+  NotAmsterdam = 'NotAmsterdam',
+  SkippedOnboarding = 'SkippedOnboarding',
+  OnboardingIncomplete = 'OnboardingIncomplete',
+  InactiveInFixJeBasis = 'InactiveInFixJeBasis'
+}
+
 export type UserGoalResponse = {
    __typename?: 'UserGoalResponse';
   id: Scalars['String'];
@@ -735,6 +744,7 @@ export type ResolversTypes = {
   Statistics: ResolverTypeWrapper<Statistics>,
   RouteStatistics: ResolverTypeWrapper<RouteStatistics>,
   StatisticNumberChange: ResolverTypeWrapper<StatisticNumberChange>,
+  UserFilter: UserFilter,
   AdminUserResponse: ResolverTypeWrapper<AdminUserResponse>,
   AdminUserRouteResponse: ResolverTypeWrapper<AdminUserRouteResponse>,
   UserRouteStatus: UserRouteStatus,
@@ -804,6 +814,7 @@ export type ResolversParentTypes = {
   Statistics: Statistics,
   RouteStatistics: RouteStatistics,
   StatisticNumberChange: StatisticNumberChange,
+  UserFilter: UserFilter,
   AdminUserResponse: AdminUserResponse,
   AdminUserRouteResponse: AdminUserRouteResponse,
   UserRouteStatus: UserRouteStatus,

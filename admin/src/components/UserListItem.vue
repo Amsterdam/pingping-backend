@@ -3,15 +3,11 @@
     :class="['hover', selected && 'selected']"
     @click="toggleSelected"
   >
-    <td>
-      <input
-        type="checkbox"
-        v-if="canSendNotifications"
-        v-model="isSelected"
-      />
-    </td>
     <td>{{ id }}</td>
     <td>{{ date }}</td>
+    <td v-if="role === 'User'">
+      <span>{{ activeAtFormatted }}</span>
+    </td>
     <td v-if="role === 'User'">
       <span>{{ balance }}</span>
     </td>

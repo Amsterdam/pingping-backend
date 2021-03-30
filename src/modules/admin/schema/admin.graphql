@@ -1,6 +1,6 @@
 type Query {
   adminStatistics(week: String): AdminStatisticsResponse!
-  adminGetUsers(roles: [UserRole!]): [AdminUserResponse]!
+  adminGetUsers(roles: [UserRole!], filter: UserFilter): [AdminUserResponse]!
   adminGetAuditLog: [AuditLogResponse!]
   adminGetFeedback: [RouteFeedbackResponse!]
   getNotifications: [NotificationResponse!]!
@@ -119,4 +119,12 @@ enum AuditLogType {
   AdminLogin
   UpdateReward
   SendNotifications
+}
+
+enum UserFilter {
+  None
+  NotAmsterdam
+  SkippedOnboarding
+  OnboardingIncomplete
+  InactiveInFixJeBasis
 }

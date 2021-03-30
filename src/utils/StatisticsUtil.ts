@@ -53,7 +53,7 @@ class StatisticsUtil {
     return _.get(_.first(res), 'count', 0);
   }
 
-  static async getChangeFromLastWeek(type: string, current: number): Promise<number> {
+  static async getChangeFromLastWeek(type: string, current: number = 0): Promise<number> {
     const key = moment().subtract(1, 'week').format(DATE_FORMAT);
 
     const res = await StatisticModel.findOne({
@@ -434,6 +434,7 @@ class StatisticsUtil {
       let route = routes[r];
       const set = res.filter((v) => v._id.route === route.id);
       const notStarted = await User.countDocuments({
+        role: UserRole.User,
         routes: { $not: { $elemMatch: { routeId: route.id } } },
         tasks: {
           $elemMatch: {

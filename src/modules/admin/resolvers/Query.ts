@@ -7,6 +7,7 @@ import {
   UserRole,
   TaskStatus,
   NotificationStatus,
+  UserFilter,
 } from '@models';
 import { ContextType } from 'lib/Context';
 import { AuditLog } from 'models/AuditLog';
@@ -112,7 +113,63 @@ export const Query: QueryResolvers = {
   },
 
   async adminGetUsers(root: any, args: QueryAdminGetUsersArgs, context: ContextType): Promise<Array<any>> {
-    return await User.find({ role: { $in: args.roles } });
+    let query: any = { role: { $in: args.roles } };
+
+    switch (args.filter) {
+      case UserFilter.NotAmsterdam:
+        query.tasks = {
+          $elemMatch: {
+            taskId: 'onboarding.gemeente',
+            status: TaskStatus.Dismissed,
+          },
+        };
+        break;
+      case UserFilter.SkippedOnboarding:
+        query.tasks = {
+          $elemMatch: {
+            taskId: 'onboarding.welcome',
+            status: TaskStatus.Dismissed,
+          },
+        };
+        break;
+      case UserFilter.OnboardingIncomplete:
+        query.routes = { $not: { $elemMatch: { routeId: 'financieleBasis' } } };
+        break;
+      case UserFilter.InactiveInFixJeBasis:
+        query = {
+          $and: [
+            query,
+            {
+              $or: [
+                {
+                  activeAt: null,
+                },
+                {
+                  activeAt: { $lt: moment().subtract(7, 'days').toDate() },
+                },
+              ],
+            },
+            {
+              routes: {
+                $elemMatch: {
+                  routeId: 'financieleBasis',
+                },
+              },
+              tasks: {
+                $elemMatch: {
+                  taskId: { $regex: /^financieleBasis./ },
+                  status: {
+                    $in: [TaskStatus.PendingUser, TaskStatus.Dismissed],
+                  },
+                },
+              },
+            },
+          ],
+        };
+        break;
+    }
+
+    return await User.find(query);
   },
 
   async adminGetAuditLog(root: any, args: any, context: ContextType): Promise<Array<any>> {
