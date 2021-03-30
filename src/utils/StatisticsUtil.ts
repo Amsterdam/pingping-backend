@@ -437,6 +437,12 @@ class StatisticsUtil {
         role: UserRole.User,
         routes: { $not: { $elemMatch: { routeId: route.id } } },
         tasks: {
+          $not: {
+            $elemMatch: {
+              taskId: 'onboarding.gemeente',
+              status: TaskStatus.Dismissed,
+            },
+          },
           $elemMatch: {
             status: TaskStatus.PendingUser,
           },

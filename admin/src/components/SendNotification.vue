@@ -118,25 +118,27 @@ export default {
     },
     onSubmit (e) {
       e.preventDefault();
-      this.loading = true
-      this.$apollo.mutate({
-        mutation: AdminSendNotificationsMutation,
-        variables: {
-          input: {
-            title: this.title,
-            message: this.message,
-            payload: JSON.parse(this.payload),
-            recipientUserIds: this.recipients
+      let confirm = window.confirm('Are you sure?')
+
+      if (confirm) {
+        this.loading = true
+        this.$apollo.mutate({
+          mutation: AdminSendNotificationsMutation,
+          variables: {
+            input: {
+              title: this.title,
+              message: this.message,
+              payload: JSON.parse(this.payload),
+              recipientUserIds: this.recipients
+            }
           }
-        }
-      }).then((data) => {
-        console.log('notificationSuccess', data)
-        this.loading = false
-        this.done = true
-      }).catch((error) => {
-        console.error('notificationError', error)
-        this.loading = false
-      })
+        }).then(() => {
+          this.loading = false
+          this.done = true
+        }).catch(() => {
+          this.loading = false
+        })
+      }
     }
   },
 

@@ -130,6 +130,14 @@ export const Query: QueryResolvers = {
         break;
       case UserFilter.OnboardingIncomplete:
         query.routes = { $not: { $elemMatch: { routeId: 'financieleBasis' } } };
+        query.tasks = {
+          $not: {
+            $elemMatch: {
+              taskId: 'onboarding.gemeente',
+              status: TaskStatus.Dismissed,
+            },
+          },
+        };
         break;
       case UserFilter.InactiveInFixJeBasis:
         query = {
