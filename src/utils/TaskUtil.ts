@@ -169,7 +169,6 @@ class TaskUtil {
       return next;
     }
 
-    // return _.get(next, answer.toLowerCase(), _.first(Object.values(next)));
     return _.get(next, answer.toLowerCase());
   }
 

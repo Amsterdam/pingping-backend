@@ -29,8 +29,17 @@ const BASE_QUERY: any = {
       ],
     },
     {
+      $or: [
+        {
+          activeAt: null,
+        },
+        {
+          activeAt: { $lt: moment().subtract(7, 'days').toDate() },
+        },
+      ],
+    },
+    {
       role: UserRole.User,
-      activeAt: { $lt: moment().subtract(7, 'days').toDate() },
       devices: {
         $elemMatch: {
           notificationStatus: NotificationStatus.Approved,
@@ -45,7 +54,9 @@ export const Query: QueryResolvers = {
     switch (args.type) {
       case NotificationType.RemindUserToContinueRoute:
         return {
-          title: 'Continue with route',
+          title:
+            'Je hebt nog een openstaande actie in je “fiks de basis route”. Zet de volgende stap, verdien punten en kom dichter bij je doel!',
+          message: '',
           payload: {
             custom: {
               routeId: args.routeId,
@@ -71,9 +82,8 @@ export const Query: QueryResolvers = {
       case NotificationType.RemindUserToCompleteOnboarding:
         return {
           title: "Don't forget to complete your onboarding",
-          payload: {
-            hello: 'hi',
-          },
+          message: '',
+          payload: {},
           recipientUserIds: (
             await User.find({
               ...BASE_QUERY,

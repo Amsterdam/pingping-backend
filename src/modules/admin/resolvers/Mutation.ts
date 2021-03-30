@@ -66,7 +66,7 @@ export const Mutation: MutationResolvers = {
       let user: string = input.recipientUserIds[r];
       await NotificationModel.create({
         user,
-        status: NotificationDeliveryStatus.Initial,
+        status: NotificationDeliveryStatus.Delivered,
         type: NotificationType.Manual,
         payload,
       });

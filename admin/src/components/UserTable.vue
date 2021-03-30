@@ -1,10 +1,5 @@
 <template>
   <div>
-    <div
-      class="p-2"
-      v-if="role === 'user'"
-      @click="isFilter = !isFilter"
-    >{{ isFilter ? 'Filter: \'NotificationStatus=Approved\'' : 'Filter: none' }}</div>
     <table class="table">
       <thead>
         <b-button
@@ -35,6 +30,12 @@
         />
       </tbody>
     </table>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="items.length"
+      :per-page="perPage"
+      aria-controls="my-table"
+    ></b-pagination>
     <b-modal
       size="xl"
       v-model="createUser"
@@ -86,24 +87,14 @@ export default {
       }
     },
     filteredItems () {
-      if (this.isFilter) {
-        return this.items.filter((u => {
-          if (u.devices.length) {
-            const activeDevices = u.devices.filter(d => d.notificationStatus === 'Approved')
-
-            return activeDevices.length > 0
-          }
-
-          return true
-        }))
-      } else {
-        return this.items
-      }
+      return this.items.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage)
     }
   },
 
   data () {
     return {
+      perPage: 20,
+      currentPage: 1,
       isFilter: false,
       createUser: false,
       loading: false,
