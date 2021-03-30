@@ -3,10 +3,7 @@
     @submit="onSubmitCreateUser"
     v-if="!loading"
   >
-    <b-form-group
-      label="Full Name"
-      label-for="full-name"
-    >
+    <b-form-group label="Full Name">
       <b-form-input
         v-model="newUser.fullName"
         autofocus

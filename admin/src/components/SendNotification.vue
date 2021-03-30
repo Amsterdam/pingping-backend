@@ -1,76 +1,138 @@
 <template>
   <div class="jumbotron">
-    <p class="lead">Send notifications to {{ recipients.length }} devices.</p>
-    <hr class="my-4">
-    <b-form
-      @submit="onSubmit"
-      v-if="!loading"
-    >
-      <b-form-group label="Recipients">
-        <b-form-tags
-          input-id="tags-basic"
-          disabled
-          v-model="recipientsCurrent"
-        ></b-form-tags>
-      </b-form-group>
-      <b-form-group label="Title">
-        <b-form-input
-          v-model="title"
-          placeholder="Title"
-          autofocus
-          required
-          class="mb-2"
-        ></b-form-input>
-      </b-form-group>
-      <b-form-group label="Body">
-        <b-form-input
-          v-model="body"
-          placeholder="Body"
-          class="mb-2"
-        ></b-form-input>
-      </b-form-group>
+    <div v-if="done">
+      <b-alert show>Notifications sent!</b-alert>
+
       <b-button
-        type="submit"
-        variant="primary"
-      >Send</b-button>
-    </b-form>
+        @click="done = false"
+        variant="info"
+        class="m-1"
+      >
+        Continue
+      </b-button>
+    </div>
     <div v-else>
-      Loading...
+      <p class="lead">Send notification to <strong>{{ recipients ? recipients.length : 0 }}</strong> devices.</p>
+      <hr class="my-4">
+      <b-form
+        @submit="onSubmit"
+        v-if="!loading"
+      >
+        <div class="form-row">
+          <b-form-group
+            label="Type"
+            class="col-md-6 text-left"
+          >
+            <b-form-select
+              v-model="type"
+              :options="types"
+            ></b-form-select>
+          </b-form-group>
+          <b-form-group
+            label="Route"
+            class="col-md-6 text-left"
+          >
+            <b-form-select
+              v-model="routeId"
+              :options="routeIds"
+            ></b-form-select>
+          </b-form-group>
+        </div>
+        <b-form-group
+          label="Recipients"
+          class="mb-12 mr-sm-12 mb-sm-12 text-left"
+        >
+          <b-form-tags
+            input-id="tags-basic"
+            v-model="recipients"
+            remove-on-delete
+          ></b-form-tags>
+        </b-form-group>
+        <div class="form-row">
+          <b-form-group
+            label="Title"
+            class="col-md-6 text-left"
+          >
+            <b-form-input
+              v-model="title"
+              placeholder="Title"
+              autofocus
+              required
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group
+            label="Body"
+            class="col-md-6 text-left"
+          >
+            <b-form-input
+              v-model="message"
+              placeholder="message"
+            ></b-form-input>
+          </b-form-group>
+        </div>
+        <b-form-group
+          label="Payload"
+          class="mb-12 mr-sm-12 mb-sm-12 text-left"
+        >
+          <b-form-input
+            v-model="payload"
+            placeholder="payload"
+          ></b-form-input>
+        </b-form-group>
+        <b-button
+          type="submit"
+          variant="primary"
+        >Send</b-button>
+      </b-form>
+      <div v-else>
+        Loading...
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import gql from 'graphql-tag'
-import VueTypes from 'vue-types'
+import { AdminSendNotificationsMutation } from '../mutations/AdminSendNotificationsMutation'
+import { GetDraftNotificationQuery } from '../queries/GetDraftNotificationQuery'
 
 export default {
   name: 'SendNotification',
 
-  props: {
-    recipients: VueTypes.array
-  },
-
   mounted () {
-    this.recipientsCurrent = [...this.recipients]
+    this.getDraft()
   },
 
   methods: {
+    getDraft () {
+      this.$apollo.query({
+        query: GetDraftNotificationQuery,
+        variables: {
+          type: this.type,
+          routeId: this.routeId
+        }
+      }).then(({ data: { getDraftNotification } }) => {
+        this.recipients = getDraftNotification.recipientUserIds
+        this.title = getDraftNotification.title
+        this.payload = JSON.stringify(getDraftNotification.payload)
+      })
+    },
     onSubmit (e) {
       e.preventDefault();
       this.loading = true
       this.$apollo.mutate({
-        mutation: gql`mutation ($title: String!, $body: String!, $recipients: [NotificationRecipient!]!) {
-          adminSendNotifications(title: $title, body: $body, recipients: $recipients)
-        }`,
+        mutation: AdminSendNotificationsMutation,
         variables: {
-          title: this.title,
-          body: this.body,
-          recipients: this.recipients
+          input: {
+            title: this.title,
+            message: this.message,
+            payload: JSON.parse(this.payload),
+            recipientUserIds: this.recipients
+          }
         }
       }).then((data) => {
         console.log('notificationSuccess', data)
         this.loading = false
+        this.done = true
       }).catch((error) => {
         console.error('notificationError', error)
         this.loading = false
@@ -79,17 +141,23 @@ export default {
   },
 
   watch: {
-    recipientsCurrent (val) {
-      this.$emit('update:recipients', val)
+    type () {
+      this.getDraft()
     }
   },
 
   data () {
     return {
       title: '',
-      body: '',
+      message: '',
+      payload: '{}',
       loading: false,
-      recipientsCurrent: [],
+      done: false,
+      types: ['RemindUserToCompleteOnboarding', 'RemindUserToContinueRoute', 'Manual'],
+      type: 'RemindUserToCompleteOnboarding',
+      routeId: 'financieleBasis',
+      routeIds: ['financieleBasis'],
+      recipients: [],
     }
   }
 }

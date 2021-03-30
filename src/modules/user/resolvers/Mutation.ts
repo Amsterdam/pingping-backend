@@ -20,7 +20,6 @@ import MailUtil from 'utils/MailUtil';
 
 export const Mutation: MutationResolvers = {
   async contact(root: any, args: MutationContactArgs, context: ContextType): Promise<any> {
-    console.log('contact', args);
     const html = `<strong>Naam: </strong>${args.input.name}<br/><strong>Email: </strong>${args.input.email}<br/><strong>Bericht: </strong>${args.input.body}<br/>`;
 
     try {

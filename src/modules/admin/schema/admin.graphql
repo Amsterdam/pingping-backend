@@ -4,11 +4,12 @@ type Query {
   adminGetAuditLog: [AuditLogResponse!]
   adminGetFeedback: [RouteFeedbackResponse!]
   getNotifications: [NotificationResponse!]!
+  getDraftNotification(type: NotificationType!, routeId: String): NotificationDraftResponse
 }
 
 type Mutation {
   adminActions(type: AdminActionType!): String!
-  adminSendNotifications(title: String!, body: String!, recipients: [NotificationRecipient!]!): JSON!
+  adminSendNotifications(input: SendNotificationInput!): JSON!
   adminCreateUser(input: CreateUserInput): UserResponse!
   adminDeleteUser(id: String!): String!
   "Admin: Login with email & password"
@@ -27,6 +28,12 @@ type AdminStatisticsResponse {
   usersPerYearOfBirth(week: String): Statistics!
   userPerMonthOfBirth(week: String, minAge: Int = 15, maxAge: Int = 22): Statistics!
   skippedOnboarding: StatisticNumberChange!
+}
+
+type NotificationDraftResponse {
+  title: String
+  payload: JSON
+  recipientUserIds: [String!]!
 }
 
 type NotificationResponse {
@@ -85,16 +92,18 @@ type AdminUserRouteResponse {
 }
 
 # Input
-input NotificationRecipient {
-  userId: String!
-  token: String!
-}
-
 input CreateUserInput {
   email: String!
   fullName: String!
   password: String!
   role: UserRole!
+}
+
+input SendNotificationInput {
+  title: String!
+  message: String!
+  payload: JSON!
+  recipientUserIds: [String!]!
 }
 
 # Enum

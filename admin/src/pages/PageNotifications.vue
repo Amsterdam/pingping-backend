@@ -1,5 +1,6 @@
 <template>
   <div class="section">
+    <SendNotification />
     <table class="table">
       <thead>
         <tr>
@@ -23,12 +24,14 @@
 <script>
 import { GetNotificationsQuery } from '../queries/GetNotificationsQuery'
 import NotificationItem from '../components/NotificationItem'
+import SendNotification from '../components/SendNotification'
 
 export default {
   name: 'PageAuditLog',
 
   components: {
-    NotificationItem
+    NotificationItem,
+    SendNotification
   },
 
   apollo: {

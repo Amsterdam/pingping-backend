@@ -33,6 +33,7 @@ export type UserDocument = Document & {
   tasks?: Types.Array<UserTask>;
   routes?: Types.Array<UserRoute>;
   activeAt?: Date;
+  remindedAt?: Date;
 };
 
 export enum AuthTokenKind {
@@ -136,6 +137,7 @@ const userSchema = new Schema(
       dateOfBirth: Date,
     },
     activeAt: Date,
+    remindedAt: Date,
   },
   { timestamps: true }
 );

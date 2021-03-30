@@ -1,9 +1,5 @@
 <template>
   <div>
-    <SendNotification
-      v-if="recipients.length"
-      :recipients.sync="recipients"
-    />
     <div
       class="p-2"
       v-if="role === 'user'"
@@ -53,7 +49,6 @@
 
 <script>
 import UserListItem from '../components/UserListItem'
-import SendNotification from '../components/SendNotification'
 import UserCreateModal from '../components/UserCreateModal'
 import VueTypes from 'vue-types'
 
@@ -63,7 +58,6 @@ export default {
   components: {
     UserListItem,
     UserCreateModal,
-    SendNotification
   },
 
   props: {

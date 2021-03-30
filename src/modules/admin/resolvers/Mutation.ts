@@ -10,15 +10,15 @@ import {
   MutationAdminSendNotificationsArgs,
   MutationAdminDeleteRewardVoucherArgs,
   MessageResponse,
-  NotificationRecipient,
   NotificationDeliveryStatus,
   NotificationType,
+  NotificationStatus,
 } from '@models';
 import AdminUtil from 'utils/AdminUtil';
 import { ContextType } from 'lib/Context';
 import { PushNotificationUtil } from 'utils/PushNotificationUtil';
 import auth from 'lib/auth';
-import { User } from 'models/User';
+import { Device, User, UserDocument } from 'models/User';
 import LogUtil from 'utils/LogUtil';
 import RewardUtil from 'utils/RewardUtil';
 import { NotificationModel } from 'models/Notification';
@@ -38,28 +38,39 @@ export const Mutation: MutationResolvers = {
 
   async adminSendNotifications(
     root: any,
-    args: MutationAdminSendNotificationsArgs,
+    { input }: MutationAdminSendNotificationsArgs,
     context: ContextType
   ): Promise<any> {
-    let payload = PushNotificationUtil.getPayload(args.title, args.body, {});
-    const res = await PushNotificationUtil.send(
-      args.recipients.map((r: NotificationRecipient) => r.token),
-      payload
-    );
+    let payload = PushNotificationUtil.getPayload(input.title, input.message, input.payload);
+    let users: Array<UserDocument> = await User.find({ _id: { $in: input.recipientUserIds } });
+
+    let tokens: Array<string> = users.reduce((tokens: any, user: UserDocument) => {
+      // Find active devices
+      let devices = user.devices.filter((d: Device) => d.notificationStatus === NotificationStatus.Approved);
+
+      if (devices.length) {
+        tokens.push(devices[0].token);
+      }
+
+      return tokens;
+    }, []);
+
+    const res = await PushNotificationUtil.send(tokens, payload);
     await LogUtil.create(
       context.user,
       AuditLogType.SendNotifications,
-      `Send ${args.recipients.length} notifications: ${args.body}`
+      `Send ${tokens.length} notifications: ${input.title}`
     );
 
-    for (var r = 0; r < args.recipients.length; r++) {
-      let recipient: NotificationRecipient = args.recipients[r];
+    for (var r = 0; r < input.recipientUserIds.length; r++) {
+      let user: string = input.recipientUserIds[r];
       await NotificationModel.create({
-        user: recipient.userId,
+        user,
         status: NotificationDeliveryStatus.Initial,
         type: NotificationType.Manual,
         payload,
       });
+      await User.updateOne({ _id: user }, { remindedAt: new Date() });
     }
 
     return {
