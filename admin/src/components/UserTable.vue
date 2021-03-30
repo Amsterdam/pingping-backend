@@ -1,16 +1,13 @@
 <template>
   <div>
-    <div class="row">
-      <b-form
-        inline
-        class="m-2"
-      >
-        <div class="form-group">
-          <label class="col-sm-2 col-form-label">Filter</label>
+    <div class="m-2 row">
+      <b-form inline>
+        <div class="form-group mr-3">
+          <label class="col-form-label mr-2">Filter</label>
           <b-form-select
             v-model="filter"
             :options="filters"
-            class="col-md-6 text-left"
+            class="text-left"
           ></b-form-select>
         </div>
       </b-form>

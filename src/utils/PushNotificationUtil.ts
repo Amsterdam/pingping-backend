@@ -1,7 +1,7 @@
 import PushNotifications from 'node-pushnotifications';
 
 export class PushNotificationUtil {
-  static getPayload(title: string, body: string, custom: any = {}): PushNotifications.Data | any {
+  static getPayload(title: string, body: string, custom: object = {}): PushNotifications.Data | any {
     return {
       title,
       topic: 'org.reactjs.native.gemeente.pingpingNative',

@@ -62,6 +62,7 @@ export const Query: QueryResolvers = {
           payload: {
             custom: {
               routeId: args.routeId,
+              type: args.type,
             },
           },
           recipientUserIds: (
@@ -80,7 +81,11 @@ export const Query: QueryResolvers = {
         return {
           title: "Don't forget to complete your onboarding",
           message: '',
-          payload: {},
+          payload: {
+            custom: {
+              type: args.type,
+            },
+          },
           recipientUserIds: (
             await User.find({
               ...BASE_QUERY,
@@ -97,8 +102,13 @@ export const Query: QueryResolvers = {
 
     return {
       title: '',
-      payload: {},
-      recipients: [],
+      messsage: '',
+      payload: {
+        custom: {
+          type: args.type,
+        },
+      },
+      recipientUserIds: [],
     };
   },
   async getNotifications(root: any, args: any, context: ContextType): Promise<Array<any>> {
