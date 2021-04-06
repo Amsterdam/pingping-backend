@@ -67,7 +67,7 @@ export const Mutation: MutationResolvers = {
       await NotificationModel.create({
         user,
         status: NotificationDeliveryStatus.Delivered,
-        type: NotificationType.Manual,
+        type: input.type,
         payload,
       });
       await User.updateOne({ _id: user }, { remindedAt: new Date() });

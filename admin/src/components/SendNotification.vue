@@ -47,6 +47,12 @@
             v-model="recipients"
             remove-on-delete
           ></b-form-tags>
+          <b-button
+            size="sm"
+            class="mt-1"
+            v-if="recipients.length > 0"
+            @click="recipients = []"
+          >Clear recipients</b-button>
         </b-form-group>
         <div class="form-row">
           <b-form-group
@@ -128,6 +134,7 @@ export default {
           variables: {
             input: {
               title: this.title,
+              type: this.type,
               message: this.message,
               payload: JSON.parse(this.payload),
               recipientUserIds: this.recipients

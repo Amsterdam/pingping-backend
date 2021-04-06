@@ -8,5 +8,6 @@ export const WhoAmIQuery = gql`
         fullName
       }
     }
+    getEnv
   }
 `;

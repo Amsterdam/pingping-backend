@@ -357,6 +357,7 @@ export type Query = {
   adminGetAuditLog?: Maybe<Array<AuditLogResponse>>;
   adminGetFeedback?: Maybe<Array<RouteFeedbackResponse>>;
   getNotifications: Array<NotificationResponse>;
+  getEnv: Scalars['String'];
   getDraftNotification?: Maybe<NotificationDraftResponse>;
 };
 
@@ -506,6 +507,7 @@ export type RouteTip = {
 export type SendNotificationInput = {
   title: Scalars['String'];
   message: Scalars['String'];
+  type: NotificationType;
   payload: Scalars['JSON'];
   recipientUserIds: Array<Scalars['String']>;
 };
@@ -1008,6 +1010,7 @@ export type QueryResolvers<ContextType = ModuleContext, ParentType extends Resol
   adminGetAuditLog?: Resolver<Maybe<Array<ResolversTypes['AuditLogResponse']>>, ParentType, ContextType>,
   adminGetFeedback?: Resolver<Maybe<Array<ResolversTypes['RouteFeedbackResponse']>>, ParentType, ContextType>,
   getNotifications?: Resolver<Array<ResolversTypes['NotificationResponse']>, ParentType, ContextType>,
+  getEnv?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   getDraftNotification?: Resolver<Maybe<ResolversTypes['NotificationDraftResponse']>, ParentType, ContextType, RequireFields<QueryGetDraftNotificationArgs, 'type'>>,
 };
 
