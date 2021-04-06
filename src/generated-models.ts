@@ -314,6 +314,7 @@ export enum NotificationDeliveryStatus {
 export type NotificationDraftResponse = {
    __typename?: 'NotificationDraftResponse';
   title?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
   payload?: Maybe<Scalars['JSON']>;
   recipientUserIds: Array<Scalars['String']>;
 };
@@ -979,6 +980,7 @@ export type MutationResolvers<ContextType = ModuleContext, ParentType extends Re
 
 export type NotificationDraftResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['NotificationDraftResponse'] = ResolversParentTypes['NotificationDraftResponse']> = {
   title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   payload?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
   recipientUserIds?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,

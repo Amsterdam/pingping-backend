@@ -113,6 +113,7 @@ export default {
       }).then(({ data: { getDraftNotification } }) => {
         this.recipients = getDraftNotification.recipientUserIds
         this.title = getDraftNotification.title
+        this.message = getDraftNotification.message
         this.payload = JSON.stringify(getDraftNotification.payload)
       })
     },

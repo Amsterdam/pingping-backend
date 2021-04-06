@@ -56,9 +56,9 @@ export const Query: QueryResolvers = {
     switch (args.type) {
       case NotificationType.RemindUserToContinueRoute:
         return {
-          title:
-            'Je hebt nog een openstaande actie in je “fiks de basis route”. Zet de volgende stap, verdien punten en kom dichter bij je doel!',
-          message: '',
+          title: 'Fiks je basis, zet je volgende stap!',
+          message:
+            'Goed bezig! Je bent al begonnen met het fiksen van je basis. Zet snel de volgende stap om verder te gaan en je succes te vieren!',
           payload: {
             custom: {
               routeId: args.routeId,
@@ -79,8 +79,9 @@ export const Query: QueryResolvers = {
         };
       case NotificationType.RemindUserToCompleteOnboarding:
         return {
-          title: "Don't forget to complete your onboarding",
-          message: '',
+          title: 'Fiks je basis. Begin nu!',
+          message:
+            'Goed bezig! Je hebt Ping Ping gedownload. Zet de volgende stap en begin met het fiksen van je basis!',
           payload: {
             custom: {
               type: args.type,

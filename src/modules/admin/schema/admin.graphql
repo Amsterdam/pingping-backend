@@ -32,6 +32,7 @@ type AdminStatisticsResponse {
 
 type NotificationDraftResponse {
   title: String
+  message: String
   payload: JSON
   recipientUserIds: [String!]!
 }
