@@ -1,10 +1,11 @@
 import _ from 'lodash';
 import { TaskDefinition, RouteDefinition, AchievementDefinition, RewardDefinition } from '../types/global';
 import { TaskStatus } from '../generated-models';
+import { ENV_TEST } from '../config/index';
 
 let initialData: InitialData = require('../../initialData.json');
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.ENVIRONMENT === ENV_TEST) {
   initialData = require('../../initialData.test.json');
 }
 

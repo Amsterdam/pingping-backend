@@ -4,10 +4,7 @@ FROM node:14
 WORKDIR /app
 RUN npm install -g @vue/cli
 
-
 ENV PORT=8000
-ENV NODE_ENV=production
-
 COPY package.json /app/package.json
 # COPY yarn.lock /app/yarn.lock
 
@@ -24,7 +21,7 @@ RUN npm run build
 
 # Admin Part
 WORKDIR /app/admin
-RUN NODE_ENV=development npm install
+RUN npm install
 RUN npm run build
 WORKDIR /app
 

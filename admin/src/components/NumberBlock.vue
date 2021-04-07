@@ -84,6 +84,15 @@ export default {
   position: relative;
 }
 
+.number-block .icon {
+  position: absolute;
+  font-weight: bold;
+  bottom: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: auth;
+}
+
 .number-block .change {
   position: absolute;
   font-weight: bold;

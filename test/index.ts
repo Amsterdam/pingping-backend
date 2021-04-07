@@ -5,6 +5,7 @@ import chai from 'chai';
 import 'ts-mocha';
 import { RewardVoucher } from '../src/models/RewardVoucher';
 import { User } from '../src/models/User';
+import { ENVIRONMENT, ENV_TEST } from '../src/config/index';
 
 chai.use(chaiAsPromised);
 
@@ -32,7 +33,7 @@ after(async () => {
 });
 
 process.env.TS_CONFIG_PATHS = './tsconfig.json';
-process.env.NODE_ENV = 'test';
+process.env.ENVIRONMENT = ENV_TEST;
 
 require('ts-mocha');
 const Mocha = require('mocha');

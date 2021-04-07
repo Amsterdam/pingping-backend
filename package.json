@@ -12,7 +12,7 @@
     "dev": "concurrently \"yarn gen:watch\" \"yarn start:server:watch\"",
     "dev:debug": "ts-node-dev --inspect=4321 -r tsconfig-paths/register --respawn --transpileOnly src/index.ts",
     "build": "tsc",
-    "prod": "NODE_ENV=production PORT=5000 node dist/index.js",
+    "prod": "ENVIRONMENT=production PORT=5000 node dist/index.js",
     "lint": "eslint --fix ./src/*",
     "test": "mocha --recursive -r tsconfig-paths/register -r ts-node/register -r source-map-support/register test/index.ts",
     "test-azure": "nyc --report covertura mocha --recursive -r tsconfig-paths/register -r ts-node/register -r source-map-support/register --reporter mocha-junit-reporter test/index.ts",

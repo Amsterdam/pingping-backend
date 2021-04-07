@@ -10,6 +10,7 @@ import { UserTask } from 'models/UserTask';
 import TaskUtil from 'utils/TaskUtil';
 import { NotificationStatus, TaskStatus } from '@models';
 import StatisticsUtil from 'utils/StatisticsUtil';
+import { ENV_DEVELOPMENT } from 'config/index';
 
 const START_DATE = '2021-01-04';
 const NUMBER_OF_DAYS = 83;
@@ -26,8 +27,8 @@ const getRandomNumber = (min: number, max: number) => {
 };
 
 const seed = async () => {
-  if (process.env.NODE_ENV !== 'development') {
-    console.error(`This command can only be run during development, currrent ${process.env.NODE_ENV}`);
+  if (process.env.ENVIRONMENT !== ENV_DEVELOPMENT) {
+    console.error(`This command can only be run during development, currrent ${process.env.ENVIRONMENT}`);
     process.exit(1);
   }
   const type = argv[2];

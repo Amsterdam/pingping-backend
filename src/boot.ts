@@ -4,14 +4,17 @@ import auth from './lib/auth';
 import NodeCron from 'node-cron';
 import StatisticsUtil from 'utils/StatisticsUtil';
 import MigrationUtil from 'utils/MigrationUtil';
+import Config from 'config';
 
 class boot {
-  static async start() {
-    console.log('booting...', process.env.NODE_ENV);
+  static async start(): Promise<Array<any>> {
+    console.log('booting...', process.env.ENVIRONMENT);
     dotenv.config();
+    Config.assertConfig();
     StatisticsUtil.registerStatistics();
     MigrationUtil.checkRouteProgress();
 
+    // Schedule cron jobs for statistics and data consistency
     NodeCron.schedule('0 12 * * *', async () => {
       console.log('Running statistics cron');
       await StatisticsUtil.registerStatistics();

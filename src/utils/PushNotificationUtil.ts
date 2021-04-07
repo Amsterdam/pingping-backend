@@ -1,4 +1,5 @@
 import PushNotifications from 'node-pushnotifications';
+import { ENV_PRODUCTION } from 'config/index';
 
 export class PushNotificationUtil {
   static getPayload(title: string, body: string, payload: object = {}): PushNotifications.Data | any {
@@ -36,7 +37,7 @@ export class PushNotificationUtil {
           keyId: process.env.APNS_KEY_ID,
           teamId: process.env.APNS_TEAM_ID,
         },
-        production: false, // Change to true when possible
+        production: process.env.ENV_DEVELOPMENT === ENV_PRODUCTION,
       },
     };
 

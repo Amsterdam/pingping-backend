@@ -1,5 +1,6 @@
 import createServer from './server';
 import boot from './boot';
+import { ENV_PRODUCTION } from './config/index';
 
 boot.start();
 const server = createServer();
@@ -17,7 +18,7 @@ server.listen(
   {
     port: process.env.PORT || 4000,
     cors: corsOptions,
-    playground: process.env.NODE_ENV === 'production' ? false : '/api',
+    playground: process.env.ENVIRONMENT === ENV_PRODUCTION ? false : '/api',
   },
   () => {
     console.log(`Server started: ${process.env.PORT || 4000}`);

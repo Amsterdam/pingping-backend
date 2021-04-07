@@ -38,6 +38,12 @@ export default {
       update (res) {
         return res.whoAmI
       }
+    },
+    env: {
+      query: WhoAmIQuery,
+      update (res) {
+        return res.getEnv
+      }
     }
   },
 
@@ -52,7 +58,7 @@ export default {
 
   computed: {
     navBarClass () {
-      return `env-${process.env.NODE_ENV}`
+      return `env-${this.env}`
     }
   }
 }
@@ -60,9 +66,12 @@ export default {
 
 <style lang="scss" scoped>
 .navbar.env-development {
-  background: repeating-linear-gradient(45deg, #003f5c, #003f5c 10px, #448a86 10px, #448a86 20px);
+  background: repeating-linear-gradient(45deg, #58508d, #58508d 10px, #94a5bc 10px, #94a5bc 20px);
 }
 
+.navbar.env-acceptance {
+  background: repeating-linear-gradient(45deg, #003f5c, #003f5c 10px, #448a86 10px, #448a86 20px);
+}
 .nav-link {
   &.router-link-active {
     font-weight: bold;

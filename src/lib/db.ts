@@ -6,10 +6,7 @@ mongoose.set('useFindAndModify', false);
 
 class db {
   static async connect() {
-    console.log('Setting up mongodb connection...', process.env.NODE_ENV);
-
-    // const dbString =
-    //   process.env.NODE_ENV === 'test' ? 'mongodb://localhost:27017/pingping_test' : process.env.MONGO_STRING;
+    console.log('Setting up mongodb connection...', process.env.ENVIRONMENT);
 
     return await mongoose
       .connect(process.env.MONGO_STRING, {
