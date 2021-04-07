@@ -37,7 +37,7 @@ export class PushNotificationUtil {
           keyId: process.env.APNS_KEY_ID,
           teamId: process.env.APNS_TEAM_ID,
         },
-        production: process.env.ENV_DEVELOPMENT === ENV_PRODUCTION,
+        production: process.env.ENVIRONMENT === ENV_PRODUCTION,
       },
     };
 
