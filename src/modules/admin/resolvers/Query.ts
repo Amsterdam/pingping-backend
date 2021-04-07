@@ -53,7 +53,7 @@ const BASE_QUERY: any = {
 
 export const Query: QueryResolvers = {
   getEnv() {
-    return `${process.env.ENVIRONMENT || 'unknown'}:${process.env.NODE_ENV}`;
+    return process.env.ENVIRONMENT || 'unknown';
   },
   async getDraftNotification(root: any, args: QueryGetDraftNotificationArgs, context: ContextType): Promise<any> {
     switch (args.type) {
