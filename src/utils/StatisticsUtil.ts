@@ -376,7 +376,8 @@ class StatisticsUtil {
         $match: {
           role: UserRole.User,
           createdAt: {
-            $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+            $gte: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+            $lte: moment().endOf('week').subtract(1, 'week').add(2, 'day').toDate(),
           },
         },
       },
@@ -387,18 +388,18 @@ class StatisticsUtil {
       },
       {
         $group: {
-          _id: { label: '$label' },
+          _id: '$label',
           count: { $sum: 1 },
         },
       },
-      { $sort: { '_id.label': 1 } },
+      { $sort: { _id: 1 } },
     ]);
+
+    console.log('res', res);
 
     return {
       values: res.map((i) => i.count),
-      keys: res.map((i) => {
-        return moment(i._id.label, WEEK_FORMAT).format(DATE_FORMAT);
-      }),
+      keys: res.map((i) => moment(i._id, WEEK_FORMAT).format(DATE_FORMAT)),
     };
   }
 

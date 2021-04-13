@@ -90,5 +90,7 @@ input RegisterNotificationsInput {
 enum UserRole {
   User
   Admin
+  Employee
+  Developer
   Reporter
 }

@@ -624,6 +624,8 @@ export type UserRewardResponse = {
 export enum UserRole {
   User = 'User',
   Admin = 'Admin',
+  Employee = 'Employee',
+  Developer = 'Developer',
   Reporter = 'Reporter'
 }
 

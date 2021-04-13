@@ -6,14 +6,13 @@ import { argv } from 'process';
 import readline from 'readline';
 import UserUtil from 'utils/UserUtil';
 import { User } from 'models/User';
-import { UserTask } from 'models/UserTask';
 import TaskUtil from 'utils/TaskUtil';
 import { NotificationStatus, TaskStatus } from '@models';
 import StatisticsUtil from 'utils/StatisticsUtil';
 import { ENV_DEVELOPMENT } from 'config/index';
 
 const START_DATE = '2021-01-04';
-const NUMBER_OF_DAYS = 83;
+const NUMBER_OF_DAYS = moment().diff(moment(START_DATE), 'days');
 const MIN_USERS_PER_DAY = 2;
 const MAX_USERS_PER_DAY = 8;
 
