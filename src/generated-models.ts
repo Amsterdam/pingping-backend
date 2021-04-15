@@ -11,8 +11,8 @@ export type Scalars = {
   Int: number;
   Float: number;
   Choices: any;
-  JSON: any;
   Date: any;
+  JSON: any;
   RouteAnswer: any;
 };
 
@@ -87,7 +87,18 @@ export type AdminUserRouteResponse = {
    __typename?: 'AdminUserRouteResponse';
   routeId: Scalars['String'];
   status: UserRouteStatus;
+  createdAt?: Maybe<Scalars['Date']>;
   completedAt?: Maybe<Scalars['Date']>;
+};
+
+
+export type AdminUserRouteResponseCreatedAtArgs = {
+  format?: Maybe<Scalars['String']>;
+};
+
+
+export type AdminUserRouteResponseCompletedAtArgs = {
+  format?: Maybe<Scalars['String']>;
 };
 
 export type AuditLogResponse = {
@@ -643,6 +654,7 @@ export type UserTaskResponse = {
   status: TaskStatus;
   task: TaskResponse;
   answer?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['Date']>;
 };
 
 
@@ -733,6 +745,7 @@ export type ResolversTypes = {
   TaskResponse: ResolverTypeWrapper<TaskResponse>,
   Choices: ResolverTypeWrapper<Scalars['Choices']>,
   TaskType: TaskType,
+  Date: ResolverTypeWrapper<Scalars['Date']>,
   RewardResponse: ResolverTypeWrapper<RewardResponse>,
   RewardStatus: RewardStatus,
   RewardVoucherResponse: ResolverTypeWrapper<RewardVoucherResponse>,
@@ -740,7 +753,6 @@ export type ResolversTypes = {
   StatusResponse: ResolverTypeWrapper<StatusResponse>,
   UserResponse: ResolverTypeWrapper<UserResponse>,
   UserProfileResponse: ResolverTypeWrapper<UserProfileResponse>,
-  Date: ResolverTypeWrapper<Scalars['Date']>,
   UserRole: UserRole,
   UserGoalResponse: ResolverTypeWrapper<UserGoalResponse>,
   UserRewardResponse: ResolverTypeWrapper<UserRewardResponse>,
@@ -803,6 +815,7 @@ export type ResolversParentTypes = {
   TaskResponse: TaskResponse,
   Choices: Scalars['Choices'],
   TaskType: TaskType,
+  Date: Scalars['Date'],
   RewardResponse: RewardResponse,
   RewardStatus: RewardStatus,
   RewardVoucherResponse: RewardVoucherResponse,
@@ -810,7 +823,6 @@ export type ResolversParentTypes = {
   StatusResponse: StatusResponse,
   UserResponse: UserResponse,
   UserProfileResponse: UserProfileResponse,
-  Date: Scalars['Date'],
   UserRole: UserRole,
   UserGoalResponse: UserGoalResponse,
   UserRewardResponse: UserRewardResponse,
@@ -899,7 +911,8 @@ export type AdminUserResponseResolvers<ContextType = ModuleContext, ParentType e
 export type AdminUserRouteResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AdminUserRouteResponse'] = ResolversParentTypes['AdminUserRouteResponse']> = {
   routeId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   status?: Resolver<ResolversTypes['UserRouteStatus'], ParentType, ContextType>,
-  completedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
+  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType, RequireFields<AdminUserRouteResponseCreatedAtArgs, never>>,
+  completedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType, RequireFields<AdminUserRouteResponseCompletedAtArgs, never>>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -1173,6 +1186,7 @@ export type UserTaskResponseResolvers<ContextType = ModuleContext, ParentType ex
   status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>,
   task?: Resolver<ResolversTypes['TaskResponse'], ParentType, ContextType>,
   answer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 

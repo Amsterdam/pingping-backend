@@ -1,8 +1,9 @@
 import { AuditLogDocument } from 'models/AuditLog';
 import { User, UserDocument } from 'models/User';
-import InitialDataUtil from 'utils/InitialDataUtil';
 import { UserRoute } from 'models/UserRoute';
 import StatisticsUtil from 'utils/StatisticsUtil';
+import moment from 'moment';
+import { AdminUserRouteResponseCompletedAtArgs, AdminUserRouteResponseCreatedAtArgs } from '@models';
 
 import {
   AdminStatisticsResponseCompletedTasksArgs,
@@ -47,5 +48,22 @@ export const AdminStatisticsResponse: any = {
 export const AuditLogResponse: any = {
   user: async (doc: AuditLogDocument) => {
     return await User.findOne({ _id: doc.user });
+  },
+};
+
+export const AdminUserRouteResponse: any = {
+  createdAt: async (doc: any, args: AdminUserRouteResponseCreatedAtArgs) => {
+    if (args.format && doc.createdAt) {
+      return moment(doc.createdAt).format(args.format);
+    }
+
+    return doc.createdAt;
+  },
+  completedAt: async (doc: any, args: AdminUserRouteResponseCompletedAtArgs) => {
+    if (args.format && doc.completedAt) {
+      return moment(doc.completedAt).format(args.format);
+    }
+
+    return doc.completedAt;
   },
 };

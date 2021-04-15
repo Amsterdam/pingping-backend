@@ -4,6 +4,8 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Task</th>
+        <th scope="col">Started</th>
+        <th scope="col">Ended</th>
         <th scope="col">Status</th>
       </tr>
     </thead>

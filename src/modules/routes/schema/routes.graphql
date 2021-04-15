@@ -31,6 +31,7 @@ type UserTaskResponse {
   status: TaskStatus!
   task: TaskResponse!
   answer: String
+  createdAt: Date
 }
 
 type TaskResponse {

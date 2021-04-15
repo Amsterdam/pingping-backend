@@ -21,10 +21,12 @@ export const GetUsersQuery = gql`
       routes {
         routeId
         status
-        completedAt
+        createdAt(format: "DD.MM.YYYY HH:mm")
+        completedAt(format: "DD.MM.YYYY HH:mm")
       }
       userTasks {
         status
+        createdAt
         task {
           taskId
           title
