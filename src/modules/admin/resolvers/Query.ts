@@ -178,6 +178,21 @@ export const Query: QueryResolvers = {
           ],
         };
         break;
+      case UserFilter.CompletedFixJeBasis:
+        query = {
+          $and: [
+            query,
+            {
+              routes: {
+                $elemMatch: {
+                  routeId: 'financieleBasis',
+                  status: UserRouteStatus.Completed,
+                },
+              },
+            },
+          ],
+        };
+        break;
     }
 
     return await User.find(query);

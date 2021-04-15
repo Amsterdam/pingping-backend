@@ -81,9 +81,15 @@ const userSchema = new Schema(
 
     routes: [
       {
-        routeId: String,
-        answer: String,
-        status: String,
+        type: new Schema(
+          {
+            routeId: String,
+            answer: String,
+            status: String,
+            completedAt: Date,
+          },
+          { timestamps: true }
+        ),
       },
     ],
 

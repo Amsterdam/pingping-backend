@@ -90,7 +90,9 @@ type AdminUserResponse {
 }
 
 type AdminUserRouteResponse {
+  routeId: String!
   status: UserRouteStatus!
+  completedAt: Date
 }
 
 # Input
@@ -130,4 +132,5 @@ enum UserFilter {
   SkippedOnboarding
   OnboardingIncomplete
   InactiveInFixJeBasis
+  CompletedFixJeBasis
 }

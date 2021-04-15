@@ -85,7 +85,9 @@ export type AdminUserResponse = {
 
 export type AdminUserRouteResponse = {
    __typename?: 'AdminUserRouteResponse';
+  routeId: Scalars['String'];
   status: UserRouteStatus;
+  completedAt?: Maybe<Scalars['Date']>;
 };
 
 export type AuditLogResponse = {
@@ -582,7 +584,8 @@ export enum UserFilter {
   NotAmsterdam = 'NotAmsterdam',
   SkippedOnboarding = 'SkippedOnboarding',
   OnboardingIncomplete = 'OnboardingIncomplete',
-  InactiveInFixJeBasis = 'InactiveInFixJeBasis'
+  InactiveInFixJeBasis = 'InactiveInFixJeBasis',
+  CompletedFixJeBasis = 'CompletedFixJeBasis'
 }
 
 export type UserGoalResponse = {
@@ -894,7 +897,9 @@ export type AdminUserResponseResolvers<ContextType = ModuleContext, ParentType e
 };
 
 export type AdminUserRouteResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AdminUserRouteResponse'] = ResolversParentTypes['AdminUserRouteResponse']> = {
+  routeId?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   status?: Resolver<ResolversTypes['UserRouteStatus'], ParentType, ContextType>,
+  completedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 

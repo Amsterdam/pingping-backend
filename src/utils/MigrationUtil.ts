@@ -33,6 +33,7 @@ class MigrationUtil {
 
           if (progress === 1) {
             user.routes[r].status = UserRouteStatus.Completed;
+            user.routes[r].completedAt = new Date();
 
             await User.updateOne({ _id: user._id }, user);
           }

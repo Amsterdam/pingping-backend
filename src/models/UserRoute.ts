@@ -7,6 +7,7 @@ export class UserRoute {
   routeId: string;
   status: UserRouteStatus;
   task: TaskDefinition;
+  completedAt?: Date;
   progress: number = null;
 
   constructor(routeId: string, status: UserRouteStatus, _id: Types.ObjectId = undefined) {

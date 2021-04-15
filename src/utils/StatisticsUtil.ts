@@ -377,7 +377,7 @@ class StatisticsUtil {
           role: UserRole.User,
           createdAt: {
             $gte: moment(START_DATE, 'DD.MM.YYYY').toDate(),
-            $lte: moment().endOf('week').subtract(1, 'week').add(2, 'day').toDate(),
+            $lte: moment().subtract(1, 'week').endOf('week').add(2, 'day').toDate(),
           },
         },
       },
@@ -394,8 +394,6 @@ class StatisticsUtil {
       },
       { $sort: { _id: 1 } },
     ]);
-
-    console.log('res', res);
 
     return {
       values: res.map((i) => i.count),

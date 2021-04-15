@@ -143,7 +143,7 @@ export default {
       currentPage: 1,
       items: [],
       filter: 'None',
-      filters: ['None', 'NotAmsterdam', 'SkippedOnboarding', 'OnboardingIncomplete', 'InactiveInFixJeBasis'],
+      filters: ['None', 'NotAmsterdam', 'SkippedOnboarding', 'OnboardingIncomplete', 'InactiveInFixJeBasis', 'CompletedFixJeBasis'],
       isFilter: false,
       createUser: false,
       loading: false,

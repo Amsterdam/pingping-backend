@@ -1,18 +1,44 @@
 <template>
   <div>
-    <h6>Devices</h6>
     <UserDevice
       v-for="(device, i) in devices"
       :key="'device-' + i"
       v-bind="device"
     />
-    <h6>Tasks</h6>
-    <vue-json-pretty :data="userTasks" />
-    <h6>Rewards</h6>
-    <vue-json-pretty :data="rewards" />
-    <h6>Transactions</h6>
-    <vue-json-pretty :data="transactions" />
-
+    <div class="pt-3">
+      <b-tabs content-class="m-3">
+        <b-tab
+          title="Tasks"
+          active
+        >
+          <task-table :tasks="userTasks" />
+        </b-tab>
+        <b-tab title="Routes">
+          <b-table
+            striped
+            hover
+            small
+            :items="routes"
+          ></b-table>
+        </b-tab>
+        <b-tab title="Rewards">
+          <b-table
+            striped
+            hover
+            small
+            :items="rewards"
+          ></b-table>
+        </b-tab>
+        <b-tab title="Transactions">
+          <b-table
+            striped
+            hover
+            small
+            :items="transactions"
+          ></b-table>
+        </b-tab>
+      </b-tabs>
+    </div>
     <b-button
       variant="danger"
       @click="deleteUser"
@@ -24,8 +50,8 @@
 <script>
 import VueTypes from 'vue-types'
 import UserDevice from './UserDevice'
-import VueJsonPretty from 'vue-json-pretty'
 import { DeleteUserMutation } from '../mutations/DeleteUserMutation'
+import TaskTable from './TaskTable'
 
 export default {
   name: 'UserModal',
@@ -48,7 +74,7 @@ export default {
 
   components: {
     UserDevice,
-    VueJsonPretty
+    TaskTable
   },
 
   methods: {

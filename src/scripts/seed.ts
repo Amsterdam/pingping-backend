@@ -10,6 +10,7 @@ import TaskUtil from 'utils/TaskUtil';
 import { NotificationStatus, TaskStatus } from '@models';
 import StatisticsUtil from 'utils/StatisticsUtil';
 import { ENV_DEVELOPMENT } from 'config/index';
+import MigrationUtil from 'utils/MigrationUtil';
 
 const START_DATE = '2021-01-04';
 const NUMBER_OF_DAYS = moment().diff(moment(START_DATE), 'days');
@@ -41,6 +42,7 @@ const seed = async () => {
       sinon.useFakeTimers(startDate.toDate());
 
       for (var d = 0; d <= NUMBER_OF_DAYS; d++) {
+        MigrationUtil.checkRouteProgress();
         let numberOfUsersToday = getRandomNumber(MAX_USERS_PER_DAY, MIN_USERS_PER_DAY);
         sinon.useFakeTimers(startDate.add(1, 'days').toDate());
 

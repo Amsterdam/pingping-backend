@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-badge>{{ os }}</b-badge> -
-    <b-badge :variant="notificationStatusVariant">{{ notificationStatus }}</b-badge>
+    <b-badge :variant="notificationStatusVariant">{{ notificationStatus }} notifications</b-badge>
   </div>
 </template>
 
