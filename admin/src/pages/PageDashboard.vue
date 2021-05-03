@@ -39,7 +39,7 @@
         v-if="statistics"
         class="col-sm-6 col-lg-5"
         type="line"
-        title="New users weekly"
+        title="Users weekly"
         v-bind="weeklyUsers"
       />
       <Chart
@@ -86,7 +86,8 @@ export default {
 
   computed: {
     weeklyUsers () {
-      return getWeeklyUsersProps(_.get(this.statistics, 'usersPerWeek'), _.get(this.statistics, 'usersCumulative'))
+      const { usersPerWeek, activeUsersPerWeek } = this.statistics
+      return getWeeklyUsersProps(usersPerWeek, activeUsersPerWeek)
     },
     cumulativeUsers () {
       return getCumulativeUsersProps(_.get(this.statistics, 'usersCumulative'))

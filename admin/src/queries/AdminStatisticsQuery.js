@@ -3,6 +3,10 @@ import gql from 'graphql-tag';
 export const AdminStatisticsQuery = gql`
   query {
     adminStatistics {
+      activeUsersPerWeek {
+        values
+        keys
+      }
       usersPerWeek {
         values
         keys

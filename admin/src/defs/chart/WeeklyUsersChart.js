@@ -1,15 +1,24 @@
 class WeeklyUsersChart {
-  constructor(keys, weekly, acc) {
+  constructor(keys, weekly, activeWeekly) {
     this.keys = keys
     this.weekly = weekly
-    this.acc = acc
+    this.activeWeekly = activeWeekly
     this.datasets = [
       {
-        label: 'Weekly',
+        label: 'New',
         yAxisId: 'y1',
         data: this.weekly,
         fill: false,
+        backgroundColor: '#003f5c',
         borderColor: '#003f5c',
+      },
+      {
+        label: 'Active',
+        yAxisId: 'y1',
+        data: this.activeWeekly,
+        fill: false,
+        backgroundColor: '#FB9F4B',
+        borderColor: '#FB9F4B',
       },
     ]
     this.options = {
@@ -17,7 +26,7 @@ class WeeklyUsersChart {
         mode: 'index'
       },
       legend: {
-        display: false,
+        display: true,
       },
       scales: {
         yAxis: [
@@ -79,8 +88,8 @@ class WeeklyUsersChart {
   }
 }
 
-export const getProps = ({ keys, values }, acc) => {
-  const instance = new WeeklyUsersChart(keys, values, acc.values)
+export const getProps = ({ keys, values }, activeWeekly) => {
+  const instance = new WeeklyUsersChart(keys, values, activeWeekly.values)
 
   return instance.getProps()
 }

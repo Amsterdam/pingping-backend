@@ -5,8 +5,7 @@ import { UserRole, TaskStatus, StatisticNumberChange, Statistics, RouteStatistic
 import InitialDataUtil from 'utils/InitialDataUtil';
 import { TaskDefinition } from 'types/global';
 import { RouteDefinition } from 'types/global';
-import { StatisticModel } from 'models/Statistic';
-import { stat } from 'fs';
+import { StatisticModel, Statistic } from 'models/Statistic';
 
 const TOTAL_USERS_WEEK = 'total-users-week';
 const ACTIVE_USERS_WEEK = 'active-users-7-days';
@@ -398,6 +397,41 @@ class StatisticsUtil {
     return {
       values: res.map((i) => i.count),
       keys: res.map((i) => moment(i._id, WEEK_FORMAT).format(DATE_FORMAT)),
+    };
+  }
+
+  static async getActiveUsersPerWeek(): Promise<Statistics> {
+    const keys: any = [];
+    const values: any = [];
+
+    const date: any = moment(START_DATE, 'DD.MM.YYYY');
+
+    while (true) {
+      const key = moment(date).format(DATE_FORMAT);
+
+      const res: Statistic = await StatisticModel.findOne({
+        type: ACTIVE_USERS_WEEK,
+        key,
+      });
+
+      if (res) {
+        values.push(res.value);
+        keys.push(date.format(DATE_FORMAT));
+      } else {
+        values.push(0);
+        keys.push(date.format(DATE_FORMAT));
+      }
+
+      date.add(1, 'week');
+
+      if (date.isAfter(moment())) {
+        break;
+      }
+    }
+
+    return {
+      values,
+      keys,
     };
   }
 

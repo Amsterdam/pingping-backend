@@ -31,6 +31,9 @@ export const AdminStatisticsResponse: any = {
   usersPerWeek: async (doc: any) => {
     return await StatisticsUtil.getUsersPerWeek();
   },
+  activeUsersPerWeek: async (doc: any) => {
+    return await StatisticsUtil.getActiveUsersPerWeek();
+  },
   routes: async (doc: any) => {
     return await StatisticsUtil.getRoutes();
   },

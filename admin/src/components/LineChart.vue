@@ -5,7 +5,6 @@ import VueTypes from 'vue-types'
 export default {
   extends: Line,
   props: {
-    values: VueTypes.array,
     datasets: VueTypes.array,
     keys: VueTypes.array,
     options: VueTypes.object
@@ -33,9 +32,6 @@ export default {
 
   watch: {
     datasets () {
-      this.renderChart(this.chartdata, { ...this.optionsDef, ...this.options })
-    },
-    values () {
       this.renderChart(this.chartdata, { ...this.optionsDef, ...this.options })
     },
     keys () {

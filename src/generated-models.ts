@@ -40,6 +40,7 @@ export enum AdminActionType {
 export type AdminStatisticsResponse = {
    __typename?: 'AdminStatisticsResponse';
   usersPerWeek: Statistics;
+  activeUsersPerWeek: Statistics;
   usersCumulative: Statistics;
   completedTasks: Statistics;
   routes?: Maybe<Array<RouteStatistics>>;
@@ -359,7 +360,7 @@ export type Query = {
   /** Get a specific route */
   getRoute: RouteResponse;
   /** Get a single user task */
-  getUserTask: UserTaskResponse;
+  getUserTask?: Maybe<UserTaskResponse>;
   getAvailableRewards: Array<RewardResponse>;
   getRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
@@ -881,6 +882,7 @@ export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType
 
 export type AdminStatisticsResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AdminStatisticsResponse'] = ResolversParentTypes['AdminStatisticsResponse']> = {
   usersPerWeek?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
+  activeUsersPerWeek?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
   usersCumulative?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
   completedTasks?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType, RequireFields<AdminStatisticsResponseCompletedTasksArgs, never>>,
   routes?: Resolver<Maybe<Array<ResolversTypes['RouteStatistics']>>, ParentType, ContextType>,
