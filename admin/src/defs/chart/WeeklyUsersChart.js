@@ -71,8 +71,8 @@ class WeeklyUsersChart {
               }
             },
             gridLines: {
-              display: false
-            }
+              display: true
+            },
           }
         ]
       }

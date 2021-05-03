@@ -418,7 +418,7 @@ class StatisticsUtil {
         values.push(res.value);
         keys.push(date.format(DATE_FORMAT));
       } else {
-        values.push(0);
+        values.push(undefined);
         keys.push(date.format(DATE_FORMAT));
       }
 

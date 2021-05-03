@@ -10,7 +10,7 @@
           <b-dropdown
             class="mr-2"
             variant="outline-primary"
-            :text="age ? age[0] + '-' + age[1] : '15-22'"
+            :text="age ? age[0] + '-' + age[1] : '16-20'"
             v-if="ageFilter"
             right
             size="sm"
@@ -210,7 +210,7 @@ export default {
       fetchedKeys: null,
       fetchedDatasets: null,
       fetchedValues: null,
-      age: [15, 22],
+      age: [16, 20],
       chartOptions: {
         legend: {
           display: false

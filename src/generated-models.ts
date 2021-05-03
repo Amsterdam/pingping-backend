@@ -360,7 +360,7 @@ export type Query = {
   /** Get a specific route */
   getRoute: RouteResponse;
   /** Get a single user task */
-  getUserTask?: Maybe<UserTaskResponse>;
+  getUserTask: UserTaskResponse;
   getAvailableRewards: Array<RewardResponse>;
   getRewards: Array<RewardResponse>;
   getStatus: StatusResponse;
@@ -536,8 +536,8 @@ export type StatisticNumberChange = {
 export type Statistics = {
    __typename?: 'Statistics';
   dump?: Maybe<Scalars['JSON']>;
-  values?: Maybe<Array<Scalars['Int']>>;
-  keys?: Maybe<Array<Scalars['String']>>;
+  values: Array<Maybe<Scalars['Int']>>;
+  keys: Array<Scalars['String']>;
 };
 
 export type StatusResponse = {
@@ -794,9 +794,9 @@ export type ResolversTypes = {
   Locale: Locale,
   LocactionInput: LocactionInput,
   RegisterDeviceResponse: ResolverTypeWrapper<RegisterDeviceResponse>,
-  RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
-  RewardType: RewardType,
   ExportResponse: ResolverTypeWrapper<ExportResponse>,
+  RewardType: RewardType,
+  RouteAnswer: ResolverTypeWrapper<Scalars['RouteAnswer']>,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -864,9 +864,9 @@ export type ResolversParentTypes = {
   Locale: Locale,
   LocactionInput: LocactionInput,
   RegisterDeviceResponse: RegisterDeviceResponse,
-  RouteAnswer: Scalars['RouteAnswer'],
-  RewardType: RewardType,
   ExportResponse: ExportResponse,
+  RewardType: RewardType,
+  RouteAnswer: Scalars['RouteAnswer'],
 };
 
 export type AchievementResponseResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['AchievementResponse'] = ResolversParentTypes['AchievementResponse']> = {
@@ -1116,8 +1116,8 @@ export type StatisticNumberChangeResolvers<ContextType = ModuleContext, ParentTy
 
 export type StatisticsResolvers<ContextType = ModuleContext, ParentType extends ResolversParentTypes['Statistics'] = ResolversParentTypes['Statistics']> = {
   dump?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
-  values?: Resolver<Maybe<Array<ResolversTypes['Int']>>, ParentType, ContextType>,
-  keys?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>,
+  values?: Resolver<Array<Maybe<ResolversTypes['Int']>>, ParentType, ContextType>,
+  keys?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 

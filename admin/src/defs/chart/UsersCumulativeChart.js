@@ -45,7 +45,7 @@ class UsersCumulativeChart {
               }
             },
             gridLines: {
-              display: false
+              display: true
             }
           }
         ]
