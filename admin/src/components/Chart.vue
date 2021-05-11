@@ -16,7 +16,7 @@
             size="sm"
           >
             <b-dropdown-item @click="age = [0, 100]">All</b-dropdown-item>
-            <b-dropdown-item @click="age = [15,22]">Age 15-22</b-dropdown-item>
+            <b-dropdown-item @click="age = [16,20]">Age 16-20</b-dropdown-item>
           </b-dropdown>
           <b-dropdown
             variant="outline-primary"

@@ -401,9 +401,7 @@ class StatisticsUtil {
   }
 
   static async getActiveUsersPerWeek(): Promise<Statistics> {
-    const keys: any = [];
-    const values: any = [];
-
+    const avg: any = {};
     const date: any = moment(START_DATE, 'DD.MM.YYYY');
 
     while (true) {
@@ -415,22 +413,36 @@ class StatisticsUtil {
       });
 
       if (res) {
-        values.push(res.value);
-        keys.push(date.format(DATE_FORMAT));
+        if (avg[date.format(WEEK_FORMAT)]) {
+          avg[date.format(WEEK_FORMAT)].push(parseInt(res.value));
+        } else {
+          avg[date.format(WEEK_FORMAT)] = [parseInt(res.value)];
+        }
       } else {
-        values.push(undefined);
-        keys.push(date.format(DATE_FORMAT));
+        if (!avg[date.format(WEEK_FORMAT)]) {
+          avg[date.format(WEEK_FORMAT)] = [];
+        }
       }
 
-      date.add(1, 'week');
+      date.add(1, 'day');
 
       if (date.isAfter(moment())) {
         break;
       }
     }
 
+    const keys: any = Object.keys(avg).map((i) => moment(i, WEEK_FORMAT).format(DATE_FORMAT));
+
     return {
-      values,
+      values: Object.keys(avg)
+        .map((k) => {
+          if (avg[k].length) {
+            return avg[k].reduce((p: number, c: number) => p + c) / avg[k].length;
+          }
+
+          return undefined;
+        })
+        .map((n) => Math.round(n)),
       keys,
     };
   }

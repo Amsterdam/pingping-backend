@@ -13,7 +13,7 @@ class WeeklyUsersChart {
         borderColor: '#003f5c',
       },
       {
-        label: 'Active',
+        label: 'Active avg.',
         yAxisId: 'y1',
         data: this.activeWeekly,
         fill: false,
