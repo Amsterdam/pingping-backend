@@ -95,7 +95,7 @@ class StatisticsUtil {
     ]);
 
     return {
-      values: res.reduce((acc, v) => {
+      values: res.reduce((acc: Array<any>, v: any) => {
         if (acc.length) {
           acc.push(acc[acc.length - 1] + v.count);
         } else {
@@ -104,7 +104,7 @@ class StatisticsUtil {
 
         return acc;
       }, []),
-      keys: res.map((i) => i._id),
+      keys: res.map((i: any) => i._id),
     };
   }
 
@@ -152,7 +152,7 @@ class StatisticsUtil {
     const res = await User.aggregate(filter);
 
     return {
-      values: res.reduce((acc, v) => {
+      values: res.reduce((acc: Array<any>, v: any) => {
         if (acc.length) {
           acc.push(acc[acc.length - 1] + v.count);
         } else {
@@ -161,7 +161,7 @@ class StatisticsUtil {
 
         return acc;
       }, []),
-      keys: res.map((i) => i._id),
+      keys: res.map((i: any) => i._id),
     };
   }
 
@@ -203,7 +203,7 @@ class StatisticsUtil {
     const res = await User.aggregate(filter);
 
     return {
-      values: res.reduce((acc, v) => {
+      values: res.reduce((acc: Array<any>, v: any) => {
         if (acc.length) {
           acc.push(acc[acc.length - 1] + v.count);
         } else {
@@ -212,7 +212,7 @@ class StatisticsUtil {
 
         return acc;
       }, []),
-      keys: res.map((i) => i._id),
+      keys: res.map((i: any) => i._id),
     };
   }
 
@@ -273,12 +273,12 @@ class StatisticsUtil {
       { $sort: { '_id.label': 1 } },
     ]);
 
-    res = res.filter((i) => i._id.label !== null);
+    res = res.filter((i: any) => i._id.label !== null);
 
     return {
       dump: res,
-      values: res.map((i) => i.count),
-      keys: res.map((i) => i._id.label),
+      values: res.map((i: any) => i.count),
+      keys: res.map((i: any) => i._id.label),
     };
   }
 
@@ -347,11 +347,11 @@ class StatisticsUtil {
       { $sort: { '_id.label': 1 } },
     ]);
 
-    res = res.filter((i) => i._id.label !== null);
+    res = res.filter((i: any) => i._id.label !== null);
 
     return {
-      values: res.map((i) => i.count),
-      keys: res.map((i) => {
+      values: res.map((i: any) => i.count),
+      keys: res.map((i: any) => {
         let mod = i._id.label % 12;
 
         return `${(i._id.label - mod) / 12}.${mod}`;
