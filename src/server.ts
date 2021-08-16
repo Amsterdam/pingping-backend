@@ -16,7 +16,7 @@ export const LogPlugin: ApolloServerPlugin = {
   requestDidStart<TContext>(_: GraphQLRequestContext<TContext>): GraphQLRequestListener<TContext> {
     return {
       didEncounterErrors(context) {
-        console.log('didEncounterErrors', context.errors);
+        console.warn('didEncounterErrors', context.errors);
       },
     };
   },

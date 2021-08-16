@@ -20,8 +20,7 @@ export default {
         variables: {
           type
         }
-      }).then((data) => {
-        console.log(data)
+      }).then(() => {
       }).catch((error) => {
         console.error(error)
       })

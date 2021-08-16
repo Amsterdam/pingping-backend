@@ -46,7 +46,7 @@ const seed = async () => {
         let numberOfUsersToday = getRandomNumber(MAX_USERS_PER_DAY, MIN_USERS_PER_DAY);
         sinon.useFakeTimers(startDate.add(1, 'days').toDate());
 
-        console.log('Today is', moment().toDate(), 'creating', numberOfUsersToday, 'users');
+        console.info('Today is', moment().toDate(), 'creating', numberOfUsersToday, 'users');
 
         for (var un = 0; un <= numberOfUsersToday; un++) {
           // Create [n-(n+r) number of users
@@ -83,7 +83,7 @@ const seed = async () => {
 
           // Complete nt next tasks in onboarding
           let numberOfTasks = getRandomNumber(0, 9);
-          console.log('Completing extra', numberOfTasks, 'tasks');
+          console.info('Completing extra', numberOfTasks, 'tasks');
           for (var tn = 0; tn <= numberOfTasks; tn++) {
             let nextTask = TaskUtil.getNextTask(user);
 
@@ -99,7 +99,7 @@ const seed = async () => {
         // For the users that exists, complete random tasks
         let randomNumberOfUsers = getRandomNumber(0, (await User.countDocuments()) / 20);
         let numberOfTasks = getRandomNumber(0, 9);
-        console.log(`for ${randomNumberOfUsers} users, do complete random number of tasks`);
+        console.info(`for ${randomNumberOfUsers} users, do complete random number of tasks`);
         for (var en = 0; en <= randomNumberOfUsers; en++) {
           let N = await User.countDocuments();
           let R = Math.floor(Math.random() * N);
@@ -131,9 +131,9 @@ const seed = async () => {
       break;
   }
 
-  console.log(`Seed done ${type}:`);
-  console.log('Paylaod:', payload);
-  console.log('Result', result);
+  console.info(`Seed done ${type}:`);
+  console.info('Paylaod:', payload);
+  console.info('Result', result);
 
   rl.close();
 };

@@ -8,7 +8,7 @@ import Config from 'config';
 
 class boot {
   static async start(): Promise<Array<any>> {
-    console.log('booting...', process.env.ENVIRONMENT);
+    console.info('booting...', process.env.ENVIRONMENT);
     dotenv.config();
     Config.assertConfig();
     StatisticsUtil.registerStatistics();
@@ -16,12 +16,12 @@ class boot {
 
     // Schedule cron jobs for statistics and data consistency
     NodeCron.schedule('0 12 * * *', async () => {
-      console.log('Running statistics cron');
+      console.info('Running statistics cron');
       await StatisticsUtil.registerStatistics();
     });
 
     NodeCron.schedule('0 5 * * *', async () => {
-      console.log('Running route progress cron');
+      console.info('Running route progress cron');
       MigrationUtil.checkRouteProgress();
     });
 

@@ -46,7 +46,7 @@
         v-if="statistics"
         class="col-sm-6 col-lg-4"
         type="line"
-        title="Cumulative Users"
+        title="Cumulative"
         v-bind="cumulativeUsers"
       />
       <Chart
@@ -57,12 +57,18 @@
         :title="route.title"
         v-bind="route.data"
       />
+      <!-- <Chart
+        v-if="statistics"
+        class="col-sm-6 col-lg-5"
+        type="line"
+        title="Monthly"
+        v-bind="monthly"
+      /> -->
     </div>
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
 import { AdminStatisticsQuery } from '../queries/AdminStatisticsQuery'
 import NumberBlock from '../components/NumberBlock'
 import Chart from '../components/Chart'
@@ -90,7 +96,7 @@ export default {
       return getWeeklyUsersProps(usersPerWeek, activeUsersPerWeek)
     },
     cumulativeUsers () {
-      return getCumulativeUsersProps(_.get(this.statistics, 'usersCumulative'))
+      return getCumulativeUsersProps(this.statistics?.usersCumulative, this.statistics?.routesCumulative, this.statistics?.routesCompletedCumulative)
     }
   },
 

@@ -21,7 +21,7 @@ server.listen(
     playground: process.env.ENVIRONMENT === ENV_PRODUCTION ? false : '/api',
   },
   () => {
-    console.log(`Server started: ${process.env.PORT || 4000}`);
+    console.info(`Server started: ${process.env.PORT || 4000}`);
     return server;
   }
 );

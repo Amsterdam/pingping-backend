@@ -28,8 +28,8 @@ afterEach(function () {
 });
 
 after(async () => {
-  User.deleteMany({}, (err: any) => console.log(err));
-  RewardVoucher.deleteMany({}, (err: any) => console.log(err));
+  User.deleteMany({}, (err: any) => console.warn(err));
+  RewardVoucher.deleteMany({}, (err: any) => console.warn(err));
 });
 
 process.env.TS_CONFIG_PATHS = './tsconfig.json';

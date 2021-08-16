@@ -42,6 +42,8 @@ export type AdminStatisticsResponse = {
   usersPerWeek: Statistics;
   activeUsersPerWeek: Statistics;
   usersCumulative: Statistics;
+  routesCumulative: Statistics;
+  routesCompletedCumulative: Statistics;
   completedTasks: Statistics;
   routes?: Maybe<Array<RouteStatistics>>;
   activeUsers: StatisticNumberChange;
@@ -884,6 +886,8 @@ export type AdminStatisticsResponseResolvers<ContextType = ModuleContext, Parent
   usersPerWeek?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
   activeUsersPerWeek?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
   usersCumulative?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
+  routesCumulative?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
+  routesCompletedCumulative?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType>,
   completedTasks?: Resolver<ResolversTypes['Statistics'], ParentType, ContextType, RequireFields<AdminStatisticsResponseCompletedTasksArgs, never>>,
   routes?: Resolver<Maybe<Array<ResolversTypes['RouteStatistics']>>, ParentType, ContextType>,
   activeUsers?: Resolver<ResolversTypes['StatisticNumberChange'], ParentType, ContextType>,

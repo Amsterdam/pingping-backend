@@ -6,7 +6,7 @@ mongoose.set('useFindAndModify', false);
 
 class db {
   static async connect() {
-    console.log('Setting up mongodb connection...', process.env.ENVIRONMENT);
+    console.info('Setting up mongodb connection...', process.env.ENVIRONMENT);
 
     return await mongoose
       .connect(process.env.MONGO_STRING, {
@@ -15,7 +15,7 @@ class db {
         useCreateIndex: true,
       })
       .then((data) => {
-        console.log('DB Connection set up');
+        console.info('DB Connection set up');
         return data;
       })
       .catch((e) => {

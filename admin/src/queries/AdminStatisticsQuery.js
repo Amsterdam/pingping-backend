@@ -15,6 +15,14 @@ export const AdminStatisticsQuery = gql`
         values
         keys
       }
+      routesCumulative {
+        values
+        keys
+      }
+      routesCompletedCumulative {
+        values
+        keys
+      }
       activeUsers {
         current
         change

@@ -1,7 +1,7 @@
 import { User } from 'models/User';
 import moment from 'moment';
 import _ from 'lodash';
-import { UserRole, TaskStatus, StatisticNumberChange, Statistics, RouteStatistics } from '@models';
+import { UserRole, TaskStatus, StatisticNumberChange, Statistics, RouteStatistics, UserRouteStatus } from '@models';
 import InitialDataUtil from 'utils/InitialDataUtil';
 import { TaskDefinition } from 'types/global';
 import { RouteDefinition } from 'types/global';
@@ -93,6 +93,114 @@ class StatisticsUtil {
       },
       { $sort: { _id: 1 } },
     ]);
+
+    return {
+      values: res.reduce((acc, v) => {
+        if (acc.length) {
+          acc.push(acc[acc.length - 1] + v.count);
+        } else {
+          acc.push(v.count);
+        }
+
+        return acc;
+      }, []),
+      keys: res.map((i) => i._id),
+    };
+  }
+
+  static async getRoutesCumulative(completed: boolean = false): Promise<Statistics> {
+    const filter: any = [
+      {
+        $match: {
+          role: UserRole.User,
+          createdAt: {
+            $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+          },
+        },
+      },
+      {
+        $unwind: {
+          path: '$routes',
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $project: {
+          label: { $dateToString: { format: '%Y-%m-%d', date: '$routes.createdAt' } },
+          completed: {
+            $eq: ['$routes.status', UserRouteStatus.Completed],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$label',
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ];
+
+    if (completed) {
+      filter.push({
+        $match: {
+          completed: true,
+        },
+      });
+    }
+
+    const res = await User.aggregate(filter);
+
+    return {
+      values: res.reduce((acc, v) => {
+        if (acc.length) {
+          acc.push(acc[acc.length - 1] + v.count);
+        } else {
+          acc.push(v.count);
+        }
+
+        return acc;
+      }, []),
+      keys: res.map((i) => i._id),
+    };
+  }
+
+  static async getRoutesCompletedCumulative(): Promise<Statistics> {
+    const filter: any = [
+      {
+        $match: {
+          role: UserRole.User,
+          createdAt: {
+            $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+          },
+        },
+      },
+      {
+        $unwind: {
+          path: '$routes',
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $match: {
+          'routes.status': 'Completed',
+        },
+      },
+      {
+        $project: {
+          label: { $dateToString: { format: '%Y-%m-%d', date: '$routes.completedAt' } },
+        },
+      },
+      {
+        $group: {
+          _id: '$label',
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ];
+
+    const res = await User.aggregate(filter);
 
     return {
       values: res.reduce((acc, v) => {

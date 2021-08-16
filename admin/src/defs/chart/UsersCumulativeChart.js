@@ -1,15 +1,30 @@
 class UsersCumulativeChart {
-  constructor(keys, acc) {
+  constructor(keys, users, routes, completedRoutes) {
     this.keys = keys
     this.datasets = [
       {
-        label: 'Cumulative Users',
-        data: acc,
+        label: 'Completed Routes',
+        data: completedRoutes,
+        borderColor: '#0D2036',
+        backgroundColor: '#0D2036',
+
+        pointRadius: 1
+      },
+      {
+        label: 'Routes',
+        data: routes,
         borderColor: '#fb9f4b',
         backgroundColor: '#fb9f4b',
-        fillColor: "yellow",
-        pointRadius: 1
-      }
+
+        pointRadius: 0.5
+      },
+      {
+        label: 'Users',
+        data: users,
+        borderColor: '#ff6361',
+        backgroundColor: '#ff6361',
+        pointRadius: 0.5
+      },
     ]
     this.options = {
       legend: {
@@ -35,11 +50,11 @@ class UsersCumulativeChart {
             distribution: 'linear',
             ticks: {
               autoSkip: true,
-              maxTicksLimit: 10
+              maxTicksLimit: 1
             },
             time: {
               unit: 'month',
-              tooltipFormat: '[Week:] W (MMM YYYY)',
+              tooltipFormat: 'MMM D YYYY',
               displayFormats: {
                 month: 'MMM YYYY'
               }
@@ -62,8 +77,8 @@ class UsersCumulativeChart {
   }
 }
 
-export const getProps = ({ keys, values }) => {
-  const instance = new UsersCumulativeChart(keys, values)
+export const getProps = ({ keys, values }, routes, completedRoutes) => {
+  const instance = new UsersCumulativeChart(keys, values, routes?.values, completedRoutes?.values)
 
   return instance.getProps()
 }

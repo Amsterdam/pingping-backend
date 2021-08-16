@@ -28,6 +28,12 @@ export const AdminStatisticsResponse: any = {
   usersCumulative: async (doc: any) => {
     return await StatisticsUtil.getUsersCumulative();
   },
+  routesCumulative: async (doc: any) => {
+    return await StatisticsUtil.getRoutesCumulative();
+  },
+  routesCompletedCumulative: async (doc: any) => {
+    return await StatisticsUtil.getRoutesCompletedCumulative();
+  },
   usersPerWeek: async (doc: any) => {
     return await StatisticsUtil.getUsersPerWeek();
   },

@@ -16,11 +16,11 @@ export default class MailUtil {
 
     sg.API(request, function (error: any, response: any) {
       if (error) {
-        console.log('Error response received');
+        console.warn('Error response received');
       }
-      console.log(response.statusCode);
-      console.log(response.body);
-      console.log(response.headers);
+      console.info(response.statusCode);
+      console.info(response.body);
+      console.info(response.headers);
 
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
     });

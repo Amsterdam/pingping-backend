@@ -12,7 +12,7 @@ class TransactionUtil {
 
     if (user.transactions.map((t) => t.reference).indexOf(reference) !== -1) {
       // @todo fix
-      console.log('Skipping duplicate transaction');
+      console.info('Skipping duplicate transaction');
       return null;
     }
 
