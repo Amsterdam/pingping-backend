@@ -15,7 +15,7 @@ class RewardUtil {
   }
 
   static assertNotAlreadyClaimedTooMany(reward: RewardDefinition, user: UserDocument) {
-    const numberClaimed = user.rewards.filter((i) => (i.rewardId = reward.id)).length;
+    const numberClaimed = user.rewards.filter((r: UserReward) => (r.rewardId = reward.id)).length;
 
     if (numberClaimed >= reward.availablePerUser) {
       throw new Error(`reward_already_claimed`);

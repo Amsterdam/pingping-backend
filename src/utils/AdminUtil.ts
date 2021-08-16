@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { User } from 'models/User';
+import { UserTask } from 'models/UserTask';
 
 export default class AdminUtil {
   static async fixUsers() {
@@ -8,8 +9,8 @@ export default class AdminUtil {
     for (var u in users) {
       let user = users[u];
 
-      user.tasks = _.uniqBy(user.tasks, (e) => {
-        return e.taskId;
+      user.tasks = _.uniqBy(user.tasks, (ut: UserTask) => {
+        return ut.taskId;
       }) as any;
       await user.save();
     }

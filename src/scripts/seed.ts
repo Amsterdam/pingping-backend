@@ -11,6 +11,7 @@ import { NotificationStatus, TaskStatus } from '@models';
 import StatisticsUtil from 'utils/StatisticsUtil';
 import { ENV_DEVELOPMENT } from 'config/index';
 import MigrationUtil from 'utils/MigrationUtil';
+import { UserTask } from 'models/UserTask';
 
 const START_DATE = '2021-01-04';
 const NUMBER_OF_DAYS = moment().diff(moment(START_DATE), 'days');
@@ -28,7 +29,7 @@ const getRandomNumber = (min: number, max: number) => {
 
 const seed = async () => {
   if (process.env.ENVIRONMENT !== ENV_DEVELOPMENT) {
-    console.error(`This command can only be run during development, currrent ${process.env.ENVIRONMENT}`);
+    console.error(`This command can only be run during development, current ${process.env.ENVIRONMENT}`);
     process.exit(1);
   }
   const type = argv[2];
@@ -38,7 +39,7 @@ const seed = async () => {
   switch (type) {
     case 'mock-data':
       let startDate = moment(START_DATE);
-      // Moch PingPing Start Date
+      // Mock PingPing Start Date
       sinon.useFakeTimers(startDate.toDate());
 
       for (var d = 0; d <= NUMBER_OF_DAYS; d++) {
@@ -113,7 +114,7 @@ const seed = async () => {
               await TaskUtil.handleTask(user, nextTaskDef, Boolean(Math.round(Math.random())) ? 'yes' : 'no');
             } else {
               // Look for a dismissed onboarding tasks and complete it
-              let tasks = user.tasks.filter((t) => t.status === TaskStatus.Dismissed);
+              let tasks = user.tasks.filter((t: UserTask) => t.status === TaskStatus.Dismissed);
 
               for (var tl in tasks) {
                 let dismissedTaskDef = TaskUtil.getDefinition(tasks[tl].taskId);
@@ -132,7 +133,7 @@ const seed = async () => {
   }
 
   console.info(`Seed done ${type}:`);
-  console.info('Paylaod:', payload);
+  console.info('Payload:', payload);
   console.info('Result', result);
 
   rl.close();

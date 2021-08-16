@@ -17,8 +17,6 @@ COPY admin /app/admin
 COPY tsconfig.json /app/tsconfig.json
 COPY initialData.json /app/initialData.json
 
-RUN npm run build
-
 # Admin Part
 WORKDIR /app/admin
 RUN npm install

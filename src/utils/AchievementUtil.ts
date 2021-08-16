@@ -21,7 +21,7 @@ class AchievementUtil {
     const def: AchievementDefinition = InitialDataUtil.getAchievementById(id);
 
     // Check if it exists
-    const indexFound = user.achievements.map((a) => a.achievementId).indexOf(id);
+    const indexFound = user.achievements.map((a: UserAchievement) => a.achievementId).indexOf(id);
 
     // Passive check if already earned
     if (indexFound !== -1) {

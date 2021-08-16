@@ -9,6 +9,7 @@ import RouteUtil from './RouteUtil';
 import { TaskStatus, TaskType, UserRouteStatus } from '../generated-models';
 import TransactionUtil from './TransactionUtil';
 import { UserRoute } from 'models/UserRoute';
+import { UserTask } from 'models/UserTask';
 
 class TaskUtil {
   static getProgress(taskId: string): number {
@@ -120,7 +121,7 @@ class TaskUtil {
     const tasks = user.tasks.filter((t: UserTask) => t.status === TaskStatus.PendingUser);
 
     if (tasks.length) {
-      const firstTask = _.first(tasks);
+      const firstTask: UserTask = _.first(tasks);
       return new UserTask(firstTask.taskId, firstTask.status, firstTask.answer);
     }
   }
