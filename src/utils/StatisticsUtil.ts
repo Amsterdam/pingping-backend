@@ -71,6 +71,7 @@ class StatisticsUtil {
   }
 
   static async getUsersCumulative(): Promise<Statistics> {
+    const dates = this.getDates();
     const res = await User.aggregate([
       {
         $match: {
@@ -92,6 +93,49 @@ class StatisticsUtil {
         },
       },
       { $sort: { _id: 1 } },
+      {
+        $project: {
+          date: '$_id',
+          count: '$count',
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          stats: { $push: '$$ROOT' },
+        },
+      },
+      {
+        $project: {
+          stats: {
+            $map: {
+              input: dates,
+              as: 'date',
+              in: {
+                $let: {
+                  vars: { dateIndex: { $indexOfArray: ['$stats._id', '$$date'] } },
+                  in: {
+                    $cond: {
+                      if: { $ne: ['$$dateIndex', -1] },
+                      then: { $arrayElemAt: ['$stats', '$$dateIndex'] },
+                      else: { _id: '$$date', date: '$$date', count: 0 },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        $unwind: '$stats',
+      },
+      {
+        $replaceRoot: {
+          newRoot: '$stats',
+        },
+      },
+      { $sort: { _id: 1 } },
     ]);
 
     return {
@@ -108,7 +152,8 @@ class StatisticsUtil {
     };
   }
 
-  static async getRoutesCumulative(completed: boolean = false): Promise<Statistics> {
+  static async getRoutesCumulative(): Promise<Statistics> {
+    const dates = this.getDates();
     const filter: any = [
       {
         $match: {
@@ -127,9 +172,6 @@ class StatisticsUtil {
       {
         $project: {
           label: { $dateToString: { format: '%Y-%m-%d', date: '$routes.createdAt' } },
-          completed: {
-            $eq: ['$routes.status', UserRouteStatus.Completed],
-          },
         },
       },
       {
@@ -139,15 +181,50 @@ class StatisticsUtil {
         },
       },
       { $sort: { _id: 1 } },
-    ];
-
-    if (completed) {
-      filter.push({
-        $match: {
-          completed: true,
+      {
+        $project: {
+          date: '$_id',
+          count: '$count',
         },
-      });
-    }
+      },
+      {
+        $group: {
+          _id: null,
+          stats: { $push: '$$ROOT' },
+        },
+      },
+      {
+        $project: {
+          stats: {
+            $map: {
+              input: dates,
+              as: 'date',
+              in: {
+                $let: {
+                  vars: { dateIndex: { $indexOfArray: ['$stats._id', '$$date'] } },
+                  in: {
+                    $cond: {
+                      if: { $ne: ['$$dateIndex', -1] },
+                      then: { $arrayElemAt: ['$stats', '$$dateIndex'] },
+                      else: { _id: '$$date', date: '$$date', count: 0 },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        $unwind: '$stats',
+      },
+      {
+        $replaceRoot: {
+          newRoot: '$stats',
+        },
+      },
+      { $sort: { _id: 1 } },
+    ];
 
     const res = await User.aggregate(filter);
 
@@ -165,7 +242,19 @@ class StatisticsUtil {
     };
   }
 
+  static getDates() {
+    let dateArray = [];
+    let currentDate = moment(START_DATE, 'DD.MM.YYYY');
+    let endDate = moment();
+    while (currentDate.isBefore(endDate)) {
+      dateArray.push(moment(currentDate).format('YYYY-MM-DD'));
+      currentDate = moment(currentDate).add(1, 'days');
+    }
+    return dateArray;
+  }
+
   static async getRoutesCompletedCumulative(): Promise<Statistics> {
+    const dates = this.getDates();
     const filter: any = [
       {
         $match: {
@@ -195,6 +284,49 @@ class StatisticsUtil {
         $group: {
           _id: '$label',
           count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+      {
+        $project: {
+          date: '$_id',
+          count: '$count',
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          stats: { $push: '$$ROOT' },
+        },
+      },
+      {
+        $project: {
+          stats: {
+            $map: {
+              input: dates,
+              as: 'date',
+              in: {
+                $let: {
+                  vars: { dateIndex: { $indexOfArray: ['$stats._id', '$$date'] } },
+                  in: {
+                    $cond: {
+                      if: { $ne: ['$$dateIndex', -1] },
+                      then: { $arrayElemAt: ['$stats', '$$dateIndex'] },
+                      else: { _id: '$$date', date: '$$date', count: 0 },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        $unwind: '$stats',
+      },
+      {
+        $replaceRoot: {
+          newRoot: '$stats',
         },
       },
       { $sort: { _id: 1 } },
