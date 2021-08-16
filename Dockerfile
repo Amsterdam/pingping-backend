@@ -1,21 +1,15 @@
-FROM node:14
+FROM node:12
 
 # Create app directory
 WORKDIR /app
+COPY . /app/.
+RUN yarn install
 RUN npm install -g @vue/cli
 
 ENV PORT=8000
 COPY package.json /app/package.json
-# COPY yarn.lock /app/yarn.lock
 
-RUN npm install
-
-# Bundle app source
-COPY src /app/src
-COPY public /app/public
-COPY admin /app/admin
-COPY tsconfig.json /app/tsconfig.json
-COPY initialData.json /app/initialData.json
+RUN yarn build
 
 # Admin Part
 WORKDIR /app/admin
@@ -24,4 +18,4 @@ WORKDIR /app
 
 EXPOSE 8000
 
-CMD [ "npm", "run", "start:server" ]
+CMD [ "yarn", "start:server" ]
