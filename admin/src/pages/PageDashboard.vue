@@ -57,13 +57,6 @@
         :title="route.title"
         v-bind="route.data"
       />
-      <!-- <Chart
-        v-if="statistics"
-        class="col-sm-6 col-lg-5"
-        type="line"
-        title="Monthly"
-        v-bind="monthly"
-      /> -->
     </div>
   </div>
 </template>

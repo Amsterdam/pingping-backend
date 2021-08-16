@@ -22,7 +22,6 @@ RUN npm run build
 # Admin Part
 WORKDIR /app/admin
 RUN npm install
-RUN npm run build
 WORKDIR /app
 
 EXPOSE 8000
