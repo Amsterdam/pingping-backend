@@ -10,11 +10,10 @@ RUN npm install -g @vue/cli
 ENV PORT=8000
 COPY package.json /app/package.json
 
-RUN yarn build
-
 # Admin Part
 WORKDIR /app/admin
-RUN npm install
+RUN yarn install
+RUN yarn build
 WORKDIR /app
 
 EXPOSE 8000
