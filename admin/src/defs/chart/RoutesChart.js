@@ -1,32 +1,25 @@
-class UsersCumulativeChart {
-  constructor(keys, users, routes, completedRoutes) {
+class RoutesChart {
+  constructor(keys, routes, completedRoutes) {
     this.keys = keys
     this.datasets = [
       {
-        label: 'Completed Routes',
-        data: completedRoutes,
-        borderColor: '#ff6361',
-        backgroundColor: '#ff6361',
-        pointRadius: 1
-      },
-      {
         label: 'Routes',
         data: routes,
-        borderColor: '#0D2036',
-        backgroundColor: '#0D2036',
-        pointRadius: 0.5
-      },
-      {
-        label: 'Cumulative Users',
-        data: users,
         borderColor: '#fb9f4b',
         backgroundColor: '#fb9f4b',
         pointRadius: 0.5
       },
+      {
+        label: 'Completed Routes',
+        data: completedRoutes,
+        borderColor: '#0D2036',
+        backgroundColor: '#0D2036',
+        pointRadius: 1
+      },
     ]
     this.options = {
       legend: {
-        display: false,
+        display: true,
       },
       scales: {
         yAxis: [
@@ -75,10 +68,10 @@ class UsersCumulativeChart {
   }
 }
 
-export const getProps = ({ keys, values }, routes, completedRoutes) => {
-  const instance = new UsersCumulativeChart(keys, values, routes?.values, completedRoutes?.values)
+export const getProps = ({ keys, values }, completedRoutes) => {
+  const instance = new RoutesChart(keys, values, completedRoutes?.values)
 
   return instance.getProps()
 }
 
-export default UsersCumulativeChart
+export default RoutesChart

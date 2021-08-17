@@ -36,6 +36,13 @@
         :weekFilter="true"
       />
       <Chart
+        class="col-sm-6 col-lg-6"
+        title="Routes"
+        type="bar"
+        v-bind="routes"
+        :weekFilter="false"
+      />
+      <Chart
         v-if="statistics"
         class="col-sm-6 col-lg-5"
         type="line"
@@ -46,7 +53,7 @@
         v-if="statistics"
         class="col-sm-6 col-lg-4"
         type="line"
-        title="Cumulative"
+        title="Cumulative Users"
         v-bind="cumulativeUsers"
       />
       <Chart
@@ -67,6 +74,7 @@ import NumberBlock from '../components/NumberBlock'
 import Chart from '../components/Chart'
 import { getProps as getWeeklyUsersProps } from '../defs/chart/WeeklyUsersChart'
 import { getProps as getCumulativeUsersProps } from '../defs/chart/UsersCumulativeChart'
+import { getProps as getRouteProps } from '../defs/chart/RoutesChart'
 
 export default {
   name: 'PageDashboard',
@@ -89,7 +97,10 @@ export default {
       return getWeeklyUsersProps(usersPerWeek, activeUsersPerWeek)
     },
     cumulativeUsers () {
-      return getCumulativeUsersProps(this.statistics?.usersCumulative, this.statistics?.routesCumulative, this.statistics?.routesCompletedCumulative)
+      return getCumulativeUsersProps(this.statistics?.usersCumulative)
+    },
+    routes () {
+      return getRouteProps(this.statistics?.routesCumulative, this.statistics?.routesCompletedCumulative)
     }
   },
 

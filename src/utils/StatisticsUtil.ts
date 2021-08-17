@@ -153,7 +153,7 @@ class StatisticsUtil {
   }
 
   static async getRoutesCumulative(): Promise<Statistics> {
-    const dates = this.getDates();
+    const months = this.getMonths();
     const filter: any = [
       {
         $match: {
@@ -171,7 +171,7 @@ class StatisticsUtil {
       },
       {
         $project: {
-          label: { $dateToString: { format: '%Y-%m-%d', date: '$routes.createdAt' } },
+          label: { $dateToString: { format: '%Y-%m', date: '$routes.createdAt' } },
         },
       },
       {
@@ -197,7 +197,7 @@ class StatisticsUtil {
         $project: {
           stats: {
             $map: {
-              input: dates,
+              input: months,
               as: 'date',
               in: {
                 $let: {
@@ -253,8 +253,19 @@ class StatisticsUtil {
     return dateArray;
   }
 
+  static getMonths() {
+    let dateArray = [];
+    let currentDate = moment(START_DATE, 'DD,MM.YYYY');
+    let endDate = moment();
+    while (currentDate.isBefore(endDate)) {
+      dateArray.push(moment(currentDate).format('YYYY-MM'));
+      currentDate = moment(currentDate).add(1, 'month').startOf('month');
+    }
+    return dateArray;
+  }
+
   static async getRoutesCompletedCumulative(): Promise<Statistics> {
-    const dates = this.getDates();
+    const months = this.getMonths();
     const filter: any = [
       {
         $match: {
@@ -277,7 +288,7 @@ class StatisticsUtil {
       },
       {
         $project: {
-          label: { $dateToString: { format: '%Y-%m-%d', date: '$routes.completedAt' } },
+          label: { $dateToString: { format: '%Y-%m', date: '$routes.completedAt' } },
         },
       },
       {
@@ -303,7 +314,7 @@ class StatisticsUtil {
         $project: {
           stats: {
             $map: {
-              input: dates,
+              input: months,
               as: 'date',
               in: {
                 $let: {
