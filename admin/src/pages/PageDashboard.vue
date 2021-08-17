@@ -100,7 +100,7 @@ export default {
       return getCumulativeUsersProps(this.statistics?.usersCumulative)
     },
     routes () {
-      return getRouteProps(this.statistics?.routesCumulative, this.statistics?.routesCompletedCumulative)
+      return getRouteProps(this.statistics?.routesPerMonth, this.statistics?.routesCompletedPerMonth)
     }
   },
 

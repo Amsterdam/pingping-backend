@@ -23,8 +23,8 @@ type AdminStatisticsResponse {
   usersPerWeek: Statistics!
   activeUsersPerWeek: Statistics!
   usersCumulative: Statistics!
-  routesCumulative: Statistics!
-  routesCompletedCumulative: Statistics!
+  routesPerMonth: Statistics!
+  routesCompletedPerMonth: Statistics!
   completedTasks(week: String): Statistics!
   routes: [RouteStatistics!]
   activeUsers: StatisticNumberChange!

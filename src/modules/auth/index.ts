@@ -12,5 +12,5 @@ const typeDefs = mergeTypeDefs(loadedFiles);
 export const AuthModule = new GraphQLModule({
   imports: [CommonModule, UserModule, RoutesModule],
   typeDefs,
-  resolvers: mergeResolvers(resolvers),
+  resolvers: mergeResolvers(resolvers) as any,
 });

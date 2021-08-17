@@ -21,8 +21,8 @@
   "dependencies": {
     "@graphql-modules/core": "^0.7.17",
     "@graphql-tools/load-files": "^6.0.18",
-    "@graphql-tools/merge": "^6.0.18",
-    "@typegoose/typegoose": "^7.3.3",
+    "@graphql-tools/merge": "^8.0.1",
+    "@typegoose/typegoose": "^8.1.1",
     "@types/bcrypt-nodejs": "^0.0.31",
     "@types/dotenv": "^8.2.0",
     "@types/jsonwebtoken": "^8.3.9",

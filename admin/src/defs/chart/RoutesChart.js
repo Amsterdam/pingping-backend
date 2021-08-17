@@ -1,6 +1,10 @@
+import moment from 'moment'
+
 class RoutesChart {
   constructor(keys, routes, completedRoutes) {
-    this.keys = keys
+    this.keys = keys.map((value) => {
+      return moment(value).format('MMM YYYY')
+    })
     this.datasets = [
       {
         label: 'Routes',

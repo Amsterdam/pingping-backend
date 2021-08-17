@@ -24,6 +24,9 @@ mongo:		## Docker exec into mongo machine
 mongo-logs:	## View logs from mongo machine
 	docker logs mongo
 
+dev:      ## Run admin & api in dev mode
+	yarn dev && cd admin && VUE_APP_GRAPHQL_HTTP=http://localhost:4010/api yarn serve
+
 deploy: 	## Run deployment
 	@eval $$(docker_login)
 	git pull

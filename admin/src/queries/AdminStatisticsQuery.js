@@ -15,11 +15,11 @@ export const AdminStatisticsQuery = gql`
         values
         keys
       }
-      routesCumulative {
+      routesPerMonth {
         values
         keys
       }
-      routesCompletedCumulative {
+      routesCompletedPerMonth {
         values
         keys
       }

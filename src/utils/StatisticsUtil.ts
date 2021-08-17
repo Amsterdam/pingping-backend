@@ -152,7 +152,7 @@ class StatisticsUtil {
     };
   }
 
-  static async getRoutesCumulative(): Promise<Statistics> {
+  static async getRoutesPerMonth(): Promise<Statistics> {
     const months = this.getMonths();
     const filter: any = [
       {
@@ -229,16 +229,8 @@ class StatisticsUtil {
     const res = await User.aggregate(filter);
 
     return {
-      values: res.reduce((acc: Array<any>, v: any) => {
-        if (acc.length) {
-          acc.push(acc[acc.length - 1] + v.count);
-        } else {
-          acc.push(v.count);
-        }
-
-        return acc;
-      }, []),
-      keys: res.map((i: any) => i._id),
+      values: res.map((i: any) => i.count),
+      keys: res.map((i: any) => moment(i._id, 'YYYY-MM').format('YYYY-MM-DD')),
     };
   }
 
@@ -264,7 +256,7 @@ class StatisticsUtil {
     return dateArray;
   }
 
-  static async getRoutesCompletedCumulative(): Promise<Statistics> {
+  static async getRoutesCompletedPerMonth(): Promise<Statistics> {
     const months = this.getMonths();
     const filter: any = [
       {
@@ -346,16 +338,8 @@ class StatisticsUtil {
     const res = await User.aggregate(filter);
 
     return {
-      values: res.reduce((acc: Array<any>, v: any) => {
-        if (acc.length) {
-          acc.push(acc[acc.length - 1] + v.count);
-        } else {
-          acc.push(v.count);
-        }
-
-        return acc;
-      }, []),
-      keys: res.map((i: any) => i._id),
+      values: res.map((i: any) => i.count),
+      keys: res.map((i: any) => moment(i._id, 'YYYY-MM').format('YYYY-MM-DD')),
     };
   }
 

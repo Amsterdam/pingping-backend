@@ -22,6 +22,6 @@ export const RoutesModule = new GraphQLModule({
     'Query.getUserTask': [AuthMiddleware.isAuthenticated()],
   },
   typeDefs,
-  resolvers: mergeResolvers(resolvers),
+  resolvers: mergeResolvers(resolvers) as any,
   context,
 });

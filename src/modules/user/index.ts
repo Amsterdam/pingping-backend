@@ -25,5 +25,5 @@ export const UserModule = new GraphQLModule({
     'Mutation.registerNotifications': [AuthMiddleware.isAuthenticated()],
   },
   typeDefs,
-  resolvers: mergeResolvers(resolvers),
+  resolvers: mergeResolvers(resolvers) as any,
 });
