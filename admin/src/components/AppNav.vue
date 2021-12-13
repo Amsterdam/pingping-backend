@@ -66,7 +66,7 @@ export default {
 
 <style lang="scss" scoped>
 .navbar.env-development {
-  background: repeating-linear-gradient(45deg, #58508d, #58508d 10px, #94a5bc 10px, #94a5bc 20px);
+  background: repeating-linear-gradient(45deg, #58508d, #58508d 10px, #58549d 10px, #58549d 20px);
 }
 
 .navbar.env-acceptance {

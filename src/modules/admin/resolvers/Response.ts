@@ -1,6 +1,5 @@
 import { AuditLogDocument } from 'models/AuditLog';
 import { User, UserDocument } from 'models/User';
-import { UserRoute } from 'models/UserRoute';
 import StatisticsUtil from 'utils/StatisticsUtil';
 import moment from 'moment';
 import { AdminUserRouteResponseCompletedAtArgs, AdminUserRouteResponseCreatedAtArgs } from '@models';

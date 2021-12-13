@@ -36,6 +36,7 @@ class TaskUtil {
       headerTitle: taskFound.headerTitle,
       choices: taskFound.choices,
       points: taskFound.points,
+      disabled: taskFound.disabled || false,
       progress: TaskUtil.getProgress(taskId),
       description: taskFound.description,
       routeTaskId: taskFound.routeTaskId,
@@ -128,7 +129,7 @@ class TaskUtil {
   static addRouteToUser(user: UserDocument, routeId: string): UserDocument {
     let index = (_.get(user, 'routes', []) as Array<UserRoute>).map((i: UserRoute) => i.routeId).indexOf(routeId);
 
-    // Only add it if it doesn already exist
+    // Only add it if it doesn't already exist
     if (!routeId || index !== -1) {
       return user;
     }
@@ -147,7 +148,7 @@ class TaskUtil {
   static addNextTaskToUser(user: UserDocument, taskId: string): UserDocument {
     let index = user.tasks.map((i: UserTask) => i.taskId).indexOf(taskId);
 
-    // Only add it if it doesn already exist
+    // Only add it if it doesn't already exist
     if (!taskId || index !== -1) {
       return user;
     }

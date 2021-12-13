@@ -12,6 +12,7 @@ export type TaskDefinition = {
   id: string;
   routeTaskId?: string;
   type: TaskType;
+  disabled: boolean;
   headerTitle: string;
   title: string;
   description: string;

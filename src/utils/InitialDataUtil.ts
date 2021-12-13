@@ -30,7 +30,7 @@ type TaskIdObject = {
 };
 
 class InitialDataUtil {
-  // Task id can conlude a refereice to a route like this Route.taskId. Here we deconstruct it.
+  // Task id does contain a reference to a route like this Route.taskId. Here we deconstruct it.
   static deconstructTaskId(id: string): TaskIdObject {
     const [routeId, taskId] = id.split('.');
 

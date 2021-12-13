@@ -11,7 +11,6 @@ import {
   MutationAdminDeleteRewardVoucherArgs,
   MessageResponse,
   NotificationDeliveryStatus,
-  NotificationType,
   NotificationStatus,
 } from '@models';
 import AdminUtil from 'utils/AdminUtil';
