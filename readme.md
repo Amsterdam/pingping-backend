@@ -24,6 +24,10 @@ yarn build
 yarn prod
 ```
 
+## Migration
+
+- We have to delete user tasks that don't exist anymore.
+
 ## Tests
 
 ```

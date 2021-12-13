@@ -23,6 +23,7 @@
             type="password"
             placeholder="password"
             v-model="password"
+            @keydown.enter="login"
           ></b-input>
         </b-input-group>
 

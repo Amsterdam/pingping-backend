@@ -19,6 +19,12 @@
         class="mb-2"
       ></b-form-input>
     </b-form-group>
+    <b-form-group label="Data Set">
+      <b-form-select
+        v-model="newUser.dataSet"
+        :options="dataSets"
+      ></b-form-select>
+    </b-form-group>
     <b-form-group label="Role">
       <b-form-select
         v-model="newUser.role"
@@ -69,10 +75,12 @@ export default {
     return {
       loading: false,
       roles: ['Admin', 'Reporter'],
+      dataSets: ['none', 'amsterdam', 'rotterdam'],
       newUser: {
         fullName: '',
         email: '',
         password: '',
+        dataSet: 'none',
         role: 'Admin'
       }
     }

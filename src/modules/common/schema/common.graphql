@@ -11,7 +11,7 @@ type MessageResponse {
 }
 
 # Input
-input LocactionInput {
+input LocationInput {
   lat: Float
   lon: Float
 }
