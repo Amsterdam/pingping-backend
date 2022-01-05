@@ -15,6 +15,7 @@ import MigrationUtil from 'utils/MigrationUtil';
 import { UserTask } from 'models/UserTask';
 import { DATA_SET_ROTTERDAM, DATA_SET_NONE } from 'models/User';
 import { RouteFeedback } from 'models/RouteFeedback';
+import { PushNotificationUtil } from 'utils/PushNotificationUtil';
 
 const START_DATE = '2021-10-04';
 const NUMBER_OF_DAYS = moment().diff(moment(START_DATE), 'days');
@@ -40,6 +41,10 @@ const seed = async () => {
   let payload, result;
 
   switch (type) {
+    case 'push':
+      const payload = PushNotificationUtil.getPayload('Hello', 'This is a test notification', {});
+      await PushNotificationUtil.send(['dda1aa3eda6521711ba500b9eb43db5a007545cd60c437644b1fc6b27ca7b155'], payload);
+      break;
     case 'mock-data':
       let startDate = moment(START_DATE);
       // Mock PingPing Start Date
