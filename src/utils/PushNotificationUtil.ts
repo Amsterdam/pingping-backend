@@ -47,7 +47,7 @@ export class PushNotificationUtil {
       const res = await push.send(tokens, payload);
       console.info(`sent notification to ${tokens.length} devices`, payload.alert);
       console.log('tokens', tokens);
-      console.log('result', res);
+      console.log('result', res.length && res[0]);
     } catch (e) {
       console.error('Error: Sending push notifications');
       console.error(e);
