@@ -66,6 +66,8 @@ describe('onboarding', () => {
     try {
       let taskDef0: TaskDefinition = TaskUtil.getDefinition('onboarding.gemeente');
       await TaskUtil.handleTask(user, taskDef0, 'amsterdam');
+      let taskDefWelcome: TaskDefinition = TaskUtil.getDefinition('onboarding.welcome');
+      await TaskUtil.handleTask(user, taskDefWelcome, 'yes');
       let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.dateOfBirth');
       let taskDefTwo: TaskDefinition = TaskUtil.getDefinition('onboarding.woonAdres');
       await TaskUtil.handleTask(user, taskDef, '2012-01-01');
@@ -116,6 +118,8 @@ describe('onboarding', () => {
     try {
       let taskDef0: TaskDefinition = TaskUtil.getDefinition('onboarding.gemeente');
       await TaskUtil.handleTask(user, taskDef0, 'amsterdam');
+      let taskDefWelcome: TaskDefinition = TaskUtil.getDefinition('onboarding.welcome');
+      await TaskUtil.handleTask(user, taskDefWelcome, 'yes');
       let taskDef: TaskDefinition = TaskUtil.getDefinition('onboarding.dateOfBirth');
       let taskDefZ: TaskDefinition = TaskUtil.getDefinition('onboarding.woonAdres');
       await TaskUtil.handleTask(user, taskDef, '2012-01-01');

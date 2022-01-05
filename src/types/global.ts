@@ -32,7 +32,8 @@ export type RewardDefinition = {
   title: string;
   description: string;
   imageUrl: string;
-  tumbnailUrl: string;
+  thumbnailUrl: string;
+  dataSet: string;
   cover: MediaType;
   vendor: string;
   active: boolean;

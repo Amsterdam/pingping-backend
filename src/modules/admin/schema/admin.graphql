@@ -102,6 +102,7 @@ type AdminUserRouteResponse {
 # Input
 input CreateUserInput {
   email: String!
+  dataSet: String!
   fullName: String!
   password: String!
   role: UserRole!
@@ -118,7 +119,9 @@ input SendNotificationInput {
 # Enum
 enum AdminActionType {
   FixUsers
+  FixStatistics
   DeleteAllUsers
+  DataSetMigration
 }
 
 enum AuditLogType {

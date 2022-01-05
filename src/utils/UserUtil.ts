@@ -27,6 +27,7 @@ class UserUtil {
 
       userFound = await User.create({
         tasks: initialTasks,
+        dataSet: 'none',
         routes: [],
         balance: 0,
         role: UserRole.User,

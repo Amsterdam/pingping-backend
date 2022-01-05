@@ -15,17 +15,19 @@ const WEEK_FORMAT = 'YYYY-WW';
 export const START_DATE = '04.01.2021';
 
 class StatisticsUtil {
-  static async getTotalUsersCurrent(): Promise<number> {
+  static async getTotalUsersCurrent(dataSet: string = undefined): Promise<number> {
     return await User.countDocuments({
       role: UserRole.User,
+      dataSet,
     });
   }
 
-  static async getSkippedOnboardingCurrent(): Promise<number> {
+  static async getSkippedOnboardingCurrent(dataSet: string = undefined): Promise<number> {
     const res = await User.aggregate([
       {
         $match: {
           role: UserRole.User,
+          dataSet,
         },
       },
       {
@@ -52,12 +54,13 @@ class StatisticsUtil {
     return _.get(_.first(res), 'count', 0);
   }
 
-  static async getChangeFromLastWeek(type: string, current: number = 0): Promise<number> {
+  static async getChangeFromLastWeek(type: string, dataSet: string = undefined, current: number = 0): Promise<number> {
     const key = moment().subtract(1, 'week').format(DATE_FORMAT);
 
     const res = await StatisticModel.findOne({
       type,
       key,
+      dataSet,
     });
 
     if (res && res.value) {
@@ -70,12 +73,13 @@ class StatisticsUtil {
     return 0;
   }
 
-  static async getUsersCumulative(): Promise<Statistics> {
+  static async getUsersCumulative(dataSet: string = undefined): Promise<Statistics> {
     const dates = this.getDates();
     const res = await User.aggregate([
       {
         $match: {
           role: UserRole.User,
+          dataSet,
           createdAt: {
             $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
           },
@@ -152,12 +156,13 @@ class StatisticsUtil {
     };
   }
 
-  static async getRoutesPerMonth(): Promise<Statistics> {
+  static async getRoutesPerMonth(dataSet: string = undefined): Promise<Statistics> {
     const months = this.getMonths();
     const filter: any = [
       {
         $match: {
           role: UserRole.User,
+          dataSet,
           createdAt: {
             $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
           },
@@ -256,12 +261,13 @@ class StatisticsUtil {
     return dateArray;
   }
 
-  static async getRoutesCompletedPerMonth(): Promise<Statistics> {
+  static async getRoutesCompletedPerMonth(dataSet: string = undefined): Promise<Statistics> {
     const months = this.getMonths();
     const filter: any = [
       {
         $match: {
           role: UserRole.User,
+          dataSet,
           createdAt: {
             $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
           },
@@ -343,7 +349,7 @@ class StatisticsUtil {
     };
   }
 
-  static async getUsersPerYearOfBirth(week: string): Promise<Statistics> {
+  static async getUsersPerYearOfBirth(week: string, dataSet: string = undefined): Promise<Statistics> {
     let dateQuery: any = {};
 
     if (week) {
@@ -357,6 +363,7 @@ class StatisticsUtil {
       {
         $match: {
           role: UserRole.User,
+          dataSet,
         },
       },
       {
@@ -409,7 +416,12 @@ class StatisticsUtil {
     };
   }
 
-  static async getUsersPerMonthOfBirth(week: string, minAge: number = 0, maxAge: number = 100): Promise<Statistics> {
+  static async getUsersPerMonthOfBirth(
+    week: string,
+    minAge: number = 0,
+    maxAge: number = 100,
+    dataSet: string = undefined
+  ): Promise<Statistics> {
     let dateQuery: any = {};
 
     if (week) {
@@ -423,6 +435,7 @@ class StatisticsUtil {
       {
         $match: {
           role: UserRole.User,
+          dataSet,
         },
       },
       {
@@ -486,19 +499,21 @@ class StatisticsUtil {
     };
   }
 
-  static async registerStatistics(): Promise<void> {
+  static async registerStatistics(dataSet: string = undefined): Promise<void> {
     const key = moment().format(DATE_FORMAT);
 
     // Active Users
     const activeUsers = await User.countDocuments({
       activeAt: { $gte: moment().subtract('7', 'days').toDate() },
       role: UserRole.User,
+      dataSet,
     });
 
     await StatisticModel.findOneAndUpdate(
       {
         type: ACTIVE_USERS_WEEK,
         key,
+        dataSet,
       },
       { value: activeUsers.toString() },
       {
@@ -508,12 +523,13 @@ class StatisticsUtil {
     );
 
     // Total Users
-    const totalUsers = await this.getTotalUsersCurrent();
+    const totalUsers = await this.getTotalUsersCurrent(dataSet);
 
     await StatisticModel.findOneAndUpdate(
       {
         type: TOTAL_USERS_WEEK,
         key,
+        dataSet,
       },
       { value: totalUsers.toString() },
       {
@@ -523,12 +539,13 @@ class StatisticsUtil {
     );
 
     // Skipped onboarding
-    const skippedOnboarding = await this.getSkippedOnboardingCurrent();
+    const skippedOnboarding = await this.getSkippedOnboardingCurrent(dataSet);
     const skipperOnboardingPercentile: number = skippedOnboarding / totalUsers;
     await StatisticModel.findOneAndUpdate(
       {
         type: SKIPPED_ONBOARDING_WEEK,
         key,
+        dataSet,
       },
       { value: skipperOnboardingPercentile.toString() },
       {
@@ -538,9 +555,9 @@ class StatisticsUtil {
     );
   }
 
-  static async getTotalUsers(): Promise<StatisticNumberChange> {
-    const current: number = await this.getTotalUsersCurrent();
-    const change: number = await StatisticsUtil.getChangeFromLastWeek(TOTAL_USERS_WEEK, current);
+  static async getTotalUsers(dataSet: string = undefined): Promise<StatisticNumberChange> {
+    const current: number = await this.getTotalUsersCurrent(dataSet);
+    const change: number = await StatisticsUtil.getChangeFromLastWeek(TOTAL_USERS_WEEK, dataSet, current);
 
     return {
       current,
@@ -548,11 +565,11 @@ class StatisticsUtil {
     };
   }
 
-  static async getSkippedOnboarding(): Promise<StatisticNumberChange> {
-    const current: number = await this.getSkippedOnboardingCurrent();
-    const totalUsers: number = await this.getTotalUsersCurrent();
+  static async getSkippedOnboarding(dataSet: string = undefined): Promise<StatisticNumberChange> {
+    const current: number = await this.getSkippedOnboardingCurrent(dataSet);
+    const totalUsers: number = await this.getTotalUsersCurrent(dataSet);
     const percentile: number = current / totalUsers;
-    const change: number = await StatisticsUtil.getChangeFromLastWeek(SKIPPED_ONBOARDING_WEEK, percentile);
+    const change: number = await StatisticsUtil.getChangeFromLastWeek(SKIPPED_ONBOARDING_WEEK, dataSet, percentile);
 
     return {
       current,
@@ -561,12 +578,13 @@ class StatisticsUtil {
     };
   }
 
-  static async getActiveUsers(): Promise<StatisticNumberChange> {
+  static async getActiveUsers(dataSet: string = undefined): Promise<StatisticNumberChange> {
     const current: number = await User.countDocuments({
       activeAt: { $gte: moment().subtract('7', 'days').toDate() },
       role: UserRole.User,
+      dataSet,
     });
-    const change: number = await StatisticsUtil.getChangeFromLastWeek(ACTIVE_USERS_WEEK, current);
+    const change: number = await StatisticsUtil.getChangeFromLastWeek(ACTIVE_USERS_WEEK, dataSet, current);
 
     return {
       current,
@@ -574,11 +592,12 @@ class StatisticsUtil {
     };
   }
 
-  static async getUsersPerDay(): Promise<Statistics> {
+  static async getUsersPerDay(dataSet: string = undefined): Promise<Statistics> {
     const res = await User.aggregate([
       {
         $match: {
           role: UserRole.User,
+          dataSet,
           createdAt: {
             $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
           },
@@ -604,11 +623,12 @@ class StatisticsUtil {
     };
   }
 
-  static async getUsersPerWeek(): Promise<Statistics> {
+  static async getUsersPerWeek(dataSet: string = undefined): Promise<Statistics> {
     const res = await User.aggregate([
       {
         $match: {
           role: UserRole.User,
+          dataSet,
           createdAt: {
             $gte: moment(START_DATE, 'DD.MM.YYYY').toDate(),
             $lte: moment().subtract(1, 'week').endOf('week').add(2, 'day').toDate(),
@@ -635,7 +655,7 @@ class StatisticsUtil {
     };
   }
 
-  static async getActiveUsersPerWeek(): Promise<Statistics> {
+  static async getActiveUsersPerWeek(dataSet: string = undefined): Promise<Statistics> {
     const avg: any = {};
     const date: any = moment(START_DATE, 'DD.MM.YYYY');
 
@@ -645,6 +665,7 @@ class StatisticsUtil {
       const res: Statistic = await StatisticModel.findOne({
         type: ACTIVE_USERS_WEEK,
         key,
+        dataSet,
       });
 
       if (res) {
@@ -682,11 +703,12 @@ class StatisticsUtil {
     };
   }
 
-  static async getRoutes(): Promise<Array<RouteStatistics>> {
+  static async getRoutes(dataSet: string = undefined): Promise<Array<RouteStatistics>> {
     const res = await User.aggregate([
       {
         $match: {
           role: UserRole.User,
+          dataSet,
         },
       },
       {
@@ -715,6 +737,7 @@ class StatisticsUtil {
       const set = res.filter((v) => v._id.route === route.id);
       const notStarted = await User.countDocuments({
         role: UserRole.User,
+        dataSet,
         routes: { $not: { $elemMatch: { routeId: route.id } } },
         tasks: {
           $not: {
@@ -741,7 +764,7 @@ class StatisticsUtil {
     return finalRes.filter(({ data }) => data.values.length);
   }
 
-  static async getCompletedTasks(week: string): Promise<Statistics> {
+  static async getCompletedTasks(week: string, dataSet: string = undefined): Promise<Statistics> {
     let dateQuery: any = {};
 
     if (week) {
@@ -755,6 +778,7 @@ class StatisticsUtil {
       {
         $match: {
           role: UserRole.User,
+          dataSet,
         },
       },
       {

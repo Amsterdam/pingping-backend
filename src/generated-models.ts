@@ -34,7 +34,9 @@ export enum AchievementStatus {
 
 export enum AdminActionType {
   FixUsers = 'FixUsers',
-  DeleteAllUsers = 'DeleteAllUsers'
+  FixStatistics = 'FixStatistics',
+  DeleteAllUsers = 'DeleteAllUsers',
+  DataSetMigration = 'DataSetMigration'
 }
 
 export type AdminStatisticsResponse = {
@@ -141,6 +143,7 @@ export type CreateGoalInput = {
 
 export type CreateUserInput = {
   email: Scalars['String'];
+  dataSet: Scalars['String'];
   fullName: Scalars['String'];
   password: Scalars['String'];
   role: UserRole;
@@ -171,14 +174,14 @@ export type GetRoutesResponse = {
 };
 
 
-export type LocactionInput = {
-  lat?: Maybe<Scalars['Float']>;
-  lon?: Maybe<Scalars['Float']>;
-};
-
 export enum Locale {
   NlNl = 'nl_NL'
 }
+
+export type LocationInput = {
+  lat?: Maybe<Scalars['Float']>;
+  lon?: Maybe<Scalars['Float']>;
+};
 
 export type LoginResponse = {
    __typename?: 'LoginResponse';
@@ -413,7 +416,7 @@ export type RegisterDeviceInput = {
   deviceType?: Maybe<Scalars['String']>;
   deviceToken?: Maybe<Scalars['String']>;
   locale?: Maybe<Locale>;
-  location?: Maybe<LocactionInput>;
+  location?: Maybe<LocationInput>;
 };
 
 export type RegisterDeviceResponse = {
@@ -578,6 +581,7 @@ export enum TaskType {
   YesOrNo = 'YesOrNo',
   Confirm = 'Confirm',
   MultipleChoices = 'MultipleChoices',
+  MultipleChoicesSelectOne = 'MultipleChoicesSelectOne',
   Other = 'Other',
   GoBack = 'GoBack'
 }
@@ -627,6 +631,7 @@ export type UserResponse = {
   devices?: Maybe<Array<DeviceResponse>>;
   createdAt: Scalars['String'];
   activeAt?: Maybe<Scalars['String']>;
+  dataSet?: Maybe<Scalars['String']>;
 };
 
 export type UserRewardResponse = {
@@ -794,7 +799,7 @@ export type ResolversTypes = {
   LoginResponse: ResolverTypeWrapper<LoginResponse>,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
-  LocactionInput: LocactionInput,
+  LocationInput: LocationInput,
   RegisterDeviceResponse: ResolverTypeWrapper<RegisterDeviceResponse>,
   ExportResponse: ResolverTypeWrapper<ExportResponse>,
   RewardType: RewardType,
@@ -864,7 +869,7 @@ export type ResolversParentTypes = {
   LoginResponse: LoginResponse,
   RegisterDeviceInput: RegisterDeviceInput,
   Locale: Locale,
-  LocactionInput: LocactionInput,
+  LocationInput: LocationInput,
   RegisterDeviceResponse: RegisterDeviceResponse,
   ExportResponse: ExportResponse,
   RewardType: RewardType,
@@ -1176,6 +1181,7 @@ export type UserResponseResolvers<ContextType = ModuleContext, ParentType extend
   devices?: Resolver<Maybe<Array<ResolversTypes['DeviceResponse']>>, ParentType, ContextType>,
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   activeAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  dataSet?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 

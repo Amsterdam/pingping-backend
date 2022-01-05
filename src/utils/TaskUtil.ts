@@ -9,10 +9,17 @@ import RouteUtil from './RouteUtil';
 import { TaskStatus, TaskType, UserRouteStatus } from '../generated-models';
 import TransactionUtil from './TransactionUtil';
 import { UserRoute } from 'models/UserRoute';
+import { DATA_SET_NONE } from 'models/User';
+
+const TASK_ID_GEMEENTE: string = 'onboarding.gemeente';
+export const ANSWER_NO = 'no';
+export const ANSWER_YES = 'yes';
+
+export const ONBOARDING_PREFIX = 'onboarding.';
 
 class TaskUtil {
   static getProgress(taskId: string): number {
-    if (taskId.indexOf('onboarding.') !== -1) {
+    if (taskId.indexOf(ONBOARDING_PREFIX) !== -1) {
       return InitialDataUtil.getOnboardingProgress(taskId);
     }
 
@@ -27,7 +34,7 @@ class TaskUtil {
     const taskFound = InitialDataUtil.getTaskById(taskId);
 
     if (!taskFound) {
-      throw new Error(`taks definition not found for: ${taskId}`);
+      throw new Error(`task definition not found for: ${taskId}`);
     }
 
     const def = {
@@ -164,7 +171,7 @@ class TaskUtil {
   }
 
   static getNextTaskOrRouteId(answer: string, next: string | object): string {
-    answer = typeof answer === 'boolean' ? (answer ? 'yes' : 'no') : answer;
+    answer = typeof answer === 'boolean' ? (answer ? ANSWER_YES : ANSWER_NO) : answer;
 
     if (typeof next === 'string') {
       return next;
@@ -194,7 +201,7 @@ class TaskUtil {
 
     if (answer) {
       userTask.status =
-        (taskDef.type === TaskType.YesOrNo || taskDef.type === TaskType.Confirm) && answer === 'no'
+        (taskDef.type === TaskType.YesOrNo || taskDef.type === TaskType.Confirm) && answer === ANSWER_NO
           ? TaskStatus.Dismissed
           : TaskStatus.Completed;
       userTask.answer = answer;
@@ -214,6 +221,10 @@ class TaskUtil {
     } else {
       userTask.status = TaskStatus.Completed;
       userTask.completedAt = new Date();
+    }
+
+    if (taskDef.id === TASK_ID_GEMEENTE) {
+      user.dataSet = answer === ANSWER_NO ? DATA_SET_NONE : answer;
     }
 
     if (taskDef.points && oldStatus !== TaskStatus.Completed && userTask.status === TaskStatus.Completed) {

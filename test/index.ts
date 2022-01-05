@@ -1,19 +1,23 @@
+import 'source-map-support/register';
 import 'reflect-metadata';
+import 'graphql-import-node';
 import boot from '../src/boot';
 import chaiAsPromised from 'chai-as-promised';
 import chai from 'chai';
 import 'ts-mocha';
 import { RewardVoucher } from '../src/models/RewardVoucher';
 import { User } from '../src/models/User';
-import { ENVIRONMENT, ENV_TEST } from '../src/config/index';
+import { ENV_TEST } from '../src/config/index';
 
 chai.use(chaiAsPromised);
 
 const failures = [];
 const successes = [];
 
-before(async () => {
-  await boot.start();
+before(function () {
+  this.timeout(1000);
+
+  return boot.start();
 
   try {
   } catch {}
@@ -32,16 +36,7 @@ after(async () => {
   RewardVoucher.deleteMany({}, (err: any) => console.warn(err));
 });
 
-process.env.TS_CONFIG_PATHS = './tsconfig.json';
 process.env.ENVIRONMENT = ENV_TEST;
-
-require('ts-mocha');
-const Mocha = require('mocha');
-
-const mocha = new Mocha({
-  reporter: 'mocha-junit-reporter',
-  name: 'PingPing Backend',
-});
 
 require('./taskUtil.test.ts');
 require('./initialDataUtil.test.ts');

@@ -59,6 +59,7 @@ type UserResponse {
   devices: [DeviceResponse!]
   createdAt: String!
   activeAt: String
+  dataSet: String
 }
 
 type DeviceResponse {

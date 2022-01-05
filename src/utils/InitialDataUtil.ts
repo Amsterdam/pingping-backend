@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { TaskDefinition, RouteDefinition, AchievementDefinition, RewardDefinition } from '../types/global';
 import { TaskStatus } from '../generated-models';
 import { ENV_TEST } from '../config/index';
+import { ONBOARDING_PREFIX } from 'utils/TaskUtil';
 
 let initialData: InitialData = require('../../initialData.json');
 
@@ -20,10 +21,9 @@ type InitialData = {
 
 type OnboardingTaskDefinition = TaskDefinition & {
   nextTaskId?: string | object;
-  nextRotueId?: string | object;
+  nextRouteId?: string | object;
   progress: number;
 };
-
 type TaskIdObject = {
   routeId: string;
   taskId: string;
@@ -94,8 +94,8 @@ class InitialDataUtil {
     const tasks = initialData.onboardingTasks.filter((i: TaskDefinition) => i.id === id);
     let task: TaskDefinition = _.first(tasks);
 
-    // If onboarding task is not found, look for a rotue task
-    if (!task) {
+    // If onboarding task is not found, look for a route task
+    if (id.indexOf(ONBOARDING_PREFIX) == -1 && !task) {
       const taskObj = this.deconstructTaskId(id);
       const route = this.getRouteById(taskObj.routeId);
 

@@ -14,6 +14,10 @@ export class RewardsProvider {
     return this.rewards;
   }
 
+  getAllForDataSet(dataSet: string): RewardDefinition[] {
+    return this.rewards.filter((r: RewardDefinition) => r.dataSet === dataSet);
+  }
+
   getInactive(): RewardDefinition[] {
     return this.rewards.filter((r: RewardDefinition) => r.active === false);
   }

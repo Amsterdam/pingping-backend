@@ -58,6 +58,7 @@ enum TaskType {
   YesOrNo
   Confirm
   MultipleChoices
+  MultipleChoicesSelectOne
   Other
   GoBack
 }

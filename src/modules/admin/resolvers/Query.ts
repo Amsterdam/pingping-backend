@@ -18,37 +18,40 @@ import { NotificationModel } from 'models/Notification';
 import moment from 'moment';
 
 // Base query applies to all notifications
-const BASE_QUERY: any = {
-  $and: [
-    {
-      $or: [
-        {
-          remindedAt: null,
-        },
-        {
-          remindedAt: { $lt: moment().subtract(7, 'days').toDate() },
-        },
-      ],
-    },
-    {
-      $or: [
-        {
-          activeAt: null,
-        },
-        {
-          activeAt: { $lt: moment().subtract(7, 'days').toDate() },
-        },
-      ],
-    },
-    {
-      role: UserRole.User,
-      devices: {
-        $elemMatch: {
-          notificationStatus: NotificationStatus.Approved,
+const BASE_QUERY: any = (dataSet: string) => {
+  return {
+    $and: [
+      {
+        $or: [
+          {
+            remindedAt: null,
+          },
+          {
+            remindedAt: { $lt: moment().subtract(7, 'days').toDate() },
+          },
+        ],
+      },
+      {
+        $or: [
+          {
+            activeAt: null,
+          },
+          {
+            activeAt: { $lt: moment().subtract(7, 'days').toDate() },
+          },
+        ],
+      },
+      {
+        role: UserRole.User,
+        dataSet,
+        devices: {
+          $elemMatch: {
+            notificationStatus: NotificationStatus.Approved,
+          },
         },
       },
-    },
-  ],
+    ],
+  };
 };
 
 export const Query: QueryResolvers = {
@@ -70,7 +73,7 @@ export const Query: QueryResolvers = {
           },
           recipientUserIds: (
             await User.find({
-              ...BASE_QUERY,
+              ...BASE_QUERY(context.user.dataSet),
               routes: {
                 $elemMatch: {
                   routeId: args.routeId,
@@ -92,7 +95,7 @@ export const Query: QueryResolvers = {
           },
           recipientUserIds: (
             await User.find({
-              ...BASE_QUERY,
+              ...BASE_QUERY(context.user.dataSet),
               routes: { $not: { $elemMatch: { routeId: 'financieleBasis' } } },
               tasks: {
                 $elemMatch: {
@@ -123,7 +126,7 @@ export const Query: QueryResolvers = {
   },
 
   async adminGetUsers(root: any, args: QueryAdminGetUsersArgs, context: ContextType): Promise<Array<any>> {
-    let query: any = { role: { $in: args.roles } };
+    let query: any = { dataSet: context.user.dataSet, role: { $in: args.roles } };
 
     switch (args.filter) {
       case UserFilter.NotAmsterdam:
@@ -199,10 +202,10 @@ export const Query: QueryResolvers = {
   },
 
   async adminGetAuditLog(root: any, args: any, context: ContextType): Promise<Array<any>> {
-    return await AuditLog.find({});
+    return await AuditLog.find({ dataSet: context.user.dataSet });
   },
 
   async adminGetFeedback(root: any, args: any, context: ContextType): Promise<Array<any>> {
-    return await RouteFeedback.find({});
+    return await RouteFeedback.find({ dataSet: context.user.dataSet });
   },
 };

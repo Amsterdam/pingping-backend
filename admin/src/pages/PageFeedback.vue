@@ -1,5 +1,9 @@
 <template>
   <div class="section">
+    <div>
+      <p><strong>{{ items.length }}</strong> items, average <strong>{{ avg }}</strong></p>
+      <!-- <p>{{ $t('admin.settings.description') }}</p> -->
+    </div>
     <table class="table">
       <thead>
         <tr>
@@ -41,6 +45,12 @@ export default {
       query: GetFeedbackQuery,
       update: res => res.adminGetFeedback,
       error: RequestUtil.errorHook
+    }
+  },
+
+  computed: {
+    avg () {
+      return Math.round(this.items.length ? this.items.reduce((a, b) => a + b.rating, 0) / this.items.length * 100 : 0, 3) / 100
     }
   },
 

@@ -9,7 +9,7 @@ const MOCK_DATE = '2019-02-02';
 export const Query: QueryResolvers = {
   getAvailableRewards(root: any, args: any, context: ModuleContext): Array<any> {
     // Since mobile app certification needs to be done on production there is a custom
-    // birthdate that only provides access to mocked rewards. These rewards will be claimed by
+    // birthday that only provides access to mocked rewards. These rewards will be claimed by
     // apple / google testers.
     if (moment(_.get(context, 'user.profile.dateOfBirth', new Date())).format('YYYY-MM-DD') === MOCK_DATE) {
       return context.injector.get(RewardsProvider).getInactive();
@@ -19,6 +19,6 @@ export const Query: QueryResolvers = {
   },
 
   getRewards(root: any, args: any, context: ModuleContext): Array<any> {
-    return context.injector.get(RewardsProvider).getAll();
+    return context.injector.get(RewardsProvider).getAllForDataSet(context.user.dataSet);
   },
 };
