@@ -99,14 +99,6 @@ const userSchema = new Schema(
       },
     ],
 
-    routeId: [
-      {
-        routeId: String,
-        answer: String,
-        status: String,
-      },
-    ],
-
     achievements: [
       {
         achievementId: String,

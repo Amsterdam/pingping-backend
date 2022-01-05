@@ -9,8 +9,7 @@ import RouteUtil from './RouteUtil';
 import { TaskStatus, TaskType, UserRouteStatus } from '../generated-models';
 import TransactionUtil from './TransactionUtil';
 import { UserRoute } from 'models/UserRoute';
-import { DATA_SET_NONE } from 'models/User';
-import { DATA_SET_AMSTERDAM } from 'src/models/User';
+import { DATA_SET_NONE, DATA_SET_AMSTERDAM } from 'models/User';
 
 const TASK_ID_GEMEENTE: string = 'onboarding.gemeente';
 export const ANSWER_NO = 'no';
@@ -225,7 +224,7 @@ class TaskUtil {
     }
 
     if (taskDef.id === TASK_ID_GEMEENTE) {
-      user.dataSet = answer === ANSWER_YES ? DATA_SET_AMSTERDAM : ANSWER_NO ? DATA_SET_NONE : answer;
+      user.dataSet = answer === ANSWER_YES ? DATA_SET_AMSTERDAM : answer === ANSWER_NO ? DATA_SET_NONE : answer;
     }
 
     if (taskDef.points && oldStatus !== TaskStatus.Completed && userTask.status === TaskStatus.Completed) {
