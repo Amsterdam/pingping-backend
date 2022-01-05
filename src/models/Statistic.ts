@@ -11,6 +11,7 @@ const schema = new Schema(
   {
     type: String,
     key: String,
+    dataSet: String,
     value: String,
   },
   { timestamps: false, _id: false }

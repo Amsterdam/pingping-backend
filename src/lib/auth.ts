@@ -7,6 +7,8 @@ import cache from './cache';
 import { UserDocument, User, AuthToken, AuthTokenKind, Device } from '../models/User';
 import { NotificationStatus, UserRole } from '@models';
 import AuthenticationError from 'errors/AuthenticationError';
+import { DATA_SET_NONE } from 'models/User';
+import { DATA_SET_AMSTERDAM, DATA_SET_ROTTERDAM } from 'models/User';
 
 const TOKEN_VALIDITY_MINUTES = process.env.TOKEN_VALIDITY_MINUTES || 180;
 
@@ -32,7 +34,21 @@ class auth {
   }
 
   static async createAdminUser() {
-    await auth.createUser(UserRole.Admin, 'Admin', 'admin@pingping.amsterdam.nl', process.env.ADMIN_PASSWORD);
+    await auth.createUser(
+      UserRole.Admin,
+      'Admin Amsterdam',
+      'admin-amsterdam@pingping.amsterdam.nl',
+      process.env.ADMIN_PASSWORD,
+      DATA_SET_AMSTERDAM
+    );
+
+    await auth.createUser(
+      UserRole.Admin,
+      'Admin Rotterdam',
+      'admin-rotterdam@pingping.amsterdam.nl',
+      process.env.ADMIN_PASSWORD,
+      DATA_SET_ROTTERDAM
+    );
   }
 
   static async login(ip: string, email: string, candidatePassword: string, deviceId: string) {
@@ -79,7 +95,7 @@ class auth {
     });
   }
 
-  static async createUser(role: UserRole, fullName: string, email: string, password: string) {
+  static async createUser(role: UserRole, fullName: string, email: string, password: string, dataSet: string) {
     try {
       const user = await User.findOneAndUpdate(
         {
@@ -88,6 +104,7 @@ class auth {
         {
           profile: { fullName },
           role,
+          dataSet,
           password: await auth.hashPassword(password),
           balance: 0,
           devices: [

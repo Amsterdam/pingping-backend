@@ -1,6 +1,11 @@
 <template>
   <div>
-    No actions
+    <button
+      v-for="action,a in actions"
+      :key="'action-' + a"
+      @click="callAction(action)"
+    >{{ action }}</button>
+    <span v-if="actions.length === 0">No actions</span>
   </div>
 </template>
 
@@ -25,9 +30,21 @@ export default {
         console.error(error)
       })
     }
+  },
+
+  data () {
+    return {
+      actions: [
+        'DataSetMigration',
+        'FixStatistics'
+      ]
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+button {
+  margin-right: 10px;
+}
 </style>

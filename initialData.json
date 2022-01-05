@@ -330,6 +330,7 @@
       "active": true,
       "vendor": "Pathe",
       "type": "Voucher",
+      "dataSet": "amsterdam",
       "available": null,
       "availablePerUser": 1
     },
@@ -350,6 +351,7 @@
       "vendor": "Dutch Dream Foundation",
       "type": "Voucher",
       "available": null,
+      "dataSet": "amsterdam",
       "availablePerUser": 1
     },
     {

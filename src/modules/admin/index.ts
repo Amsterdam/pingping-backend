@@ -25,7 +25,7 @@ export const AdminModule = new GraphQLModule({
     'Query.adminGetAuditLog': [AuthMiddleware.isAdmin()],
     'Query.adminGetFeedback': [AuthMiddleware.isAdmin()],
     'Query.getNotifications': [AuthMiddleware.isAdmin()],
-    'Query.adminStatistics': [AuthMiddleware.isAdminOrReporer()],
+    'Query.adminStatistics': [AuthMiddleware.isAdminOrReporter()],
     'Query.getDraftNotification': [AuthMiddleware.isAdmin()],
   },
   typeDefs,

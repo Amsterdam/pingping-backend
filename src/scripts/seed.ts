@@ -2,6 +2,7 @@
 import boot from '../boot';
 import sinon from 'sinon';
 import moment from 'moment';
+import faker from 'faker';
 import { argv } from 'process';
 import readline from 'readline';
 import UserUtil from 'utils/UserUtil';
@@ -12,8 +13,10 @@ import StatisticsUtil from 'utils/StatisticsUtil';
 import { ENV_DEVELOPMENT } from 'config/index';
 import MigrationUtil from 'utils/MigrationUtil';
 import { UserTask } from 'models/UserTask';
+import { DATA_SET_ROTTERDAM, DATA_SET_NONE } from 'models/User';
+import { RouteFeedback } from 'models/RouteFeedback';
 
-const START_DATE = '2021-01-04';
+const START_DATE = '2021-10-04';
 const NUMBER_OF_DAYS = moment().diff(moment(START_DATE), 'days');
 const MIN_USERS_PER_DAY = 2;
 const MAX_USERS_PER_DAY = 8;
@@ -61,12 +64,12 @@ const seed = async () => {
           user.devices[0].token = Math.random().toString(36).slice(2);
           await user.save();
 
-          let isAmsterdam = getRandomNumber(0, 10) < 2 ? false : true;
+          let isCity = getRandomNumber(0, 10) < 2 ? false : true;
 
           let gemeenteDef = TaskUtil.getDefinition('onboarding.gemeente');
-          await TaskUtil.handleTask(user, gemeenteDef, isAmsterdam ? 'yes' : 'no');
+          await TaskUtil.handleTask(user, gemeenteDef, isCity ? argv[3] : 'no');
 
-          if (!isAmsterdam) {
+          if (!isCity) {
             continue;
           }
 
@@ -94,7 +97,7 @@ const seed = async () => {
             }
           }
 
-          await StatisticsUtil.registerStatistics();
+          await StatisticsUtil.registerStatistics(argv[3]);
         }
 
         // For the users that exists, complete random tasks
@@ -123,6 +126,18 @@ const seed = async () => {
                   await TaskUtil.handleTask(user, dismissedRouteTaskDef, 'yes');
                 }
               }
+
+              // Random route feedback
+              if (user.routes.length) {
+                await RouteFeedback.create({
+                  dataSet: user.dataSet,
+                  userId: user._id,
+                  routeId: user.routes[0]?.routeId,
+                  rating: getRandomNumber(1, 5),
+                  feedback: faker.lorem.sentences(getRandomNumber(1, 5)),
+                });
+              }
+
               break;
             }
           }

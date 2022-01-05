@@ -52,6 +52,7 @@ export const Mutation: MutationResolvers = {
       feedback: args.input.feedback,
       routeId: args.input.routeId,
       userId: context.user.id,
+      dataSet: context.user.dataSet,
     });
 
     return inst;

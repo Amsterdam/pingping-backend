@@ -28,6 +28,12 @@ export const Mutation: MutationResolvers = {
       case AdminActionType.FixUsers:
         await AdminUtil.fixUsers();
         break;
+      case AdminActionType.FixStatistics:
+        await AdminUtil.fixStatistics();
+        break;
+      case AdminActionType.DataSetMigration:
+        await AdminUtil.dataSetMigration();
+        break;
       default:
         throw new Error('invalid_admin_action');
     }
@@ -65,6 +71,7 @@ export const Mutation: MutationResolvers = {
       let user: string = input.recipientUserIds[r];
       await NotificationModel.create({
         user,
+        dataSet: context.user.dataSet,
         status: NotificationDeliveryStatus.Delivered,
         type: input.type,
         payload,
@@ -78,7 +85,13 @@ export const Mutation: MutationResolvers = {
   },
 
   async adminCreateUser(root: any, args: MutationAdminCreateUserArgs, context: ContextType): Promise<any> {
-    const user = await auth.createUser(args.input.role, args.input.fullName, args.input.email, args.input.password);
+    const user = await auth.createUser(
+      args.input.role,
+      args.input.fullName,
+      args.input.email,
+      args.input.password,
+      args.input.dataSet
+    );
     await LogUtil.create(context.user, AuditLogType.CreateUser, 'User created by admin');
 
     return user;

@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import { describe, it } from 'mocha';
 import { expect, assert } from 'chai';
-import App from '../src/App';
 import request from 'supertest';
 import { UserDocument } from '../src/models/User';
 import index from '../src/index';
 import UserUtil from '../src/utils/UserUtil';
 import auth from '../src/lib/auth';
-import { RewardResponse, AchievementResponse, UserRole } from '../src/generated-models';
+import { RewardResponse, UserRole } from '../src/generated-models';
+import { DATA_SET_AMSTERDAM } from '../src/models/User';
 
 describe('queries', () => {
   let server: any;
@@ -17,7 +17,7 @@ describe('queries', () => {
   let adminAccessToken: any;
 
   before(async () => {
-    admin = await auth.createUser(UserRole.Admin, 'Admin', 'admin@test.com', 'password');
+    admin = await auth.createUser(UserRole.Admin, 'Admin', 'admin@test.com', 'password', DATA_SET_AMSTERDAM);
     adminAccessToken = await auth.createToken(admin, 'testhellotests');
   });
 
@@ -83,7 +83,7 @@ describe('queries', () => {
         const body = res.body.data.getAvailableRewards;
         const first: RewardResponse = _.first(body);
 
-        expect(first.title).to.equal('Meelopen met jongeren- adviseur t.w.v. €50', 'check title');
+        expect(first.title).to.equal('Pathe Thuis Film', 'check title');
         done();
       });
   });

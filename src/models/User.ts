@@ -7,12 +7,17 @@ import { UserTransaction } from './UserTransaction';
 import { NotificationStatus, UserRole } from '@models';
 import { UserRoute } from './UserRoute';
 
+export const DATA_SET_NONE = 'none';
+export const DATA_SET_AMSTERDAM = 'amsterdam';
+export const DATA_SET_ROTTERDAM = 'rotterdam';
+
 export type UserDocument = Document & {
   email?: string;
   password?: string;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
   exportToken?: string;
+  dataSet?: string;
 
   tokens?: AuthToken[];
   devices?: Device[];
@@ -63,6 +68,7 @@ const userSchema = new Schema(
     email: String,
     password: String,
     role: String,
+    dataSet: String,
     tasks: [
       {
         type: new Schema(

@@ -57,9 +57,9 @@ describe('taskUtil', () => {
 
     expect(task.taskId).to.eq('onboarding.gemeente');
 
-    await TaskUtil.handleTask(user, taskDef, 'yes');
+    await TaskUtil.handleTask(user, taskDef, 'amsterdam');
     const nextTask = TaskUtil.getCurrentUserTask(user);
-    expect(nextTask.taskId).to.eq('onboarding.dateOfBirth');
+    expect(nextTask.taskId).to.eq('onboarding.welcome');
 
     await TaskUtil.revertTask(user, task.taskId);
 

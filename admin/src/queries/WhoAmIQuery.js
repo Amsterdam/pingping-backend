@@ -4,6 +4,7 @@ export const WhoAmIQuery = gql`
   query {
     whoAmI {
       role
+      dataSet
       profile {
         fullName
       }
