@@ -15,11 +15,11 @@
         "color": "#d8d8d5"
       },
       "choices": {
-        "amsterdam": "Ja",
+        "yes": "Ja",
         "no": "Nee"
       },
       "nextTaskId": {
-        "amsterdam": "onboarding.welcome",
+        "yes": "onboarding.welcome",
         "no": "onboarding.notAmsterdam"
       }
     },
