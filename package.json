@@ -48,7 +48,7 @@
     "node-cache": "^5.1.2",
     "node-cron": "^2.0.3",
     "node-filter-async": "^2.0.0",
-    "node-pushnotifications": "^1.4.1",
+    "node-pushnotifications": "^1.6.1",
     "reflect-metadata": "^0.1.13",
     "sendgrid": "^5.2.3",
     "sinon": "^9.2.4",
