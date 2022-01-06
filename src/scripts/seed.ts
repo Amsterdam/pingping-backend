@@ -43,7 +43,7 @@ const seed = async () => {
   switch (type) {
     case 'push':
       const payload = PushNotificationUtil.getPayload('Hello', 'This is a test notification', {});
-      await PushNotificationUtil.send(['dda1aa3eda6521711ba500b9eb43db5a007545cd60c437644b1fc6b27ca7b155'], payload);
+      await PushNotificationUtil.send([argv[3]], payload);
       break;
     case 'mock-data':
       let startDate = moment(START_DATE);

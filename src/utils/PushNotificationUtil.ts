@@ -48,6 +48,9 @@ export class PushNotificationUtil {
       console.info(`sent notification to ${tokens.length} devices`, payload.alert);
       console.log('tokens', tokens);
       console.log('result', res.length && res[0]);
+      console.log('key', APNS_P8.replace(/\\n/g, '\n'));
+      console.log('keyId', process.env.APNS_KEY_ID);
+      console.log('teamId', process.env.APNS_TEAM_ID);
     } catch (e) {
       console.error('Error: Sending push notifications');
       console.error(e);
