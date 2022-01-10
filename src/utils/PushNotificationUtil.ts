@@ -33,9 +33,9 @@ export class PushNotificationUtil {
       },
       apn: {
         token: {
-          key: APNS_P8.replace(/\\n/g, '\n'),
-          keyId: process.env.APNS_KEY_ID,
-          teamId: process.env.APNS_TEAM_ID,
+          key: APNS_P8.replace(/\\n/g, '\n').trim(),
+          keyId: process.env.APNS_KEY_ID.trim(),
+          teamId: process.env.APNS_TEAM_ID.trim(),
         },
         production: true,
       },
@@ -48,9 +48,9 @@ export class PushNotificationUtil {
       console.info(`sent notification to ${tokens.length} devices`, payload.alert);
       console.log('tokens', tokens);
       console.log('result', res.length && res[0]);
-      console.log('key', APNS_P8.replace(/\\n/g, '\n'));
-      console.log('keyId', process.env.APNS_KEY_ID);
-      console.log('teamId', process.env.APNS_TEAM_ID);
+      console.log('key', APNS_P8.replace(/\\n/g, '\n'), APNS_P8.replace(/\\n/g, '\n').length);
+      console.log('keyId', process.env.APNS_KEY_ID, process.env.APNS_KEY_ID.length);
+      console.log('teamId', process.env.APNS_TEAM_ID, process.env.APNS_TEAM_ID.length);
     } catch (e) {
       console.error('Error: Sending push notifications');
       console.error(e);
