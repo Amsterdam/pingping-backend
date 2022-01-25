@@ -57,6 +57,7 @@ enum TaskType {
   DateOfBirth
   YesOrNo
   Confirm
+  DropdownSelect
   MultipleChoices
   MultipleChoicesSelectOne
   Other

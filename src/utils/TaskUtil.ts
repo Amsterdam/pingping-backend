@@ -50,6 +50,7 @@ class TaskUtil {
       nextTaskId: taskFound.nextTaskId,
       nextRouteId: taskFound.nextRouteId,
       defaultValue: taskFound.defaultValue,
+      meta: taskFound.meta,
       media: taskFound.media,
       icon: taskFound.icon,
       type: taskFound.type,
