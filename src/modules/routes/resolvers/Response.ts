@@ -13,7 +13,7 @@ export const UserTaskResponse: any = {
   answer: (doc: UserTask, args: any, context: ContextType) => {
     const def = TaskUtil.getDefinition(doc.taskId);
 
-    if (context.user.role === UserRole.User) {
+    if (context.user?.role === UserRole.User) {
       return doc.answer;
     }
 
