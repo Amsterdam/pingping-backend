@@ -11,13 +11,21 @@ import RouteUtil from 'utils/RouteUtil';
 export const UserTaskResponse: any = {
   task: (doc: UserTask) => TaskUtil.getDefinition(doc.taskId),
   answer: (doc: UserTask, args: any, context: ContextType) => {
-    const def = TaskUtil.getDefinition(doc.taskId);
-    if (doc.status === TaskStatus.PendingUser && def.defaultValue) {
-      return def.defaultValue;
+    let user = context.user;
+
+    if (!user && doc.user) {
+      user = doc.user;
     }
 
-    if (context.user?.role === UserRole.User) {
+    console.log('c', user, doc);
+    const def = TaskUtil.getDefinition(doc.taskId);
+
+    if (user?.role === UserRole.User) {
       return doc.answer;
+    }
+
+    if (doc.status === TaskStatus.PendingUser && def.defaultValue) {
+      return def.defaultValue;
     }
 
     return '##redacted##';

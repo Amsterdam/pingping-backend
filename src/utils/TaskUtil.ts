@@ -73,7 +73,7 @@ class TaskUtil {
     const firstTask = _.first(tasks);
 
     if (firstTask) {
-      return new UserTask(firstTask.taskId, firstTask.status, firstTask.answer);
+      return new UserTask(firstTask.taskId, firstTask.status, firstTask.answer, null, user);
     }
 
     return new UserTask(taskId, TaskStatus.PendingUser, null);
@@ -90,7 +90,7 @@ class TaskUtil {
     const task: UserTask = <UserTask>_.nth(tasks, 1) || <UserTask>_.first(tasks);
 
     if (task) {
-      return new UserTask(task.taskId, task.status, task.answer, task._id);
+      return new UserTask(task.taskId, task.status, task.answer, task._id, user);
     }
 
     return null;
@@ -101,7 +101,7 @@ class TaskUtil {
     const task: UserTask = <UserTask>_.last(tasks);
 
     if (task) {
-      return new UserTask(task.taskId, task.status, task.answer, task._id);
+      return new UserTask(task.taskId, task.status, task.answer, task._id, user);
     }
 
     return null;
