@@ -6,7 +6,6 @@
       "title": "Jouw Gemeente",
       "headerTitle": "selecteer een gemeente",
       "initial": true,
-      "defaultValue": "yes",
       "description": "Selecteer de gemeente waar jij in woont. Dit is noodzakelijk omdat Ping Ping zich moet aanpassen aan jouw omstandigheden",
       "media": {
         "type": "Image",
@@ -21,7 +20,7 @@
       "meta": {
         "dropdownSelectPlaceholder": "Jouw Gemeente",
         "dropdownSelectNoResultLabel": "Mijn gemeente staat er niet tussen",
-        "dropDownNoResultChoice": "no"
+        "dropDownSelectNoResultValue": "no"
       },
       "nextTaskId": {
         "amsterdam": "onboarding.welcome",
