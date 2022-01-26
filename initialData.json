@@ -10,9 +10,9 @@
       "description": "Selecteer de gemeente waar jij in woont. Dit is noodzakelijk omdat Ping Ping zich moet aanpassen aan jouw omstandigheden",
       "media": {
         "type": "Image",
-        "value": "/images/gemeente.png",
+        "value": "/images/gemeente.jpg",
         "thumbnail": "/images/gemeenteThumb.jpg",
-        "color": "#d8d8d5"
+        "color": "#ffffff"
       },
       "choices": {
         "amsterdam": "Amsterdam",
@@ -20,11 +20,13 @@
       },
       "meta": {
         "dropdownSelectPlaceholder": "Jouw Gemeente",
-        "dropdownSelectNoResultLabel": "Mijn gemeente staat er niet tussen"
+        "dropdownSelectNoResultLabel": "Mijn gemeente staat er niet tussen",
+        "dropDownNoResultChoice": "no"
       },
       "nextTaskId": {
         "amsterdam": "onboarding.welcome",
-        "rotterdam": "onboarding.welcome"
+        "rotterdam": "onboarding.welcome",
+        "no": "onboarding.notAmsterdam"
       }
     },
     {
