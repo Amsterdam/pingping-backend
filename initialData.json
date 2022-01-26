@@ -20,7 +20,7 @@
       "meta": {
         "dropdownSelectPlaceholder": "Jouw Gemeente",
         "dropdownSelectNoResultLabel": "Mijn gemeente staat er niet tussen",
-        "dropDownSelectNoResultValue": "no"
+        "dropdownSelectNoResultValue": "no"
       },
       "nextTaskId": {
         "amsterdam": "onboarding.welcome",
