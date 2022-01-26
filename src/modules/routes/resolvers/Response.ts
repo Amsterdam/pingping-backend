@@ -12,12 +12,13 @@ export const UserTaskResponse: any = {
   task: (doc: UserTask) => TaskUtil.getDefinition(doc.taskId),
   answer: (doc: UserTask, args: any, context: ContextType) => {
     const def = TaskUtil.getDefinition(doc.taskId);
-    if (doc.status === TaskStatus.PendingUser && def.defaultValue) {
-      return def.defaultValue;
-    }
 
     if (context.user.role === UserRole.User) {
       return doc.answer;
+    }
+
+    if (doc.status === TaskStatus.PendingUser && def.defaultValue) {
+      return def.defaultValue;
     }
 
     return '##redacted##';
