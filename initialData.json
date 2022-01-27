@@ -2,29 +2,24 @@
   "onboardingTasks": [
     {
       "id": "onboarding.gemeente",
-      "type": "DropdownSelect",
-      "title": "Jouw Gemeente",
-      "headerTitle": "selecteer een gemeente",
+      "type": "Confirm",
+      "title": "Woon je in Amsterdam?",
+      "headerTitle": "gemeente",
       "initial": true,
-      "description": "Selecteer de gemeente waar jij in woont. Dit is noodzakelijk omdat Ping Ping zich moet aanpassen aan jouw omstandigheden",
+      "defaultValue": "yes",
+      "description": "Ping Ping is alleen geschikt voor jongeren die in Amsterdam wonen. Woon jij in Amsterdam?",
       "media": {
         "type": "Image",
-        "value": "/images/gemeente.jpg",
-        "thumbnail": "/images/gemeenteThumb.jpg",
-        "color": "#ffffff"
+        "value": "/images/amsterdam.jpg",
+        "thumbnail": "/images/amsterdamThumb.jpg",
+        "color": "#d8d8d5"
       },
       "choices": {
-        "amsterdam": "Amsterdam",
-        "rotterdam": "Rotterdam"
-      },
-      "meta": {
-        "dropdownSelectPlaceholder": "Jouw Gemeente",
-        "dropdownSelectNoResultLabel": "Mijn gemeente staat er niet tussen",
-        "dropdownSelectNoResultValue": "no"
+        "amsterdam": "Ja",
+        "no": "Nee"
       },
       "nextTaskId": {
         "amsterdam": "onboarding.welcome",
-        "rotterdam": "onboarding.welcome",
         "no": "onboarding.notAmsterdam"
       }
     },
