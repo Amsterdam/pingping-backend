@@ -13,7 +13,7 @@ export const Mutation: MutationResolvers = {
   },
 
   async adminUpdateReward(root: any, args: MutationAdminUpdateRewardArgs, context: ModuleContext): Promise<any> {
-    const reward = InitialDataUtil.getReward(args.id);
+    const reward = InitialDataUtil.getReward(args.id, context.user.dataset);
 
     for (var v in args.vouchers) {
       let voucher: any = args.vouchers[v];

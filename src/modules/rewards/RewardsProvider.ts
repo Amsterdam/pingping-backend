@@ -37,8 +37,4 @@ export class RewardsProvider {
       }
     });
   }
-
-  getById(id: string): RewardDefinition {
-    return InitialDataUtil.getReward(id);
-  }
 }
