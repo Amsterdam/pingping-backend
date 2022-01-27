@@ -43,6 +43,7 @@ type TaskResponse {
   choices: Choices
   progress: Float
   type: TaskType!
+  meta: JSON
 }
 
 type RouteResponse {

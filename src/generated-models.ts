@@ -11,8 +11,8 @@ export type Scalars = {
   Int: number;
   Float: number;
   Choices: any;
-  Date: any;
   JSON: any;
+  Date: any;
   RouteAnswer: any;
 };
 
@@ -568,6 +568,7 @@ export type TaskResponse = {
   choices?: Maybe<Scalars['Choices']>;
   progress?: Maybe<Scalars['Float']>;
   type: TaskType;
+  meta?: Maybe<Scalars['JSON']>;
 };
 
 export enum TaskStatus {
@@ -580,6 +581,7 @@ export enum TaskType {
   DateOfBirth = 'DateOfBirth',
   YesOrNo = 'YesOrNo',
   Confirm = 'Confirm',
+  DropdownSelect = 'DropdownSelect',
   MultipleChoices = 'MultipleChoices',
   MultipleChoicesSelectOne = 'MultipleChoicesSelectOne',
   Other = 'Other',
@@ -753,11 +755,11 @@ export type ResolversTypes = {
   TaskResponse: ResolverTypeWrapper<TaskResponse>,
   Choices: ResolverTypeWrapper<Scalars['Choices']>,
   TaskType: TaskType,
+  JSON: ResolverTypeWrapper<Scalars['JSON']>,
   Date: ResolverTypeWrapper<Scalars['Date']>,
   RewardResponse: ResolverTypeWrapper<RewardResponse>,
   RewardStatus: RewardStatus,
   RewardVoucherResponse: ResolverTypeWrapper<RewardVoucherResponse>,
-  JSON: ResolverTypeWrapper<Scalars['JSON']>,
   StatusResponse: ResolverTypeWrapper<StatusResponse>,
   UserResponse: ResolverTypeWrapper<UserResponse>,
   UserProfileResponse: ResolverTypeWrapper<UserProfileResponse>,
@@ -823,11 +825,11 @@ export type ResolversParentTypes = {
   TaskResponse: TaskResponse,
   Choices: Scalars['Choices'],
   TaskType: TaskType,
+  JSON: Scalars['JSON'],
   Date: Scalars['Date'],
   RewardResponse: RewardResponse,
   RewardStatus: RewardStatus,
   RewardVoucherResponse: RewardVoucherResponse,
-  JSON: Scalars['JSON'],
   StatusResponse: StatusResponse,
   UserResponse: UserResponse,
   UserProfileResponse: UserProfileResponse,
@@ -1148,6 +1150,7 @@ export type TaskResponseResolvers<ContextType = ModuleContext, ParentType extend
   choices?: Resolver<Maybe<ResolversTypes['Choices']>, ParentType, ContextType>,
   progress?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   type?: Resolver<ResolversTypes['TaskType'], ParentType, ContextType>,
+  meta?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 

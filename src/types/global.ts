@@ -23,6 +23,7 @@ export type TaskDefinition = {
   defaultValue: string;
   choices?: object;
   initial?: boolean;
+  meta?: any;
   nextTaskId?: string | object;
   nextRouteId?: string | object;
 };

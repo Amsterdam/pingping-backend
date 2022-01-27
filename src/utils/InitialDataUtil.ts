@@ -136,8 +136,8 @@ class InitialDataUtil {
     return rewards;
   }
 
-  static getReward(id: string): RewardDefinition {
-    const rewards = initialData.rewards.filter((r: RewardDefinition) => r.id === id);
+  static getReward(id: string, dataset: string): RewardDefinition {
+    const rewards = initialData.rewards.filter((r: RewardDefinition) => r.id === id && r.dataSet === dataset);
 
     let reward: RewardDefinition = _.first(rewards);
 

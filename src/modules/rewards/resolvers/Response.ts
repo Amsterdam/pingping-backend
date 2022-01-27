@@ -37,8 +37,8 @@ export const RewardVoucherInput: any = {
 export const UserRewardResponse: any = {
   id: (doc: UserReward) => doc._id,
   status: (doc: UserReward) => doc.status,
-  barcodeImageUrl: (doc: UserReward) => {
-    const def = InitialDataUtil.getReward(doc.rewardId);
+  barcodeImageUrl: (doc: UserReward, args: any, context: ContextType) => {
+    const def = InitialDataUtil.getReward(doc.rewardId, context.user.dataSet);
     if (def.type === RewardType.SelfIssued) {
       // return `https://barcodes.com/${doc._id}`;
       return '';
@@ -46,7 +46,8 @@ export const UserRewardResponse: any = {
       return null;
     }
   },
-  reward: (doc: UserReward) => InitialDataUtil.getReward(doc.rewardId),
+  reward: (doc: UserReward, args: any, context: ContextType) =>
+    InitialDataUtil.getReward(doc.rewardId, context.user.dataSet),
   data: async (doc: UserReward, args: any, context: ContextType) => {
     const voucher: RewardVoucherDocument = await RewardVoucher.findOne({
       userId: context.user._id,

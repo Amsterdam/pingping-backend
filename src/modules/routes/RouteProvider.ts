@@ -10,8 +10,4 @@ export class RouteProvider {
   getAll(): RouteDefinition[] {
     return this.routes;
   }
-
-  getById(id: string): RouteDefinition {
-    return InitialDataUtil.getRouteById(id);
-  }
 }

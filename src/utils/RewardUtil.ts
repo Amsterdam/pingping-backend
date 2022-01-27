@@ -26,7 +26,7 @@ class RewardUtil {
     const deviceId = _.get(user, 'devices.0.id', null);
 
     // Check if reward exist with the same device id.
-    let voucherFound = await RewardVoucher.findOne({ deviceId, rewardId, userId: null });
+    let voucherFound = await RewardVoucher.findOne({ userId: null, deviceId, rewardId });
 
     if (!voucherFound) {
       // If not, find one from the pool
@@ -52,7 +52,7 @@ class RewardUtil {
   }
 
   static async claim(user: UserDocument, id: string): Promise<UserReward> {
-    const reward: RewardDefinition = InitialDataUtil.getReward(id);
+    const reward: RewardDefinition = InitialDataUtil.getReward(id, user.dataSet);
     let voucher = null;
 
     RewardUtil.assertBalance(reward, user);
