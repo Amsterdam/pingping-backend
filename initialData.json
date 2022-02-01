@@ -2,24 +2,29 @@
   "onboardingTasks": [
     {
       "id": "onboarding.gemeente",
-      "type": "Confirm",
-      "title": "Woon je in Amsterdam?",
-      "headerTitle": "gemeente",
+      "type": "DropdownSelect",
+      "title": "Jouw Gemeente",
+      "headerTitle": "selecteer een gemeente",
       "initial": true,
-      "defaultValue": "yes",
-      "description": "Ping Ping is alleen geschikt voor jongeren die in Amsterdam wonen. Woon jij in Amsterdam?",
+      "description": "Selecteer de gemeente waar jij in woont. Dit is noodzakelijk omdat Ping Ping zich moet aanpassen aan jouw omstandigheden",
       "media": {
         "type": "Image",
-        "value": "/images/amsterdam.jpg",
-        "thumbnail": "/images/amsterdamThumb.jpg",
-        "color": "#d8d8d5"
+        "value": "/images/gemeente.jpg",
+        "thumbnail": "/images/gemeenteThumb.jpg",
+        "color": "#ffffff"
       },
       "choices": {
-        "amsterdam": "Ja",
-        "no": "Nee"
+        "amsterdam": "Amsterdam",
+        "rotterdam": "Rotterdam"
+      },
+      "meta": {
+        "dropdownSelectPlaceholder": "Jouw Gemeente",
+        "dropdownSelectNoResultLabel": "Mijn gemeente staat er niet tussen",
+        "dropdownSelectNoResultValue": "no"
       },
       "nextTaskId": {
         "amsterdam": "onboarding.welcome",
+        "rotterdam": "onboarding.welcome",
         "no": "onboarding.notAmsterdam"
       }
     },
@@ -52,7 +57,7 @@
       "type": "GoBack",
       "headerTitle": "",
       "title": "Excuses voor het ongemak",
-      "description": "Deze route is nu nog alleen geschikt voor mensen die in Amsterdam wonen. Voor algemene info over 18 worden en wat je kunt regelen, <a href=\"https://www.rijksoverheid.nl/onderwerpen/achttien-jaar-worden/vraag-en-antwoord/checklist-bij-18-jaar-worden\">check deze site</a>",
+      "description": "Deze route is nu nog alleen geschikt voor mensen die in Amsterdam of Rotterdam wonen. Voor algemene info over 18 worden en wat je kunt regelen, <a href=\"https://www.rijksoverheid.nl/onderwerpen/achttien-jaar-worden/vraag-en-antwoord/checklist-bij-18-jaar-worden\">check deze site</a>",
       "nextTaskId": ""
     },
     {
