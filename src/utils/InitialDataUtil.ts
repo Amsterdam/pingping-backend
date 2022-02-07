@@ -52,15 +52,17 @@ class InitialDataUtil {
     return _.first(tasks);
   }
 
-  static getRoutes(): Array<RouteDefinition> {
+  static getRoutes(dataSet: string = null): Array<RouteDefinition> {
     const keys = Object.keys(initialData.routes);
 
-    return Object.values(initialData.routes).map((r: RouteDefinition, index: number) => {
-      return {
-        id: keys[index],
-        ...r,
-      };
-    });
+    return Object.values(initialData.routes)
+      .map((r: RouteDefinition, index: number) => {
+        return {
+          id: keys[index],
+          ...r,
+        };
+      })
+      .filter((r: RouteDefinition) => (dataSet ? r.dataSet === dataSet : true));
   }
 
   static getRouteById(id: string): RouteDefinition {
