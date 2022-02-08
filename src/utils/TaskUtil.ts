@@ -201,26 +201,37 @@ class TaskUtil {
     const oldStatus = userTask.status;
 
     if (answer) {
-      userTask.status =
-        (taskDef.type === TaskType.YesOrNo || taskDef.type === TaskType.Confirm) && answer === ANSWER_NO
-          ? TaskStatus.Dismissed
-          : TaskStatus.Completed;
       userTask.answer = answer;
 
       switch (taskDef.type) {
+        case TaskType.YesOrNo:
+        case TaskType.Confirm:
+          userTask.status = answer === ANSWER_NO ? TaskStatus.Dismissed : TaskStatus.Completed;
+          break;
         case TaskType.DateOfBirth:
           // Check date
           const date = moment(answer, 'YYYY-MM-DD');
-          user.profile.dateOfBirth = date.toDate();
 
           if (!date.isValid()) {
             throw new BadRequestError('invalid date input, expecting YYYY-MM-DD');
           }
+
+          user.profile.dateOfBirth = date.toDate();
+          userTask.status = TaskStatus.Completed;
+          break;
+        case TaskType.DropdownSelect:
+        case TaskType.MultipleChoices:
+        case TaskType.MultipleChoicesSelectOne:
+          userTask.status = TaskStatus.Completed;
+          break;
         default:
         // no validation
       }
     } else {
       userTask.status = TaskStatus.Completed;
+    }
+
+    if (userTask.status === TaskStatus.Completed) {
       userTask.completedAt = new Date();
     }
 

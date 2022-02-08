@@ -230,7 +230,7 @@
     },
     {
       "routeTaskId": "financieleBasis-rotterdam.inkomen",
-      "id": "onboarding.inkomen",
+      "id": "onboarding.inkomen-rotterdam",
       "type": "YesOrNo",
       "title": "Heb je al inkomen?",
       "choices": {
