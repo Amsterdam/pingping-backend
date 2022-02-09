@@ -87,7 +87,7 @@ class TaskUtil {
 
   static getCurrentUserTask(user: UserDocument): UserTask {
     const tasks: Array<UserTask> = user.tasks.filter((t: UserTask) => t.status === TaskStatus.PendingUser);
-    const task: UserTask = <UserTask>_.nth(tasks, 1) || <UserTask>_.first(tasks);
+    const task: UserTask = <UserTask>_.first(tasks);
 
     if (task) {
       return new UserTask(task.taskId, task.status, task.answer, task._id, user);
@@ -183,6 +183,10 @@ class TaskUtil {
 
   static async revertTask(user: UserDocument, taskId: string) {
     const currentUserTask = TaskUtil.getCurrentUserTask(user);
+
+    if (!currentUserTask) {
+      throw new Error(`no_active_task`);
+    }
 
     // Revert the task and delete the latest one
     let userTask = TaskUtil.getUserTask(user, taskId);
