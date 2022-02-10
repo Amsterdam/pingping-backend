@@ -4,12 +4,10 @@ import {
   MutationCreateRouteFeedbackArgs,
   MutationCompleteTaskArgs,
   MutationRevertTaskArgs,
-  TaskStatus,
 } from '@models';
 import { ModuleContext } from '@graphql-modules/core';
 import TaskUtil from 'utils/TaskUtil';
 import { RouteFeedback } from 'models/RouteFeedback';
-import InitialDataUtil from 'utils/InitialDataUtil';
 
 export const Mutation: MutationResolvers = {
   async updateTask(root: any, args: MutationUpdateTaskArgs, context: ModuleContext): Promise<any> {

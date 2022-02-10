@@ -130,6 +130,7 @@ const userSchema = new Schema(
         title: String,
         amount: Number,
         balance: Number,
+        reference: String,
       },
     ],
 

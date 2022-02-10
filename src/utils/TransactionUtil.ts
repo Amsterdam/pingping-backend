@@ -11,7 +11,6 @@ class TransactionUtil {
     user.balance += amount;
 
     if (user.transactions.map((t: UserTransaction) => t.reference).indexOf(reference) !== -1) {
-      // @todo fix
       console.info('Skipping duplicate transaction');
       return null;
     }

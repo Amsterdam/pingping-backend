@@ -10,6 +10,8 @@ import { TaskStatus, TaskType, UserRouteStatus } from '../generated-models';
 import TransactionUtil from './TransactionUtil';
 import { UserRoute } from 'models/UserRoute';
 import { DATA_SET_NONE, DATA_SET_AMSTERDAM } from 'models/User';
+import { Types } from 'mongoose';
+import { UserTransaction } from 'models/UserTransaction';
 
 const TASK_ID_GEMEENTE: string = 'onboarding.gemeente';
 export const ANSWER_NO = 'no';
@@ -44,6 +46,7 @@ class TaskUtil {
       choices: taskFound.choices,
       points: taskFound.points,
       disabled: taskFound.disabled || false,
+      initial: taskFound.initial,
       progress: TaskUtil.getProgress(taskId),
       description: taskFound.description,
       routeTaskId: taskFound.routeTaskId,
@@ -241,6 +244,16 @@ class TaskUtil {
 
     if (taskDef.id === TASK_ID_GEMEENTE) {
       user.dataSet = answer === ANSWER_YES ? DATA_SET_AMSTERDAM : answer === ANSWER_NO ? DATA_SET_NONE : answer;
+    }
+
+    // If the user is completing an 'initial' task, currently the municipality selection,
+    // we need to reset the user completely. Since the user might have completed the onboarding
+    // flow with a different user.
+    if (taskDef.initial === true) {
+      user.balance = 0;
+      user.transactions = [] as Types.Array<UserTransaction>;
+      user.tasks = [userTask] as Types.Array<UserTask>;
+      await User.updateOne({ _id: user._id }, { $set: { balance: 0, transactions: [], tasks: [userTask] } });
     }
 
     if (taskDef.points && oldStatus !== TaskStatus.Completed && userTask.status === TaskStatus.Completed) {
