@@ -8,7 +8,7 @@ import { ContextType } from 'lib/Context';
 
 export const Query: QueryResolvers = {
   async getRoutes(root: any, args: any, context: ContextType): Promise<any> {
-    let routes: Array<RouteDefinition> = InitialDataUtil.getRoutes();
+    let routes: Array<RouteDefinition> = InitialDataUtil.getRoutes(context.user.dataSet);
     let tasks: Array<UserTask> = context.user.tasks;
 
     let currentRoutes = routes.filter((r: RouteDefinition) => {

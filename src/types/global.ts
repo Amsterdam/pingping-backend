@@ -50,6 +50,7 @@ export type RouteDefinition = {
   description?: string;
   isSuggested: boolean;
   imageUrl?: string;
+  dataSet: string;
   cover: MediaType;
   thumbnailUrl?: string;
   tasks: Array<TaskDefinition>;

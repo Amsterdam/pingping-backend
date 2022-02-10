@@ -24,6 +24,7 @@ class RouteUtil {
         title: routeFound.title,
         tasks: routeFound.tasks,
         isSuggested: routeFound.isSuggested,
+        dataSet: routeFound.dataSet,
         tips: routeFound.tips || [],
         cover: routeFound.cover,
         targetAudience: routeFound.targetAudience,

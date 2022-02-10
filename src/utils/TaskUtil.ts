@@ -87,7 +87,7 @@ class TaskUtil {
 
   static getCurrentUserTask(user: UserDocument): UserTask {
     const tasks: Array<UserTask> = user.tasks.filter((t: UserTask) => t.status === TaskStatus.PendingUser);
-    const task: UserTask = <UserTask>_.nth(tasks, 1) || <UserTask>_.first(tasks);
+    const task: UserTask = <UserTask>_.first(tasks);
 
     if (task) {
       return new UserTask(task.taskId, task.status, task.answer, task._id, user);
@@ -184,6 +184,10 @@ class TaskUtil {
   static async revertTask(user: UserDocument, taskId: string) {
     const currentUserTask = TaskUtil.getCurrentUserTask(user);
 
+    if (!currentUserTask) {
+      throw new Error(`no_active_task`);
+    }
+
     // Revert the task and delete the latest one
     let userTask = TaskUtil.getUserTask(user, taskId);
     userTask.status = TaskStatus.PendingUser;
@@ -201,26 +205,37 @@ class TaskUtil {
     const oldStatus = userTask.status;
 
     if (answer) {
-      userTask.status =
-        (taskDef.type === TaskType.YesOrNo || taskDef.type === TaskType.Confirm) && answer === ANSWER_NO
-          ? TaskStatus.Dismissed
-          : TaskStatus.Completed;
       userTask.answer = answer;
 
       switch (taskDef.type) {
+        case TaskType.YesOrNo:
+        case TaskType.Confirm:
+          userTask.status = answer === ANSWER_NO ? TaskStatus.Dismissed : TaskStatus.Completed;
+          break;
         case TaskType.DateOfBirth:
           // Check date
           const date = moment(answer, 'YYYY-MM-DD');
-          user.profile.dateOfBirth = date.toDate();
 
           if (!date.isValid()) {
             throw new BadRequestError('invalid date input, expecting YYYY-MM-DD');
           }
+
+          user.profile.dateOfBirth = date.toDate();
+          userTask.status = TaskStatus.Completed;
+          break;
+        case TaskType.DropdownSelect:
+        case TaskType.MultipleChoices:
+        case TaskType.MultipleChoicesSelectOne:
+          userTask.status = TaskStatus.Completed;
+          break;
         default:
         // no validation
       }
     } else {
       userTask.status = TaskStatus.Completed;
+    }
+
+    if (userTask.status === TaskStatus.Completed) {
       userTask.completedAt = new Date();
     }
 
