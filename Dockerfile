@@ -8,7 +8,6 @@ RUN npm install
 RUN npm install -g @vue/cli
 
 ENV PORT=8000
-COPY package.json /app/package.json
 
 # Admin Part
 WORKDIR /app/admin

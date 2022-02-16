@@ -65,9 +65,10 @@ class StatisticsUtil {
 
     if (res && res.value) {
       const lastWeek: number = parseFloat(res.value);
-      let val = (current - lastWeek) / lastWeek;
 
-      return val;
+      if (lastWeek) {
+        return (current - lastWeek) / lastWeek;
+      }
     }
 
     return 0;
@@ -696,7 +697,7 @@ class StatisticsUtil {
             return avg[k].reduce((p: number, c: number) => p + c) / avg[k].length;
           }
 
-          return undefined;
+          return 0;
         })
         .map((n) => Math.round(n)),
       keys,

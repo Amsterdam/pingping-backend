@@ -5,7 +5,10 @@
     variant="primary"
     :class="navBarClass"
   >
-    <b-navbar-brand to="/">PingPing Admin ({{ user.dataSet }})</b-navbar-brand>
+    <b-navbar-brand
+      to="/"
+      v-if="user"
+    >PingPing Admin ({{ user.dataSet }})</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -65,6 +68,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.navbar-brand {
+  margin-left: 1rem;
+}
+
 .navbar.env-development {
   background: repeating-linear-gradient(45deg, #58508d, #58508d 10px, #58549d 10px, #58549d 20px);
 }
