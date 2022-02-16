@@ -14,8 +14,7 @@
         "color": "#ffffff"
       },
       "choices": {
-        "amsterdam": "Amsterdam",
-        "rotterdam": "Rotterdam"
+        "amsterdam": "Amsterdam"
       },
       "meta": {
         "dropdownSelectPlaceholder": "Jouw Gemeente",
