@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . /app/.
 RUN yarn config set "strict-ssl" false -g
 RUN yarn install
-RUN yarn add -g @vue/cli
+RUN yarn global add @vue/cli
 
 ENV PORT=8000
 
