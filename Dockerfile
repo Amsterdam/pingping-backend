@@ -4,8 +4,8 @@ FROM node:12
 WORKDIR /app
 COPY . /app/.
 # RUN yarn config set "strict-ssl" false -g
-RUN npm install
-RUN npm install -g @vue/cli
+RUN yarn install
+RUN yarn add -g @vue/cli
 
 ENV PORT=8000
 
