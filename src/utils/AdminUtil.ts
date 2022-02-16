@@ -35,7 +35,7 @@ export default class AdminUtil {
 
   // Setting all current data to the Amsterdam data set
   static async dataSetMigration() {
-    await RouteFeedback.updateMany({ dataSet: DATA_SET_ROTTERDAM }, { dataSet: DATA_SET_AMSTERDAM });
+    await RouteFeedback.updateMany({ dataSet: { $exists: false } }, { dataSet: DATA_SET_AMSTERDAM });
     await User.updateMany({ dataSet: { $exists: false } }, { dataSet: DATA_SET_AMSTERDAM });
     await StatisticModel.updateMany({ dataSet: { $exists: false } }, { dataSet: DATA_SET_AMSTERDAM });
     await AuditLog.updateMany({ dataSet: { $exists: false } }, { dataSet: DATA_SET_AMSTERDAM });
