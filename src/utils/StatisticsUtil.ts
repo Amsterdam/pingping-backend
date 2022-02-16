@@ -65,9 +65,10 @@ class StatisticsUtil {
 
     if (res && res.value) {
       const lastWeek: number = parseFloat(res.value);
-      let val = (current - lastWeek) / lastWeek;
 
-      return val;
+      if (lastWeek) {
+        return (current - lastWeek) / lastWeek;
+      }
     }
 
     return 0;
@@ -624,7 +625,7 @@ class StatisticsUtil {
   }
 
   static async getUsersPerWeek(dataSet: string = undefined): Promise<Statistics> {
-    const res = await User.aggregate([
+    let res = await User.aggregate([
       {
         $match: {
           role: UserRole.User,
@@ -637,7 +638,7 @@ class StatisticsUtil {
       },
       {
         $project: {
-          label: { $dateToString: { format: '%Y-%V', date: '$createdAt' } },
+          label: { $dateToString: { format: '%Y-%U', date: '$createdAt' } },
         },
       },
       {
@@ -648,6 +649,10 @@ class StatisticsUtil {
       },
       { $sort: { _id: 1 } },
     ]);
+
+    res = res.filter((i) => {
+      return moment(i._id, WEEK_FORMAT).isBefore(moment());
+    });
 
     return {
       values: res.map((i) => i.count),
@@ -696,7 +701,7 @@ class StatisticsUtil {
             return avg[k].reduce((p: number, c: number) => p + c) / avg[k].length;
           }
 
-          return undefined;
+          return 0;
         })
         .map((n) => Math.round(n)),
       keys,
