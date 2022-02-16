@@ -651,7 +651,7 @@ class StatisticsUtil {
     ]);
 
     res = res.filter((i) => {
-      return moment(i._id, WEEK_FORMAT).isAfter(moment());
+      return moment(i._id, WEEK_FORMAT).isBefore(moment());
     });
 
     return {
