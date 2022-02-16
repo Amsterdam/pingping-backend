@@ -625,7 +625,7 @@ class StatisticsUtil {
   }
 
   static async getUsersPerWeek(dataSet: string = undefined): Promise<Statistics> {
-    const res = await User.aggregate([
+    let res = await User.aggregate([
       {
         $match: {
           role: UserRole.User,
@@ -638,7 +638,7 @@ class StatisticsUtil {
       },
       {
         $project: {
-          label: { $dateToString: { format: '%Y-%V', date: '$createdAt' } },
+          label: { $dateToString: { format: '%Y-%U', date: '$createdAt' } },
         },
       },
       {
@@ -649,6 +649,10 @@ class StatisticsUtil {
       },
       { $sort: { _id: 1 } },
     ]);
+
+    res = res.filter((i) => {
+      return moment(i._id, WEEK_FORMAT).isAfter(moment());
+    });
 
     return {
       values: res.map((i) => i.count),
