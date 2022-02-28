@@ -82,6 +82,7 @@ html {
 
 .block {
   padding: 0.5rem !important;
+  max-width: 100%;
 }
 
 .block-inner {
