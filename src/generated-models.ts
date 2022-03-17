@@ -131,8 +131,11 @@ export type CompleteTaskResponse = {
 
 export type ContactInput = {
   name: Scalars['String'];
+  type?: Maybe<Scalars['String']>;
   email: Scalars['String'];
-  body: Scalars['String'];
+  organization?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['String']>;
 };
 
 export type CreateGoalInput = {

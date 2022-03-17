@@ -18,8 +18,11 @@ input LocationInput {
 
 input ContactInput {
   name: String!
+  type: String
   email: String!
-  body: String!
+  organization: String
+  phoneNumber: String
+  body: String
 }
 
 # Dynamic type for an task answer

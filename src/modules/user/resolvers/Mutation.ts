@@ -20,8 +20,14 @@ import MailUtil from 'utils/MailUtil';
 
 export const Mutation: MutationResolvers = {
   async contact(root: any, args: MutationContactArgs, context: ContextType): Promise<any> {
-    const html = `<strong>Naam: </strong>${args.input.name}<br/><strong>Email: </strong>${args.input.email}<br/><strong>Bericht: </strong>${args.input.body}<br/>`;
-
+    const html = `
+      <strong>Type: ${args.input.type}</strong><br/>
+      ---------------<br/>
+      <strong>Naam: </strong>${args.input.name}<br/>
+      <strong>Organization: </strong>${args.input.organization}<br/>
+      <strong>Email: </strong>${args.input.email}<br/>
+      <strong>PhoneNumber: </strong>${args.input.phoneNumber}<br/>
+      <strong>Bericht: </strong>${args.input.body}<br/>`;
     try {
       await MailUtil.send(args.input.email, html);
       return 'success';
