@@ -118,6 +118,10 @@ export default {
   padding: 0 1rem;
 }
 
+.row {
+  display: flex;
+}
+
 hr {
   margin-top: 1rem;
   margin-bottom: 1rem;

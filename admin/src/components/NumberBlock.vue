@@ -1,5 +1,5 @@
 <template>
-  <div class="block number-block">
+  <div class="block number-block col-md-4 col-xs-6">
     <div class="block-inner">
       <div
         v-b-tooltip.hover
