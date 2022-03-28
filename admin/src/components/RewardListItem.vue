@@ -18,7 +18,11 @@
       >
         <b-progress-bar
           :value="available"
-          :variant="variant"
+          variant="success"
+        ></b-progress-bar>
+        <b-progress-bar
+          :value="used"
+          variant="danger"
         ></b-progress-bar>
       </b-progress>
     </td>
@@ -52,6 +56,10 @@ export default {
     },
 
     available () {
+      return this.vouchers.length - this.vouchers.filter(i => i.userId).length
+    },
+
+    used () {
       return this.vouchers.filter(i => i.userId).length
     },
 

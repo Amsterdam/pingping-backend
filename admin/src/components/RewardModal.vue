@@ -6,6 +6,7 @@
     <textarea v-model="csv"></textarea>
     <div v-if="csv">{{ importText }}</div>
     <b-button @click="importCsv">Import CSV</b-button>
+    <div>{{ status }}</div>
     <table class="table">
       <thead>
         <tr>
@@ -42,6 +43,10 @@ export default {
   },
 
   computed: {
+    status () {
+      return `${this.voucherItems.length} vouchers, ${this.voucherItems.filter(v => v.userId !== null).length} used`
+    },
+
     importText () {
       return `Going to import ${this.csvLines.length - 1} items with columns ${this.csvFields.join(',')} with separator ${this.separator}`
     },
