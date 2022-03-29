@@ -31,7 +31,7 @@ export const Mutation: MutationResolvers = {
       <strong>Bericht: </strong>${args.input.body}<br/>`;
     try {
       if (process.env.SLACK_WEBHOOK) {
-        const res = await request.post(process.env.SLACK_WEBHOOK, {
+        await request.post(process.env.SLACK_WEBHOOK, {
           json: {
             channel: '#notifications',
             username: 'pingping.amsterdam.nl',
