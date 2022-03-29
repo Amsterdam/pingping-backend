@@ -1,8 +1,10 @@
-FROM node:12
+FROM node:14
 
 # Create app directory
 WORKDIR /app
 COPY . /app/.
+COPY init.sh /usr/local/bin/
+RUN chmod u+x /usr/local/bin/init.sh
 RUN yarn config set "strict-ssl" false -g
 RUN yarn install
 RUN yarn global add @vue/cli
