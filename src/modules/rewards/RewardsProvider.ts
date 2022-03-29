@@ -18,12 +18,12 @@ export class RewardsProvider {
     return this.rewards.filter((r: RewardDefinition) => r.dataSet === dataSet);
   }
 
-  getInactive(): RewardDefinition[] {
-    return this.rewards.filter((r: RewardDefinition) => r.active === false);
+  getInactive(dataSet: string): RewardDefinition[] {
+    return this.rewards.filter((r: RewardDefinition) => r.active === false && r.dataSet === dataSet);
   }
 
-  getActive(): RewardDefinition[] {
-    return this.rewards.filter((r: RewardDefinition) => r.active === true);
+  getActive(dataSet: string): RewardDefinition[] {
+    return this.rewards.filter((r: RewardDefinition) => r.active === true && r.dataSet === dataSet);
   }
 
   async getAvailable(dataSet: string): Promise<RewardDefinition[]> {

@@ -12,10 +12,10 @@ export const Query: QueryResolvers = {
     // birthday that only provides access to mocked rewards. These rewards will be claimed by
     // apple / google testers.
     if (moment(_.get(context, 'user.profile.dateOfBirth', new Date())).format('YYYY-MM-DD') === MOCK_DATE) {
-      return context.injector.get(RewardsProvider).getInactive();
+      return context.injector.get(RewardsProvider).getInactive(context.user.dataSet);
     }
 
-    return context.injector.get(RewardsProvider).getActive();
+    return context.injector.get(RewardsProvider).getActive(context.user.dataSet);
   },
 
   getRewards(root: any, args: any, context: ModuleContext): Array<any> {

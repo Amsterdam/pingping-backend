@@ -17,4 +17,4 @@ WORKDIR /app
 
 EXPOSE 8000
 
-CMD [ "yarn", "start:server" ]
+ENTRYPOINT ["init.sh"]
