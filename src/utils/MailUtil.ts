@@ -8,13 +8,13 @@ export default class MailUtil {
     var mail = new helper.Mail(fromEmail, 'Bericht van pingping.amsterdam.nl', toEmail, content);
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
 
-    var request = sg.emptyRequest({
+    var sendGridRequest = sg.emptyRequest({
       method: 'POST',
       path: '/v3/mail/send',
       body: mail.toJSON(),
     });
 
-    sg.API(request, function (error: any, response: any) {
+    sg.API(sendGridRequest, function (error: any, response: any) {
       if (error) {
         console.warn('Error response received');
       }

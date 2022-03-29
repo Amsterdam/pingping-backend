@@ -8,6 +8,7 @@ import {
   MutationContactArgs,
   AuditLogType,
 } from '@models';
+import request from 'request';
 import _ from 'lodash';
 import { ModuleContext } from '@graphql-modules/core';
 import GoalUtil from 'utils/GoalUtil';
@@ -29,6 +30,24 @@ export const Mutation: MutationResolvers = {
       <strong>PhoneNumber: </strong>${args.input.phoneNumber}<br/>
       <strong>Bericht: </strong>${args.input.body}<br/>`;
     try {
+      if (process.env.SLACK_WEBHOOK) {
+        const res = await request.post(process.env.SLACK_WEBHOOK, {
+          json: {
+            channel: '#notifications',
+            username: 'pingping.amsterdam.nl',
+            icon_empji: ':pingpong:',
+            text: `
+              MessageType: ${args.input.type}\n
+              Naam: ${args.input.name}\n
+              Organization: ${args.input.organization}\n
+              Email: ${args.input.email}\n
+              PhoneNumber: ${args.input.phoneNumber}\n
+              Bericht: ${args.input.body}\n
+            `,
+          },
+        });
+      }
+
       await MailUtil.send(args.input.email, html);
       return 'success';
     } catch (error) {
