@@ -26,8 +26,10 @@ export class RewardsProvider {
     return this.rewards.filter((r: RewardDefinition) => r.active === true);
   }
 
-  async getAvailable(): Promise<RewardDefinition[]> {
-    return await filterAsync(this.rewards, async (val: RewardDefinition, i) => {
+  async getAvailable(dataSet: string): Promise<RewardDefinition[]> {
+    const rewards = this.rewards.filter((r: RewardDefinition) => r.dataSet === dataSet);
+
+    return await filterAsync(rewards, async (val: RewardDefinition, i) => {
       if (val.type === RewardType.SelfIssued) {
         return true;
       } else if (val.type === RewardType.Voucher) {
