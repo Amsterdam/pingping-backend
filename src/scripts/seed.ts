@@ -6,7 +6,7 @@ import faker from 'faker';
 import { argv } from 'process';
 import readline from 'readline';
 import UserUtil from 'utils/UserUtil';
-import { User } from 'models/User';
+import { User, DATA_SET_AMSTERDAM } from 'models/User';
 import TaskUtil from 'utils/TaskUtil';
 import { NotificationStatus, TaskStatus } from '@models';
 import StatisticsUtil from 'utils/StatisticsUtil';
@@ -16,8 +16,9 @@ import { UserTask } from 'models/UserTask';
 import { DATA_SET_ROTTERDAM, DATA_SET_NONE } from 'models/User';
 import { RouteFeedback } from 'models/RouteFeedback';
 import { PushNotificationUtil } from 'utils/PushNotificationUtil';
+import { use } from 'chai';
 
-const START_DATE = '2021-10-04';
+const START_DATE = '2022-01-01';
 const NUMBER_OF_DAYS = moment().diff(moment(START_DATE), 'days');
 const MIN_USERS_PER_DAY = 2;
 const MAX_USERS_PER_DAY = 8;
@@ -67,6 +68,7 @@ const seed = async () => {
             ? NotificationStatus.Approved
             : NotificationStatus.Declined;
           user.devices[0].token = Math.random().toString(36).slice(2);
+          user.dataSet = argv[3];
           await user.save();
 
           let isCity = getRandomNumber(0, 10) < 2 ? false : true;
@@ -78,9 +80,13 @@ const seed = async () => {
             continue;
           }
 
-          let welcomeDef = TaskUtil.getDefinition('onboarding.welcome');
+          let welcomeDef = TaskUtil.getDefinition(
+            argv[3] === DATA_SET_AMSTERDAM ? 'onboarding.welcome' : `onboarding.welcome-${argv[3]}`
+          );
           await TaskUtil.handleTask(user, welcomeDef, getRandomNumber(0, 10) < 1 ? 'no' : 'yes');
-          let dobDef = TaskUtil.getDefinition('onboarding.dateOfBirth');
+          let dobDef = TaskUtil.getDefinition(
+            argv[3] === DATA_SET_AMSTERDAM ? 'onboarding.dateOfBirth' : `onboarding.dateOfBirth-${argv[3]}`
+          );
           await TaskUtil.handleTask(
             user,
             dobDef,

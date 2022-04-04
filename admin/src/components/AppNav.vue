@@ -23,7 +23,7 @@
         <b-nav-item to="/audit-log">Audit Log</b-nav-item>
         <b-nav-item to="/feedback">Feedback</b-nav-item>
       </b-navbar-nav>
-      <b-navbar-nav class="ml-auto">
+      <b-navbar-nav class="ml-4">
         <b-nav-item @click="logout">Logout</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
@@ -84,5 +84,10 @@ export default {
     font-weight: bold;
     color: #fff;
   }
+}
+
+.ml-4 {
+  margin-left: 100px;
+  margin-right: 0;
 }
 </style>

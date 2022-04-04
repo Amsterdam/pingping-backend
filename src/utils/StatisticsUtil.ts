@@ -6,13 +6,18 @@ import InitialDataUtil from 'utils/InitialDataUtil';
 import { TaskDefinition } from 'types/global';
 import { RouteDefinition } from 'types/global';
 import { StatisticModel, Statistic } from 'models/Statistic';
+import { DATA_SET_AMSTERDAM } from 'models/User';
 
 const TOTAL_USERS_WEEK = 'total-users-week';
 const ACTIVE_USERS_WEEK = 'active-users-7-days';
 const SKIPPED_ONBOARDING_WEEK = 'skipped-onboarding-week';
 const DATE_FORMAT = 'YYYY-MM-DD';
 const WEEK_FORMAT = 'YYYY-WW';
-export const START_DATE = '04.01.2021';
+
+export const START_DATES: any = {
+  amsterdam: '01.04.2021',
+  rotterdam: '01.03.2022',
+};
 
 class StatisticsUtil {
   static async getTotalUsersCurrent(dataSet: string = undefined): Promise<number> {
@@ -75,14 +80,14 @@ class StatisticsUtil {
   }
 
   static async getUsersCumulative(dataSet: string = undefined): Promise<Statistics> {
-    const dates = this.getDates();
+    const dates = this.getDates(dataSet);
     const res = await User.aggregate([
       {
         $match: {
           role: UserRole.User,
           dataSet,
           createdAt: {
-            $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+            $gt: moment(START_DATES[dataSet], 'DD.MM.YYYY').toDate(),
           },
         },
       },
@@ -158,14 +163,14 @@ class StatisticsUtil {
   }
 
   static async getRoutesPerMonth(dataSet: string = undefined): Promise<Statistics> {
-    const months = this.getMonths();
+    const months = this.getMonths(dataSet);
     const filter: any = [
       {
         $match: {
           role: UserRole.User,
           dataSet,
           createdAt: {
-            $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+            $gt: moment(START_DATES[dataSet], 'DD.MM.YYYY').toDate(),
           },
         },
       },
@@ -240,9 +245,9 @@ class StatisticsUtil {
     };
   }
 
-  static getDates() {
+  static getDates(dataSet: string) {
     let dateArray = [];
-    let currentDate = moment(START_DATE, 'DD.MM.YYYY');
+    let currentDate = moment(START_DATES[dataSet], 'DD.MM.YYYY');
     let endDate = moment();
     while (currentDate.isBefore(endDate)) {
       dateArray.push(moment(currentDate).format('YYYY-MM-DD'));
@@ -251,9 +256,9 @@ class StatisticsUtil {
     return dateArray;
   }
 
-  static getMonths() {
+  static getMonths(dataSet: string) {
     let dateArray = [];
-    let currentDate = moment(START_DATE, 'DD,MM.YYYY');
+    let currentDate = moment(START_DATES[dataSet], 'DD,MM.YYYY');
     let endDate = moment();
     while (currentDate.isBefore(endDate)) {
       dateArray.push(moment(currentDate).format('YYYY-MM'));
@@ -263,14 +268,14 @@ class StatisticsUtil {
   }
 
   static async getRoutesCompletedPerMonth(dataSet: string = undefined): Promise<Statistics> {
-    const months = this.getMonths();
+    const months = this.getMonths(dataSet);
     const filter: any = [
       {
         $match: {
           role: UserRole.User,
           dataSet,
           createdAt: {
-            $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+            $gt: moment(START_DATES[dataSet], 'DD.MM.YYYY').toDate(),
           },
         },
       },
@@ -375,7 +380,8 @@ class StatisticsUtil {
       },
       {
         $match: {
-          'tasks.taskId': 'onboarding.dateOfBirth',
+          'tasks.taskId':
+            dataSet === DATA_SET_AMSTERDAM ? 'onboarding.dateOfBirth' : `onboarding.dateOfBirth-${dataSet}`,
           ...dateQuery,
         },
       },
@@ -447,7 +453,8 @@ class StatisticsUtil {
       },
       {
         $match: {
-          'tasks.taskId': 'onboarding.dateOfBirth',
+          'tasks.taskId':
+            dataSet === DATA_SET_AMSTERDAM ? 'onboarding.dateOfBirth' : `onboarding.dateOfBirth-${dataSet}`,
           ...dateQuery,
         },
       },
@@ -600,7 +607,7 @@ class StatisticsUtil {
           role: UserRole.User,
           dataSet,
           createdAt: {
-            $gt: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+            $gt: moment(START_DATES[dataSet], 'DD.MM.YYYY').toDate(),
           },
         },
       },
@@ -631,7 +638,7 @@ class StatisticsUtil {
           role: UserRole.User,
           dataSet,
           createdAt: {
-            $gte: moment(START_DATE, 'DD.MM.YYYY').toDate(),
+            $gte: moment(START_DATES[dataSet], 'DD.MM.YYYY').toDate(),
             $lte: moment().subtract(1, 'week').endOf('week').add(2, 'day').toDate(),
           },
         },
@@ -662,7 +669,7 @@ class StatisticsUtil {
 
   static async getActiveUsersPerWeek(dataSet: string = undefined): Promise<Statistics> {
     const avg: any = {};
-    const date: any = moment(START_DATE, 'DD.MM.YYYY');
+    const date: any = moment(START_DATES[dataSet], 'DD.MM.YYYY');
 
     while (true) {
       const key = moment(date).format(DATE_FORMAT);
@@ -811,7 +818,8 @@ class StatisticsUtil {
     return {
       values: res.map((i) => i.count),
       keys: res.map((i) => {
-        const id = i._id.task.replace('onboarding', i._id.route);
+        const coreId: Array<string> = i._id.task.split('-');
+        const id = coreId[0].replace('onboarding', i._id.route);
         const task: TaskDefinition = InitialDataUtil.getTaskById(id);
 
         return `${i._id.task.split('.')[0]}:${task.title}`;

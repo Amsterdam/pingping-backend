@@ -117,7 +117,7 @@ export default {
       let current = moment()
       let weeks = []
 
-      while (moment('04.01.2021', 'DD.MM.YYYY').diff(current, 'weeks') < 0) {
+      while (moment('01.01.2022', 'DD.MM.YYYY').diff(current, 'weeks') < 0) {
         weeks.push({
           value: current.format(WEEK_FORMAT),
           text: moment().format(WEEK_FORMAT) === current.format(WEEK_FORMAT) ? `Current week` : `W ${current.format('W - YYYY')}`
