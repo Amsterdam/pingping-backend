@@ -1,7 +1,15 @@
 import { User } from 'models/User';
 import moment from 'moment';
 import _ from 'lodash';
-import { UserRole, TaskStatus, StatisticNumberChange, Statistics, RouteStatistics, UserRouteStatus } from '@models';
+import {
+  UserRole,
+  TaskStatus,
+  StatisticNumberChange,
+  Statistics,
+  RouteStatistics,
+  UserRouteStatus,
+  TaskType,
+} from '@models';
 import InitialDataUtil from 'utils/InitialDataUtil';
 import { TaskDefinition } from 'types/global';
 import { RouteDefinition } from 'types/global';
@@ -820,7 +828,13 @@ class StatisticsUtil {
       keys: res.map((i) => {
         const coreId: Array<string> = i._id.task.split('-');
         const id = coreId[0].replace('onboarding', i._id.route);
-        const task: TaskDefinition = InitialDataUtil.getTaskById(id);
+        let task: TaskDefinition = undefined;
+
+        try {
+          task = InitialDataUtil.getTaskById(id);
+        } catch {
+          return 'unknown';
+        }
 
         return `${i._id.task.split('.')[0]}:${task.title}`;
       }),
