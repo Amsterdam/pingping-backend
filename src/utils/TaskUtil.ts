@@ -26,13 +26,19 @@ class TaskUtil {
     }
 
     // GetRoute
-    const tasks = InitialDataUtil.getRouteById(InitialDataUtil.getRouteIdFromTaskId(taskId)).tasks;
+    const tasks = InitialDataUtil.getRouteById(RouteUtil.getRouteIdFromTaskId(taskId)).tasks;
     const index = tasks.map((i) => i.id).indexOf(taskId);
 
     return _.round((index + 1) / tasks.length, 2);
   }
 
-  static getDefinition(taskId: string): TaskDefinition {
+  static getDefinitionFromKey(key: string, dataset: string): TaskDefinition {
+    const taskId: string = RouteUtil.getTaskIdFromRouteTask(key, dataset);
+
+    return TaskUtil.getDefinition(taskId, dataset);
+  }
+
+  static getDefinition(taskId: string, dataset: string = 'none'): TaskDefinition {
     const taskFound = InitialDataUtil.getTaskById(taskId);
 
     if (!taskFound) {
@@ -49,7 +55,7 @@ class TaskUtil {
       initial: taskFound.initial,
       progress: TaskUtil.getProgress(taskId),
       description: taskFound.description,
-      routeTaskId: taskFound.routeTaskId,
+      routeTask: taskFound.routeTask,
       nextTaskId: taskFound.nextTaskId,
       nextRoute: taskFound.nextRoute,
       defaultValue: taskFound.defaultValue,
@@ -61,9 +67,11 @@ class TaskUtil {
     };
 
     // If there is a reference to an actual routeTask we show that
-    if (taskFound.routeTaskId) {
+    if (taskFound.routeTask) {
+      const routeTaskId: string = RouteUtil.getTaskIdFromRouteTask(taskFound.routeTask, dataset);
+
       return {
-        ...InitialDataUtil.getTaskById(taskFound.routeTaskId),
+        ...InitialDataUtil.getTaskById(routeTaskId),
         ..._.pickBy(def, _.identity), // Remove undefined
         id: taskId,
       };
@@ -81,12 +89,6 @@ class TaskUtil {
     }
 
     return new UserTask(taskId, TaskStatus.PendingUser, null);
-  }
-
-  static getRouteIdFromTaskId(id: string): string {
-    const [routeId, taskId] = id.split('.');
-
-    return routeId;
   }
 
   static getCurrentUserTask(user: UserDocument): UserTask {
@@ -177,8 +179,9 @@ class TaskUtil {
     const taskDef: TaskDefinition = InitialDataUtil.getTaskById(taskId);
 
     const userTask: UserTask = new UserTask(taskDef.id, TaskStatus.PendingUser);
-    userTask.routeTaskId = taskDef.routeTaskId;
-    userTask.routeId = RouteUtil.getRouteIdFromTaskId(taskDef.routeTaskId || taskId);
+    let routeTaskId: string = RouteUtil.getTaskIdFromRouteTask(taskDef.id, user.dataSet);
+    userTask.routeTaskId = routeTaskId;
+    userTask.routeId = RouteUtil.getRouteIdFromTaskId(routeTaskId || taskId);
     user.tasks.push(userTask);
 
     return user;
@@ -212,9 +215,14 @@ class TaskUtil {
 
   static async handleTask(user: UserDocument, taskDef: TaskDefinition, answer: string = null): Promise<UserTask> {
     const userTask = this.getUserTask(user, taskDef.id);
+    let routeTaskId: string = null;
 
-    userTask.routeTaskId = taskDef.routeTaskId;
-    userTask.routeId = RouteUtil.getRouteIdFromTaskId(taskDef.routeTaskId || taskDef.id);
+    if (taskDef.routeTask) {
+      routeTaskId = RouteUtil.getTaskIdFromRouteTask(taskDef.routeTask, user.dataSet);
+      userTask.routeTaskId = routeTaskId;
+    }
+
+    userTask.routeId = RouteUtil.getRouteIdFromTaskId(routeTaskId || taskDef.id);
     const oldStatus = userTask.status;
 
     if (answer) {
@@ -274,10 +282,12 @@ class TaskUtil {
       user = this.addNextTaskToUser(user, this.getNextTaskOrRoute(answer, taskDef.nextTaskId));
     }
 
-    let nextRoute = this.getNextTaskOrRoute(answer, taskDef.nextRoute);
+    if (taskDef.nextRoute) {
+      let nextRoute = this.getNextTaskOrRoute(answer, taskDef.nextRoute);
 
-    if (nextRoute) {
-      user = this.addRouteToUser(user, nextRoute);
+      if (nextRoute) {
+        user = this.addRouteToUser(user, nextRoute);
+      }
     }
 
     user = this.updateUserTask(user, userTask);

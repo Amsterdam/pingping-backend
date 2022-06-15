@@ -103,12 +103,6 @@ class InitialDataUtil {
     };
   }
 
-  static getRouteIdFromTaskId(id: string): string {
-    const [routeId, taskId] = id.split('.');
-
-    return routeId;
-  }
-
   static getTaskFromArray(id: string, items: Array<TaskDefinition>): TaskDefinition {
     const tasks = items.filter((i: TaskDefinition) => i.id === id);
 
@@ -214,7 +208,7 @@ class InitialDataUtil {
     let reward: RewardDefinition = _.first(rewards);
 
     if (!reward) {
-      throw new Error(`reward_not_defined`);
+      throw new Error(`reward_not_defined:${id}:${dataset}`);
     }
 
     return reward;

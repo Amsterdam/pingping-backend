@@ -1,6 +1,6 @@
 import InitialDataUtil from './InitialDataUtil';
 import { AchievementDefinition } from 'types/global';
-import { UserDocument } from '../models/User';
+import { DATA_SET_NONE, UserDocument } from '../models/User';
 import { UserAchievement } from '../models/UserAchievement';
 import TransactionUtil from './TransactionUtil';
 
@@ -10,6 +10,7 @@ class AchievementUtil {
 
     return {
       id,
+      dataSet: DATA_SET_NONE,
       title: achievement.title,
       description: achievement.description,
       points: achievement.points,

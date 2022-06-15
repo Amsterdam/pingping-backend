@@ -5,6 +5,7 @@ import { RouteDefinition, TaskDefinition } from '../types/global';
 import { UserTask } from '../models/UserTask';
 import { TaskStatus } from '../generated-models';
 import TaskUtil from './TaskUtil';
+import { DATA_SET_AMSTERDAM, DATA_SET_NONE } from 'models/User';
 
 class RouteUtil {
   static getProgress(user: UserDocument, route: RouteDefinition): number {
@@ -48,12 +49,22 @@ class RouteUtil {
     return routeId;
   }
 
+  static getTaskIdFromRouteTask(key: string, dataset: string): string {
+    const [routeId, taskId] = key.split('.');
+
+    if (dataset === DATA_SET_AMSTERDAM || dataset === DATA_SET_NONE) {
+      return `${routeId}.${taskId}`;
+    }
+
+    return `${routeId}-${dataset}.${taskId}`;
+  }
+
   static getRouteTask(user: UserDocument, taskId: string): UserTask {
     let status = TaskStatus.PendingUser;
     let answer = null;
 
     let userTaskIndex = user.tasks.map((ut: UserTask) => ut.taskId).indexOf(taskId);
-    let taskDef = TaskUtil.getDefinition(taskId);
+    let taskDef = TaskUtil.getDefinition(taskId, user.dataSet);
 
     if (!taskDef) {
       return null;

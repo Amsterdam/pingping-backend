@@ -9,7 +9,7 @@ import { RouteFeedback } from 'models/RouteFeedback';
 import RouteUtil from 'utils/RouteUtil';
 
 export const UserTaskResponse: any = {
-  task: (doc: UserTask) => TaskUtil.getDefinition(doc.taskId),
+  task: (doc: UserTask, args: any, context: ContextType) => TaskUtil.getDefinition(doc.taskId, context?.user?.dataSet),
   answer: (doc: UserTask, args: any, context: ContextType) => {
     let user = context.user;
 
@@ -17,8 +17,7 @@ export const UserTaskResponse: any = {
       user = doc.user;
     }
 
-    console.log('c', user, doc);
-    const def = TaskUtil.getDefinition(doc.taskId);
+    const def = TaskUtil.getDefinition(doc.taskId, user.dataSet);
 
     if (user?.role === UserRole.User) {
       return doc.answer;
