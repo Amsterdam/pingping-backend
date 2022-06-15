@@ -3,33 +3,96 @@ import { TaskDefinition, RouteDefinition, AchievementDefinition, RewardDefinitio
 import { TaskStatus } from '../generated-models';
 import { ENV_TEST } from '../config/index';
 import { ONBOARDING_PREFIX } from 'utils/TaskUtil';
-
-let initialData: InitialData = require('../../initialData.json');
+import { DATA_SET_NONE, DATA_SET_AMSTERDAM, DATA_SET_ROTTERDAM } from 'models/User';
 
 if (process.env.ENVIRONMENT === ENV_TEST) {
-  initialData = require('../../initialData.test.json');
+  // Load test data instead?
 }
 
+let initialData: InitialData = {
+  onboardingTasks: [],
+  routes: {},
+  achievements: [],
+  rewards: [],
+};
+
 type InitialData = {
-  onboardingTasks: [TaskDefinition];
+  onboardingTasks: Array<TaskDefinition>;
   routes: {
     [key: string]: RouteDefinition;
   };
-  achievements: [AchievementDefinition];
-  rewards: [RewardDefinition];
+  achievements: Array<AchievementDefinition>;
+  rewards: Array<RewardDefinition>;
 };
 
 type OnboardingTaskDefinition = TaskDefinition & {
   nextTaskId?: string | object;
-  nextRouteId?: string | object;
+  nextRoute?: string | object;
   progress: number;
 };
+
 type TaskIdObject = {
   routeId: string;
   taskId: string;
 };
 
+const tenants = [DATA_SET_AMSTERDAM, DATA_SET_ROTTERDAM, DATA_SET_NONE];
+
+type Def = RouteDefinition | RewardDefinition | TaskDefinition | AchievementDefinition;
+
 class InitialDataUtil {
+  static loadAllTenants(): void {
+    let rewards: Array<RewardDefinition> = [];
+    let onboarding: Array<TaskDefinition> = [];
+    let achievements: Array<AchievementDefinition> = [];
+
+    for (const tenant of tenants) {
+      let rewardItems: Array<RewardDefinition> = InitialDataUtil.loadDefTypeForTenant<RewardDefinition>(
+        tenant,
+        'rewards'
+      );
+      rewards = [...rewards, ...rewardItems];
+
+      let routeItems: Array<RouteDefinition> = InitialDataUtil.loadDefTypeForTenant<RouteDefinition>(tenant, 'routes');
+
+      for (const route of routeItems) {
+        initialData.routes[route.id] = route;
+      }
+
+      let onboardingItems: Array<TaskDefinition> = InitialDataUtil.loadDefTypeForTenant<TaskDefinition>(
+        tenant,
+        'onboarding'
+      );
+      onboarding = [...onboarding, ...onboardingItems];
+
+      let achievementItems: Array<AchievementDefinition> = InitialDataUtil.loadDefTypeForTenant<AchievementDefinition>(
+        tenant,
+        'achievements'
+      );
+      achievements = [...achievements, ...achievementItems];
+    }
+
+    initialData.rewards = rewards;
+    initialData.onboardingTasks = onboarding;
+    initialData.achievements = achievements;
+  }
+
+  static loadDefTypeForTenant<T extends Def>(tenant: string, type: string): Array<T> {
+    try {
+      const items: Array<T> = require(`../../defs/${tenant}/${type}.json`) || [];
+
+      for (const item of items) {
+        item.dataSet = tenant;
+      }
+
+      return items;
+    } catch (e) {
+      console.info(`No ${type}.json found for tenant ${tenant}`);
+
+      return [];
+    }
+  }
+
   // Task id does contain a reference to a route like this Route.taskId. Here we deconstruct it.
   static deconstructTaskId(id: string): TaskIdObject {
     const [routeId, taskId] = id.split('.');
@@ -53,12 +116,9 @@ class InitialDataUtil {
   }
 
   static getRoutes(dataSet: string = null): Array<RouteDefinition> {
-    const keys = Object.keys(initialData.routes);
-
     return Object.values(initialData.routes)
       .map((r: RouteDefinition, index: number) => {
         return {
-          id: keys[index],
           ...r,
         };
       })
@@ -75,6 +135,16 @@ class InitialDataUtil {
     route.id = id;
 
     return route;
+  }
+
+  static getRoute(key: string, dataset: string): RouteDefinition {
+    const routes = InitialDataUtil.getRoutes(dataset).filter((r: RouteDefinition) => r.key === key);
+
+    if (!routes.length) {
+      throw new Error(`route_not_defined:${key}`);
+    }
+
+    return _.first(routes);
   }
 
   static getAchievementById(id: string): AchievementDefinition {

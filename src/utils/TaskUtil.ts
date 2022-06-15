@@ -51,8 +51,9 @@ class TaskUtil {
       description: taskFound.description,
       routeTaskId: taskFound.routeTaskId,
       nextTaskId: taskFound.nextTaskId,
-      nextRouteId: taskFound.nextRouteId,
+      nextRoute: taskFound.nextRoute,
       defaultValue: taskFound.defaultValue,
+      dataSet: taskFound.dataSet,
       meta: taskFound.meta,
       media: taskFound.media,
       icon: taskFound.icon,
@@ -128,24 +129,33 @@ class TaskUtil {
     return user;
   }
 
-  static getNextTask(user: UserDocument): UserTask {
+  static async getNextTask(user: UserDocument): Promise<UserTask> {
     const tasks = user.tasks.filter((t: UserTask) => t.status === TaskStatus.PendingUser);
 
     if (tasks.length) {
       const firstTask: UserTask = _.first(tasks);
+
+      // Check if the task still exists, delete it if not
+      if (!InitialDataUtil.getTaskById(firstTask.taskId)) {
+        user.tasks.pull({ _id: firstTask._id });
+        await user.save();
+
+        return await TaskUtil.getNextTask(user);
+      }
+
       return new UserTask(firstTask.taskId, firstTask.status, firstTask.answer);
     }
   }
 
-  static addRouteToUser(user: UserDocument, routeId: string): UserDocument {
-    let index = (_.get(user, 'routes', []) as Array<UserRoute>).map((i: UserRoute) => i.routeId).indexOf(routeId);
+  static addRouteToUser(user: UserDocument, routeKey: string): UserDocument {
+    const routeDef: RouteDefinition = InitialDataUtil.getRoute(routeKey, user.dataSet);
+    let index = (_.get(user, 'routes', []) as Array<UserRoute>).map((i: UserRoute) => i.routeId).indexOf(routeDef.id);
 
     // Only add it if it doesn't already exist
-    if (!routeId || index !== -1) {
+    if (!routeDef.id || index !== -1) {
       return user;
     }
 
-    const routeDef: RouteDefinition = InitialDataUtil.getRouteById(routeId);
     const userRoute: UserRoute = new UserRoute(routeDef.id, UserRouteStatus.Active);
     if (!user.routes) {
       user.routes = [] as any;
@@ -174,7 +184,7 @@ class TaskUtil {
     return user;
   }
 
-  static getNextTaskOrRouteId(answer: string, next: string | object): string {
+  static getNextTaskOrRoute(answer: string, next: string | object): string {
     answer = typeof answer === 'boolean' ? (answer ? ANSWER_YES : ANSWER_NO) : answer;
 
     if (typeof next === 'string') {
@@ -220,7 +230,7 @@ class TaskUtil {
           const date = moment(answer, 'YYYY-MM-DD');
 
           if (!date.isValid()) {
-            throw new BadRequestError('invalid date input, expecting YYYY-MM-DD');
+            throw new BadRequestError(`invalid date input, expecting YYYY-MM-DD got ${answer}`);
           }
 
           user.profile.dateOfBirth = date.toDate();
@@ -261,11 +271,13 @@ class TaskUtil {
     }
 
     if (taskDef.nextTaskId) {
-      user = this.addNextTaskToUser(user, this.getNextTaskOrRouteId(answer, taskDef.nextTaskId));
+      user = this.addNextTaskToUser(user, this.getNextTaskOrRoute(answer, taskDef.nextTaskId));
     }
 
-    if (taskDef.nextRouteId) {
-      user = this.addRouteToUser(user, this.getNextTaskOrRouteId(answer, taskDef.nextRouteId));
+    let nextRoute = this.getNextTaskOrRoute(answer, taskDef.nextRoute);
+
+    if (nextRoute) {
+      user = this.addRouteToUser(user, nextRoute);
     }
 
     user = this.updateUserTask(user, userTask);

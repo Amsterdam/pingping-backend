@@ -1,15 +1,18 @@
 import { MediaType, RewardType, TaskType } from '@models';
 
-export type AchievementDefinition = {
+export type Definition = {
   id: string;
+  dataSet: string;
+};
+
+export type AchievementDefinition = Definition & {
   title: string;
   description: string;
   points: number;
   icon: string;
 };
 
-export type TaskDefinition = {
-  id: string;
+export type TaskDefinition = Definition & {
   routeTaskId?: string;
   type: TaskType;
   disabled: boolean;
@@ -25,16 +28,14 @@ export type TaskDefinition = {
   initial?: boolean;
   meta?: any;
   nextTaskId?: string | object;
-  nextRouteId?: string | object;
+  nextRoute?: string | object;
 };
 
-export type RewardDefinition = {
-  id: string;
+export type RewardDefinition = Definition & {
   title: string;
   description: string;
   imageUrl: string;
   thumbnailUrl: string;
-  dataSet: string;
   cover: MediaType;
   vendor: string;
   active: boolean;
@@ -44,13 +45,12 @@ export type RewardDefinition = {
   available: number;
 };
 
-export type RouteDefinition = {
-  id?: string;
+export type RouteDefinition = Definition & {
+  key: string;
   title: string;
   description?: string;
   isSuggested: boolean;
   imageUrl?: string;
-  dataSet: string;
   cover: MediaType;
   thumbnailUrl?: string;
   tasks: Array<TaskDefinition>;

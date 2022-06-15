@@ -6,12 +6,14 @@ import StatisticsUtil from 'utils/StatisticsUtil';
 import MigrationUtil from 'utils/MigrationUtil';
 import Config from 'config';
 import { DATA_SET_AMSTERDAM, DATA_SET_ROTTERDAM } from 'models/User';
+import InitialDataUtil from 'utils/InitialDataUtil';
 
 class boot {
   static async start(): Promise<Array<any>> {
     console.info('booting...', process.env.ENVIRONMENT);
     dotenv.config();
     Config.assertConfig();
+    InitialDataUtil.loadAllTenants();
     StatisticsUtil.registerStatistics(DATA_SET_AMSTERDAM);
     StatisticsUtil.registerStatistics(DATA_SET_ROTTERDAM);
     MigrationUtil.checkRouteProgress();
