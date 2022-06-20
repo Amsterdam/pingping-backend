@@ -91,11 +91,20 @@ class TaskUtil {
     return new UserTask(taskId, TaskStatus.PendingUser, null);
   }
 
-  static getCurrentUserTask(user: UserDocument): UserTask {
+  static async getCurrentUserTask(user: UserDocument): Promise<UserTask> {
     const tasks: Array<UserTask> = user.tasks.filter((t: UserTask) => t.status === TaskStatus.PendingUser);
     const task: UserTask = <UserTask>_.first(tasks);
 
     if (task) {
+      try {
+        // Check if task exists
+        InitialDataUtil.getTaskById(task.taskId);
+      } catch (error) {
+        if (error.message === 'task_not_defined') {
+          await RouteUtil.recoverUserStateTaskRemoved(user, task);
+          return TaskUtil.getCurrentUserTask(user);
+        }
+      }
       return new UserTask(task.taskId, task.status, task.answer, task._id, user);
     }
 
@@ -198,7 +207,7 @@ class TaskUtil {
   }
 
   static async revertTask(user: UserDocument, taskId: string) {
-    const currentUserTask = TaskUtil.getCurrentUserTask(user);
+    const currentUserTask = await TaskUtil.getCurrentUserTask(user);
 
     if (!currentUserTask) {
       throw new Error(`no_active_task`);

@@ -9,17 +9,8 @@ import { RouteFeedback } from 'models/RouteFeedback';
 import RouteUtil from 'utils/RouteUtil';
 
 export const UserTaskResponse: any = {
-  task: async (doc: UserTask, args: any, context: ContextType) => {
-    try {
-      const task = TaskUtil.getDefinition(doc.taskId, context?.user?.dataSet);
-
-      return task;
-    } catch (error) {
-      // We got an task that doesn't exist. Recover user state.
-      await RouteUtil.recoverUserStateTaskRemoved(context.user, doc);
-      throw error;
-    }
-  },
+  task: async (doc: UserTask, args: any, context: ContextType) =>
+    TaskUtil.getDefinition(doc.taskId, context?.user?.dataSet),
   answer: (doc: UserTask, args: any, context: ContextType) => {
     let user = context.user;
 

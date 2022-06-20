@@ -59,22 +59,22 @@ describe('taskUtil', () => {
   });
 
   it('revert and get correct task', async () => {
-    const task = TaskUtil.getCurrentUserTask(user);
+    const task = await TaskUtil.getCurrentUserTask(user);
     const taskDef = InitialDataUtil.getTaskById(task.taskId);
 
     expect(task.taskId).to.eq('onboarding.gemeente');
 
     await TaskUtil.handleTask(user, taskDef, 'amsterdam');
-    const nextTask = TaskUtil.getCurrentUserTask(user);
+    const nextTask = await TaskUtil.getCurrentUserTask(user);
     expect(nextTask.taskId).to.eq('onboarding.welcome');
 
     await TaskUtil.revertTask(user, task.taskId);
 
-    const nextTaskTwo = TaskUtil.getCurrentUserTask(user);
+    const nextTaskTwo = await TaskUtil.getCurrentUserTask(user);
     expect(nextTaskTwo.taskId).to.eq('onboarding.gemeente');
 
     await TaskUtil.handleTask(user, taskDef, 'no');
-    const nextTask3 = TaskUtil.getCurrentUserTask(user);
+    const nextTask3 = await TaskUtil.getCurrentUserTask(user);
     expect(nextTask3.taskId).to.eq('onboarding.notAmsterdam');
   });
 });

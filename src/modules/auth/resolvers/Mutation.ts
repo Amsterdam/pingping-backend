@@ -12,7 +12,7 @@ export const Mutation: MutationResolvers = {
     }
 
     const user = await UserUtil.createOrFindUser(args.input);
-    const currentTask: UserTask = TaskUtil.getCurrentUserTask(user);
+    const currentTask: UserTask = await TaskUtil.getCurrentUserTask(user);
 
     return {
       user,
