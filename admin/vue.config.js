@@ -3,4 +3,7 @@ module.exports = {
   // options...
   outputDir: '../public/admin',
   publicPath: '/admin',
+  pluginOptions: {
+    lintGQL: true
+  }
 };

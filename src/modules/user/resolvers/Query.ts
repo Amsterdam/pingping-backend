@@ -6,8 +6,13 @@ import { userInfo } from 'os';
 
 export const Query: QueryResolvers = {
   async getStatus(root: any, args: any, context: ContextType): Promise<any> {
-    let currentTask = TaskUtil.getCurrentUserTask(context.user);
-    let previousTask = TaskUtil.getPreviousUserTask(context.user);
+    let currentTask, previousTask;
+    try {
+      currentTask = TaskUtil.getCurrentUserTask(context.user);
+      previousTask = TaskUtil.getPreviousUserTask(context.user);
+    } catch {
+      await RouteUtil.recoverUserStateTaskRemoved(context.user);
+    }
 
     if (!currentTask && !context.user.routes.length) {
       await RouteUtil.recoverUserStateTaskRemoved(context.user);

@@ -14,10 +14,10 @@ export const UserTaskResponse: any = {
       const task = TaskUtil.getDefinition(doc.taskId, context?.user?.dataSet);
 
       return task;
-    } catch {
+    } catch (error) {
       // We got an task that doesn't exist. Recover user state.
       await RouteUtil.recoverUserStateTaskRemoved(context.user, doc);
-      return null;
+      throw error;
     }
   },
   answer: (doc: UserTask, args: any, context: ContextType) => {
