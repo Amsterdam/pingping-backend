@@ -70,10 +70,7 @@ class RouteUtil {
 
       if (!previousTask) {
         // Add initial task
-        const initialTasks: any[] = InitialDataUtil.getInitialUserOnboardingTasks();
-        for (let i in initialTasks) {
-          user.tasks.push(initialTasks[i]);
-        }
+        user = await TaskUtil.assignInitialTasksToUser(user);
         break;
       }
 

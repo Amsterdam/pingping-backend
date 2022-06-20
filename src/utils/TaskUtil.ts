@@ -106,9 +106,23 @@ class TaskUtil {
         }
       }
       return new UserTask(task.taskId, task.status, task.answer, task._id, user);
+    } else {
+      if (user.tasks.length === 0 && user.routes.length === 0) {
+        await this.assignInitialTasksToUser(user);
+      }
     }
 
     return null;
+  }
+
+  static async assignInitialTasksToUser(user: UserDocument): Promise<UserDocument> {
+    const initialTasks = InitialDataUtil.getInitialUserOnboardingTasks();
+    for (let i in initialTasks) {
+      user.tasks.push(initialTasks[i]);
+    }
+    await user.save();
+
+    return user;
   }
 
   static getPreviousUserTask(user: UserDocument): UserTask {
