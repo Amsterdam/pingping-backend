@@ -210,7 +210,7 @@ class TaskUtil {
     return user;
   }
 
-  static getNextTaskOrRoute(answer: string, next: string | object): string {
+  static grabTaskOrRouteFromAnswer(answer: string, next: string | object): string {
     answer = typeof answer === 'boolean' ? (answer ? ANSWER_YES : ANSWER_NO) : answer;
 
     if (typeof next === 'string') {
@@ -311,11 +311,11 @@ class TaskUtil {
 
   static addNextTaskAndRoute(user: UserDocument, taskDef: TaskDefinition, answer: string): UserDocument {
     if (taskDef.nextTaskId) {
-      user = this.addNextTaskToUser(user, this.getNextTaskOrRoute(answer, taskDef.nextTaskId));
+      user = this.addNextTaskToUser(user, this.grabTaskOrRouteFromAnswer(answer, taskDef.nextTaskId));
     }
 
     if (taskDef.nextRoute) {
-      let nextRoute = this.getNextTaskOrRoute(answer, taskDef.nextRoute);
+      let nextRoute = this.grabTaskOrRouteFromAnswer(answer, taskDef.nextRoute);
 
       if (nextRoute) {
         user = this.addRouteToUser(user, nextRoute);
