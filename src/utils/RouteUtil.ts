@@ -59,6 +59,38 @@ class RouteUtil {
     return `${routeId}-${dataset}.${taskId}`;
   }
 
+  static async recoverUserStateTaskRemoved(user: UserDocument, task: UserTask = null): Promise<UserDocument> {
+    if (task) {
+      // Remove task from user
+      user = TaskUtil.removeUserTask(user, task);
+    }
+
+    while (true) {
+      let previousTask = TaskUtil.getPreviousUserTask(user);
+
+      if (!previousTask) {
+        // Add initial task
+        const initialTasks: any[] = InitialDataUtil.getInitialUserOnboardingTasks();
+        for (let i in initialTasks) {
+          user.tasks.push(initialTasks[i]);
+        }
+        break;
+      }
+
+      try {
+        let previousTaskDef = TaskUtil.getDefinition(previousTask.taskId, user.dataSet);
+        user = TaskUtil.addNextTaskAndRoute(user, previousTaskDef, previousTask.answer);
+
+        break;
+      } catch {
+        user = TaskUtil.removeUserTask(user, task);
+      }
+    }
+
+    await user.save();
+    return user;
+  }
+
   static getRouteTask(user: UserDocument, taskId: string): UserTask {
     let status = TaskStatus.PendingUser;
     let answer = null;

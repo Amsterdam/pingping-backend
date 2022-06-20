@@ -278,6 +278,15 @@ class TaskUtil {
       await TransactionUtil.addTransaction(user, `Voltooid: ${taskDef.title}`, taskDef.points, taskDef.id);
     }
 
+    user = this.addNextTaskAndRoute(user, taskDef, answer);
+    user = this.updateUserTask(user, userTask);
+    user.activeAt = new Date();
+    await User.findOneAndUpdate({ _id: user._id }, user);
+
+    return userTask;
+  }
+
+  static addNextTaskAndRoute(user: UserDocument, taskDef: TaskDefinition, answer: string): UserDocument {
     if (taskDef.nextTaskId) {
       user = this.addNextTaskToUser(user, this.getNextTaskOrRoute(answer, taskDef.nextTaskId));
     }
@@ -290,11 +299,7 @@ class TaskUtil {
       }
     }
 
-    user = this.updateUserTask(user, userTask);
-    user.activeAt = new Date();
-    await User.findOneAndUpdate({ _id: user._id }, user);
-
-    return userTask;
+    return user;
   }
 }
 
