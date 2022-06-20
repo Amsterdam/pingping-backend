@@ -17,7 +17,7 @@
     "isSuggested": true,
     "tasks": [
       {
-        "id": "financieleBasis-ermelo.woonAdres",
+        "id": "financieleBasis-zeewolde.woonAdres",
         "title": "Regel je adres",
         "media": {
           "type": "Image",
@@ -27,11 +27,11 @@
         },
         "points": 20,
         "headerTitle": "woonadres",
-        "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"https://www.ermelo.nl/wonen-en-verhuizen/briefadres-aanvragen\">een briefadres krijgen.</a></p><p>Verblijf je in Ermelo, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"https://www.welzijnermelo.nl/jongerenwerk/\">Jongerencentrum van de gemeente Ermelo.</a></p><p>Ben je dakloos en heb je hulp en steun nodig? Kijk dan ook op <a href=\"https://www.welzijnermelo.nl/jongerenwerk//\">het jongerencentrum van de gemeente Ermelo</a></p>",
+        "description": "<p>Je hebt eerst een adres nodig. Daarna kan je andere zaken regelen. Meestal is een adres de plek waar je woont. Heb je geen vast woonadres of heb je een inschrijfprobleem, dan kan je soms tijdelijk <a href=\"https://www.zeewolde.nl/briefadres-aanvragen\">een briefadres krijgen.</a></p><p>Verblijf je in Zeewolde, maar sta je niet ingeschreven of dreig je uitgeschreven te worden? Meld je dan bij het <a href=\"https://www.jongerenwerkzeewolde.nl/\">jongerencentrum van de gemeente Zeewolde.</a></p><p>Ben je dakloos en heb je hulp en steun nodig? Kijk dan op <a href=\"https://www.hetvraaghuis.nl/\">hetvraaghuis.nl</a></p>",
         "icon": ""
       },
       {
-        "id": "financieleBasis-ermelo.bankRekening",
+        "id": "financieleBasis-zeewolde.bankRekening",
         "title": "Bankrekening Openen",
         "media": {
           "type": "Image",
@@ -45,7 +45,7 @@
         "icon": ""
       },
       {
-        "id": "financieleBasis-ermelo.digiD",
+        "id": "financieleBasis-zeewolde.digiD",
         "title": "Digid Aanmaken",
         "media": {
           "type": "YouTube",
@@ -57,7 +57,7 @@
         "icon": ""
       },
       {
-        "id": "financieleBasis-ermelo.zorgverzekering",
+        "id": "financieleBasis-zeewolde.zorgverzekering",
         "title": "Zorgverzekering regelen",
         "media": {
           "type": "YouTube",
@@ -69,7 +69,7 @@
         "icon": ""
       },
       {
-        "id": "financieleBasis-ermelo.zorgtoeslag",
+        "id": "financieleBasis-zeewolde.zorgtoeslag",
         "title": "Zorgtoeslag aanvragen",
         "media": {
           "type": "YouTube",
@@ -81,7 +81,7 @@
         "icon": ""
       },
       {
-        "id": "financieleBasis-ermelo.inkomen",
+        "id": "financieleBasis-zeewolde.inkomen",
         "title": "Regel je inkomen",
         "media": {
           "type": "YouTube",
@@ -89,11 +89,11 @@
         },
         "points": 20,
         "headerTitle": "inkomen",
-        "description": "<p>Het is fijn om je eigen inkomen te hebben. Niet alleen om je vaste lasten te kunnen betalen, maar ook om leuke dingen te kunnen doen. Heb je geen inkomen en weet je niet goed waar je moet beginnen?&nbsp;</p><p><strong>Tips!</strong></p><ul><li>Schrijf je in bij uitzendbureaus.</li><li>Kijk of iemand in je eigen netwerk een baan voor je heeft.</li><li>Misschien ben jij wel ondernemend en begin je voor jezelf!</li></ul><p>Je kunt hier terecht voor advies en hulp: <a href=\"https://www.welzijnermelo.nl/jongerenwerk/\">Jongerencentrum van de gemeente Ermelo</a></p><p>En hier voor tegemoetkomingen op je inkomen vanuit de Gemeente:<br /><a href=\"https://www.meerinzicht.nl/regelingen-bij-een-laag-inkomen\">https://www.meerinzicht.nl/regelingen-bij-een-laag-inkomen&nbsp;</a><br />&nbsp;</p>",
+        "description": "<p>Het is fijn om je eigen inkomen te hebben. Niet alleen om je vaste lasten te kunnen betalen, maar ook om leuke dingen te kunnen doen. Heb je geen inkomen en weet je niet goed waar je moet beginnen?&nbsp;</p><p><strong>Tips!</strong></p><ul><li>Schrijf je in bij uitzendbureaus.</li><li>Kijk of iemand in je eigen netwerk een baan voor je heeft.</li><li>Misschien ben jij wel ondernemend en begin je voor jezelf!</li></ul><p>Je kunt hier terecht voor advies en hulp: <a href=\"https://www.mdflevoland.nl/C639-Waar-kan-ik-als-jongere-terecht-met-financiele-vragen.html\">mdflevoland.nl/</a></p><p>En hier voor tegemoetkomingen op je inkomen vanuit de Gemeente:<br /><a href=\"https://www.meerinzicht.nl/regelingen-bij-een-laag-inkomen\">meerinzicht.nl&nbsp;</a><br />&nbsp;</p>",
         "icon": ""
       },
       {
-        "id": "financieleBasis-ermelo.ingeschrevenVoorWoning",
+        "id": "financieleBasis-zeewolde.ingeschrevenVoorWoning",
         "title": "Inschrijving Woning",
         "media": {
           "type": "Image",
@@ -103,7 +103,7 @@
         },
         "points": 20,
         "headerTitle": "woning",
-        "description": "<p>Zoek je een huurwoning in de regio Noord-Veluwe? Schrijf je dan in bij Huren Noord-Veluwe. In de regio Noord-Veluwe werken vier woningcorporaties samen. Dit zijn deltaWonen, Omnia Wonen, Woningstichting Putten en UWOON. Samen bieden zij woningen aan in de gemeenten Oldebroek, Elburg, Nunspeet, Harderwijk, Ermelo en Putten. Woningen die vrijkomen staan elke dag op de website. Het zijn woningen met een huur tot en met € 763,47 per maand.<a href=\"https://www.hurennoordveluwe.nl/\">hurennoordveluwe.nl</a></p><p>Een inschrijving kost elk jaar € 15,-.</p>",
+        "description": "<p>Zoek je een huurwoning in Zeewolde? Schrijf je dan in bij Woonpalet. Zij tonen wekelijks op de website welke huurwoningen beschikbaar zijn.<a href=\"https://www.woonpalet.net/inschrijven\">woonpalet.net</a></p><p>Inschrijven kost eenmalig € 35,- inschrijfkosten en daarna € 15,00 per jaar.</p>",
         "icon": ""
       }
     ],
@@ -123,7 +123,7 @@
     ]
   },
   {
-    "id": "fixJeBaan-ermelo",
+    "id": "fixJeBaan-zeewolde",
     "key": "fixJeBaan",
     "title": "Fiks Je Baan",
     "description": "Kijk wat jij kunt doen om een baan te vinden.",
@@ -141,7 +141,7 @@
     "tasks": []
   },
   {
-    "id": "fixJeStudie-ermelo",
+    "id": "fixJeStudie-zeewolde",
     "key": "fixJeStudie",
     "title": "Fiks Je Studie",
     "description": "Kijk welke stappen je kunt nemen als je gaat studeren.",
