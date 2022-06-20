@@ -7,8 +7,13 @@ import cache from './cache';
 import { UserDocument, User, AuthToken, AuthTokenKind, Device } from '../models/User';
 import { NotificationStatus, UserRole } from '@models';
 import AuthenticationError from 'errors/AuthenticationError';
-import { DATA_SET_NONE } from 'models/User';
-import { DATA_SET_AMSTERDAM, DATA_SET_ROTTERDAM } from 'models/User';
+import {
+  DATA_SET_AMSTERDAM,
+  DATA_SET_ERMELO,
+  DATA_SET_HARDERWIJK,
+  DATA_SET_ROTTERDAM,
+  DATA_SET_ZEEWOLDE,
+} from 'models/User';
 
 const TOKEN_VALIDITY_MINUTES = process.env.TOKEN_VALIDITY_MINUTES || 180;
 
@@ -44,10 +49,34 @@ class auth {
 
     await auth.createUser(
       UserRole.Admin,
+      'Admin Ermelo',
+      'admin-ermelo@pingping.amsterdam.nl',
+      process.env.ADMIN_PASSWORD,
+      DATA_SET_ERMELO
+    );
+
+    await auth.createUser(
+      UserRole.Admin,
+      'Admin Harderwijk',
+      'admin-harderwijk@pingping.amsterdam.nl',
+      process.env.ADMIN_PASSWORD,
+      DATA_SET_HARDERWIJK
+    );
+
+    await auth.createUser(
+      UserRole.Admin,
       'Admin Rotterdam',
       'admin-rotterdam@pingping.amsterdam.nl',
       process.env.ADMIN_PASSWORD,
       DATA_SET_ROTTERDAM
+    );
+
+    await auth.createUser(
+      UserRole.Admin,
+      'Admin Zeewolde',
+      'admin-zeewolde@pingping.amsterdam.nl',
+      process.env.ADMIN_PASSWORD,
+      DATA_SET_ZEEWOLDE
     );
   }
 

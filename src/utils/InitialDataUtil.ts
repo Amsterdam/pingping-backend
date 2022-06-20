@@ -3,7 +3,14 @@ import { TaskDefinition, RouteDefinition, AchievementDefinition, RewardDefinitio
 import { TaskStatus } from '../generated-models';
 import { ENV_TEST } from '../config/index';
 import { ONBOARDING_PREFIX } from 'utils/TaskUtil';
-import { DATA_SET_NONE, DATA_SET_AMSTERDAM, DATA_SET_ROTTERDAM } from 'models/User';
+import {
+  DATA_SET_NONE,
+  DATA_SET_ERMELO,
+  DATA_SET_HARDERWIJK,
+  DATA_SET_AMSTERDAM,
+  DATA_SET_ROTTERDAM,
+  DATA_SET_ZEEWOLDE,
+} from 'models/User';
 
 if (process.env.ENVIRONMENT === ENV_TEST) {
   // Load test data instead?
@@ -36,7 +43,14 @@ type TaskIdObject = {
   taskId: string;
 };
 
-const tenants = [DATA_SET_AMSTERDAM, DATA_SET_ROTTERDAM, DATA_SET_NONE];
+export const TENANTS = [
+  DATA_SET_AMSTERDAM,
+  DATA_SET_ERMELO,
+  DATA_SET_HARDERWIJK,
+  DATA_SET_ROTTERDAM,
+  DATA_SET_ZEEWOLDE,
+  DATA_SET_NONE,
+];
 
 type Def = RouteDefinition | RewardDefinition | TaskDefinition | AchievementDefinition;
 
@@ -46,7 +60,7 @@ class InitialDataUtil {
     let onboarding: Array<TaskDefinition> = [];
     let achievements: Array<AchievementDefinition> = [];
 
-    for (const tenant of tenants) {
+    for (const tenant of TENANTS) {
       let rewardItems: Array<RewardDefinition> = InitialDataUtil.loadDefTypeForTenant<RewardDefinition>(
         tenant,
         'rewards'

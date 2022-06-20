@@ -14,7 +14,6 @@ import InitialDataUtil from 'utils/InitialDataUtil';
 import { TaskDefinition } from 'types/global';
 import { RouteDefinition } from 'types/global';
 import { StatisticModel, Statistic } from 'models/Statistic';
-import { DATA_SET_AMSTERDAM } from 'models/User';
 
 const TOTAL_USERS_WEEK = 'total-users-week';
 const ACTIVE_USERS_WEEK = 'active-users-7-days';
@@ -388,8 +387,7 @@ class StatisticsUtil {
       },
       {
         $match: {
-          'tasks.taskId':
-            dataSet === DATA_SET_AMSTERDAM ? 'onboarding.dateOfBirth' : `onboarding.dateOfBirth-${dataSet}`,
+          'tasks.taskId': 'onboarding.dateOfBirth',
           ...dateQuery,
         },
       },
@@ -461,8 +459,7 @@ class StatisticsUtil {
       },
       {
         $match: {
-          'tasks.taskId':
-            dataSet === DATA_SET_AMSTERDAM ? 'onboarding.dateOfBirth' : `onboarding.dateOfBirth-${dataSet}`,
+          'tasks.taskId': 'onboarding.dateOfBirth',
           ...dateQuery,
         },
       },

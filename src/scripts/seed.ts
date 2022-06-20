@@ -6,7 +6,7 @@ import faker from 'faker';
 import { argv } from 'process';
 import readline from 'readline';
 import UserUtil from 'utils/UserUtil';
-import { User, DATA_SET_AMSTERDAM } from 'models/User';
+import { User } from 'models/User';
 import TaskUtil from 'utils/TaskUtil';
 import { NotificationStatus, TaskStatus } from '@models';
 import StatisticsUtil from 'utils/StatisticsUtil';
