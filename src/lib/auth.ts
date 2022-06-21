@@ -33,15 +33,15 @@ class auth {
   }
 
   static async createAdminUser() {
-    // for (const tenant of TENANTS) {
-    //   await auth.createUser(
-    //     UserRole.Admin,
-    //     `Admin ${tenant.charAt(0).toUpperCase() + tenant.slice(1)}`,
-    //     `admin-${tenant}@pingping.amsterdam.nl`,
-    //     process.env.ADMIN_PASSWORD,
-    //     tenant
-    //   );
-    // }
+    for (const tenant of TENANTS) {
+      await auth.createUser(
+        UserRole.Admin,
+        `Admin ${tenant.charAt(0).toUpperCase() + tenant.slice(1)}`,
+        `admin-${tenant}@pingping.amsterdam.nl`,
+        process.env.ADMIN_PASSWORD,
+        tenant
+      );
+    }
   }
 
   static async login(ip: string, email: string, candidatePassword: string, deviceId: string) {
