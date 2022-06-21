@@ -8,13 +8,6 @@ import { UserDocument, User, AuthToken, AuthTokenKind, Device } from '../models/
 import { NotificationStatus, UserRole } from '@models';
 import AuthenticationError from 'errors/AuthenticationError';
 import { TENANTS } from 'utils/InitialDataUtil';
-import {
-  DATA_SET_AMSTERDAM,
-  DATA_SET_ERMELO,
-  DATA_SET_HARDERWIJK,
-  DATA_SET_ROTTERDAM,
-  DATA_SET_ZEEWOLDE,
-} from 'models/User';
 
 const TOKEN_VALIDITY_MINUTES = process.env.TOKEN_VALIDITY_MINUTES || 180;
 
