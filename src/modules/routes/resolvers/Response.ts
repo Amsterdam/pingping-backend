@@ -9,8 +9,14 @@ import { RouteFeedback } from 'models/RouteFeedback';
 import RouteUtil from 'utils/RouteUtil';
 
 export const UserTaskResponse: any = {
-  task: async (doc: UserTask, args: any, context: ContextType) =>
-    TaskUtil.getDefinition(doc.taskId, context?.user?.dataSet),
+  task: async (doc: UserTask, args: any, context: ContextType) => {
+    try {
+      return TaskUtil.getDefinition(doc.taskId, context?.user?.dataSet);
+    } catch {
+      await RouteUtil.recoverUserStateTaskRemoved(context.user, doc);
+      return null;
+    }
+  },
   answer: (doc: UserTask, args: any, context: ContextType) => {
     let user = context.user;
 
