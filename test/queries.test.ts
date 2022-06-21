@@ -83,7 +83,7 @@ describe('queries', () => {
         const body = res.body.data.getAvailableRewards;
         const first: RewardResponse = _.first(body);
 
-        expect(first.title).to.equal('Pathe Thuis Film', 'check title');
+        expect(first?.title).to.equal('Pathe Thuis Film', 'check title');
         done();
       });
   });

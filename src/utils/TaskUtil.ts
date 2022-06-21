@@ -32,6 +32,12 @@ class TaskUtil {
     return _.round((index + 1) / tasks.length, 2);
   }
 
+  static getDefinitionFromKey(key: string, dataset: string): TaskDefinition {
+    const taskId: string = RouteUtil.getTaskIdFromRouteTask(key, dataset);
+
+    return TaskUtil.getDefinition(taskId, dataset);
+  }
+
   static getDefinition(taskId: string, dataset: string = 'none'): TaskDefinition {
     const taskFound = InitialDataUtil.getTaskById(taskId);
 
