@@ -121,7 +121,7 @@ class TaskUtil {
     return user;
   }
 
-  static getPreviousUserTask(user: UserDocument): UserTask {
+  static async getPreviousUserTask(user: UserDocument): Promise<UserTask> {
     const tasks: Array<UserTask> = user.tasks.filter((t: UserTask) => t.status !== TaskStatus.PendingUser);
     const task: UserTask = <UserTask>_.last(tasks);
 
@@ -131,7 +131,13 @@ class TaskUtil {
         InitialDataUtil.getTaskById(task.taskId);
         return new UserTask(task.taskId, task.status, task.answer, task._id, user);
       } catch (error) {
-        return null;
+        console.log(error.message, task.taskId);
+        if (error.message.indexOf('task_not_defined') !== -1) {
+          user = TaskUtil.removeUserTask(user, task);
+          await user.save();
+
+          return TaskUtil.getPreviousUserTask(user);
+        }
       }
     }
 

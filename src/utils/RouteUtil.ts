@@ -66,7 +66,7 @@ class RouteUtil {
     }
 
     while (true) {
-      let previousTask = TaskUtil.getPreviousUserTask(user);
+      let previousTask = await TaskUtil.getPreviousUserTask(user);
 
       if (!previousTask) {
         // Add initial task

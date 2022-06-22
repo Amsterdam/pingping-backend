@@ -7,7 +7,7 @@ import { userInfo } from 'os';
 export const Query: QueryResolvers = {
   async getStatus(root: any, args: any, context: ContextType): Promise<any> {
     const currentTask = await TaskUtil.getCurrentUserTask(context.user);
-    const previousTask = TaskUtil.getPreviousUserTask(context.user);
+    const previousTask = await TaskUtil.getPreviousUserTask(context.user);
 
     return {
       user: context.user,
