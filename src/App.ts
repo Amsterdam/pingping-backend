@@ -13,9 +13,15 @@ import { AuditLog } from 'models/AuditLog';
 import { User } from 'models/User';
 
 export const LogPlugin: ApolloServerPlugin = {
-  async requestDidStart<TContext>(_: GraphQLRequestContext<TContext>): GraphQLRequestListener<TContext> {
+  async requestDidStart<TContext>(_: GraphQLRequestContext<TContext>): Promise<GraphQLRequestListener<TContext>> {
     const user = await User.findOne({});
-    await AuditLog.create({ user: user._id, type: 'requestDidStart', dataSet: 'none', description: JSON.stringify(_.query), linkId: 'log' });
+    await AuditLog.create({
+      user: user._id,
+      type: 'requestDidStart',
+      dataSet: 'none',
+      description: JSON.stringify(_.request.query),
+      linkId: 'log',
+    });
     return {
       didEncounterErrors(context: any) {
         console.info('error:', context.errors);

@@ -161,7 +161,9 @@ class TaskUtil {
       const firstTask: UserTask = _.first(tasks);
 
       // Check if the task still exists, delete it if not
-      if (!InitialDataUtil.getTaskById(firstTask.taskId)) {
+      try {
+        InitialDataUtil.getTaskById(firstTask.taskId);
+      } catch {
         user.tasks.pull({ _id: firstTask._id });
         await user.save();
 
