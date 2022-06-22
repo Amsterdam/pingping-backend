@@ -9,11 +9,15 @@ import { ApolloServerPlugin } from 'apollo-server-plugin-base';
 
 import { GraphQLRequestContext } from 'apollo-server-types';
 import { GraphQLRequestListener } from 'apollo-server-plugin-base/src/index';
+import { AuditLog } from 'models/AuditLog';
+import { User } from 'models/User';
 
 export const LogPlugin: ApolloServerPlugin = {
-  requestDidStart<TContext>(_: GraphQLRequestContext<TContext>): GraphQLRequestListener<TContext> {
+  async requestDidStart<TContext>(_: GraphQLRequestContext<TContext>): GraphQLRequestListener<TContext> {
+    const user = await User.findOne({});
+    await AuditLog.create({ user: user._id, type: 'requestDidStart', dataSet: 'none', description: JSON.stringify(_.query), linkId: 'log' });
     return {
-      didEncounterErrors(context) {
+      didEncounterErrors(context: any) {
         console.info('error:', context.errors);
       },
     };
