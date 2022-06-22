@@ -32,12 +32,6 @@ class TaskUtil {
     return _.round((index + 1) / tasks.length, 2);
   }
 
-  static getDefinitionFromKey(key: string, dataset: string): TaskDefinition {
-    const taskId: string = RouteUtil.getTaskIdFromRouteTask(key, dataset);
-
-    return TaskUtil.getDefinition(taskId, dataset);
-  }
-
   static getDefinition(taskId: string, dataset: string = 'none'): TaskDefinition {
     const taskFound = InitialDataUtil.getTaskById(taskId);
 
@@ -104,6 +98,8 @@ class TaskUtil {
           await RouteUtil.recoverUserStateTaskRemoved(user, task);
           return TaskUtil.getCurrentUserTask(user);
         }
+
+        return null;
       }
       return new UserTask(task.taskId, task.status, task.answer, task._id, user);
     } else {
@@ -201,13 +197,17 @@ class TaskUtil {
       return user;
     }
 
-    const taskDef: TaskDefinition = InitialDataUtil.getTaskById(taskId);
+    try {
+      const taskDef: TaskDefinition = InitialDataUtil.getTaskById(taskId);
 
-    const userTask: UserTask = new UserTask(taskDef.id, TaskStatus.PendingUser);
-    let routeTaskId: string = RouteUtil.getTaskIdFromRouteTask(taskDef.id, user.dataSet);
-    userTask.routeTaskId = routeTaskId;
-    userTask.routeId = RouteUtil.getRouteIdFromTaskId(routeTaskId || taskId);
-    user.tasks.push(userTask);
+      const userTask: UserTask = new UserTask(taskDef.id, TaskStatus.PendingUser);
+      let routeTaskId: string = RouteUtil.getTaskIdFromRouteTask(taskDef.id, user.dataSet);
+      userTask.routeTaskId = routeTaskId;
+      userTask.routeId = RouteUtil.getRouteIdFromTaskId(routeTaskId || taskId);
+      user.tasks.push(userTask);
+    } catch {
+      // Do nothing
+    }
 
     return user;
   }

@@ -9,8 +9,13 @@ import { RouteFeedback } from 'models/RouteFeedback';
 import RouteUtil from 'utils/RouteUtil';
 
 export const UserTaskResponse: any = {
-  task: async (doc: UserTask, args: any, context: ContextType) =>
-    TaskUtil.getDefinition(doc.taskId, context?.user?.dataSet),
+  task: async (doc: UserTask, args: any, context: ContextType) => {
+    try {
+      return TaskUtil.getDefinition(doc.taskId, context?.user?.dataSet);
+    } catch {
+      return null;
+    }
+  },
   answer: (doc: UserTask, args: any, context: ContextType) => {
     let user = context.user;
 
@@ -18,17 +23,21 @@ export const UserTaskResponse: any = {
       user = doc.user;
     }
 
-    const def = TaskUtil.getDefinition(doc.taskId, user.dataSet);
+    try {
+      const def = TaskUtil.getDefinition(doc.taskId, user.dataSet);
 
-    if (user?.role === UserRole.User) {
-      return doc.answer;
+      if (user?.role === UserRole.User) {
+        return doc.answer;
+      }
+
+      if (doc.status === TaskStatus.PendingUser && def.defaultValue) {
+        return def.defaultValue;
+      }
+
+      return '##redacted##';
+    } catch {
+      return '';
     }
-
-    if (doc.status === TaskStatus.PendingUser && def.defaultValue) {
-      return def.defaultValue;
-    }
-
-    return '##redacted##';
   },
 };
 

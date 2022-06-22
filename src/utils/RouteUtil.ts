@@ -93,18 +93,21 @@ class RouteUtil {
     let answer = null;
 
     let userTaskIndex = user.tasks.map((ut: UserTask) => ut.taskId).indexOf(taskId);
-    let taskDef = TaskUtil.getDefinition(taskId, user.dataSet);
 
-    if (!taskDef) {
+    try {
+      TaskUtil.getDefinition(taskId, user.dataSet);
+
+      if (userTaskIndex !== -1) {
+        status = _.get(user, `tasks.${userTaskIndex}.status`);
+        answer = _.get(user, `tasks.${userTaskIndex}.answer`);
+      }
+
+      return new UserTask(taskId, status, answer);
+    } catch {
       return null;
     }
 
-    if (userTaskIndex !== -1) {
-      status = _.get(user, `tasks.${userTaskIndex}.status`);
-      answer = _.get(user, `tasks.${userTaskIndex}.answer`);
-    }
-
-    return new UserTask(taskId, status, answer);
+    return null;
   }
 }
 

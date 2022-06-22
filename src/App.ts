@@ -9,19 +9,9 @@ import { ApolloServerPlugin } from 'apollo-server-plugin-base';
 
 import { GraphQLRequestContext } from 'apollo-server-types';
 import { GraphQLRequestListener } from 'apollo-server-plugin-base/src/index';
-import { AuditLog } from 'models/AuditLog';
-import { User } from 'models/User';
 
 export const LogPlugin: ApolloServerPlugin = {
-  async requestDidStart<TContext>(_: GraphQLRequestContext<TContext>): Promise<GraphQLRequestListener<TContext>> {
-    const user = await User.findOne({});
-    await AuditLog.create({
-      user: user._id,
-      type: 'requestDidStart',
-      dataSet: 'none',
-      description: JSON.stringify(_.request.query),
-      linkId: 'log',
-    });
+  requestDidStart<TContext>(_: GraphQLRequestContext<TContext>): GraphQLRequestListener<TContext> {
     return {
       didEncounterErrors(context: any) {
         console.info('error:', context.errors);
