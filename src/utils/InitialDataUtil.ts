@@ -185,7 +185,7 @@ class InitialDataUtil {
     }
 
     if (!task) {
-      throw new Error(`task_not_defined`);
+      throw new Error(`task_not_defined:${id}`);
     }
 
     return task;

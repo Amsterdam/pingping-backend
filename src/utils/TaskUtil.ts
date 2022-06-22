@@ -100,7 +100,7 @@ class TaskUtil {
         // Check if task exists
         InitialDataUtil.getTaskById(task.taskId);
       } catch (error) {
-        if (error.message === 'task_not_defined') {
+        if (error.message.indexOf('task_not_defined') !== -1) {
           await RouteUtil.recoverUserStateTaskRemoved(user, task);
           return TaskUtil.getCurrentUserTask(user);
         }
