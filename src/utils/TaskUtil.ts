@@ -126,7 +126,13 @@ class TaskUtil {
     const task: UserTask = <UserTask>_.last(tasks);
 
     if (task) {
-      return new UserTask(task.taskId, task.status, task.answer, task._id, user);
+      try {
+        // Check if task exists
+        InitialDataUtil.getTaskById(task.taskId);
+        return new UserTask(task.taskId, task.status, task.answer, task._id, user);
+      } catch (error) {
+        return null;
+      }
     }
 
     return null;
