@@ -7,7 +7,7 @@
       </div>
     </div>
 
-    <Login v-else />
+    <LoginForm v-else />
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   name: 'App',
 
   components: {
-    Login,
+    LoginForm: Login,
     AppNav
   },
 

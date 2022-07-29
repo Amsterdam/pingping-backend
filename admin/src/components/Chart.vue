@@ -85,6 +85,7 @@ import { getProps as getTaskChartProps } from '../defs/chart/TaskChart'
 const WEEK_FORMAT = 'YYYY-WW'
 
 export default {
+  name: 'ChartComp',
   components: {
     StackedBarChart,
     BarChart,

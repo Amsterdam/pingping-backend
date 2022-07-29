@@ -120,7 +120,8 @@ export default {
     recipients: {
       get () {
         return this.items.filter(i => i.selected === true).map(u => {
-          return { token: u.device?.token, userId: u.id }
+          const { token } = u.device
+          return { token, userId: u.id }
         })
       },
       set () {

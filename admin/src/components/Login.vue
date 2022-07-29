@@ -47,7 +47,7 @@
 import gql from 'graphql-tag'
 
 export default {
-  name: 'Login',
+  name: 'LoginForm',
 
   methods: {
     login () {
