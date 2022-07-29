@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import RewardModal from '../components/RewardModal'
-import RewardListItem from '../components/RewardListItem'
+import RewardModal from '../components/RewardModal.vue'
+import RewardListItem from '../components/RewardListItem.vue'
 import RequestUtil from '../utils/RequestUtil'
 import { GetRewardsQuery } from '../queries/GetRewardsQuery'
 import { AdminUpdateRewardMutation } from '../mutations/AdminUpdateRewardMutation'

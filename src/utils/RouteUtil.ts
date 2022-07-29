@@ -21,6 +21,8 @@ class RouteUtil {
       const routeFound = InitialDataUtil.getRouteById(routeId);
 
       const def = {
+        id: routeId,
+        key: routeFound.key,
         title: routeFound.title,
         tasks: routeFound.tasks,
         isSuggested: routeFound.isSuggested,

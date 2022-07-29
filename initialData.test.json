@@ -123,7 +123,7 @@
         "yes": "Ja ik heb me ingeschreven",
         "no": "Nee nog niet"
       },
-      "nextRouteId": "financieleBasis"
+      "nextRoute": "financieleBasis"
     }
   ],
   "routes": {

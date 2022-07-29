@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import AdminActions from '../components/AdminActions'
+import AdminActions from '../components/AdminActions.vue'
 
 export default {
   name: 'PageSettings',

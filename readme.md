@@ -88,7 +88,7 @@ The reward is expired, cannot be claimed or used
 
 ### Initial Data
 
-The `initialData.json` file contains the configuration for the application.
+The `json` files in `defs` contain the configuration for the application and tenants.
 
 #### onboardingTasks
 
@@ -112,7 +112,7 @@ Errors can be return on a specific occasion, the error message will be descripti
 
 ### task_not_defined
 
-The task requested doesn't exists in the initialData definition file
+The task requested doesn't exists in the definition files
 
 ### task_not_found_on_user
 
@@ -124,14 +124,14 @@ The task has an invalid status on the user. This could mean the task is already 
 
 ### achievement_not_defined
 
-The achievement doesn't exist in the initialData definition file
+The achievement doesn't exist in the definition files
 
 ### reward_not_defined
 
-The reward doesn't exist in the initialData definition file
+The reward doesn't exist in the definition files
 
 ### route_not_defined
 
-The route doesn't exist in the initialData definition file
+The route doesn't exist in the definition files
 
 -

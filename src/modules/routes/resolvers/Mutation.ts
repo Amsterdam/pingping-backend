@@ -14,7 +14,7 @@ export const Mutation: MutationResolvers = {
     let taskDef = TaskUtil.getDefinition(args.input.taskId);
 
     let task = await TaskUtil.handleTask(context.user, taskDef, args.input.answer || '');
-    const nextTask = TaskUtil.getNextTask(context.user);
+    const nextTask = await TaskUtil.getNextTask(context.user);
 
     return {
       previousTask: task,
@@ -30,7 +30,7 @@ export const Mutation: MutationResolvers = {
     }
 
     let task = await TaskUtil.handleTask(context.user, taskDef);
-    const nextTask = TaskUtil.getNextTask(context.user);
+    const nextTask = await TaskUtil.getNextTask(context.user);
 
     return {
       previousTask: task,

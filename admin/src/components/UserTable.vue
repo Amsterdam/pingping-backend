@@ -62,8 +62,8 @@
 </template>
 
 <script>
-import UserListItem from '../components/UserListItem'
-import UserCreateModal from '../components/UserCreateModal'
+import UserListItem from '../components/UserListItem.vue'
+import UserCreateModal from '../components/UserCreateModal.vue'
 import { GetUsersQuery } from '../queries/GetUsersQuery'
 import RequestUtil from '../utils/RequestUtil'
 import VueTypes from 'vue-types'
@@ -120,7 +120,8 @@ export default {
     recipients: {
       get () {
         return this.items.filter(i => i.selected === true).map(u => {
-          return { token: u.device?.token, userId: u.id }
+          const { token } = u.device
+          return { token, userId: u.id }
         })
       },
       set () {

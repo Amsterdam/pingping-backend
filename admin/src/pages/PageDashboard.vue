@@ -70,8 +70,8 @@
 
 <script>
 import { AdminStatisticsQuery } from '../queries/AdminStatisticsQuery'
-import NumberBlock from '../components/NumberBlock'
-import Chart from '../components/Chart'
+import NumberBlock from '../components/NumberBlock.vue'
+import Chart from '../components/Chart.vue'
 import { getProps as getWeeklyUsersProps } from '../defs/chart/WeeklyUsersChart'
 import { getProps as getCumulativeUsersProps } from '../defs/chart/UsersCumulativeChart'
 import { getProps as getRouteProps } from '../defs/chart/RoutesChart'
@@ -97,10 +97,11 @@ export default {
       return getWeeklyUsersProps(usersPerWeek, activeUsersPerWeek)
     },
     cumulativeUsers () {
-      return getCumulativeUsersProps(this.statistics?.usersCumulative)
+      return getCumulativeUsersProps(this.statistics && this.statistics.usersCumulative)
     },
     routes () {
-      return getRouteProps(this.statistics?.routesPerMonth, this.statistics?.routesCompletedPerMonth)
+      const { routesPerMonth, routesCompletedPerMonth } = this.statistics
+      return getRouteProps(routesPerMonth, routesCompletedPerMonth)
     }
   },
 

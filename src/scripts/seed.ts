@@ -80,13 +80,9 @@ const seed = async () => {
             continue;
           }
 
-          let welcomeDef = TaskUtil.getDefinition(
-            argv[3] === DATA_SET_AMSTERDAM ? 'onboarding.welcome' : `onboarding.welcome-${argv[3]}`
-          );
+          let welcomeDef = TaskUtil.getDefinition('onboarding.welcome');
           await TaskUtil.handleTask(user, welcomeDef, getRandomNumber(0, 10) < 1 ? 'no' : 'yes');
-          let dobDef = TaskUtil.getDefinition(
-            argv[3] === DATA_SET_AMSTERDAM ? 'onboarding.dateOfBirth' : `onboarding.dateOfBirth-${argv[3]}`
-          );
+          let dobDef = TaskUtil.getDefinition('onboarding.dateOfBirth');
           await TaskUtil.handleTask(
             user,
             dobDef,
@@ -100,7 +96,7 @@ const seed = async () => {
           let numberOfTasks = getRandomNumber(0, 9);
           console.info('Completing extra', numberOfTasks, 'tasks');
           for (var tn = 0; tn <= numberOfTasks; tn++) {
-            let nextTask = TaskUtil.getNextTask(user);
+            let nextTask = await TaskUtil.getNextTask(user);
 
             if (nextTask) {
               let nextTaskDef = TaskUtil.getDefinition(nextTask.taskId);
@@ -121,7 +117,7 @@ const seed = async () => {
           let user = await User.findOne({}).limit(1).skip(R);
 
           for (var tn = 0; tn <= numberOfTasks; tn++) {
-            let nextTask = TaskUtil.getNextTask(user);
+            let nextTask = await TaskUtil.getNextTask(user);
 
             if (nextTask) {
               let nextTaskDef = TaskUtil.getDefinition(nextTask.taskId);

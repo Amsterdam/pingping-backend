@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import PageDashboard from './PageDashboard'
+import PageDashboard from './PageDashboard.vue'
 
 export default {
   name: 'PageDefault',
