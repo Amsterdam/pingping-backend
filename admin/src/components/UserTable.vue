@@ -62,8 +62,8 @@
 </template>
 
 <script>
-import UserListItem from '../components/UserListItem'
-import UserCreateModal from '../components/UserCreateModal'
+import UserListItem from '../components/UserListItem.vue'
+import UserCreateModal from '../components/UserCreateModal.vue'
 import { GetUsersQuery } from '../queries/GetUsersQuery'
 import RequestUtil from '../utils/RequestUtil'
 import VueTypes from 'vue-types'

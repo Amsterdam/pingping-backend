@@ -47,7 +47,7 @@
 import _ from 'lodash'
 import moment from 'moment'
 import VueTypes from 'vue-types'
-import UserModal from './UserModal'
+import UserModal from './UserModal.vue'
 
 export default {
   name: 'UserListItem',

@@ -23,8 +23,8 @@
 
 <script>
 import { GetNotificationsQuery } from '../queries/GetNotificationsQuery'
-import NotificationItem from '../components/NotificationItem'
-import SendNotification from '../components/SendNotification'
+import NotificationItem from '../components/NotificationItem.vue'
+import SendNotification from '../components/SendNotification.vue'
 
 export default {
   name: 'PageAuditLog',

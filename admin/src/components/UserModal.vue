@@ -49,9 +49,9 @@
 
 <script>
 import VueTypes from 'vue-types'
-import UserDevice from './UserDevice'
+import UserDevice from './UserDevice.vue'
 import { DeleteUserMutation } from '../mutations/DeleteUserMutation'
-import TaskTable from './TaskTable'
+import TaskTable from './TaskTable.vue'
 
 export default {
   name: 'UserModal',
