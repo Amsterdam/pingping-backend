@@ -14,7 +14,7 @@ ENV PORT=8000
 # Admin Part
 WORKDIR /app/admin
 RUN yarn install
-RUN yarn run build
+RUN yarn build --base=/admin/.
 WORKDIR /app
 
 EXPOSE 8000

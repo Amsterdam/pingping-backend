@@ -97,10 +97,11 @@ export default {
       return getWeeklyUsersProps(usersPerWeek, activeUsersPerWeek)
     },
     cumulativeUsers () {
-      return getCumulativeUsersProps(this.statistics?.usersCumulative)
+      return getCumulativeUsersProps(this.statistics && this.statistics.usersCumulative)
     },
     routes () {
-      return getRouteProps(this.statistics?.routesPerMonth, this.statistics?.routesCompletedPerMonth)
+      const { routesPerMonth, routesCompletedPerMonth } = this.statistics
+      return getRouteProps(routesPerMonth, routesCompletedPerMonth)
     }
   },
 

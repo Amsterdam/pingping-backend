@@ -76,7 +76,7 @@ class UsersCumulativeChart {
 }
 
 export const getProps = ({ keys, values }, routes, completedRoutes) => {
-  const instance = new UsersCumulativeChart(keys, values, routes?.values, completedRoutes?.values)
+  const instance = new UsersCumulativeChart(keys, values, routes.values, completedRoutes.values)
 
   return instance.getProps()
 }
