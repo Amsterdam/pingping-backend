@@ -97,6 +97,10 @@ export default {
       return getWeeklyUsersProps(usersPerWeek, activeUsersPerWeek)
     },
     cumulativeUsers () {
+      if (!this.statistics || this.statistics.usersCumulative) {
+        return {}
+      }
+
       return getCumulativeUsersProps(this.statistics && this.statistics.usersCumulative)
     },
     routes () {
