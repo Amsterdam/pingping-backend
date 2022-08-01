@@ -14,10 +14,7 @@
     },
     "choices": {
       "amsterdam": "Amsterdam",
-      "ermelo": "Ermelo",
-      "harderwijk": "Harderwijk",
-      "rotterdam": "Rotterdam",
-      "zeewolde": "Zeewolde"
+      "rotterdam": "Rotterdam"
     },
     "meta": {
       "dropdownSelectPlaceholder": "Jouw Gemeente",
