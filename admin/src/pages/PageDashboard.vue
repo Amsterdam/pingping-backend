@@ -100,6 +100,10 @@ export default {
       return getCumulativeUsersProps(this.statistics && this.statistics.usersCumulative)
     },
     routes () {
+      if (!this.statistics) {
+        return {}
+      }
+
       const { routesPerMonth, routesCompletedPerMonth } = this.statistics
       return getRouteProps(routesPerMonth, routesCompletedPerMonth)
     }
