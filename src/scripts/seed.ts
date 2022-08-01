@@ -6,17 +6,18 @@ import faker from 'faker';
 import { argv } from 'process';
 import readline from 'readline';
 import UserUtil from 'utils/UserUtil';
-import { User, DATA_SET_AMSTERDAM } from 'models/User';
+import { User } from 'models/User';
 import TaskUtil from 'utils/TaskUtil';
 import { NotificationStatus, TaskStatus } from '@models';
 import StatisticsUtil from 'utils/StatisticsUtil';
 import { ENV_DEVELOPMENT } from 'config/index';
 import MigrationUtil from 'utils/MigrationUtil';
 import { UserTask } from 'models/UserTask';
-import { DATA_SET_ROTTERDAM, DATA_SET_NONE } from 'models/User';
-import { RouteFeedback } from 'models/RouteFeedback';
+
 import { PushNotificationUtil } from 'utils/PushNotificationUtil';
 import { use } from 'chai';
+import RouteUtil from 'utils/RouteUtil';
+import { RouteFeedback } from 'models/RouteFeedback';
 
 const START_DATE = '2022-01-01';
 const NUMBER_OF_DAYS = moment().diff(moment(START_DATE), 'days');
@@ -73,16 +74,16 @@ const seed = async () => {
 
           let isCity = getRandomNumber(0, 10) < 2 ? false : true;
 
-          let gemeenteDef = TaskUtil.getDefinition('onboarding.gemeente');
+          let gemeenteDef = TaskUtil.getDefinition('onboarding.gemeente', user.dataSet);
           await TaskUtil.handleTask(user, gemeenteDef, isCity ? argv[3] : 'no');
 
           if (!isCity) {
             continue;
           }
 
-          let welcomeDef = TaskUtil.getDefinition('onboarding.welcome');
+          let welcomeDef = TaskUtil.getDefinition('onboarding.welcome', user.dataSet);
           await TaskUtil.handleTask(user, welcomeDef, getRandomNumber(0, 10) < 1 ? 'no' : 'yes');
-          let dobDef = TaskUtil.getDefinition('onboarding.dateOfBirth');
+          let dobDef = TaskUtil.getDefinition('onboarding.dateOfBirth', user.dataSet);
           await TaskUtil.handleTask(
             user,
             dobDef,
@@ -99,7 +100,7 @@ const seed = async () => {
             let nextTask = await TaskUtil.getNextTask(user);
 
             if (nextTask) {
-              let nextTaskDef = TaskUtil.getDefinition(nextTask.taskId);
+              let nextTaskDef = TaskUtil.getDefinition(nextTask.taskId, user.dataSet);
               await TaskUtil.handleTask(user, nextTaskDef, Boolean(Math.round(Math.random())) ? 'yes' : 'no');
             }
           }
@@ -120,7 +121,7 @@ const seed = async () => {
             let nextTask = await TaskUtil.getNextTask(user);
 
             if (nextTask) {
-              let nextTaskDef = TaskUtil.getDefinition(nextTask.taskId);
+              let nextTaskDef = TaskUtil.getDefinition(nextTask.taskId, user.dataSet);
               await TaskUtil.handleTask(user, nextTaskDef, Boolean(Math.round(Math.random())) ? 'yes' : 'no');
             } else {
               // Look for a dismissed onboarding tasks and complete it
@@ -128,8 +129,9 @@ const seed = async () => {
 
               for (var tl in tasks) {
                 let dismissedTaskDef = TaskUtil.getDefinition(tasks[tl].taskId);
-                if (dismissedTaskDef.routeTaskId && getRandomNumber(0, 10) > 1) {
-                  let dismissedRouteTaskDef = TaskUtil.getDefinition(dismissedTaskDef.routeTaskId);
+                if (dismissedTaskDef.routeTask && getRandomNumber(0, 10) > 1) {
+                  let taskId: string = RouteUtil.getTaskIdFromRouteTask(dismissedTaskDef.routeTask, user.dataSet);
+                  let dismissedRouteTaskDef = TaskUtil.getDefinition(taskId, user.dataSet);
                   await TaskUtil.handleTask(user, dismissedRouteTaskDef, 'yes');
                 }
               }

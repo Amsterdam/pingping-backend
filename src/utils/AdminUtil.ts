@@ -5,7 +5,6 @@ import { UserTask } from 'models/UserTask';
 import { RouteFeedback } from 'models/RouteFeedback';
 import { StatisticModel } from 'models/Statistic';
 import { NotificationModel } from 'models/Notification';
-import { DATA_SET_AMSTERDAM, DATA_SET_ROTTERDAM } from 'models/User';
 
 export default class AdminUtil {
   static async fixUsers() {
@@ -34,11 +33,5 @@ export default class AdminUtil {
   }
 
   // Setting all current data to the Amsterdam data set
-  static async dataSetMigration() {
-    // await RouteFeedback.updateMany({ dataSet: { $exists: false } }, { dataSet: DATA_SET_AMSTERDAM });
-    // await User.updateMany({ dataSet: { $exists: false } }, { dataSet: DATA_SET_AMSTERDAM });
-    // await StatisticModel.updateMany({ dataSet: { $exists: false } }, { dataSet: DATA_SET_AMSTERDAM });
-    // await AuditLog.updateMany({ dataSet: { $exists: false } }, { dataSet: DATA_SET_AMSTERDAM });
-    // await NotificationModel.updateMany({ dataSet: { $exists: false } }, { dataSet: DATA_SET_AMSTERDAM });
-  }
+  static async dataSetMigration() {}
 }

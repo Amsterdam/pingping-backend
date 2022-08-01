@@ -6,6 +6,7 @@ import { UserTask } from '../src/models/UserTask';
 import { TaskStatus } from '../src/generated-models';
 import { UserDocument } from '../src/models/User';
 import InitialDataUtil from '../src/utils/InitialDataUtil';
+import RouteUtil from '../src/utils/RouteUtil';
 
 describe('taskUtil', () => {
   let accessToken: any;
@@ -22,20 +23,26 @@ describe('taskUtil', () => {
 
   it('when getting definition, should combine data from route & onboarding task', () => {
     const def = TaskUtil.getDefinition('onboarding.woonAdres');
-    const routeTaskDef = TaskUtil.getDefinition(def.routeTaskId);
+    const taskId: string = RouteUtil.getTaskIdFromRouteTask(def.routeTask, 'amsterdam');
+    const routeTaskDef = TaskUtil.getDefinition(taskId);
 
-    expect(def.routeTaskId).to.eq(routeTaskDef.id);
+    expect(taskId).to.eq(routeTaskDef.id, 'amsterdam');
+
+    const taskIdRotterdam: string = RouteUtil.getTaskIdFromRouteTask(def.routeTask, 'rotterdam');
+    const routeTaskDefRotterdam = TaskUtil.getDefinition(taskIdRotterdam);
+
+    expect(taskIdRotterdam).to.eq(routeTaskDefRotterdam.id, 'rotterdam');
   });
 
   it('completeTask', async () => {
-    const def = TaskUtil.getDefinition('financieleBasis.inkomen');
+    const def = TaskUtil.getDefinition('financieleBasis.inkomen', user.dataSet);
     let userTask: UserTask = await TaskUtil.handleTask(user, def);
 
     expect(userTask.status).to.eq(TaskStatus.Completed);
   });
 
   it('completeTask & balance update', async () => {
-    const def = TaskUtil.getDefinition('financieleBasis.ingeschrevenVoorWoning');
+    const def = TaskUtil.getDefinition('financieleBasis.ingeschrevenVoorWoning', user.dataSet);
     const balance = user.balance;
     await TaskUtil.handleTask(user, def);
 
@@ -43,7 +50,7 @@ describe('taskUtil', () => {
   });
 
   it('completeTask task already dismissed', async () => {
-    const defOne = TaskUtil.getDefinition('onboarding.inkomen');
+    const defOne = TaskUtil.getDefinition('onboarding.inkomen', user.dataSet);
     await TaskUtil.handleTask(user, defOne, 'no');
     const def = TaskUtil.getDefinition('financieleBasis.inkomen');
     let userTask: UserTask = await TaskUtil.handleTask(user, def);
@@ -52,22 +59,22 @@ describe('taskUtil', () => {
   });
 
   it('revert and get correct task', async () => {
-    const task = TaskUtil.getCurrentUserTask(user);
+    const task = await TaskUtil.getCurrentUserTask(user);
     const taskDef = InitialDataUtil.getTaskById(task.taskId);
 
     expect(task.taskId).to.eq('onboarding.gemeente');
 
     await TaskUtil.handleTask(user, taskDef, 'amsterdam');
-    const nextTask = TaskUtil.getCurrentUserTask(user);
+    const nextTask = await TaskUtil.getCurrentUserTask(user);
     expect(nextTask.taskId).to.eq('onboarding.welcome');
 
     await TaskUtil.revertTask(user, task.taskId);
 
-    const nextTaskTwo = TaskUtil.getCurrentUserTask(user);
+    const nextTaskTwo = await TaskUtil.getCurrentUserTask(user);
     expect(nextTaskTwo.taskId).to.eq('onboarding.gemeente');
 
     await TaskUtil.handleTask(user, taskDef, 'no');
-    const nextTask3 = TaskUtil.getCurrentUserTask(user);
+    const nextTask3 = await TaskUtil.getCurrentUserTask(user);
     expect(nextTask3.taskId).to.eq('onboarding.notAmsterdam');
   });
 });

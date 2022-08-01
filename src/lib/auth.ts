@@ -7,8 +7,14 @@ import cache from './cache';
 import { UserDocument, User, AuthToken, AuthTokenKind, Device } from '../models/User';
 import { NotificationStatus, UserRole } from '@models';
 import AuthenticationError from 'errors/AuthenticationError';
-import { DATA_SET_NONE } from 'models/User';
-import { DATA_SET_AMSTERDAM, DATA_SET_ROTTERDAM } from 'models/User';
+import { TENANTS } from 'utils/InitialDataUtil';
+import {
+  DATA_SET_AMSTERDAM,
+  DATA_SET_ERMELO,
+  DATA_SET_HARDERWIJK,
+  DATA_SET_ROTTERDAM,
+  DATA_SET_ZEEWOLDE,
+} from 'models/User';
 
 const TOKEN_VALIDITY_MINUTES = process.env.TOKEN_VALIDITY_MINUTES || 180;
 
@@ -34,21 +40,15 @@ class auth {
   }
 
   static async createAdminUser() {
-    await auth.createUser(
-      UserRole.Admin,
-      'Admin Amsterdam',
-      'admin-amsterdam@pingping.amsterdam.nl',
-      process.env.ADMIN_PASSWORD,
-      DATA_SET_AMSTERDAM
-    );
-
-    await auth.createUser(
-      UserRole.Admin,
-      'Admin Rotterdam',
-      'admin-rotterdam@pingping.amsterdam.nl',
-      process.env.ADMIN_PASSWORD,
-      DATA_SET_ROTTERDAM
-    );
+    for (const tenant of TENANTS) {
+      await auth.createUser(
+        UserRole.Admin,
+        `Admin ${tenant.charAt(0).toUpperCase() + tenant.slice(1)}`,
+        `admin-${tenant}@pingping.amsterdam.nl`,
+        process.env.ADMIN_PASSWORD,
+        tenant
+      );
+    }
   }
 
   static async login(ip: string, email: string, candidatePassword: string, deviceId: string) {

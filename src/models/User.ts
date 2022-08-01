@@ -10,7 +10,7 @@ import { UserRoute } from './UserRoute';
 export const DATA_SET_NONE = 'none';
 export const DATA_SET_AMSTERDAM = 'amsterdam';
 export const DATA_SET_EINDHOVEN = 'eindhoven';
-export const DATA_SET_EMERLO = 'emerlo';
+export const DATA_SET_ERMELO = 'ermelo';
 export const DATA_SET_HARDERWIJK = 'harderwijk';
 export const DATA_SET_ROTTERDAM = 'rotterdam';
 export const DATA_SET_ZEEWOLDE = 'zeewolde';

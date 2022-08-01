@@ -13,7 +13,7 @@ export type AchievementDefinition = Definition & {
 };
 
 export type TaskDefinition = Definition & {
-  routeTaskId?: string;
+  routeTask?: string;
   type: TaskType;
   disabled: boolean;
   headerTitle: string;

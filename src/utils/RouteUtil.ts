@@ -5,6 +5,7 @@ import { RouteDefinition, TaskDefinition } from '../types/global';
 import { UserTask } from '../models/UserTask';
 import { TaskStatus } from '../generated-models';
 import TaskUtil from './TaskUtil';
+import { DATA_SET_AMSTERDAM, DATA_SET_NONE } from 'models/User';
 
 class RouteUtil {
   static getProgress(user: UserDocument, route: RouteDefinition): number {
@@ -48,23 +49,65 @@ class RouteUtil {
     return routeId;
   }
 
+  static getTaskIdFromRouteTask(key: string, dataset: string): string {
+    const [routeId, taskId] = key.split('.');
+
+    if (dataset === DATA_SET_AMSTERDAM || dataset === DATA_SET_NONE) {
+      return `${routeId}.${taskId}`;
+    }
+
+    return `${routeId}-${dataset}.${taskId}`;
+  }
+
+  static async recoverUserStateTaskRemoved(user: UserDocument, task: UserTask = null): Promise<UserDocument> {
+    if (task) {
+      // Remove task from user
+      user = TaskUtil.removeUserTask(user, task);
+    }
+
+    while (true) {
+      let previousTask = await TaskUtil.getPreviousUserTask(user);
+
+      if (!previousTask) {
+        // Add initial task
+        user = await TaskUtil.assignInitialTasksToUser(user);
+        break;
+      }
+
+      try {
+        let previousTaskDef = TaskUtil.getDefinition(previousTask.taskId, user.dataSet);
+        user = TaskUtil.addNextTaskAndRoute(user, previousTaskDef, previousTask.answer);
+
+        break;
+      } catch {
+        user = TaskUtil.removeUserTask(user, task);
+      }
+    }
+
+    await user.save();
+    return user;
+  }
+
   static getRouteTask(user: UserDocument, taskId: string): UserTask {
     let status = TaskStatus.PendingUser;
     let answer = null;
 
     let userTaskIndex = user.tasks.map((ut: UserTask) => ut.taskId).indexOf(taskId);
-    let taskDef = TaskUtil.getDefinition(taskId);
 
-    if (!taskDef) {
+    try {
+      TaskUtil.getDefinition(taskId, user.dataSet);
+
+      if (userTaskIndex !== -1) {
+        status = _.get(user, `tasks.${userTaskIndex}.status`);
+        answer = _.get(user, `tasks.${userTaskIndex}.answer`);
+      }
+
+      return new UserTask(taskId, status, answer);
+    } catch {
       return null;
     }
 
-    if (userTaskIndex !== -1) {
-      status = _.get(user, `tasks.${userTaskIndex}.status`);
-      answer = _.get(user, `tasks.${userTaskIndex}.answer`);
-    }
-
-    return new UserTask(taskId, status, answer);
+    return null;
   }
 }
 

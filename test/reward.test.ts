@@ -66,15 +66,10 @@ describe('reward', () => {
     await expect(res).to.be.rejectedWith(/reward_not_defined/);
   });
 
-  it('has 3 rewards in definition', async () => {
-    const res = InitialDataUtil.getRewards();
-
-    expect(res.length).to.eq(4);
-  });
-
   it('claim reward', async () => {
+    user.dataSet = 'amsterdam';
     await TransactionUtil.addTransaction(user, 'Test', 140, 'lkdfjg');
-    const rew = await RewardUtil.claim(user, 'pathe-thuis-film');
+    await RewardUtil.claim(user, 'pathe-thuis-film');
 
     expect(user.rewards.length).to.eq(1);
     expect(user.balance).to.eq(0);

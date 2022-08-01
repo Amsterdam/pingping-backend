@@ -1,0 +1,167 @@
+[
+  {
+    "id": "onboarding.gemeente",
+    "type": "DropdownSelect",
+    "title": "Jouw Gemeente",
+    "headerTitle": "selecteer een gemeente",
+    "initial": true,
+    "description": "Selecteer de gemeente waar jij in woont. Dit is noodzakelijk omdat Ping Ping zich moet aanpassen aan jouw omstandigheden",
+    "media": {
+      "type": "Image",
+      "value": "/images/gemeente.jpg",
+      "thumbnail": "/images/gemeenteThumb.jpg",
+      "color": "#ffffff"
+    },
+    "choices": {
+      "amsterdam": "Amsterdam",
+      "rotterdam": "Rotterdam"
+    },
+    "meta": {
+      "dropdownSelectPlaceholder": "Jouw Gemeente",
+      "dropdownSelectNoResultLabel": "Mijn gemeente staat er niet tussen",
+      "dropdownSelectNoResultValue": "no"
+    },
+    "nextTaskId": {
+      "amsterdam": "onboarding.welcome",
+      "ermelo": "onboarding.welcome",
+      "harderwijk": "onboarding.welcome",
+      "rotterdam": "onboarding.welcome",
+      "zeewolde": "onboarding.welcome",
+      "no": "onboarding.notAmsterdam"
+    }
+  },
+  {
+    "id": "onboarding.notAmsterdam",
+    "type": "GoBack",
+    "headerTitle": "",
+    "title": "Excuses voor het ongemak",
+    "description": "Deze route is nu nog alleen geschikt voor mensen die in Amsterdam of Rotterdam wonen. Voor algemene info over 18 worden en wat je kunt regelen, <a href=\"https://www.rijksoverheid.nl/onderwerpen/achttien-jaar-worden/vraag-en-antwoord/checklist-bij-18-jaar-worden\">check deze site</a>",
+    "nextTaskId": ""
+  },
+  {
+    "id": "onboarding.welcome",
+    "type": "Confirm",
+    "title": "Welkom op PingPing",
+    "description": "Voor je aan de slag kan, stellen we je wat vragen, zodat jij de info krijgt die jij nodig hebt...",
+    "headerTitle": "Welkom!",
+    "defaultValue": "yes",
+    "media": {
+      "type": "Image",
+      "value": "/images/welcome.jpg",
+      "thumbnail": "/images/welcomeThumb.jpg",
+      "color": "#d8d8d5"
+    },
+    "choices": {
+      "yes": "Start",
+      "no": "Vragen overslaan"
+    },
+    "nextTaskId": {
+      "yes": "onboarding.dateOfBirth"
+    },
+    "nextRoute": {
+      "no": "financieleBasis"
+    }
+  },
+  {
+    "id": "onboarding.dateOfBirth",
+    "type": "DateOfBirth",
+    "title": "Wat is je geboortedatum?",
+    "headerTitle": "geboortedatum",
+    "nextTaskId": "onboarding.woonAdres"
+  },
+  {
+    "routeTask": "financieleBasis.woonAdres",
+    "id": "onboarding.woonAdres",
+    "type": "YesOrNo",
+    "title": "Sta je ingeschreven op een vast adres?",
+    "choices": {
+      "yes": "Ja ik sta ingeschreven",
+      "no": "Nee nog niet"
+    },
+    "nextTaskId": {
+      "yes": "onboarding.bankRekening",
+      "no": "onboarding.bankRekening"
+    }
+  },
+  {
+    "routeTask": "financieleBasis.bankRekening",
+    "id": "onboarding.bankRekening",
+    "type": "YesOrNo",
+    "title": "Heb je een bankrekening?",
+    "choices": {
+      "yes": "Ja ik heb een bankrekening",
+      "no": "Nee nog niet"
+    },
+    "nextTaskId": "onboarding.digiD"
+  },
+  {
+    "routeTask": "financieleBasis.digiD",
+    "id": "onboarding.digiD",
+    "type": "YesOrNo",
+    "title": "Heb je al een DigiD?",
+    "choices": {
+      "yes": "Ja ik heb een DigiD",
+      "no": "Nee nog niet"
+    },
+    "nextTaskId": "onboarding.zorgverzekering"
+  },
+  {
+    "routeTask": "financieleBasis.zorgverzekering",
+    "id": "onboarding.zorgverzekering",
+    "type": "YesOrNo",
+    "title": "Heb je zelf een zorgverzekering afgesloten?",
+    "choices": {
+      "yes": "Ja ik ben verzekerd",
+      "no": "Nee nog niet"
+    },
+    "nextTaskId": "onboarding.zorgtoeslag"
+  },
+  {
+    "routeTask": "financieleBasis.zorgtoeslag",
+    "id": "onboarding.zorgtoeslag",
+    "type": "YesOrNo",
+    "title": "Heb je al Zorgtoeslag?",
+    "choices": {
+      "yes": "Ja heb ik",
+      "no": "Nee nog niet"
+    },
+    "nextTaskId": "onboarding.inkomen"
+  },
+  {
+    "routeTask": "financieleBasis.inkomen",
+    "id": "onboarding.inkomen",
+    "type": "YesOrNo",
+    "title": "Heb je al inkomen?",
+    "choices": {
+      "yes": "Ja ik heb een inkomen",
+      "no": "Nee nog niet"
+    },
+    "nextTaskId": {
+      "yes": "onboarding.waarKomtJeInkomenVandaan",
+      "no": "onboarding.ingeschrevenVoorWoning"
+    }
+  },
+  {
+    "id": "onboarding.waarKomtJeInkomenVandaan",
+    "type": "MultipleChoices",
+    "headerTitle": "inkomen",
+    "title": "Waar komt je inkomen vandaan?",
+    "choices": {
+      "bijbaan": "Een bijbaan",
+      "studiefinanciering": "Studiefinanciering",
+      "family": "Ouders / Familie"
+    },
+    "nextTaskId": "onboarding.ingeschrevenVoorWoning"
+  },
+  {
+    "routeTask": "financieleBasis.ingeschrevenVoorWoning",
+    "id": "onboarding.ingeschrevenVoorWoning",
+    "type": "YesOrNo",
+    "title": "Sta je al ingeschreven op de wachtlijst voor een huurwoning?",
+    "choices": {
+      "yes": "Ja ik heb me ingeschreven",
+      "no": "Nee nog niet"
+    },
+    "nextRoute": "financieleBasis"
+  }
+]

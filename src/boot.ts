@@ -5,8 +5,7 @@ import NodeCron from 'node-cron';
 import StatisticsUtil from 'utils/StatisticsUtil';
 import MigrationUtil from 'utils/MigrationUtil';
 import Config from 'config';
-import { DATA_SET_AMSTERDAM, DATA_SET_ROTTERDAM } from 'models/User';
-import InitialDataUtil from 'utils/InitialDataUtil';
+import InitialDataUtil, { TENANTS } from 'utils/InitialDataUtil';
 
 class boot {
   static async start(): Promise<Array<any>> {
@@ -14,15 +13,19 @@ class boot {
     dotenv.config();
     Config.assertConfig();
     InitialDataUtil.loadAllTenants();
-    StatisticsUtil.registerStatistics(DATA_SET_AMSTERDAM);
-    StatisticsUtil.registerStatistics(DATA_SET_ROTTERDAM);
+    for (const tenant of TENANTS) {
+      console.info('register statistics for tenant:', tenant);
+      StatisticsUtil.registerStatistics(tenant);
+    }
     MigrationUtil.checkRouteProgress();
 
     // Schedule cron jobs for statistics and data consistency
     NodeCron.schedule('0 12 * * *', async () => {
       console.info('Running statistics cron');
-      await StatisticsUtil.registerStatistics(DATA_SET_AMSTERDAM);
-      await StatisticsUtil.registerStatistics(DATA_SET_ROTTERDAM);
+      for (const tenant of TENANTS) {
+        console.info('register statistics cronjob for tenant:', tenant);
+        await StatisticsUtil.registerStatistics(tenant);
+      }
     });
 
     NodeCron.schedule('0 5 * * *', async () => {

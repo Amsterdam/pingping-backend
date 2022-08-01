@@ -13,7 +13,7 @@ import { GraphQLRequestListener } from 'apollo-server-plugin-base/src/index';
 export const LogPlugin: ApolloServerPlugin = {
   requestDidStart<TContext>(_: GraphQLRequestContext<TContext>): GraphQLRequestListener<TContext> {
     return {
-      didEncounterErrors(context) {
+      didEncounterErrors(context: any) {
         console.info('error:', context.errors);
       },
     };
