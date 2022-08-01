@@ -21,7 +21,7 @@
 
 <script>
 import VueTypes from 'vue-types'
-import TaskTableItem from './TaskTableItem'
+import TaskTableItem from './TaskTableItem.vue'
 
 export default {
   name: 'TaskTable',

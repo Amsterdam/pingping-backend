@@ -76,15 +76,16 @@
 import gql from 'graphql-tag';
 import _ from 'lodash'
 import moment from 'moment'
-import BarChart from './BarChart'
-import StackedBarChart from './StackedBarChart'
-import LineChart from './LineChart'
-import PieChart from './PieChart'
+import BarChart from './BarChart.vue'
+import StackedBarChart from './StackedBarChart.vue'
+import LineChart from './LineChart.vue'
+import PieChart from './PieChart.vue'
 import VueTypes from 'vue-types';
 import { getProps as getTaskChartProps } from '../defs/chart/TaskChart'
 const WEEK_FORMAT = 'YYYY-WW'
 
 export default {
+  name: 'ChartComp',
   components: {
     StackedBarChart,
     BarChart,

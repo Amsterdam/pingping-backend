@@ -23,7 +23,7 @@
 
 <script>
 import { GetAuditLogQuery } from '../queries/GetAuditLogQuery'
-import AuditLogItem from '../components/AuditLogItem'
+import AuditLogItem from '../components/AuditLogItem.vue'
 
 export default {
   name: 'PageAuditLog',

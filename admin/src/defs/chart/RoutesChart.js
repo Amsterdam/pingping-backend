@@ -73,7 +73,7 @@ class RoutesChart {
 }
 
 export const getProps = ({ keys, values }, completedRoutes) => {
-  const instance = new RoutesChart(keys, values, completedRoutes?.values)
+  const instance = new RoutesChart(keys, values, completedRoutes.values)
 
   return instance.getProps()
 }

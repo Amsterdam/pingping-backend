@@ -3,6 +3,7 @@ import { AchievementDefinition } from 'types/global';
 import { DATA_SET_NONE, UserDocument } from '../models/User';
 import { UserAchievement } from '../models/UserAchievement';
 import TransactionUtil from './TransactionUtil';
+import { DATA_SET_NONE } from 'models/User';
 
 class AchievementUtil {
   static getDefinition(id: string): AchievementDefinition {
@@ -12,6 +13,7 @@ class AchievementUtil {
       id,
       dataSet: DATA_SET_NONE,
       title: achievement.title,
+      dataSet: DATA_SET_NONE,
       description: achievement.description,
       points: achievement.points,
       icon: achievement.icon,

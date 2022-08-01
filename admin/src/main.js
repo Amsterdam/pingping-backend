@@ -4,16 +4,19 @@ import App from './App.vue';
 import VueApollo from 'vue-apollo';
 import VueRouter from 'vue-router';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
-import { createProvider } from './vue-apollo';
+import { apolloProvider } from './vue-apollo';
 import { v4 as uuidv4 } from 'uuid';
-import PageDefault from './pages/PageDefault';
-import PageUsers from './pages/PageUsers';
-import PageUser from './pages/PageUser';
-import PageRewards from './pages/PageRewards';
-import PageAuditLog from './pages/PageAuditLog';
-import PageFeedback from './pages/PageFeedback';
-import PageSettings from './pages/PageSettings';
-import PageNotifications from './pages/PageNotifications'
+import PageDefault from './pages/PageDefault.vue';
+import PageUsers from './pages/PageUsers.vue';
+import PageUser from './pages/PageUser.vue';
+import PageRewards from './pages/PageRewards.vue';
+import PageAuditLog from './pages/PageAuditLog.vue';
+import PageFeedback from './pages/PageFeedback.vue';
+import PageSettings from './pages/PageSettings.vue';
+import PageNotifications from './pages/PageNotifications.vue'
+
+import 'bootstrap/scss/bootstrap.scss'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
@@ -27,7 +30,7 @@ if (!window.localStorage.getItem('deviceId')) {
 }
 
 const routes = [
-  { path: '/', component: PageDefault },
+  { path: '/', component: PageDefault, name: 'default' },
   { path: '/users', component: PageUsers },
   { path: '/users/:id', component: PageUser },
   { path: '/rewards', component: PageRewards },
@@ -43,7 +46,7 @@ const router = new VueRouter({
 });
 
 new Vue({
-  apolloProvider: createProvider(),
+  apolloProvider,
   render: (h) => h(App),
   router,
 }).$mount('#app');

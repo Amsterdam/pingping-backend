@@ -7,19 +7,19 @@
       </div>
     </div>
 
-    <Login v-else />
+    <LoginForm v-else />
   </div>
 </template>
 
 <script>
-import Login from './components/Login'
-import AppNav from './components/AppNav'
+import Login from './components/Login.vue'
+import AppNav from './components/AppNav.vue'
 
 export default {
   name: 'App',
 
   components: {
-    Login,
+    LoginForm: Login,
     AppNav
   },
 
@@ -47,8 +47,6 @@ $theme-colors: (
 );
 
 @import 'css/custom.scss';
-@import '~bootstrap/scss/bootstrap.scss';
-@import '~bootstrap-vue/dist/bootstrap-vue.css';
 
 body,
 html {
