@@ -105,6 +105,22 @@ export const Query: QueryResolvers = {
             })
           ).map((u: any) => u._id),
         };
+      case NotificationType.ManualAll:
+        return {
+          title: '',
+          message:
+            '',
+          payload: {
+            custom: {
+              type: NotificationType.ManualAll,
+            },
+          },
+          recipientUserIds: (
+            await User.find({
+              ...BASE_QUERY(context.user.dataSet),
+            })
+          ).map((u: any) => u._id),
+        };
     }
 
     return {

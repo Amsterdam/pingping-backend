@@ -358,7 +358,8 @@ export enum NotificationStatus {
 export enum NotificationType {
   RemindUserToContinueRoute = 'RemindUserToContinueRoute',
   RemindUserToCompleteOnboarding = 'RemindUserToCompleteOnboarding',
-  Manual = 'Manual'
+  Manual = 'Manual',
+  ManualAll = 'ManualAll'
 }
 
 export type Query = {

@@ -82,6 +82,7 @@ enum NotificationType {
   RemindUserToContinueRoute
   RemindUserToCompleteOnboarding
   Manual
+  ManualAll
 }
 
 enum NotificationDeliveryStatus {
