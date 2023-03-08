@@ -112,13 +112,19 @@ export const Query: QueryResolvers = {
             '',
           payload: {
             custom: {
-              type: NotificationType.ManualAll,
+              type: NotificationType.Manual,
             },
           },
           recipientUserIds: (
             await User.find({
-              ...BASE_QUERY(context.user.dataSet),
-            })
+              role: UserRole.User,
+              dataSet: context.user.dataSet,
+              devices: {
+                $elemMatch: {
+                  notificationStatus: NotificationStatus.Approved,
+                },
+              },
+            },)
           ).map((u: any) => u._id),
         };
     }
