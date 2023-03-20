@@ -33,6 +33,7 @@ export class App {
       schema,
       context,
       plugins: [LogPlugin],
+      playground: false,
     });
 
     this.app.use(express.static('public'));
