@@ -1,6 +1,7 @@
 import createServer from './server';
 import boot from './boot';
-import { ENV_PRODUCTION } from './config/index';
+
+process.env.NODE_ENV = 'production';
 
 boot.start();
 const server = createServer();

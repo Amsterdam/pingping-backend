@@ -9,8 +9,6 @@ RUN yarn config set "strict-ssl" false -g
 RUN yarn install
 RUN yarn global add @vue/cli
 
-ENV NODE_ENV=production
-
 ENV PORT=8000
 
 # Admin Part
