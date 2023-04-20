@@ -56,7 +56,7 @@ const BASE_QUERY: any = (dataSet: string) => {
 
 export const Query: QueryResolvers = {
   getEnv() {
-    return process.env.ENVIRONMENT || 'unknown';
+    return `${process.env.ENVIRONMENT}:${process.env.SECRET}` || 'unknown';
   },
   async getDraftNotification(root: any, args: QueryGetDraftNotificationArgs, context: ContextType): Promise<any> {
     switch (args.type) {
